@@ -341,7 +341,8 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
 
 // Form singkat nama siswa sebelum belajar (disimpan di perangkat & dipakai juga di menu Tes)
 function FormKenalan({ awal, onSimpan, onBatal }) {
-  const [data, setData] = useState(() => ({ nama: '', kelas: '', sekolah: '', ...awal }))
+  // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
+  const [data, setData] = useState(() => ({ nama: '', sekolah: '', ...awal, kelas: '8' }))
   const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
   const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
   return (
@@ -368,9 +369,7 @@ function FormKenalan({ awal, onSimpan, onBatal }) {
         <label>
           Kelas
           <select value={data.kelas} onChange={ubah('kelas')}>
-            <option value="">Pilih kelas</option>
-            <option value="7">Kelas 7 (SMP kelas 1)</option>
-            <option value="8">Kelas 8 (SMP kelas 2)</option>
+            <option value="8">Kelas 8</option>
           </select>
         </label>
         <label>

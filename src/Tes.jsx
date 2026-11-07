@@ -27,7 +27,8 @@ const INSTRUMEN = {
 const KELOMPOK = ['Belajar dengan aplikasi', 'Diajar langsung oleh mahasiswa']
 
 function FormIdentitas({ jenis, onMulai, onBatal }) {
-  const [data, setData] = useState(() => identitasTerakhir() ?? { nama: '', kelas: '', sekolah: '', kelompok: '' })
+  // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
+  const [data, setData] = useState(() => ({ nama: '', sekolah: '', kelompok: '', ...identitasTerakhir(), kelas: '8' }))
   const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim() && data.kelompok
   const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
 
@@ -52,9 +53,7 @@ function FormIdentitas({ jenis, onMulai, onBatal }) {
         <label>
           Kelas
           <select value={data.kelas} onChange={ubah('kelas')}>
-            <option value="">Pilih kelas</option>
-            <option value="7">Kelas 7 (SMP kelas 1)</option>
-            <option value="8">Kelas 8 (SMP kelas 2)</option>
+            <option value="8">Kelas 8</option>
           </select>
         </label>
         <label>
