@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { Konfeti } from './Hiasan.jsx'
+import { Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Prisma3D from './Prisma3D.jsx'
 import Siswa from './Siswa.jsx'
+import Siswi from './Siswi.jsx'
 
 // Kalimat balon kata di header, berganti sesuai menu
 const SAPAAN = {
@@ -22,12 +23,16 @@ const SORAK = [
   'Tos dulu dong! ✋',
 ]
 
-const SAPA_SISWA = ['Halo! Aku Raka, kita belajar bareng ya!', 'Aku juga lagi belajar Pythagoras, lho!', 'Ayo kita jadi juara kelas! 🏆']
+const SAPA = {
+  siswa: ['Halo! Aku Raka, kita belajar bareng ya!', 'Aku juga lagi belajar Pythagoras, lho!', 'Ayo kita jadi juara kelas! 🏆'],
+  siswi: ['Hai! Aku Nisa. Semangat belajarnya ya! 💪', 'Aku suka soal cerita, seru banget!', 'Yuk kerjakan bareng-bareng! 📝'],
+}
 
 const LAMA_TIDUR = 25000 // ms tanpa gerakan sebelum Siku tertidur
 
-// Panggung header: balon kata, prisma 3D, anak SMP (Raka), dan maskot Siku.
-// - Siku & Raka bisa diklik, dan bola mata mereka mengikuti kursor/jari.
+// Panggung header: balon kata, pelangi, prisma 3D, dua siswa SMP (Raka & Nisa),
+// dan maskot Siku bertopi wisuda.
+// - Siku, Raka, dan Nisa bisa diklik, dan bola mata mereka mengikuti kursor/jari.
 // - Bila halaman lama tidak disentuh, Siku tertidur (Zzz) sampai ada gerakan.
 // - Saat `diam` (tes berlangsung) semua animasi berhenti dan karakter tidak bisa diklik.
 export default function Panggung({ halaman, diam }) {
@@ -88,7 +93,7 @@ export default function Panggung({ halaman, diam }) {
 
   const klik = (siapa) => {
     if (diam) return
-    const daftar = siapa === 'siku' ? SORAK : SAPA_SISWA
+    const daftar = siapa === 'siku' ? SORAK : SAPA[siapa]
     const bangun = siapa === 'siku' && tidur
     setTidur(false)
     setPesan({ teks: bangun ? 'Hoaam... aku bangun! Ayo belajar lagi! 😄' : daftar[hitungan % daftar.length], siapa, n: hitungan })
@@ -106,6 +111,7 @@ export default function Panggung({ halaman, diam }) {
         {teks}
       </p>
       <div className="panggung-isi" ref={isiRef}>
+        <Pelangi />
         <Prisma3D />
         <button
           type="button"
@@ -120,6 +126,17 @@ export default function Panggung({ halaman, diam }) {
         </button>
         <button
           type="button"
+          className={`tombol-karakter tombol-siswi ${pesan?.siapa === 'siswi' ? 'disapa' : ''}`}
+          key={pesan?.siapa === 'siswi' ? `i${pesan.n}` : 'siswi'}
+          onClick={() => klik('siswi')}
+          disabled={diam}
+          aria-label="Sapa siswi SMP"
+        >
+          {pesan?.siapa === 'siswi' && <Konfeti jumlah={16} />}
+          <Siswi ukuran={104} lirik={diam ? null : lirik} />
+        </button>
+        <button
+          type="button"
           className={`tombol-karakter tombol-siku ${pesan?.siapa === 'siku' ? 'disapa' : ''}`}
           key={pesan?.siapa === 'siku' ? `k${pesan.n}` : 'siku'}
           onClick={() => klik('siku')}
@@ -127,10 +144,10 @@ export default function Panggung({ halaman, diam }) {
           aria-label={sedangTidur ? 'Bangunkan Siku' : 'Sapa Siku'}
         >
           {pesan?.siapa === 'siku' && <Konfeti jumlah={22} />}
-          <Maskot ukuran={92} diam={diam} suasana={suasanaSiku} lirik={diam ? null : lirik} />
+          <Maskot ukuran={100} diam={diam} suasana={suasanaSiku} lirik={diam ? null : lirik} topi />
         </button>
       </div>
-      {!diam && <p className="petunjuk-klik">Klik Siku atau Raka!</p>}
+      {!diam && <p className="petunjuk-klik">Klik Siku, Raka, atau Nisa!</p>}
     </div>
   )
 }

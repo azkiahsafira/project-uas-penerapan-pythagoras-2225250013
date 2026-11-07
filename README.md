@@ -18,7 +18,7 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
 <p align="center">
   <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/">
-    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header bergradasi biru-pink dengan maskot Siku, anak SMP Raka, dan prisma 3D, menu Belajar/Kalkulator/Latihan Soal/Tes, serta kartu Sesi 1–3" width="820">
+    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header bergradasi biru muda-pink dengan maskot Siku bertopi wisuda, siswa Raka dan siswi berjilbab Nisa, pelangi, dan prisma 3D, menu Belajar/Kalkulator/Latihan Soal/Tes, serta kartu Sesi 1–3" width="820">
   </a>
 </p>
 
@@ -65,12 +65,12 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
 - **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
-- **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), karakter anak SMP bergaya chibi yang melambai dan sesekali melompat, simbol matematika yang melayang, serta awan berwajah.
-- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka (anak SMP) untuk disapa, dan elus kucing di bawah halaman sampai mengeong. Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
-- **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai, Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
+- **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
+- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus kelinci, kucing, atau beruang di bawah halaman. Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
+- **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai (pelangi dan Siku bertopi wisuda yang menari), Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
-- **Latar halaman beranimasi**: gumpalan warna biru–pink yang bergerak lembut, bentuk kecil (segitiga, hati, bintang, lingkaran, plus) yang melayang naik, dan bintang berkelip di area kosong halaman.
+- **Latar halaman beranimasi**: gumpalan warna biru–pink yang bergerak lembut, gelembung sabun yang melayang lalu pecah, bentuk kecil (segitiga, hati, bintang, lingkaran, plus) yang melayang naik, dan bintang berkelip di area kosong halaman.
 - **Efek lucu lainnya**: hati & bintang meletup di setiap klik/sentuhan, jejak kilau di belakang kursor (laptop), mata Siku dan Raka yang melirik mengikuti kursor, Siku yang tertidur (Zzz) bila halaman lama tidak disentuh, dan tombol sesi berikutnya yang berdenyut.
 - Tema biru muda (baby blue) + pink pastel, responsif (laptop dan HP), serta mendukung mode terang/gelap.
 
@@ -253,9 +253,10 @@ aplikasi-pythagoras/
     ├── Panggung.jsx  header: balon kata, prisma 3D, Raka, Siku (bisa diklik)
     ├── Belajar.jsx   pemutar materi belajar per sesi
     ├── Maskot.jsx    karakter maskot "Siku" (SVG beranimasi)
-    ├── Siswa.jsx     karakter anak SMP (SVG beranimasi)
+    ├── Siswa.jsx     karakter siswa SMP Raka (SVG beranimasi)
+    ├── Siswi.jsx     karakter siswi SMP berjilbab Nisa (SVG beranimasi)
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
-    ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, konfeti, ilustrasi sesi
+    ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, kelinci, beruang, pelangi, gelembung, konfeti, ilustrasi sesi
     ├── Efek.jsx      hati & bintang saat klik, jejak kursor
     ├── Ikon.jsx      ikon menu
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink

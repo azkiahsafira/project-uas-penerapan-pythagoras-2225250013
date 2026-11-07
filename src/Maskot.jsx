@@ -3,20 +3,22 @@
 //
 // Props:
 //   suasana : 'halo' (melambai) | 'senang' (jawaban benar) | 'mikir' (jawaban belum tepat)
-//             | 'tidur' (lama tidak disentuh)
+//             | 'tidur' (lama tidak disentuh) | 'menari' (merayakan sesi selesai)
 //   ukuran  : lebar dalam piksel
 //   diam    : true = tanpa animasi (dipakai saat tes agar tidak mengganggu)
 //   lirik   : { x, y } antara -1 dan 1, arah bola mata melirik (mengikuti kursor)
+//   topi    : true = memakai topi wisuda
 
 const LABEL = {
   halo: 'Maskot Siku melambaikan tangan',
   senang: 'Maskot Siku senang',
   mikir: 'Maskot Siku sedang berpikir',
   tidur: 'Maskot Siku sedang tidur',
+  menari: 'Maskot Siku menari gembira',
 }
 
-export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false, lirik = null }) {
-  const senang = suasana === 'senang'
+export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false, lirik = null, topi = false }) {
+  const senang = suasana === 'senang' || suasana === 'menari'
   const mikir = suasana === 'mikir'
   const tidur = suasana === 'tidur'
   const geser = lirik ? `translate(${(lirik.x * 2.4).toFixed(2)} ${(lirik.y * 2).toFixed(2)})` : undefined
@@ -106,6 +108,18 @@ export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false, l
           <path className="mulut" d="M61 102 Q66 99 71 102" />
         ) : (
           <path className="mulut" d="M59 98 Q66 106 73 98" />
+        )}
+
+        {/* topi wisuda di puncak segitiga */}
+        {topi && (
+          <g className="topi">
+            <path className="topi-dasar" d="M22 22 V29 Q34 35 46 29 V22 Z" />
+            <path className="topi-atas" d="M6 19 L34 8 L62 19 L34 30 Z" />
+            <g className="rumbai">
+              <path d="M34 19 L56 23 L56 36" />
+              <circle cx="56" cy="38" r="3.2" />
+            </g>
+          </g>
         )}
 
         {/* lengan kanan (melambai) */}

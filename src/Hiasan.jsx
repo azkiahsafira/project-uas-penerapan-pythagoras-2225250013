@@ -220,12 +220,25 @@ const KELIP = [
   [50, 96, 2.4], [30, 6, 0.9], [70, 4, 1.9],
 ]
 
+// gelembung sabun: [kiri %, ukuran px, lama detik, tunda detik]
+const SABUN = [
+  [4, 34, 16, 0], [11, 22, 13, 5], [18, 28, 18, 10], [86, 30, 15, 2],
+  [92, 20, 12, 7], [97, 38, 19, 12], [44, 24, 17, 14], [62, 26, 14, 9],
+]
+
 export function LatarHalaman() {
   return (
     <div className="latar-halaman" aria-hidden="true">
       <div className="gumpal g1" />
       <div className="gumpal g2" />
       <div className="gumpal g3" />
+      {SABUN.map(([x, ukuran, lama, tunda], i) => (
+        <span
+          key={`s${i}`}
+          className="sabun"
+          style={{ left: `${x}%`, width: ukuran, height: ukuran, animationDuration: `${lama}s`, animationDelay: `-${tunda}s` }}
+        />
+      ))}
       {MELAYANG.map(([b, x, ukuran, lama, tunda, warna], i) => (
         <span
           key={`m${i}`}
@@ -243,5 +256,113 @@ export function LatarHalaman() {
         </span>
       ))}
     </div>
+  )
+}
+
+// Pelangi pastel (di header dan layar perayaan)
+const WARNA_PELANGI = ['#fda4af', '#fdba74', '#fde68a', '#a7f3d0', '#93c5fd', '#c4b5fd']
+
+export function Pelangi({ besar = false }) {
+  return (
+    <svg className={`pelangi ${besar ? 'besar' : ''}`} viewBox="0 0 200 110" aria-hidden="true">
+      {WARNA_PELANGI.map((w, i) => (
+        <path
+          key={w}
+          d={`M${10 + i * 9} 105 A${90 - i * 9} ${90 - i * 9} 0 0 1 ${190 - i * 9} 105`}
+          stroke={w}
+          style={{ animationDelay: `${i * 0.12}s` }}
+        />
+      ))}
+      <g className="pelangi-awan">
+        <ellipse cx="22" cy="100" rx="18" ry="10" />
+        <ellipse cx="36" cy="96" rx="12" ry="9" />
+        <ellipse cx="178" cy="100" rx="18" ry="10" />
+        <ellipse cx="164" cy="96" rx="12" ry="9" />
+      </g>
+    </svg>
+  )
+}
+
+// Kelinci yang melompat-lompat di bawah halaman
+export function Kelinci({ onKlik, bersuara }) {
+  return (
+    <button type="button" className={`hewan-tombol kelinci-tombol ${bersuara ? 'bersuara' : ''}`} onClick={onKlik} aria-label="Elus kelinci">
+      {bersuara && <span className="suara-hewan">Boing boing! 🥕</span>}
+      <svg className="kelinci" viewBox="0 0 70 80" aria-hidden="true">
+        <ellipse className="kl-bayang" cx="35" cy="77" rx="18" ry="3" />
+        <g className="kl-badan">
+          <g className="kl-telinga">
+            <ellipse cx="25" cy="18" rx="6" ry="16" transform="rotate(-10 25 18)" />
+            <ellipse cx="45" cy="18" rx="6" ry="16" transform="rotate(10 45 18)" />
+            <ellipse className="kl-telinga-dalam" cx="25" cy="19" rx="2.8" ry="11" transform="rotate(-10 25 19)" />
+            <ellipse className="kl-telinga-dalam" cx="45" cy="19" rx="2.8" ry="11" transform="rotate(10 45 19)" />
+          </g>
+          <ellipse className="kl-tubuh" cx="35" cy="60" rx="18" ry="15" />
+          <circle className="kl-tubuh" cx="35" cy="40" r="15" />
+          <circle className="kl-ekor" cx="52" cy="64" r="5" />
+          <g className="kl-mata">
+            {bersuara ? (
+              <path className="kl-mata-senang" d="M27 39 Q29.5 36 32 39 M38 39 Q40.5 36 43 39" />
+            ) : (
+              <>
+                <circle cx="29.5" cy="39" r="2.4" />
+                <circle cx="40.5" cy="39" r="2.4" />
+              </>
+            )}
+          </g>
+          <ellipse className="kl-hidung" cx="35" cy="44" rx="2" ry="1.4" />
+          <path className="kl-mulut" d="M32.5 46.5 Q35 49 37.5 46.5" />
+          <ellipse className="kl-pipi" cx="25" cy="46" rx="3" ry="1.8" />
+          <ellipse className="kl-pipi" cx="45" cy="46" rx="3" ry="1.8" />
+          <ellipse className="kl-kaki" cx="27" cy="74" rx="6" ry="3" />
+          <ellipse className="kl-kaki" cx="43" cy="74" rx="6" ry="3" />
+        </g>
+      </svg>
+    </button>
+  )
+}
+
+// Beruang yang melambaikan tangan di bawah halaman
+export function Beruang({ onKlik, bersuara }) {
+  return (
+    <button type="button" className={`hewan-tombol beruang-tombol ${bersuara ? 'bersuara' : ''}`} onClick={onKlik} aria-label="Peluk beruang">
+      {bersuara && <span className="suara-hewan">Halo! Peluk dulu 🐻</span>}
+      <svg className="beruang" viewBox="0 0 84 80" aria-hidden="true">
+        <ellipse className="br-bayang" cx="42" cy="77" rx="22" ry="3" />
+        <g className="br-badan">
+          <ellipse className="br-tubuh" cx="42" cy="60" rx="20" ry="16" />
+          <ellipse className="br-perut" cx="42" cy="62" rx="11" ry="10" />
+          <ellipse className="br-tubuh" cx="27" cy="75" rx="7" ry="4" />
+          <ellipse className="br-tubuh" cx="57" cy="75" rx="7" ry="4" />
+          <g className="br-lambai">
+            <path className="br-lengan" d="M58 54 Q70 46 72 34" />
+            <circle className="br-tubuh" cx="72" cy="32" r="5" />
+          </g>
+          <path className="br-lengan" d="M26 54 Q18 60 20 68" />
+          <g className="br-kepala">
+            <circle className="br-tubuh" cx="27" cy="16" r="7" />
+            <circle className="br-tubuh" cx="57" cy="16" r="7" />
+            <circle className="br-telinga-dalam" cx="27" cy="16" r="3.5" />
+            <circle className="br-telinga-dalam" cx="57" cy="16" r="3.5" />
+            <circle className="br-tubuh" cx="42" cy="30" r="17" />
+            <ellipse className="br-moncong" cx="42" cy="36" rx="8" ry="6" />
+            <ellipse className="br-hidung" cx="42" cy="33.5" rx="3" ry="2.2" />
+            <path className="br-mulut" d={bersuara ? 'M38 37.5 Q42 43 46 37.5 Z' : 'M39 38 Q42 41 45 38'} />
+            <g className="br-mata">
+              {bersuara ? (
+                <path className="br-mata-senang" d="M32 27 Q35 24 38 27 M46 27 Q49 24 52 27" />
+              ) : (
+                <>
+                  <circle cx="35" cy="27" r="2.4" />
+                  <circle cx="49" cy="27" r="2.4" />
+                </>
+              )}
+            </g>
+            <ellipse className="br-pipi" cx="30" cy="35" rx="3" ry="1.8" />
+            <ellipse className="br-pipi" cx="54" cy="35" rx="3" ry="1.8" />
+          </g>
+        </g>
+      </svg>
+    </button>
   )
 }

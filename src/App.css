@@ -2763,3 +2763,560 @@ tbody tr:last-child td {
     opacity: 1;
   }
 }
+
+/* =========================================================================
+   Panggung lebih besar: Siku, Raka, Nisa, prisma, pelangi
+   ========================================================================= */
+.panggung-isi {
+  width: 340px;
+  height: 214px;
+  flex-shrink: 0; /* jangan menyusut sebelum diperkecil (transform) di HP */
+}
+
+.tombol-siku {
+  left: 0;
+  bottom: 2px;
+  z-index: 3;
+}
+
+.tombol-siswa {
+  left: 90px;
+  bottom: 0;
+  z-index: 2;
+}
+
+.tombol-siswi {
+  left: 180px;
+  bottom: 0;
+  z-index: 1;
+}
+
+.tombol-siswi.disapa .siswa {
+  animation: disapa-lompat 0.5s ease-in-out 3;
+}
+
+.panggung-isi .prisma-wadah {
+  top: -18px;
+  right: -26px;
+  transform: scale(0.82);
+}
+
+/* HP: panggung diperkecil */
+@media (max-width: 640px) {
+  .panggung {
+    width: 204px; /* 340 x 0,6 */
+    height: 128px; /* 214 x 0,6 */
+  }
+
+  .panggung-isi {
+    transform: scale(0.6);
+  }
+}
+
+/* =========================================================================
+   Karakter siswi (Nisa)
+   ========================================================================= */
+.siswi {
+  animation-delay: 3s;
+}
+
+.siswi .s-jilbab {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+  stroke-width: 1.5;
+}
+
+.siswi .s-jilbab-tepi {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.siswi .s-bros {
+  fill: #f472b6;
+}
+
+.siswi .s-bulu-mata {
+  fill: none;
+  stroke: #1f2937;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.siswi .s-lipit {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1.5;
+}
+
+.siswi .s-pensil rect {
+  fill: #fbbf24;
+}
+
+.siswi .s-pensil-ujung {
+  fill: #fcd9b6;
+}
+
+.siswi .s-pensil {
+  transform-box: view-box;
+  transform-origin: 26px 120px;
+  animation: buku-goyang 2.6s ease-in-out infinite;
+}
+
+.siswi .s-hati .h1 {
+  fill: #fbbf24;
+}
+
+.siswi .s-kepala {
+  animation-duration: 4.6s;
+  animation-delay: -1.5s;
+}
+
+.siswi .s-lambai {
+  animation-duration: 1.9s;
+  animation-delay: -0.6s;
+}
+
+.siswi .s-badan {
+  animation-delay: -1.2s;
+}
+
+/* =========================================================================
+   Topi wisuda Siku & Siku menari
+   ========================================================================= */
+.maskot .topi-atas {
+  fill: #1d2a4d;
+}
+
+.maskot .topi-dasar {
+  fill: #2f3f6e;
+}
+
+.maskot .rumbai path {
+  fill: none;
+  stroke: #fbbf24;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.maskot .rumbai circle {
+  fill: #fbbf24;
+}
+
+.maskot .rumbai {
+  transform-box: view-box;
+  transform-origin: 34px 19px;
+  animation: rumbai-ayun 2s ease-in-out infinite;
+}
+
+@keyframes rumbai-ayun {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.maskot.menari .badan {
+  transform-origin: 82px 130px;
+  animation: maskot-menari 0.9s ease-in-out infinite;
+}
+
+.maskot.menari .lengan-lambai {
+  animation-duration: 0.45s;
+}
+
+@keyframes maskot-menari {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(-9deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg) scale(1.04, 0.96);
+  }
+  75% {
+    transform: translateY(-10px) rotate(9deg);
+  }
+}
+
+/* =========================================================================
+   Pelangi
+   ========================================================================= */
+.pelangi {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pelangi path {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  animation: pelangi-gambar 1.4s ease-out backwards;
+}
+
+.pelangi-awan ellipse {
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.panggung-isi .pelangi {
+  top: 6px;
+  left: 30px;
+  width: 240px;
+  height: auto;
+  opacity: 0.55;
+  z-index: 0;
+  animation: pelangi-napas 6s ease-in-out infinite;
+}
+
+.maskot-wadah.besar {
+  padding-top: 20px;
+}
+
+.maskot-wadah.besar .pelangi {
+  top: -6px;
+  left: 50%;
+  width: 250px;
+  height: auto;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.maskot-wadah.besar .maskot {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes pelangi-gambar {
+  from {
+    stroke-dashoffset: 300;
+  }
+}
+
+@keyframes pelangi-napas {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-3px);
+  }
+}
+
+/* =========================================================================
+   Taman hewan di bawah halaman: kelinci, kucing, beruang
+   ========================================================================= */
+.taman {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+}
+
+.hewan-tombol {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.hewan-tombol:hover:not(:disabled) {
+  border-color: transparent;
+}
+
+.hewan-tombol svg {
+  display: block;
+  height: auto;
+}
+
+.suara-hewan {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--bayangan-kecil);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  animation: meong-muncul 1.6s ease-out forwards;
+}
+
+.hewan-tombol.bersuara svg {
+  animation: disapa-lompat 0.45s ease-in-out 2;
+}
+
+/* kelinci */
+.kelinci {
+  width: 64px;
+}
+
+.kelinci .kl-tubuh,
+.kelinci .kl-telinga > ellipse:not(.kl-telinga-dalam),
+.kelinci .kl-ekor,
+.kelinci .kl-kaki {
+  fill: #ffffff;
+  stroke: #e2e8f0;
+  stroke-width: 1.5;
+}
+
+.kelinci .kl-telinga-dalam {
+  fill: #fbcfe8;
+}
+
+.kelinci .kl-mata circle {
+  fill: #1f2937;
+}
+
+.kelinci .kl-mata-senang,
+.kelinci .kl-mulut {
+  fill: none;
+  stroke: #1f2937;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.kelinci .kl-hidung {
+  fill: #f472b6;
+}
+
+.kelinci .kl-pipi {
+  fill: #fda4af;
+  opacity: 0.7;
+}
+
+.kelinci .kl-bayang {
+  fill: rgba(10, 25, 60, 0.15);
+  transform-box: view-box;
+  transform-origin: 35px 77px;
+  animation: kelinci-bayang 1.6s ease-in-out infinite;
+}
+
+.kelinci .kl-badan {
+  transform-box: view-box;
+  transform-origin: 35px 76px;
+  animation: kelinci-lompat 1.6s ease-in-out infinite;
+}
+
+.kelinci .kl-telinga {
+  transform-box: view-box;
+  transform-origin: 35px 30px;
+  animation: kelinci-telinga 1.6s ease-in-out infinite;
+}
+
+.kelinci .kl-mata {
+  transform-box: view-box;
+  transform-origin: 35px 39px;
+  animation: maskot-kedip 4.2s infinite;
+}
+
+@keyframes kelinci-lompat {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  68% {
+    transform: translateY(0) scale(1.08, 0.9);
+  }
+  80% {
+    transform: translateY(-14px) scale(0.95, 1.06);
+  }
+  92% {
+    transform: translateY(0) scale(1.05, 0.95);
+  }
+}
+
+@keyframes kelinci-bayang {
+  0%,
+  60%,
+  100% {
+    transform: scaleX(1);
+  }
+  80% {
+    transform: scaleX(0.6);
+  }
+}
+
+@keyframes kelinci-telinga {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(-6deg);
+  }
+  90% {
+    transform: rotate(5deg);
+  }
+}
+
+/* beruang */
+.beruang {
+  width: 74px;
+}
+
+.beruang .br-tubuh {
+  fill: #c08457;
+}
+
+.beruang .br-perut,
+.beruang .br-telinga-dalam,
+.beruang .br-moncong {
+  fill: #f3d6b6;
+}
+
+.beruang .br-hidung {
+  fill: #3f2a1d;
+}
+
+.beruang .br-mulut {
+  fill: none;
+  stroke: #3f2a1d;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.beruang-tombol.bersuara .br-mulut {
+  fill: #9a3412;
+}
+
+.beruang .br-mata circle {
+  fill: #2b1d14;
+}
+
+.beruang .br-mata-senang {
+  fill: none;
+  stroke: #2b1d14;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.beruang .br-lengan {
+  fill: none;
+  stroke: #c08457;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.beruang .br-pipi {
+  fill: #fda4af;
+  opacity: 0.7;
+}
+
+.beruang .br-bayang {
+  fill: rgba(10, 25, 60, 0.15);
+}
+
+.beruang .br-lambai {
+  transform-box: view-box;
+  transform-origin: 58px 54px;
+  animation: beruang-lambai 1.5s ease-in-out infinite;
+}
+
+.beruang .br-kepala {
+  transform-box: view-box;
+  transform-origin: 42px 46px;
+  animation: siswa-geleng 3.6s ease-in-out infinite;
+}
+
+.beruang .br-mata {
+  transform-box: view-box;
+  transform-origin: 42px 27px;
+  animation: maskot-kedip 5.2s infinite;
+}
+
+.beruang .br-badan {
+  transform-box: view-box;
+  transform-origin: 42px 76px;
+  animation: siswa-napas 3s ease-in-out infinite;
+}
+
+@keyframes beruang-lambai {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+/* =========================================================================
+   Gelembung sabun di latar halaman
+   ========================================================================= */
+.sabun {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.95) 0 10%, transparent 12%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0 52%, rgba(186, 224, 255, 0.45) 72%, rgba(249, 168, 212, 0.5) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow: inset -3px -4px 8px rgba(196, 181, 253, 0.35);
+  animation: sabun-naik 16s linear infinite;
+}
+
+@keyframes sabun-naik {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.95;
+  }
+  25% {
+    transform: translate(18px, -28vh) scale(0.9);
+  }
+  50% {
+    transform: translate(-14px, -56vh) scale(1);
+  }
+  75% {
+    transform: translate(16px, -84vh) scale(1.05);
+  }
+  94% {
+    transform: translate(-6px, -106vh) scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-6px, -108vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Mati bila animasi dimatikan / gerak dikurangi */
+.tanpa-animasi .sabun,
+.tanpa-animasi .suara-hewan {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sabun {
+    display: none;
+  }
+
+  .pelangi path,
+  .panggung-isi .pelangi,
+  .kelinci *,
+  .beruang *,
+  .maskot .rumbai,
+  .maskot.menari .badan,
+  .siswi * {
+    animation: none !important;
+  }
+}

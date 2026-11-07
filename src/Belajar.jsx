@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IlustrasiSesi, Konfeti } from './Hiasan.jsx'
+import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { SESI } from './materi.js'
@@ -241,8 +241,9 @@ export default function Belajar() {
         <div className="selamat-latar" role="dialog" aria-modal="true" aria-labelledby="judul-selamat">
           <div className="selamat kartu">
             <div className="maskot-wadah besar">
+              <Pelangi besar />
               <Konfeti jumlah={40} />
-              <Maskot suasana="senang" ukuran={130} />
+              <Maskot suasana="menari" ukuran={130} topi />
             </div>
             <h2 id="judul-selamat">Hebat, sesi {selamat.id} selesai! 🎉</h2>
             <p>

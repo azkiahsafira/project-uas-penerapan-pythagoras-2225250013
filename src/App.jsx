@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
-import { Kucing, LatarHalaman, LatarHeader } from './Hiasan.jsx'
+import { Beruang, Kelinci, Kucing, LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
@@ -65,13 +65,15 @@ function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
   const [animasi, setAnimasi] = useState(bacaAnimasi)
-  const [meong, setMeong] = useState(0) // bertambah setiap kucing diklik
+  const [suara, setSuara] = useState(null) // { hewan, n }: hewan yang sedang bersuara
 
   useEffect(() => {
-    if (!meong) return undefined
-    const t = setTimeout(() => setMeong(0), 1600)
+    if (!suara) return undefined
+    const t = setTimeout(() => setSuara(null), 1600)
     return () => clearTimeout(t)
-  }, [meong])
+  }, [suara])
+
+  const elus = (hewan) => setSuara((s) => ({ hewan, n: (s?.n ?? 0) + 1 }))
 
   // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
   useEffect(() => {
@@ -234,7 +236,13 @@ function App() {
       )}
 
       <footer className="kaki">
-        {!fokusTes && <Kucing key={meong} mengeong={meong > 0} onKlik={() => setMeong(meong + 1)} />}
+        {!fokusTes && (
+          <div className="taman">
+            <Kelinci key={`kl${suara?.hewan === 'kelinci' ? suara.n : 0}`} bersuara={suara?.hewan === 'kelinci'} onKlik={() => elus('kelinci')} />
+            <Kucing key={`kc${suara?.hewan === 'kucing' ? suara.n : 0}`} mengeong={suara?.hewan === 'kucing'} onKlik={() => elus('kucing')} />
+            <Beruang key={`br${suara?.hewan === 'beruang' ? suara.n : 0}`} bersuara={suara?.hewan === 'beruang'} onKlik={() => elus('beruang')} />
+          </div>
+        )}
         <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
           {animasi ? '✨ Animasi: nyala' : '⏸ Animasi: mati'}
         </button>
