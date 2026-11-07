@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LEPPINK, NAMA_DIMENSI, POSTTEST, PRETEST, nilaiLeppink, nilaiTes } from './tes.js'
-import { daftarHasil, hapusHasil, identitasTerakhir, simpanHasil, simpanIdentitas, unduhCsv } from './penyimpanan.js'
+import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, simpanHasil, simpanIdentitas, unduhCsv } from './penyimpanan.js'
+import { supabaseAktif } from './supabase.js'
 import { keAngka } from './pythagoras.js'
 
 const INSTRUMEN = {
@@ -198,7 +199,7 @@ function KuesionerLeppink({ onKumpul }) {
   )
 }
 
-function Hasil({ hasil, tersimpan, onKembali }) {
+function Hasil({ hasil, tersimpan, statusKirim, onKembali }) {
   return (
     <section className="kartu sempit">
       <h2>Terima kasih, {hasil.nama}!</h2>
@@ -217,6 +218,11 @@ function Hasil({ hasil, tersimpan, onKembali }) {
         </p>
       )}
       {!tersimpan && <p className="error">Hasil tidak bisa disimpan di perangkat ini. Catat atau foto layar ini.</p>}
+      {supabaseAktif && statusKirim === 'mengirim' && <p className="ket">Mengirim hasil ke server...</p>}
+      {supabaseAktif && statusKirim === 'terkirim' && <p className="umpan benar">Hasil sudah terkirim ke server.</p>}
+      {supabaseAktif && statusKirim === 'gagal' && (
+        <p className="umpan">Belum terkirim karena internet bermasalah. Hasil aman di perangkat ini dan akan dikirim otomatis nanti.</p>
+      )}
       <button type="button" className="hitung" onClick={onKembali}>Kembali ke menu Tes</button>
     </section>
   )
@@ -224,6 +230,8 @@ function Hasil({ hasil, tersimpan, onKembali }) {
 
 function RiwayatHasil() {
   const [hasil, setHasil] = useState(daftarHasil)
+  const [mengirim, setMengirim] = useState(false)
+  const belum = hasil.filter((h) => !h.terkirim).length
   if (hasil.length === 0) return <p className="ket">Belum ada hasil yang tersimpan di perangkat ini.</p>
 
   return (
@@ -238,6 +246,7 @@ function RiwayatHasil() {
               <th>Instrumen</th>
               <th>Hasil</th>
               <th>Durasi</th>
+              {supabaseAktif && <th>Server</th>}
               <th aria-label="Aksi" />
             </tr>
           </thead>
@@ -250,6 +259,7 @@ function RiwayatHasil() {
                 <td>{INSTRUMEN[h.jenis].judul}</td>
                 <td>{h.jenis === 'leppink' ? `IL ${h.beban.IL} · EL ${h.beban.EL} · GL ${h.beban.GL}` : `${h.skor} (${h.benar}/${h.total})`}</td>
                 <td>{Math.round(h.durasiDetik / 60)} mnt</td>
+                {supabaseAktif && <td>{h.terkirim ? '✓ terkirim' : 'belum'}</td>}
                 <td>
                   <button
                     type="button"
@@ -269,7 +279,23 @@ function RiwayatHasil() {
           </tbody>
         </table>
       </div>
-      <button type="button" onClick={() => unduhCsv(hasil)}>Unduh semua hasil (CSV)</button>
+      <div className="aksi-riwayat">
+        <button type="button" onClick={() => unduhCsv(hasil)}>Unduh semua hasil (CSV)</button>
+        {supabaseAktif && belum > 0 && (
+          <button
+            type="button"
+            disabled={mengirim}
+            onClick={async () => {
+              setMengirim(true)
+              await kirimTertunda()
+              setHasil(daftarHasil())
+              setMengirim(false)
+            }}
+          >
+            {mengirim ? 'Mengirim...' : `Kirim ${belum} hasil ke server`}
+          </button>
+        )}
+      </div>
     </>
   )
 }
@@ -282,6 +308,13 @@ export default function Tes({ onFokus }) {
   const [mulai, setMulai] = useState(null)
   const [hasil, setHasil] = useState(null)
   const [tersimpan, setTersimpan] = useState(true)
+  const [statusKirim, setStatusKirim] = useState(null) // null | 'mengirim' | 'terkirim' | 'gagal'
+  const [versiRiwayat, setVersiRiwayat] = useState(0)
+
+  // Saat aplikasi dibuka, kirim hasil yang tertunda dari sesi sebelumnya
+  useEffect(() => {
+    kirimTertunda().then((n) => n > 0 && setVersiRiwayat((v) => v + 1))
+  }, [])
 
   const keTahap = (t) => {
     setTahap(t)
@@ -305,6 +338,13 @@ export default function Tes({ onFokus }) {
     setTersimpan(simpanHasil(data))
     setHasil(data)
     keTahap('hasil')
+    if (supabaseAktif) {
+      setStatusKirim('mengirim')
+      kirimTertunda().then(() => {
+        const ini = daftarHasil().find((h) => h.id === data.id)
+        setStatusKirim(ini?.terkirim ? 'terkirim' : 'gagal')
+      })
+    }
   }
 
   if (tahap === 'identitas') {
@@ -324,7 +364,7 @@ export default function Tes({ onFokus }) {
     return jenis === 'leppink' ? <KuesionerLeppink onKumpul={kumpul} /> : <PengerjaanTes jenis={jenis} onKumpul={kumpul} />
   }
   if (tahap === 'hasil') {
-    return <Hasil hasil={hasil} tersimpan={tersimpan} onKembali={() => keTahap(null)} />
+    return <Hasil hasil={hasil} tersimpan={tersimpan} statusKirim={statusKirim} onKembali={() => keTahap(null)} />
   }
 
   return (
@@ -352,8 +392,12 @@ export default function Tes({ onFokus }) {
       </div>
 
       <h2 className="jarak-atas">Hasil Tersimpan</h2>
-      <p className="ket">Hanya untuk peneliti. Data tersimpan di perangkat ini saja, jadi unduh CSV-nya secara berkala.</p>
-      <RiwayatHasil key={hasil?.id ?? 'awal'} />
+      <p className="ket">
+        {supabaseAktif
+          ? 'Hanya untuk peneliti. Tabel ini berisi hasil dari perangkat ini saja; hasil dari semua perangkat ada di dashboard Supabase (tabel hasil).'
+          : 'Hanya untuk peneliti. Data tersimpan di perangkat ini saja, jadi unduh CSV-nya secara berkala.'}
+      </p>
+      <RiwayatHasil key={`${hasil?.id ?? 'awal'}-${versiRiwayat}-${statusKirim}`} />
     </section>
   )
 }

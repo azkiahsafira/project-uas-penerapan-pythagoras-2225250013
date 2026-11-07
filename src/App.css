@@ -553,3 +553,9 @@ button.kecil {
     font-size: 1rem;
   }
 }
+
+.aksi-riwayat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

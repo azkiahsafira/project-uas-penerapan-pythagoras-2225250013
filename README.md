@@ -46,7 +46,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
   - **Pre-test** (pertemuan 1, sebelum Sesi 1) dan **post-test** (pertemuan 5): masing-masing 10 soal paralel, satu soal per layar, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
   - **Kuesioner beban kognitif Leppink** (pertemuan 5, setelah post-test): 10 pernyataan skala 0–10 untuk intrinsic, extraneous, dan germane load.
   - Identitas siswa (nama, kelas, sekolah, kelompok aplikasi/diajar langsung), durasi pengerjaan, dan nilai dicatat. Menu lain disembunyikan selama tes.
-  - Hasil tersimpan di perangkat dan bisa diunduh sebagai CSV.
+  - Hasil disimpan di perangkat lalu dikirim ke database **Supabase**. Jika internet putus, hasil tetap aman di perangkat dan dikirim ulang otomatis. Hasil juga bisa diunduh sebagai CSV.
 - **Kalkulator tiga mode**: mencari sisi miring, alas, atau tinggi.
 - **Langkah penyelesaian**: perhitungan ditampilkan baris per baris, dari rumus sampai hasil akhir.
 - **Gambar segitiga**: ukuran segitiga menyesuaikan input, dan sisi yang dicari diberi warna.
@@ -176,6 +176,23 @@ SELESAI
 - [React](https://react.dev) 19: antarmuka pengguna
 - [Vite](https://vite.dev) 8: server pengembangan dan build
 - [Oxlint](https://oxc.rs): pemeriksa kode (linter)
+- [Supabase](https://supabase.com): database penyimpanan hasil penelitian
+
+## Database (Supabase)
+
+Hasil pre-test, post-test, dan kuesioner disimpan di tabel `hasil`. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabase/schema.sql).
+
+- Aplikasi hanya boleh **menambah** data (Row Level Security). Membaca, mengubah, dan menghapus data hanya bisa dilakukan peneliti lewat dashboard Supabase, sehingga nama dan nilai siswa tidak bisa dilihat orang lain.
+- Data untuk dianalisis: Supabase → **Table Editor** → tabel `hasil` → **Export to CSV**.
+
+Cara menghubungkan:
+
+1. Buat proyek di [supabase.com](https://supabase.com), lalu jalankan isi `supabase/schema.sql` di **SQL Editor**.
+2. Salin **Project URL** dan **anon / publishable key** dari **Project Settings → API**.
+3. Untuk komputer sendiri: salin `.env.example` menjadi `.env.local`, lalu isi kedua nilai tersebut.
+4. Untuk GitHub Pages: isi `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` di **Settings → Secrets and variables → Actions → Variables**, lalu jalankan ulang workflow deploy.
+
+Tanpa pengaturan ini, aplikasi tetap berjalan dan hasil hanya tersimpan di perangkat.
 
 ## Cara Menjalankan
 
@@ -210,7 +227,8 @@ aplikasi-pythagoras/
     ├── Belajar.jsx   pemutar materi belajar per sesi
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
     ├── tes.js        soal tes dan butir kuesioner
-    ├── penyimpanan.js penyimpanan hasil dan ekspor CSV
+    ├── penyimpanan.js penyimpanan hasil, kirim ke Supabase, ekspor CSV
+    ├── supabase.js   koneksi ke Supabase
     ├── materi.js     isi materi 3 sesi
     ├── Latihan.jsx   mode latihan soal
     ├── Segitiga.jsx  gambar segitiga (SVG)
