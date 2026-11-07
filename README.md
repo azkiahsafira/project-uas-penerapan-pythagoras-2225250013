@@ -2,7 +2,14 @@
 
 Aplikasi web sederhana untuk menghitung sisi segitiga siku-siku menggunakan teorema Pythagoras, lengkap dengan langkah penyelesaian, gambar segitiga, dan contoh soal dari kehidupan sehari-hari.
 
-Dibuat untuk mata kuliah **Algoritma Pemrograman**.
+Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
+
+| | |
+| --- | --- |
+| Nama | Azkiah Safira |
+| NIM | 2225250013 |
+| Kelas | 3F |
+| Dosen Pengampu | Dr. Aan Hendrayana, S.Si., M.Pd. |
 
 **Coba aplikasinya:** https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/
 
