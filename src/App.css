@@ -1123,7 +1123,7 @@ tbody tr:last-child td {
     align-self: center;
     width: 168px; /* 270 x 0,62 */
     height: 122px; /* 196 x 0,62 */
-    margin-top: -4px;
+    margin-top: 10px;
   }
 
   .panggung .gelembung {

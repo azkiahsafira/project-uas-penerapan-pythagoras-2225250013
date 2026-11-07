@@ -11,7 +11,18 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 | Kelas | 3F |
 | Dosen Pengampu | Dr. Aan Hendrayana, S.Si., M.Pd. |
 
-**Coba aplikasinya:** https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/
+<p align="center">
+  <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/"><strong>🚀 Buka aplikasinya di sini</strong></a><br>
+  <sub>https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/</sub>
+</p>
+
+<p align="center">
+  <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/">
+    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header bergradasi biru-pink dengan maskot Siku, anak SMP Raka, dan prisma 3D, menu Belajar/Kalkulator/Latihan Soal/Tes, serta kartu Sesi 1–3" width="820">
+  </a>
+</p>
+
+> Halaman repository ini hanya berisi kode. Warna, animasi, dan karakter aplikasinya terlihat di link di atas (GitHub Pages).
 
 ## Teorema Pythagoras
 
@@ -233,6 +244,7 @@ aplikasi-pythagoras/
 ├── index.html        halaman utama
 ├── public/           ikon
 ├── analisis/         script Python untuk mengolah data penelitian
+├── docs/             screenshot tampilan aplikasi untuk README
 ├── supabase/         skema database (SQL)
 └── src/
     ├── main.jsx      titik awal aplikasi
