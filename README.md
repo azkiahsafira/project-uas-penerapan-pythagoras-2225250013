@@ -227,6 +227,10 @@ Sebelum mulai Sesi 1, siswa mengisi nama sekali ("Kenalan dulu, yuk!"); nama yan
 
 Proyek Supabase: **penelitian-pythagoras** (region Singapore). URL dan *publishable key*-nya ada di file [.env](.env) dan ikut dipakai saat build di GitHub Actions. Publishable key memang aman dibagikan karena tabel dilindungi RLS; **jangan pernah** menaruh *secret key* di repo.
 
+**Agar proyek tidak dijeda:** Supabase paket gratis menjeda proyek yang 7 hari tanpa aktivitas (data tetap aman, bisa dipulihkan dengan **Restore project** di dashboard). Workflow [.github/workflows/supabase-aktif.yml](.github/workflows/supabase-aktif.yml) otomatis "menyapa" database setiap 3 hari supaya proyek tetap aktif; bila gagal, GitHub mengirim email pemberitahuan. Workflow ini bisa juga dijalankan manual dari tab **Actions** → **Jaga Supabase tetap aktif** → **Run workflow**. Catatan: GitHub menonaktifkan jadwal otomatis bila repo tidak ada commit selama 60 hari; aktifkan lagi dari tab Actions bila muncul pemberitahuan.
+
+**Cadangan:** setelah setiap pertemuan penelitian, unduh tabel `hasil` dan `aktivitas` (Table Editor → Export to CSV) dan simpan di laptop/Google Drive.
+
 Jika ingin memakai proyek Supabase lain: jalankan `supabase/schema.sql` di **SQL Editor** proyek tersebut, lalu ganti isi `.env` dengan **Project URL** dan **publishable key** dari **Project Settings → API Keys**.
 
 ## Cara Menjalankan

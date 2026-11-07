@@ -1,0 +1,42 @@
+# Menjaga proyek Supabase (paket gratis) tetap aktif.
+#
+# Supabase menjeda (pause) proyek gratis yang tidak ada aktivitas selama 7 hari.
+# Workflow ini "menyapa" database setiap 3 hari dengan permintaan ringan
+# (membaca 1 baris; karena aturan RLS hasilnya kosong, tidak ada data yang terbaca),
+# sehingga proyek tidak sempat dijeda.
+#
+# Jika langkah ping GAGAL (misalnya proyek sudah terlanjur dijeda), GitHub akan
+# mengirim email pemberitahuan. Buka dashboard Supabase lalu klik "Restore project".
+#
+# Bisa juga dijalankan manual: tab Actions → "Jaga Supabase tetap aktif" → Run workflow.
+name: Jaga Supabase tetap aktif
+
+on:
+  schedule:
+    - cron: '0 1 */3 * *' # setiap 3 hari, pukul 08.00 WIB (01.00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ping database Supabase
+        run: |
+          # URL & publishable key diambil dari file .env (yang juga dipakai aplikasi)
+          set -a && . ./.env && set +a
+          for tabel in hasil aktivitas; do
+            kode=$(curl -sS -o jawaban.txt -w "%{http_code}" \
+              "$VITE_SUPABASE_URL/rest/v1/$tabel?select=id&limit=1" \
+              -H "apikey: $VITE_SUPABASE_ANON_KEY")
+            echo "Tabel $tabel: HTTP $kode $(cat jawaban.txt)"
+            if [ "$kode" != "200" ]; then
+              echo "::error::Supabase tidak menjawab dengan benar (HTTP $kode). Proyek mungkin dijeda: buka dashboard Supabase lalu klik Restore project."
+              exit 1
+            fi
+          done
+          echo "Supabase aktif ✅"
