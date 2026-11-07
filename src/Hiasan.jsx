@@ -177,3 +177,71 @@ export function IlustrasiSesi({ nomor }) {
     </svg>
   )
 }
+
+// ---------------------------------------------------------------------------
+// Latar seluruh halaman: gumpalan warna lembut, bentuk kecil yang melayang naik,
+// dan bintang berkelip. Diletakkan di belakang semua isi (tidak bisa diklik).
+// ---------------------------------------------------------------------------
+const BENTUK = {
+  segitiga: <path d="M4 20 L20 20 L4 4 Z" />,
+  lingkaran: <circle cx="12" cy="12" r="8" />,
+  bintang: <path d="M12 2 l2.9 6.2 6.8 .8 -5 4.6 1.4 6.7 -6.1 -3.4 -6.1 3.4 1.4 -6.7 -5 -4.6 6.8 -.8z" />,
+  hati: <path d="M12 21 C5 15 2 12 2 8.2 2 5.3 4.3 3 7.1 3 9 3 10.8 4 12 5.6 13.2 4 15 3 16.9 3 19.7 3 22 5.3 22 8.2 22 12 19 15 12 21z" />,
+  plus: <path d="M10 3 h4 v7 h7 v4 h-7 v7 h-4 v-7 h-7 v-4 h7z" />,
+}
+
+// [bentuk, posisi kiri (%), ukuran (px), lama (detik), tunda (detik), warna]
+const MELAYANG = [
+  // sisi kiri
+  ['segitiga', 1, 34, 24, 0, 'biru'],
+  ['hati', 5, 26, 20, 7, 'pink'],
+  ['bintang', 9, 30, 26, 14, 'pink'],
+  ['lingkaran', 3, 20, 22, 18, 'biru'],
+  ['plus', 12, 24, 28, 4, 'biru'],
+  ['hati', 7, 22, 25, 11, 'pink'],
+  // tengah (sebagian tertutup kartu, terlihat di sela-sela)
+  ['segitiga', 30, 28, 30, 9, 'pink'],
+  ['bintang', 50, 24, 27, 2, 'biru'],
+  ['hati', 68, 26, 29, 16, 'pink'],
+  // sisi kanan
+  ['segitiga', 96, 36, 25, 5, 'pink'],
+  ['hati', 91, 28, 21, 12, 'pink'],
+  ['bintang', 87, 30, 27, 1, 'biru'],
+  ['lingkaran', 94, 22, 23, 16, 'pink'],
+  ['plus', 89, 24, 29, 8, 'biru'],
+  ['segitiga', 84, 26, 26, 19, 'biru'],
+  ['hati', 98, 20, 22, 3, 'pink'],
+]
+
+// bintang kecil berkelip: [kiri %, atas %, tunda detik]
+const KELIP = [
+  [3, 22, 0], [8, 48, 1.2], [5, 72, 2.1], [12, 90, 0.6], [10, 12, 2.8],
+  [95, 18, 0.3], [90, 42, 1.8], [97, 64, 2.6], [88, 86, 1.5], [93, 8, 3.1],
+  [50, 96, 2.4], [30, 6, 0.9], [70, 4, 1.9],
+]
+
+export function LatarHalaman() {
+  return (
+    <div className="latar-halaman" aria-hidden="true">
+      <div className="gumpal g1" />
+      <div className="gumpal g2" />
+      <div className="gumpal g3" />
+      {MELAYANG.map(([b, x, ukuran, lama, tunda, warna], i) => (
+        <span
+          key={`m${i}`}
+          className={`melayang ${warna}`}
+          style={{ left: `${x}%`, animationDuration: `${lama}s`, animationDelay: `-${tunda}s` }}
+        >
+          <svg viewBox="0 0 24 24" width={ukuran} height={ukuran} style={{ animationDelay: `-${tunda / 2}s` }}>
+            {BENTUK[b]}
+          </svg>
+        </span>
+      ))}
+      {KELIP.map(([x, y, tunda], i) => (
+        <span key={`k${i}`} className="kelip" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${tunda}s` }}>
+          ✦
+        </span>
+      ))}
+    </div>
+  )
+}

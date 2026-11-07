@@ -59,7 +59,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai, Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
-- Tema biru, responsif (laptop dan HP), serta mendukung mode terang/gelap.
+- **Latar halaman beranimasi**: gumpalan warna biru–pink yang bergerak lembut, bentuk kecil (segitiga, hati, bintang, lingkaran, plus) yang melayang naik, dan bintang berkelip di area kosong halaman.
+- Tema biru soft + pink, responsif (laptop dan HP), serta mendukung mode terang/gelap.
 
 ## Rancangan Berdasarkan Teori Beban Kognitif
 
