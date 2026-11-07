@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, keAngka } from './pythagoras.js'
@@ -120,7 +121,10 @@ export default function Latihan() {
 
         {status && (
           <div className="umpan-maskot" key={`${status}-${skor.total}`}>
-            <Maskot suasana={status === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+            <div className="maskot-wadah">
+              {status === 'benar' && <Konfeti />}
+              <Maskot suasana={status === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+            </div>
             {status === 'benar' && <p className="umpan benar">Benar! {NAMA[soal.cari]} = {kunci}.</p>}
             {status === 'salah' && (
               <p className="umpan salah">

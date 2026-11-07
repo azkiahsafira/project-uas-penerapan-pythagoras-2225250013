@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { SESI } from './materi.js'
@@ -130,7 +131,10 @@ function Cek({ cek, onSelesai }) {
       {hasil && (
         // key: maskot dianimasikan ulang setiap umpan balik baru
         <div className="umpan-maskot" key={`${hasil}-${salah}`}>
-          <Maskot suasana={hasil === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+          <div className="maskot-wadah">
+            {hasil === 'benar' && <Konfeti />}
+            <Maskot suasana={hasil === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+          </div>
           {hasil === 'salah' && <p className="umpan salah">Belum tepat. Petunjuk: {cek.petunjuk}</p>}
           {hasil === 'benar' && <p className="umpan benar">Benar! {cek.penjelasan}</p>}
           {hasil === 'dibuka' && <p className="umpan">Tidak apa-apa, ini jawabannya: {cek.penjelasan}</p>}
@@ -160,8 +164,14 @@ function PemutarSesi({ sesi, onKeluar, onTamat }) {
           Langkah {idx + 1} dari {sesi.langkah.length}
         </span>
       </div>
-      <div className="progres" role="progressbar" aria-valuemin={1} aria-valuemax={sesi.langkah.length} aria-valuenow={idx + 1}>
-        <div style={{ width: `${((idx + 1) / sesi.langkah.length) * 100}%` }} />
+      <div className="progres-wadah">
+        <div className="progres" role="progressbar" aria-valuemin={1} aria-valuemax={sesi.langkah.length} aria-valuenow={idx + 1}>
+          <div style={{ width: `${((idx + 1) / sesi.langkah.length) * 100}%` }} />
+        </div>
+        {/* Siku mini ikut berjalan di ujung progress bar */}
+        <span className="pelari" style={{ left: `${((idx + 1) / sesi.langkah.length) * 100}%` }}>
+          <Maskot ukuran={34} />
+        </span>
       </div>
 
       <div className={langkah.visual ? 'grid' : ''}>
@@ -211,11 +221,13 @@ function PemutarSesi({ sesi, onKeluar, onTamat }) {
 export default function Belajar() {
   const [aktif, setAktif] = useState(null)
   const [selesai, setSelesai] = useState(bacaProgres)
+  const [selamat, setSelamat] = useState(null) // sesi yang baru saja diselesaikan
 
   const tamat = (id) => {
     const baru = selesai.includes(id) ? selesai : [...selesai, id]
     setSelesai(baru)
     simpanProgres(baru)
+    setSelamat(aktif)
     setAktif(null)
   }
 
@@ -225,6 +237,25 @@ export default function Belajar() {
 
   return (
     <section>
+      {selamat && (
+        <div className="selamat-latar" role="dialog" aria-modal="true" aria-labelledby="judul-selamat">
+          <div className="selamat kartu">
+            <div className="maskot-wadah besar">
+              <Konfeti jumlah={40} />
+              <Maskot suasana="senang" ukuran={130} />
+            </div>
+            <h2 id="judul-selamat">Hebat, sesi {selamat.id} selesai! 🎉</h2>
+            <p>
+              {selamat.id < SESI.length
+                ? `Sesi ${selamat.id + 1} sekarang sudah terbuka. Istirahat sebentar, lalu lanjut ya!`
+                : 'Kamu sudah menyelesaikan semua sesi. Coba menu Latihan Soal untuk berlatih lagi!'}
+            </p>
+            <button type="button" className="hitung" autoFocus onClick={() => setSelamat(null)}>
+              Oke, siap!
+            </button>
+          </div>
+        </div>
+      )}
       <h2>Belajar Teorema Pythagoras</h2>
       <p className="ket">Ikuti sesi secara berurutan. Setiap sesi berisi penjelasan singkat, contoh, dan pertanyaan.</p>
       <div className="daftar-sesi">

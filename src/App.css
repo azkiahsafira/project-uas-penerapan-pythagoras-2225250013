@@ -1214,6 +1214,8 @@ tbody tr:last-child td {
   bottom: 0;
   z-index: 1;
   overflow: visible;
+  transform-origin: 50% 100%;
+  animation: siswa-lompat 6s ease-in-out infinite;
 }
 
 .siswa .s-kulit {
@@ -1307,22 +1309,22 @@ tbody tr:last-child td {
 }
 
 .siswa .s-bayang {
-  transform-origin: 60px 194px;
+  transform-origin: 60px 184px;
   animation: maskot-bayang 3.2s ease-in-out infinite;
 }
 
 .siswa .s-kepala {
-  transform-origin: 60px 72px;
+  transform-origin: 60px 88px;
   animation: siswa-geleng 4s ease-in-out infinite;
 }
 
 .siswa .s-mata {
-  transform-origin: 60px 53px;
+  transform-origin: 60px 62px;
   animation: maskot-kedip 5s infinite;
 }
 
 .siswa .s-lambai {
-  transform-origin: 79px 86px;
+  transform-origin: 78px 96px;
   animation: siswa-lambai 1.6s ease-in-out infinite;
 }
 
@@ -1385,4 +1387,493 @@ tbody tr:last-child td {
 .umpan-maskot .maskot {
   --maskot-isi: color-mix(in srgb, var(--accent) 12%, var(--card));
   --maskot-garis: var(--text);
+}
+
+/* ---- detail karakter siswa chibi ---- */
+.siswa .s-kilap-sepatu {
+  fill: rgba(255, 255, 255, 0.45);
+}
+
+.siswa .s-buku-teks {
+  fill: #fff;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.siswa .s-ahoge {
+  fill: none;
+  stroke: #1f2937;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 60px 27px;
+  animation: siswa-ahoge 1.4s ease-in-out infinite;
+}
+
+.siswa .s-mulut {
+  fill: #9a3412;
+  stroke: none;
+}
+
+.siswa .s-lidah {
+  fill: none;
+  stroke: #fb7185;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.siswa .s-hati path {
+  fill: #fb7185;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hati-muncul 4s ease-out infinite;
+}
+
+.siswa .s-hati .h2 {
+  animation-delay: 2s;
+}
+
+.siswa .s-buku-grup {
+  transform-box: view-box;
+  transform-origin: 30px 128px;
+  animation: buku-goyang 3s ease-in-out infinite;
+}
+
+@keyframes siswa-ahoge {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes siswa-lompat {
+  0%,
+  78%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  82% {
+    transform: translateY(0) scale(1.06, 0.94);
+  }
+  87% {
+    transform: translateY(-16px) scale(0.97, 1.04);
+  }
+  92% {
+    transform: translateY(0) scale(1.05, 0.95);
+  }
+  96% {
+    transform: translateY(-5px) scale(1, 1);
+  }
+}
+
+@keyframes hati-muncul {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1.1);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.8);
+  }
+}
+
+@keyframes buku-goyang {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+/* Siku di panggung sesekali melompat salto */
+.panggung-isi .maskot {
+  transform-origin: 50% 70%;
+  animation: siku-salto 7s ease-in-out infinite;
+}
+
+@keyframes siku-salto {
+  0%,
+  80% {
+    transform: translateY(0) rotate(0deg);
+  }
+  86% {
+    transform: translateY(-26px) rotate(0deg);
+  }
+  93% {
+    transform: translateY(-26px) rotate(360deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+/* =========================================================================
+   Hiasan latar header: simbol melayang & awan berwajah
+   ========================================================================= */
+.latar {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-teks,
+.panggung {
+  z-index: 1;
+}
+
+.simbol {
+  position: absolute;
+  bottom: -30px;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 800;
+  opacity: 0;
+  animation: simbol-naik 10s linear infinite;
+}
+
+@keyframes simbol-naik {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-160px) translateX(12px) rotate(20deg);
+  }
+  85% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-330px) translateX(-8px) rotate(-10deg);
+  }
+}
+
+.awan {
+  position: absolute;
+  width: 90px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.awan path:first-child {
+  fill: rgba(255, 255, 255, 0.85);
+}
+
+.awan-mata,
+.awan-mulut {
+  fill: none;
+  stroke: #1e3a8a;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.awan-pipi {
+  fill: #fda4af;
+  opacity: 0.8;
+}
+
+.awan-1 {
+  top: 10px;
+  left: -110px;
+  animation: awan-geser 38s linear infinite;
+}
+
+.awan-2 {
+  top: 58%;
+  left: -110px;
+  width: 64px;
+  opacity: 0.6;
+  animation: awan-geser 52s linear 14s infinite;
+}
+
+@keyframes awan-geser {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(1250px);
+  }
+}
+
+/* =========================================================================
+   Konfeti & perayaan
+   ========================================================================= */
+.maskot-wadah {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.konfeti {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.konfeti i {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+  animation: konfeti-letup 1.1s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes konfeti-letup {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(0.6);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), calc(var(--y) + 40px)) rotate(var(--r)) scale(1);
+  }
+}
+
+.maskot-wadah.besar .konfeti i {
+  width: 11px;
+  height: 11px;
+}
+
+.maskot-wadah.besar .konfeti i {
+  --skala: 2.2;
+  animation-name: konfeti-letup-besar;
+  animation-duration: 1.6s;
+}
+
+@keyframes konfeti-letup-besar {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(0.6);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--x) * 2.2), calc(var(--y) * 2.2 + 60px)) rotate(var(--r)) scale(1);
+  }
+}
+
+.selamat-latar {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(6px);
+  animation: muncul-pudar 0.25s ease-out;
+}
+
+.selamat {
+  max-width: 380px;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  box-shadow: var(--bayangan);
+  animation: muncul-pantul 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.selamat h2 {
+  margin: 6px 0 0;
+}
+
+.selamat p {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+@keyframes muncul-pudar {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes muncul-pantul {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+}
+
+/* Umpan balik salah bergoyang sedikit */
+.umpan.salah {
+  animation: goyang-geleng 0.45s ease-in-out;
+}
+
+@keyframes goyang-geleng {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+/* Umpan balik benar memantul masuk */
+.umpan.benar {
+  animation: muncul-pantul 0.4s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+/* =========================================================================
+   Siku mini di progress bar
+   ========================================================================= */
+.progres-wadah {
+  position: relative;
+  margin: 26px 0 18px;
+}
+
+.progres-wadah .progres {
+  margin: 0;
+}
+
+.pelari {
+  position: absolute;
+  bottom: 2px;
+  transform: translateX(-60%);
+  transition: left 0.5s cubic-bezier(0.3, 1.3, 0.5, 1);
+  pointer-events: none;
+}
+
+.pelari .maskot {
+  display: block;
+  animation: pelari-loncat 0.6s ease-in-out infinite;
+}
+
+@keyframes pelari-loncat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* =========================================================================
+   Efek hover kecil
+   ========================================================================= */
+.menu button:hover .ikon {
+  animation: ikon-goyang 0.5s ease-in-out;
+}
+
+@keyframes ikon-goyang {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-14deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(10deg) scale(1.1);
+  }
+}
+
+.sesi:hover {
+  transform: translateY(-4px) rotate(-0.6deg);
+}
+
+.sesi:nth-child(2n):hover {
+  transform: translateY(-4px) rotate(0.6deg);
+}
+
+.lencana {
+  animation: lencana-kilau 4s ease-in-out infinite;
+}
+
+@keyframes lencana-kilau {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* =========================================================================
+   Tombol animasi & mematikan semua animasi
+   ========================================================================= */
+.kaki {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.kaki p {
+  margin: 0;
+}
+
+.tanpa-animasi *,
+.tanpa-animasi *::before,
+.tanpa-animasi *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.tanpa-animasi .latar,
+.tanpa-animasi .konfeti,
+.tanpa-animasi .siswa .s-hati {
+  display: none;
+}
+
+/* Saat tes: hiasan panggung berhenti total */
+.panggung.diam .s-hati {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .latar,
+  .konfeti,
+  .siswa .s-hati {
+    display: none;
+  }
+
+  .siswa,
+  .panggung-isi .maskot,
+  .pelari .maskot,
+  .umpan,
+  .lencana,
+  .selamat,
+  .selamat-latar {
+    animation: none !important;
+  }
 }

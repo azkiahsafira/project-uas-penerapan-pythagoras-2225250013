@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
+import { LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Maskot from './Maskot.jsx'
@@ -32,6 +33,16 @@ const SAPAAN = {
   tes: 'Kerjakan sendiri ya. Kamu pasti bisa!',
 }
 
+const KUNCI_ANIMASI = 'pythagoras-animasi'
+
+function bacaAnimasi() {
+  try {
+    return localStorage.getItem(KUNCI_ANIMASI) !== 'mati'
+  } catch {
+    return true
+  }
+}
+
 const CONTOH = [
   {
     judul: 'Tangga bersandar di dinding',
@@ -62,6 +73,17 @@ const CONTOH = [
 function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
+  const [animasi, setAnimasi] = useState(bacaAnimasi)
+
+  // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
+  useEffect(() => {
+    document.documentElement.classList.toggle('tanpa-animasi', !animasi)
+    try {
+      localStorage.setItem(KUNCI_ANIMASI, animasi ? 'nyala' : 'mati')
+    } catch {
+      // penyimpanan tidak tersedia: pilihan hanya berlaku selama halaman terbuka
+    }
+  }, [animasi])
   const [cari, setCari] = useState('c')
   const [nilai, setNilai] = useState({ a: '3', b: '4', c: '' })
   const [hasil, setHasil] = useState(() => hitung('c', { a: '3', b: '4' }))
@@ -89,6 +111,7 @@ function App() {
   return (
     <main>
       <header className="hero">
+        {!fokusTes && <LatarHeader />}
         <div className="hero-teks">
           <span className="lencana">Media Belajar · SMP Kelas 8</span>
           <h1>Penerapan Teorema Pythagoras</h1>
@@ -220,7 +243,12 @@ function App() {
         </>
       )}
 
-      <footer className="kaki">Project UAS Algoritma Pemrograman · Azkiah Safira · 2225250013</footer>
+      <footer className="kaki">
+        <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
+          {animasi ? '✨ Animasi: nyala' : '⏸ Animasi: mati'}
+        </button>
+        <p>Project UAS Algoritma Pemrograman · Azkiah Safira · 2225250013</p>
+      </footer>
     </main>
   )
 }
