@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
-import { LatarHeader } from './Hiasan.jsx'
+import { Kucing, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
-import Maskot from './Maskot.jsx'
-import Prisma3D from './Prisma3D.jsx'
-import Siswa from './Siswa.jsx'
+import Panggung from './Panggung.jsx'
 import Tes from './Tes.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
@@ -24,14 +22,6 @@ const MENU = [
   ['latihan', 'Latihan Soal'],
   ['tes', 'Tes'],
 ]
-
-// Kalimat maskot di header, berganti sesuai menu
-const SAPAAN = {
-  belajar: 'Hai, aku Siku! Yuk belajar pelan-pelan, satu langkah dulu.',
-  kalkulator: 'Masukkan dua sisi, nanti aku bantu hitung sisi ketiga!',
-  latihan: 'Ayo latihan! Salah itu wajar, coba lagi ya.',
-  tes: 'Kerjakan sendiri ya. Kamu pasti bisa!',
-}
 
 const KUNCI_ANIMASI = 'pythagoras-animasi'
 
@@ -74,6 +64,13 @@ function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
   const [animasi, setAnimasi] = useState(bacaAnimasi)
+  const [meong, setMeong] = useState(0) // bertambah setiap kucing diklik
+
+  useEffect(() => {
+    if (!meong) return undefined
+    const t = setTimeout(() => setMeong(0), 1600)
+    return () => clearTimeout(t)
+  }, [meong])
 
   // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
   useEffect(() => {
@@ -117,19 +114,7 @@ function App() {
           <h1>Penerapan Teorema Pythagoras</h1>
           <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
         </div>
-        {/* Panggung: prisma 3D berputar, anak SMP, dan maskot Siku.
-            Semua animasi berhenti selama tes (kelas "diam"). */}
-        <div className={`panggung ${fokusTes ? 'diam' : ''}`}>
-          {/* key: balon kata dianimasikan ulang setiap ganti menu */}
-          <p className="gelembung" key={halaman} aria-live="polite">
-            {SAPAAN[halaman]}
-          </p>
-          <div className="panggung-isi">
-            <Prisma3D />
-            <Siswa ukuran={104} />
-            <Maskot ukuran={92} diam={fokusTes} />
-          </div>
-        </div>
+        <Panggung halaman={halaman} diam={fokusTes} />
       </header>
 
       {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
@@ -151,20 +136,20 @@ function App() {
       )}
 
       {/* Belajar & Latihan tetap terpasang (hanya disembunyikan) agar progres dan skor tidak hilang saat pindah tab */}
-      <div hidden={halaman !== 'belajar'}>
+      <div className="halaman" hidden={halaman !== 'belajar'}>
         <Belajar />
       </div>
 
-      <div hidden={halaman !== 'latihan'}>
+      <div className="halaman" hidden={halaman !== 'latihan'}>
         <Latihan />
       </div>
 
-      <div hidden={halaman !== 'tes'}>
+      <div className="halaman" hidden={halaman !== 'tes'}>
         <Tes onFokus={setFokusTes} />
       </div>
 
       {halaman === 'kalkulator' && (
-        <>
+        <div className="halaman">
           <div className="grid">
             <section className="kartu">
               <h2>Kalkulator</h2>
@@ -205,7 +190,7 @@ function App() {
               {sisi && (
                 <div className="hasil">
                   <p className="jawaban">
-                    {NAMA[cari]} = <strong>{bulat(sisi[cari])}</strong>
+                    {NAMA[cari]} = <strong className="angka-muncul" key={bulat(sisi[cari])}>{bulat(sisi[cari])}</strong>
                   </p>
                   <ol>
                     {hasil.langkah.map((l) => (
@@ -221,9 +206,10 @@ function App() {
               )}
             </section>
     
-            <section className="kartu gambar">
+            <section className="kartu gambar gambar-kalkulator">
               <h2>Gambar</h2>
-              <Segitiga sisi={sisi} cari={cari} />
+              {/* key: segitiga digambar ulang (beranimasi) setiap hasil baru */}
+              <Segitiga key={sisi ? `${sisi.a}-${sisi.b}-${sisi.c}` : 'kosong'} sisi={sisi} cari={cari} />
               <p className="ket">Garis berwarna adalah sisi yang dicari.</p>
             </section>
           </div>
@@ -240,10 +226,11 @@ function App() {
               ))}
             </div>
           </section>
-        </>
+        </div>
       )}
 
       <footer className="kaki">
+        {!fokusTes && <Kucing key={meong} mengeong={meong > 0} onKlik={() => setMeong(meong + 1)} />}
         <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
           {animasi ? '✨ Animasi: nyala' : '⏸ Animasi: mati'}
         </button>

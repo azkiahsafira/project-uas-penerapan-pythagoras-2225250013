@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Konfeti } from './Hiasan.jsx'
+import { IlustrasiSesi, Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { SESI } from './materi.js'
@@ -264,6 +264,7 @@ export default function Belajar() {
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)
           return (
             <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''}`}>
+              <IlustrasiSesi nomor={s.id} />
               <span className="nomor-sesi">Sesi {s.id}</span>
               <h3>{s.judul.replace(/^Sesi \d+: /, '')}</h3>
               <p>{s.tujuan}</p>

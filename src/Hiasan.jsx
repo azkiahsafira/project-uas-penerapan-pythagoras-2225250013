@@ -35,6 +35,7 @@ export function LatarHeader() {
     <div className="latar" aria-hidden="true">
       <Awan className="awan-1" />
       <Awan className="awan-2" />
+      <Burung />
       {SIMBOL.map((s, i) => (
         <span
           key={i}
@@ -78,5 +79,101 @@ export function Konfeti({ jumlah = 26 }) {
         )
       })}
     </div>
+  )
+}
+
+// Burung kecil yang sesekali terbang melintasi header sambil mengepakkan sayap
+export function Burung() {
+  return (
+    <div className="burung-jalur" aria-hidden="true">
+      <svg className="burung" viewBox="0 0 60 40">
+        <path className="b-sayap-belakang" d="M30 20 Q22 4 12 10 Q22 14 26 22 Z" />
+        <ellipse className="b-badan" cx="30" cy="24" rx="14" ry="10" />
+        <circle className="b-kepala" cx="42" cy="18" r="7" />
+        <path className="b-paruh" d="M48 17 L55 19 L48 21 Z" />
+        <circle className="b-mata" cx="44" cy="16.5" r="1.4" />
+        <ellipse className="b-pipi" cx="43" cy="21" rx="2" ry="1.2" />
+        <path className="b-ekor" d="M17 22 L6 18 L9 26 Z" />
+        <path className="b-sayap" d="M30 22 Q22 6 10 12 Q20 16 24 26 Z" />
+      </svg>
+    </div>
+  )
+}
+
+// Kucing yang duduk di bawah halaman: berkedip, ekornya bergoyang,
+// dan mengeong saat diklik.
+export function Kucing({ onKlik, mengeong }) {
+  return (
+    <button type="button" className={`kucing-tombol ${mengeong ? 'mengeong' : ''}`} onClick={onKlik} aria-label="Elus kucing">
+      {mengeong && <span className="meong">Meong! 🐾</span>}
+      <svg className="kucing" viewBox="0 0 90 70" aria-hidden="true">
+        <path className="k-ekor" d="M62 56 Q84 54 80 34 Q78 26 72 30" />
+        <ellipse className="k-badan" cx="46" cy="52" rx="22" ry="15" />
+        <g className="k-kepala">
+          <path className="k-telinga" d="M22 22 L25 6 L35 17 Z M48 17 L58 6 L60 22 Z" />
+          <path className="k-telinga-dalam" d="M25.5 18 L27 10 L32 16 Z M51 16 L56 10 L57.5 18 Z" />
+          <ellipse className="k-wajah" cx="41" cy="28" rx="21" ry="17" />
+          <g className="k-mata">
+            {mengeong ? (
+              <path d="M30 27 Q33 23 36 27 M46 27 Q49 23 52 27" className="k-mata-senang" />
+            ) : (
+              <>
+                <ellipse cx="33" cy="27" rx="3" ry="3.8" />
+                <ellipse cx="49" cy="27" rx="3" ry="3.8" />
+              </>
+            )}
+          </g>
+          <path className="k-hidung" d="M39.5 32 H42.5 L41 34 Z" />
+          <path className="k-mulut" d={mengeong ? 'M37 35 Q41 41 45 35 Z' : 'M37 35 Q39 37.5 41 35 Q43 37.5 45 35'} />
+          <path className="k-kumis" d="M18 31 H28 M18 35 L28 34 M54 34 L64 35 M54 31 H64" />
+          <ellipse className="k-pipi" cx="28" cy="34" rx="3" ry="1.8" />
+          <ellipse className="k-pipi" cx="54" cy="34" rx="3" ry="1.8" />
+        </g>
+        <ellipse className="k-kaki" cx="36" cy="65" rx="6" ry="3.5" />
+        <ellipse className="k-kaki" cx="54" cy="65" rx="6" ry="3.5" />
+      </svg>
+    </button>
+  )
+}
+
+// Ilustrasi kecil beranimasi untuk tiap kartu sesi
+export function IlustrasiSesi({ nomor }) {
+  if (nomor === 1) {
+    // segitiga mengintip & berkedip
+    return (
+      <svg className="ilustrasi il-1" viewBox="0 0 64 64" aria-hidden="true">
+        <path className="il-tubuh" d="M14 12 L54 52 L14 52 Z" />
+        <path className="il-siku" d="M14 45 H21 V52" />
+        <g className="il-mata">
+          <circle cx="24" cy="40" r="2.6" />
+          <circle cx="33" cy="40" r="2.6" />
+        </g>
+        <path className="il-mulut" d="M25 45 Q28.5 48.5 32 45" />
+      </svg>
+    )
+  }
+  if (nomor === 2) {
+    // persegi 9, 16, 25 yang berdenyut bergantian
+    return (
+      <svg className="ilustrasi il-2" viewBox="0 0 64 64" aria-hidden="true">
+        <rect className="il-k k1" x="3" y="42" width="12" height="12" rx="2.5" />
+        <rect className="il-k k2" x="18" y="34" width="16" height="16" rx="3" />
+        <rect className="il-k k3" x="38" y="22" width="22" height="22" rx="3.5" />
+        <text x="9" y="51" textAnchor="middle">9</text>
+        <text x="26" y="45" textAnchor="middle">16</text>
+        <text x="49" y="36.5" textAnchor="middle">25</text>
+      </svg>
+    )
+  }
+  // layang-layang terbang dengan ekor berkibar
+  return (
+    <svg className="ilustrasi il-3" viewBox="0 0 64 64" aria-hidden="true">
+      <path className="il-benang" d="M8 60 Q26 46 38 28" />
+      <g className="il-layang">
+        <path className="il-kite" d="M38 6 L50 20 L38 34 L26 20 Z" />
+        <path className="il-kite-garis" d="M38 6 V34 M26 20 H50" />
+        <path className="il-ekor" d="M38 34 Q34 40 38 44 Q42 48 38 54" />
+      </g>
+    </svg>
   )
 }

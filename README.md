@@ -55,7 +55,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
 - **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
 - **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), karakter anak SMP bergaya chibi yang melambai dan sesekali melompat, simbol matematika yang melayang, serta awan berwajah.
-- **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai, Siku mini yang berjalan di progress bar, dan umpan balik salah yang bergoyang pelan.
+- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka (anak SMP) untuk disapa, dan elus kucing di bawah halaman sampai mengeong. Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
+- **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai, Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
 - Tema biru, responsif (laptop dan HP), serta mendukung mode terang/gelap.
@@ -235,11 +236,12 @@ aplikasi-pythagoras/
 └── src/
     ├── main.jsx      titik awal aplikasi
     ├── App.jsx       halaman utama: menu, kalkulator, contoh soal
+    ├── Panggung.jsx  header: balon kata, prisma 3D, Raka, Siku (bisa diklik)
     ├── Belajar.jsx   pemutar materi belajar per sesi
     ├── Maskot.jsx    karakter maskot "Siku" (SVG beranimasi)
     ├── Siswa.jsx     karakter anak SMP (SVG beranimasi)
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
-    ├── Hiasan.jsx    simbol melayang, awan, konfeti
+    ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, konfeti, ilustrasi sesi
     ├── Ikon.jsx      ikon menu
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
     ├── tes.js        soal tes dan butir kuesioner

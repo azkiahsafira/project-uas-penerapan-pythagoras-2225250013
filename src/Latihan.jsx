@@ -55,6 +55,7 @@ export default function Latihan() {
   const [jawaban, setJawaban] = useState('')
   const [status, setStatus] = useState(null) // null | 'benar' | 'salah' | 'menyerah'
   const [skor, setSkor] = useState({ benar: 0, total: 0 })
+  const [beruntun, setBeruntun] = useState(0) // jumlah benar berturut-turut
 
   const selesai = status !== null
   const kunci = soal.sisi[soal.cari]
@@ -67,11 +68,13 @@ export default function Latihan() {
     if (!Number.isFinite(n)) return
     const benar = Math.abs(n - kunci) < 0.01
     setStatus(benar ? 'benar' : 'salah')
+    setBeruntun((b) => (benar ? b + 1 : 0))
     setSkor((s) => ({ benar: s.benar + (benar ? 1 : 0), total: s.total + 1 }))
   }
 
   const menyerah = () => {
     setStatus('menyerah')
+    setBeruntun(0)
     setSkor((s) => ({ ...s, total: s.total + 1 }))
   }
 
@@ -90,6 +93,12 @@ export default function Latihan() {
             Skor: {skor.benar} / {skor.total}
           </span>
         </div>
+        {beruntun >= 2 && (
+          <p className="combo" key={beruntun} aria-live="polite">
+            <span className="api">🔥</span> {beruntun} benar berturut-turut!
+            {beruntun >= 5 && ' Luar biasa!'}
+          </p>
+        )}
 
         <p className="soal">{soal.cerita}</p>
 
