@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Belajar from './Belajar.jsx'
 import Latihan from './Latihan.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
@@ -39,7 +40,7 @@ const CONTOH = [
 ]
 
 function App() {
-  const [halaman, setHalaman] = useState('kalkulator')
+  const [halaman, setHalaman] = useState('belajar')
   const [cari, setCari] = useState('c')
   const [nilai, setNilai] = useState({ a: '3', b: '4', c: '' })
   const [hasil, setHasil] = useState(() => hitung('c', { a: '3', b: '4' }))
@@ -68,8 +69,16 @@ function App() {
     <main>
       <header>
         <h1>Penerapan Teorema Pythagoras</h1>
-        <p>Pada segitiga siku-siku berlaku <strong>c² = a² + b²</strong>, dengan c adalah sisi miring.</p>
+        <p>Media belajar teorema Pythagoras untuk siswa SMP.</p>
         <nav className="menu">
+          <button
+            type="button"
+            className={halaman === 'belajar' ? 'aktif' : ''}
+            aria-current={halaman === 'belajar' ? 'page' : undefined}
+            onClick={() => setHalaman('belajar')}
+          >
+            Belajar
+          </button>
           <button
             type="button"
             className={halaman === 'kalkulator' ? 'aktif' : ''}
@@ -89,7 +98,11 @@ function App() {
         </nav>
       </header>
 
-      {/* Latihan tetap terpasang (hanya disembunyikan) agar skor tidak hilang saat pindah tab */}
+      {/* Belajar & Latihan tetap terpasang (hanya disembunyikan) agar progres dan skor tidak hilang saat pindah tab */}
+      <div hidden={halaman !== 'belajar'}>
+        <Belajar />
+      </div>
+
       <div hidden={halaman !== 'latihan'}>
         <Latihan />
       </div>

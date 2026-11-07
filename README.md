@@ -1,6 +1,6 @@
 # Penerapan Teorema Pythagoras
 
-Aplikasi web sederhana untuk menghitung sisi segitiga siku-siku menggunakan teorema Pythagoras, lengkap dengan langkah penyelesaian, gambar segitiga, dan contoh soal dari kehidupan sehari-hari.
+Media pembelajaran berbasis web untuk **membangun literasi matematis** siswa SMP pada materi teorema Pythagoras. Berisi materi belajar 3 sesi, kalkulator dengan langkah penyelesaian, dan latihan soal kontekstual.
 
 Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
@@ -37,6 +37,11 @@ Dari rumus tersebut diperoleh tiga bentuk:
 
 ## Fitur
 
+- **Belajar 3 sesi**: materi bertahap yang harus diikuti berurutan.
+  - Sesi 1: mengenal segitiga siku-siku, kuadrat, dan akar kuadrat.
+  - Sesi 2: menemukan dan memakai teorema Pythagoras.
+  - Sesi 3: Pythagoras dalam kehidupan sehari-hari (soal cerita).
+  - Setiap langkah punya cek pemahaman: petunjuk muncul jika salah, dan jawaban dibuka setelah 2 kali salah agar siswa tidak buntu. Progres sesi tersimpan di perangkat.
 - **Kalkulator tiga mode**: mencari sisi miring, alas, atau tinggi.
 - **Langkah penyelesaian**: perhitungan ditampilkan baris per baris, dari rumus sampai hasil akhir.
 - **Gambar segitiga**: ukuran segitiga menyesuaikan input, dan sisi yang dicari diberi warna.
@@ -45,6 +50,16 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
 - **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
 - Tampilan responsif (laptop dan HP) serta mendukung mode terang/gelap.
+
+## Rancangan Berdasarkan Teori Beban Kognitif
+
+Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load Theory* (Activation/Balance Model):
+
+| Beban | Strategi | Penerapan di aplikasi |
+| ----- | -------- | --------------------- |
+| Intrinsic load | Dikelola | Materi dipecah jadi langkah kecil (satu konsep per layar); prasyarat kuadrat dan akar diajarkan dulu di Sesi 1; sesi berikutnya terkunci sampai sesi sebelumnya selesai. |
+| Extraneous load | Ditekan | Satu layar hanya berisi teks singkat, satu gambar, dan satu pertanyaan; tanpa animasi atau hiasan; di HP gambar ditaruh di atas teks agar tidak perlu scroll bolak-balik (*split-attention*). |
+| Germane load | Dioptimalkan | Contoh lengkap (*worked example*) diikuti contoh setengah jadi (*faded example*); cek pemahaman dengan umpan balik dan petunjuk di setiap langkah; strategi 4 langkah untuk soal cerita; refleksi di akhir. |
 
 ## Algoritma
 
@@ -148,6 +163,8 @@ aplikasi-pythagoras/
 └── src/
     ├── main.jsx      titik awal aplikasi
     ├── App.jsx       halaman utama: menu, kalkulator, contoh soal
+    ├── Belajar.jsx   pemutar materi belajar per sesi
+    ├── materi.js     isi materi 3 sesi
     ├── Latihan.jsx   mode latihan soal
     ├── Segitiga.jsx  gambar segitiga (SVG)
     ├── pythagoras.js logika perhitungan

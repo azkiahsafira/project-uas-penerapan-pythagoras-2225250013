@@ -252,3 +252,132 @@ input:disabled {
   background: var(--danger-soft);
   color: var(--danger);
 }
+
+.paragraf {
+  margin: 0 0 10px;
+}
+
+.rumus {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  font-size: 1.05rem;
+}
+
+.cek {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.cek-tanya {
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.opsi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.opsi button.aktif {
+  background: var(--success-soft);
+  border-color: var(--success);
+  color: var(--success);
+  opacity: 1;
+}
+
+.navigasi {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.kepala-sesi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.progres {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.progres div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s;
+}
+
+.daftar-sesi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.sesi h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.sesi p {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+}
+
+.sesi.sudah {
+  border-color: var(--success);
+}
+
+.segitiga .persegi {
+  stroke: var(--text);
+  stroke-width: 1.5;
+}
+
+.segitiga .persegi.kecil {
+  fill: var(--accent-soft);
+}
+
+.segitiga .persegi.besar {
+  fill: var(--success-soft);
+}
+
+.segitiga .luas {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Cegah isi kartu melebar melewati layar sempit */
+.grid > *,
+.aksi > * {
+  min-width: 0;
+}
+
+input {
+  min-width: 0;
+  width: 100%;
+}
+
+/* Di layar sempit, gambar materi ditaruh di atas teks agar siswa tidak perlu
+   scroll bolak-balik (mengurangi split-attention / extraneous load) */
+@media (max-width: 700px) {
+  .pemutar .gambar {
+    order: -1;
+  }
+
+  .pemutar .segitiga {
+    max-height: 220px;
+  }
+}
