@@ -262,8 +262,10 @@ export default function Belajar() {
         {SESI.map((s, i) => {
           const sudah = selesai.includes(s.id)
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)
+          // sesi pertama yang belum selesai & tidak terkunci diberi tanda berdenyut
+          const berikutnya = !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
           return (
-            <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''}`}>
+            <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''} ${berikutnya ? 'berikutnya' : ''}`}>
               <IlustrasiSesi nomor={s.id} />
               <span className="nomor-sesi">Sesi {s.id}</span>
               <h3>{s.judul.replace(/^Sesi \d+: /, '')}</h3>

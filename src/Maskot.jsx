@@ -3,12 +3,23 @@
 //
 // Props:
 //   suasana : 'halo' (melambai) | 'senang' (jawaban benar) | 'mikir' (jawaban belum tepat)
+//             | 'tidur' (lama tidak disentuh)
 //   ukuran  : lebar dalam piksel
 //   diam    : true = tanpa animasi (dipakai saat tes agar tidak mengganggu)
+//   lirik   : { x, y } antara -1 dan 1, arah bola mata melirik (mengikuti kursor)
 
-export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false }) {
+const LABEL = {
+  halo: 'Maskot Siku melambaikan tangan',
+  senang: 'Maskot Siku senang',
+  mikir: 'Maskot Siku sedang berpikir',
+  tidur: 'Maskot Siku sedang tidur',
+}
+
+export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false, lirik = null }) {
   const senang = suasana === 'senang'
   const mikir = suasana === 'mikir'
+  const tidur = suasana === 'tidur'
+  const geser = lirik ? `translate(${(lirik.x * 2.4).toFixed(2)} ${(lirik.y * 2).toFixed(2)})` : undefined
 
   return (
     <svg
@@ -17,13 +28,13 @@ export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false })
       width={ukuran}
       height={(ukuran * 150) / 160}
       role="img"
-      aria-label={senang ? 'Maskot Siku senang' : mikir ? 'Maskot Siku sedang berpikir' : 'Maskot Siku melambaikan tangan'}
+      aria-label={LABEL[suasana] ?? LABEL.halo}
     >
       {/* bayangan di lantai */}
       <ellipse className="bayang" cx="82" cy="142" rx="44" ry="5" />
 
-      {/* bintang kecil */}
-      {!mikir && (
+      {/* bintang kecil / tanda tanya / Zzz */}
+      {!mikir && !tidur && (
         <g className="bintang">
           <path d="M140 30 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" />
           <path className="b2" d="M16 46 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" />
@@ -33,6 +44,19 @@ export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false })
         <text className="tanya" x="120" y="44">
           ?
         </text>
+      )}
+      {tidur && (
+        <g className="zzz">
+          <text className="z1" x="104" y="52">
+            z
+          </text>
+          <text className="z2" x="116" y="38">
+            z
+          </text>
+          <text className="z3" x="130" y="22">
+            Z
+          </text>
+        </g>
       )}
 
       <g className="badan">
@@ -59,16 +83,25 @@ export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false })
             <path d="M50 90 Q55 83 60 90" />
             <path d="M71 90 Q76 83 81 90" />
           </g>
+        ) : tidur ? (
+          <g className="mata-senang">
+            <path d="M50 88 Q55 92 60 88" />
+            <path d="M71 88 Q76 92 81 88" />
+          </g>
         ) : (
           <g className="mata">
-            <ellipse cx="55" cy="88" rx="4.6" ry="5.6" />
-            <ellipse cx="76" cy="88" rx="4.6" ry="5.6" />
-            <circle className="kilap" cx={mikir ? 55.5 : 56.6} cy={mikir ? 84.5 : 85.8} r="1.6" />
-            <circle className="kilap" cx={mikir ? 76.5 : 77.6} cy={mikir ? 84.5 : 85.8} r="1.6" />
+            <g transform={geser}>
+              <ellipse cx="55" cy="88" rx="4.6" ry="5.6" />
+              <ellipse cx="76" cy="88" rx="4.6" ry="5.6" />
+              <circle className="kilap" cx={mikir ? 55.5 : 56.6} cy={mikir ? 84.5 : 85.8} r="1.6" />
+              <circle className="kilap" cx={mikir ? 76.5 : 77.6} cy={mikir ? 84.5 : 85.8} r="1.6" />
+            </g>
           </g>
         )}
         {senang ? (
           <path className="mulut-buka" d="M57 97 Q66 111 75 97 Z" />
+        ) : tidur ? (
+          <ellipse className="mulut-buka" cx="66" cy="101" rx="3" ry="3.6" />
         ) : mikir ? (
           <path className="mulut" d="M61 102 Q66 99 71 102" />
         ) : (
@@ -77,8 +110,8 @@ export default function Maskot({ suasana = 'halo', ukuran = 140, diam = false })
 
         {/* lengan kanan (melambai) */}
         <g className="lengan lengan-lambai">
-          <path d={mikir ? 'M87 81 Q102 84 104 96' : 'M87 81 Q100 70 104 58'} />
-          <circle cx="104" cy={mikir ? 99 : 55} r="5" />
+          <path d={mikir || tidur ? 'M87 81 Q102 84 104 96' : 'M87 81 Q100 70 104 58'} />
+          <circle cx="104" cy={mikir || tidur ? 99 : 55} r="5" />
         </g>
       </g>
     </svg>

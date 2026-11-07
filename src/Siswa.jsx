@@ -2,7 +2,9 @@
 // putih-biru dongker, memegang buku, dan melambaikan tangan.
 // Digambar dengan SVG, dianimasikan dengan CSS (bagian "Karakter siswa" di App.css).
 
-export default function Siswa({ ukuran = 120 }) {
+// lirik: { x, y } antara -1 dan 1, arah bola mata melirik (mengikuti kursor)
+export default function Siswa({ ukuran = 120, lirik = null }) {
+  const geser = lirik ? `translate(${(lirik.x * 2.2).toFixed(2)} ${(lirik.y * 1.8).toFixed(2)})` : undefined
   return (
     <svg className="siswa" viewBox="0 0 120 190" width={ukuran} height={(ukuran * 190) / 120} role="img" aria-label="Anak SMP melambaikan tangan">
       <ellipse className="s-bayang" cx="60" cy="184" rx="28" ry="4.5" />
@@ -58,12 +60,14 @@ export default function Siswa({ ukuran = 120 }) {
           {/* rambut mencuat (ahoge) */}
           <path className="s-ahoge" d="M60 27 Q63 13 74 15" />
           <g className="s-mata">
-            <ellipse cx="48.5" cy="62" rx="4.8" ry="6" />
-            <ellipse cx="71.5" cy="62" rx="4.8" ry="6" />
-            <circle className="s-kilap" cx="50" cy="59.5" r="1.8" />
-            <circle className="s-kilap" cx="73" cy="59.5" r="1.8" />
-            <circle className="s-kilap" cx="47.2" cy="64.5" r="0.9" />
-            <circle className="s-kilap" cx="70.2" cy="64.5" r="0.9" />
+            <g transform={geser}>
+              <ellipse cx="48.5" cy="62" rx="4.8" ry="6" />
+              <ellipse cx="71.5" cy="62" rx="4.8" ry="6" />
+              <circle className="s-kilap" cx="50" cy="59.5" r="1.8" />
+              <circle className="s-kilap" cx="73" cy="59.5" r="1.8" />
+              <circle className="s-kilap" cx="47.2" cy="64.5" r="0.9" />
+              <circle className="s-kilap" cx="70.2" cy="64.5" r="0.9" />
+            </g>
           </g>
           <ellipse className="s-pipi" cx="41" cy="72" rx="5.5" ry="3.2" />
           <ellipse className="s-pipi" cx="79" cy="72" rx="5.5" ry="3.2" />

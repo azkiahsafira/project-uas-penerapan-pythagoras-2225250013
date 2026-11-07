@@ -1,31 +1,38 @@
-/* Tema warna: biru soft + pink pastel.
-   Biru dipakai untuk aksi utama, pink untuk penanda penting (misalnya sisi
-   yang dicari) dan sentuhan manis. Semua warna lewat variabel agar mode
-   terang & gelap konsisten. */
+/* Tema warna: biru muda (baby blue) + pink pastel.
+   - --accent       : biru muda untuk isi tombol & penanda (teks di atasnya gelap)
+   - --accent-teks  : biru yang lebih tua untuk tulisan berwarna agar tetap terbaca
+   - --accent-2     : pink untuk penanda penting (misalnya sisi yang dicari)
+   Semua warna lewat variabel agar mode terang & gelap konsisten. */
 :root {
-  --bg: #f2f6ff;
-  --bg-2: #fff0f6;
+  --bg: #f0f8ff;
+  --bg-2: #fff1f7;
   --card: #ffffff;
-  --text: #1e2549;
-  --muted: #646d92;
-  --border: #e3e8f8;
-  --accent: #3d6fe0;
-  --accent-2: #e0458f;
-  --accent-3: #8fb5ff;
-  --pink-soft: #ffd6e8;
-  --biru-soft: #d6e4ff;
-  --accent-soft: rgba(61, 111, 224, 0.1);
-  --on-accent: #ffffff;
+  --text: #1d2a4d;
+  --muted: #5f6d8f;
+  --border: #dceefe;
+  --accent: #7cc3ff;
+  --accent-teks: #2b7bd0;
+  --accent-2: #f472b6;
+  --accent-3: #b9e0ff;
+  --pink-soft: #ffd9ea;
+  --biru-soft: #cfe9ff;
+  --accent-soft: rgba(124, 195, 255, 0.2);
+  --on-accent: #12284d;
   --danger: #d94052;
   --danger-soft: rgba(217, 64, 82, 0.1);
   --success: #12875d;
   --success-soft: rgba(18, 135, 93, 0.12);
-  --sesi-1: #3d6fe0;
-  --sesi-2: #d0407f;
-  --sesi-3: #7656d6;
-  --gradasi: linear-gradient(120deg, #3d6fe0 0%, #6b8ff5 38%, #b391f0 68%, #f08cbf 100%);
-  --bayangan: 0 14px 34px -14px rgba(80, 90, 200, 0.3);
-  --bayangan-kecil: 0 4px 14px -6px rgba(80, 90, 200, 0.2);
+  --sesi-1: #7cc3ff;
+  --sesi-2: #f9a8d4;
+  --sesi-3: #c4b5fd;
+  --gradasi: linear-gradient(120deg, #a9dcff 0%, #c7e7ff 35%, #e6d9ff 65%, #ffc6e0 100%);
+  --hero-teks: #1d2a4d;
+  --hero-hias: rgba(43, 123, 208, 0.45);
+  --hero-bayang: none;
+  --kaca-isi: rgba(255, 255, 255, 0.6);
+  --kaca-garis: rgba(43, 90, 160, 0.6);
+  --bayangan: 0 14px 34px -14px rgba(90, 150, 220, 0.4);
+  --bayangan-kecil: 0 4px 14px -6px rgba(90, 150, 220, 0.3);
   color-scheme: light dark;
   font-family: 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.55;
@@ -33,27 +40,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0e1228;
-    --bg-2: #1a1230;
-    --card: #171c38;
-    --text: #eceffd;
-    --muted: #a6acd0;
-    --border: #2b3159;
-    --accent: #8fb0ff;
-    --accent-2: #f7a6cf;
-    --accent-3: #b9cdff;
-    --pink-soft: #4a2440;
-    --biru-soft: #22305e;
-    --accent-soft: rgba(143, 176, 255, 0.15);
-    --on-accent: #0e1228;
+    --bg: #0e1628;
+    --bg-2: #1a1430;
+    --card: #16203a;
+    --text: #eaf2ff;
+    --muted: #a3b3d3;
+    --border: #283a5e;
+    --accent: #8fd0ff;
+    --accent-teks: #9fd6ff;
+    --accent-2: #f9a8d4;
+    --accent-3: #5b8fc7;
+    --pink-soft: #45233f;
+    --biru-soft: #1d3459;
+    --accent-soft: rgba(143, 208, 255, 0.15);
+    --on-accent: #0e1628;
     --danger: #ff8a95;
     --danger-soft: rgba(255, 138, 149, 0.14);
     --success: #5fdcaa;
     --success-soft: rgba(95, 220, 170, 0.14);
-    --sesi-1: #8fb0ff;
-    --sesi-2: #f7a6cf;
-    --sesi-3: #c3b2ff;
-    --gradasi: linear-gradient(120deg, #24367f 0%, #3a4aa6 38%, #6845a3 68%, #9a3f7e 100%);
+    --sesi-1: #8fd0ff;
+    --sesi-2: #f9a8d4;
+    --sesi-3: #c4b5fd;
+    --gradasi: linear-gradient(120deg, #1f4a7a 0%, #2f5f99 35%, #5a4a99 65%, #93487d 100%);
+    --hero-teks: #ffffff;
+    --hero-hias: rgba(255, 255, 255, 0.5);
+    --hero-bayang: 0 1px 2px rgba(10, 20, 50, 0.4);
+    --kaca-isi: rgba(255, 255, 255, 0.22);
+    --kaca-garis: rgba(255, 255, 255, 0.9);
     --bayangan: 0 14px 34px -14px rgba(0, 0, 0, 0.65);
     --bayangan-kecil: 0 4px 14px -6px rgba(0, 0, 0, 0.5);
   }

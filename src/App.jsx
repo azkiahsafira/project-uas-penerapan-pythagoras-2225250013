@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
+import EfekKlik from './Efek.jsx'
 import { Kucing, LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
@@ -109,6 +110,7 @@ function App() {
     <main>
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
+      <EfekKlik aktif={!fokusTes && animasi} />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
         <div className="hero-teks">

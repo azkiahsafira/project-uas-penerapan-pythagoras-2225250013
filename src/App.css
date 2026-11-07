@@ -57,7 +57,7 @@ h2 {
   padding: 28px 28px;
   border-radius: 24px;
   background: var(--gradasi);
-  color: #fff;
+  color: var(--hero-teks);
   box-shadow: var(--bayangan);
 }
 
@@ -67,7 +67,7 @@ h2 {
   content: '';
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.22);
   pointer-events: none;
 }
 
@@ -89,15 +89,15 @@ h2 {
   position: relative;
   max-width: 560px;
   /* bayangan tipis agar teks putih tetap terbaca di atas gradasi pastel */
-  text-shadow: 0 1px 2px rgba(30, 37, 90, 0.35);
+  text-shadow: var(--hero-bayang);
 }
 
 .lencana {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -152,7 +152,7 @@ h2 {
 }
 
 .menu button:hover {
-  color: var(--accent);
+  color: var(--accent-teks);
   background: var(--accent-soft);
 }
 
@@ -379,7 +379,7 @@ code {
 }
 
 .jawaban strong {
-  color: var(--accent);
+  color: var(--accent-teks);
 }
 
 .hasil ol {
@@ -523,8 +523,9 @@ code {
   align-self: flex-start;
   padding: 3px 10px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--warna) 15%, transparent);
-  color: var(--warna);
+  background: color-mix(in srgb, var(--warna) 22%, transparent);
+  /* warna sesi digelapkan agar label tetap terbaca di atas latar pastel */
+  color: color-mix(in srgb, var(--warna) 45%, var(--text));
   font-size: 0.78rem;
   font-weight: 700;
   margin-bottom: 8px;
@@ -654,7 +655,7 @@ code {
   border-radius: 999px;
   background: var(--accent-soft);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-teks);
 }
 
 .soal {
@@ -696,7 +697,7 @@ label.pilihan.dipilih {
 
 .huruf {
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-teks);
 }
 
 .nomor {
@@ -1165,7 +1166,7 @@ tbody tr:last-child td {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--hero-teks);
   font-size: 13px;
   font-weight: 800;
   backface-visibility: visible;
@@ -1177,21 +1178,21 @@ tbody tr:last-child td {
 }
 
 .p-segitiga polygon {
-  fill: rgba(255, 255, 255, 0.26);
-  stroke: rgba(255, 255, 255, 0.95);
+  fill: var(--kaca-isi);
+  stroke: var(--kaca-garis);
   stroke-width: 2;
   stroke-linejoin: round;
 }
 
 .p-siku {
   fill: none;
-  stroke: #fff;
+  stroke: var(--kaca-garis);
   stroke-width: 1.5;
 }
 
 .p-sisi {
-  background: rgba(255, 255, 255, 0.16);
-  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  background: var(--kaca-isi);
+  border: 1.5px solid var(--kaca-garis);
 }
 
 .p-miring {
@@ -1542,7 +1543,7 @@ tbody tr:last-child td {
 .simbol {
   position: absolute;
   bottom: -30px;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--hero-hias);
   font-weight: 800;
   opacity: 0;
   animation: simbol-naik 10s linear infinite;
@@ -1945,7 +1946,7 @@ tbody tr:last-child td {
   align-self: center;
   font-size: 0.72rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--hero-teks);
   animation: petunjuk-kedip 2.4s ease-in-out infinite;
 }
 
@@ -2587,5 +2588,178 @@ tbody tr:last-child td {
 
   .gumpal {
     animation: none;
+  }
+}
+
+/* =========================================================================
+   Efek klik & jejak kursor
+   ========================================================================= */
+.efek-klik {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.partikel {
+  position: absolute;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+
+.partikel.letup {
+  animation-name: partikel-letup;
+}
+
+.partikel.jejak {
+  opacity: 0.8;
+  animation-name: partikel-jejak;
+}
+
+@keyframes partikel-letup {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1) rotate(25deg);
+  }
+}
+
+@keyframes partikel-jejak {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.3);
+  }
+}
+
+/* =========================================================================
+   Siku tertidur
+   ========================================================================= */
+.maskot.tidur .badan {
+  animation: maskot-tidur 4s ease-in-out infinite;
+}
+
+.maskot.tidur .lengan-lambai {
+  animation: none;
+}
+
+.maskot .zzz text {
+  fill: var(--accent-teks);
+  font-weight: 800;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: zzz-naik 3s ease-out infinite;
+}
+
+.maskot .zzz .z1 {
+  font-size: 14px;
+}
+
+.maskot .zzz .z2 {
+  font-size: 18px;
+  animation-delay: 1s;
+}
+
+.maskot .zzz .z3 {
+  font-size: 23px;
+  animation-delay: 2s;
+}
+
+.panggung-isi .maskot.tidur {
+  animation: none;
+}
+
+@keyframes maskot-tidur {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(2px) scale(1.03, 0.97);
+  }
+}
+
+@keyframes zzz-naik {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(8px, -12px) scale(1.1);
+  }
+}
+
+/* bola mata bergerak halus saat melirik */
+.maskot .mata > g,
+.siswa .s-mata > g {
+  transition: transform 0.12s ease-out;
+}
+
+/* =========================================================================
+   Tombol sesi berikutnya berdenyut
+   ========================================================================= */
+.sesi.berikutnya {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--warna) 45%, transparent),
+    var(--bayangan);
+}
+
+.sesi.berikutnya .hitung {
+  animation: tombol-denyut 1.8s ease-in-out infinite;
+}
+
+.sesi.berikutnya .nomor-sesi::after {
+  content: ' · Ayo mulai!';
+}
+
+@keyframes tombol-denyut {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--warna) 55%, transparent);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--warna) 0%, transparent);
+  }
+}
+
+/* Mati bila animasi dimatikan / gerak dikurangi */
+.tanpa-animasi .efek-klik,
+.tanpa-animasi .maskot .zzz {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .efek-klik {
+    display: none;
+  }
+
+  .maskot.tidur .badan,
+  .maskot .zzz text,
+  .sesi.berikutnya .hitung {
+    animation: none !important;
+  }
+
+  .maskot .zzz text {
+    opacity: 1;
   }
 }

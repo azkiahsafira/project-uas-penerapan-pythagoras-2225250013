@@ -71,7 +71,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
 - **Latar halaman beranimasi**: gumpalan warna biru–pink yang bergerak lembut, bentuk kecil (segitiga, hati, bintang, lingkaran, plus) yang melayang naik, dan bintang berkelip di area kosong halaman.
-- Tema biru soft + pink, responsif (laptop dan HP), serta mendukung mode terang/gelap.
+- **Efek lucu lainnya**: hati & bintang meletup di setiap klik/sentuhan, jejak kilau di belakang kursor (laptop), mata Siku dan Raka yang melirik mengikuti kursor, Siku yang tertidur (Zzz) bila halaman lama tidak disentuh, dan tombol sesi berikutnya yang berdenyut.
+- Tema biru muda (baby blue) + pink pastel, responsif (laptop dan HP), serta mendukung mode terang/gelap.
 
 ## Rancangan Berdasarkan Teori Beban Kognitif
 
@@ -255,6 +256,7 @@ aplikasi-pythagoras/
     ├── Siswa.jsx     karakter anak SMP (SVG beranimasi)
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
     ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, konfeti, ilustrasi sesi
+    ├── Efek.jsx      hati & bintang saat klik, jejak kursor
     ├── Ikon.jsx      ikon menu
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
     ├── tes.js        soal tes dan butir kuesioner
