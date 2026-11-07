@@ -66,7 +66,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
 - **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
 - **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
-- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus kelinci, kucing, atau beruang di bawah halaman. Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
+- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus 8 hewan di taman bawah halaman (kelinci, anak ayam, kucing, bebek, panda, katak, anjing, beruang). Setiap karakter dan hewan punya beberapa kalimat yang bergantian, dan balon kata di header berganti sendiri sesuai menu (diawali salam sesuai jam). Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
 - **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai (pelangi dan Siku bertopi wisuda yang menari), Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
@@ -258,6 +258,8 @@ aplikasi-pythagoras/
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
     ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, kelinci, beruang, pelangi, gelembung, konfeti, ilustrasi sesi
     ├── Efek.jsx      hati & bintang saat klik, jejak kursor
+    ├── Hewan.jsx     anak ayam, bebek, panda, katak, anjing
+    ├── kalimat.js    semua kalimat sapaan karakter & suara hewan (mudah diubah)
     ├── Ikon.jsx      ikon menu
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
     ├── tes.js        soal tes dan butir kuesioner

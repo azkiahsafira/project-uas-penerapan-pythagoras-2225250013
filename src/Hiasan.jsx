@@ -102,10 +102,10 @@ export function Burung() {
 
 // Kucing yang duduk di bawah halaman: berkedip, ekornya bergoyang,
 // dan mengeong saat diklik.
-export function Kucing({ onKlik, mengeong }) {
+export function Kucing({ onKlik, mengeong, teks = 'Meong! 🐾' }) {
   return (
     <button type="button" className={`kucing-tombol ${mengeong ? 'mengeong' : ''}`} onClick={onKlik} aria-label="Elus kucing">
-      {mengeong && <span className="meong">Meong! 🐾</span>}
+      {mengeong && <span className="meong">{teks}</span>}
       <svg className="kucing" viewBox="0 0 90 70" aria-hidden="true">
         <path className="k-ekor" d="M62 56 Q84 54 80 34 Q78 26 72 30" />
         <ellipse className="k-badan" cx="46" cy="52" rx="22" ry="15" />
@@ -284,10 +284,10 @@ export function Pelangi({ besar = false }) {
 }
 
 // Kelinci yang melompat-lompat di bawah halaman
-export function Kelinci({ onKlik, bersuara }) {
+export function Kelinci({ onKlik, bersuara, teks = 'Boing boing! 🥕' }) {
   return (
     <button type="button" className={`hewan-tombol kelinci-tombol ${bersuara ? 'bersuara' : ''}`} onClick={onKlik} aria-label="Elus kelinci">
-      {bersuara && <span className="suara-hewan">Boing boing! 🥕</span>}
+      {bersuara && <span className="suara-hewan">{teks}</span>}
       <svg className="kelinci" viewBox="0 0 70 80" aria-hidden="true">
         <ellipse className="kl-bayang" cx="35" cy="77" rx="18" ry="3" />
         <g className="kl-badan">
@@ -323,10 +323,10 @@ export function Kelinci({ onKlik, bersuara }) {
 }
 
 // Beruang yang melambaikan tangan di bawah halaman
-export function Beruang({ onKlik, bersuara }) {
+export function Beruang({ onKlik, bersuara, teks = 'Halo! Peluk dulu 🐻' }) {
   return (
     <button type="button" className={`hewan-tombol beruang-tombol ${bersuara ? 'bersuara' : ''}`} onClick={onKlik} aria-label="Peluk beruang">
-      {bersuara && <span className="suara-hewan">Halo! Peluk dulu 🐻</span>}
+      {bersuara && <span className="suara-hewan">{teks}</span>}
       <svg className="beruang" viewBox="0 0 84 80" aria-hidden="true">
         <ellipse className="br-bayang" cx="42" cy="77" rx="22" ry="3" />
         <g className="br-badan">

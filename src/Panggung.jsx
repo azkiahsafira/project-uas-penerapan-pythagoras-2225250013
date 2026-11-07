@@ -1,34 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Konfeti, Pelangi } from './Hiasan.jsx'
+import { SAPA, SAPAAN, SORAK, salamWaktu } from './kalimat.js'
 import Maskot from './Maskot.jsx'
 import Prisma3D from './Prisma3D.jsx'
 import Siswa from './Siswa.jsx'
 import Siswi from './Siswi.jsx'
 
-// Kalimat balon kata di header, berganti sesuai menu
-const SAPAAN = {
-  belajar: 'Hai, aku Siku! Yuk belajar pelan-pelan, satu langkah dulu.',
-  kalkulator: 'Masukkan dua sisi, nanti aku bantu hitung sisi ketiga!',
-  latihan: 'Ayo latihan! Salah itu wajar, coba lagi ya.',
-  tes: 'Kerjakan sendiri ya. Kamu pasti bisa!',
-}
-
-// Sorakan saat Siku diklik (sengaja tanpa rumus agar tidak membocorkan pre-test)
-const SORAK = [
-  'Hore! Kamu keren! ⭐',
-  'Semangat! Kamu pasti bisa!',
-  'Pelan-pelan saja, pahami tiap langkah 😉',
-  'Belajar itu seru, kan?',
-  'Aku segitiga paling bahagia sedunia!',
-  'Tos dulu dong! ✋',
-]
-
-const SAPA = {
-  siswa: ['Halo! Aku Raka, kita belajar bareng ya!', 'Aku juga lagi belajar Pythagoras, lho!', 'Ayo kita jadi juara kelas! 🏆'],
-  siswi: ['Hai! Aku Nisa. Semangat belajarnya ya! 💪', 'Aku suka soal cerita, seru banget!', 'Yuk kerjakan bareng-bareng! 📝'],
-}
-
 const LAMA_TIDUR = 25000 // ms tanpa gerakan sebelum Siku tertidur
+const GANTI_SAPAAN = 7000 // ms sebelum balon kata berganti ke kalimat berikutnya
 
 // Panggung header: balon kata, pelangi, prisma 3D, dua siswa SMP (Raka & Nisa),
 // dan maskot Siku bertopi wisuda.
@@ -37,9 +16,11 @@ const LAMA_TIDUR = 25000 // ms tanpa gerakan sebelum Siku tertidur
 // - Saat `diam` (tes berlangsung) semua animasi berhenti dan karakter tidak bisa diklik.
 export default function Panggung({ halaman, diam }) {
   const [pesan, setPesan] = useState(null) // { teks, siapa, n }
-  const [hitungan, setHitungan] = useState(0)
+  const [hitungan, setHitungan] = useState({ total: 0 }) // jumlah klik per karakter (+ total untuk key animasi)
   const [lirik, setLirik] = useState(null)
   const [tidur, setTidur] = useState(false)
+  // kalimat sapaan menu yang sedang tampil; dicatat bersama menunya agar mulai dari 0 saat ganti menu
+  const [urutan, setUrutan] = useState({ halaman, n: 0 })
   const isiRef = useRef(null)
   const aktifTerakhir = useRef(0)
 
@@ -49,6 +30,13 @@ export default function Panggung({ halaman, diam }) {
     const t = setTimeout(() => setPesan(null), 2800)
     return () => clearTimeout(t)
   }, [pesan])
+
+  // Balon kata berganti kalimat secara berkala (bila tidak ada pesan & Siku tidak tidur)
+  useEffect(() => {
+    if (diam || pesan || tidur) return undefined
+    const t = setInterval(() => setUrutan((u) => ({ halaman, n: (u.halaman === halaman ? u.n : 0) + 1 })), GANTI_SAPAAN)
+    return () => clearInterval(t)
+  }, [diam, pesan, tidur, halaman])
 
   // Lacak kursor: bola mata melirik, dan catat waktu aktif terakhir
   useEffect(() => {
@@ -96,18 +84,23 @@ export default function Panggung({ halaman, diam }) {
     const daftar = siapa === 'siku' ? SORAK : SAPA[siapa]
     const bangun = siapa === 'siku' && tidur
     setTidur(false)
-    setPesan({ teks: bangun ? 'Hoaam... aku bangun! Ayo belajar lagi! 😄' : daftar[hitungan % daftar.length], siapa, n: hitungan })
-    setHitungan(hitungan + 1)
+    const ke = hitungan[siapa] ?? 0
+    setPesan({ teks: bangun ? 'Hoaam... aku bangun! Ayo belajar lagi! 😄' : daftar[ke % daftar.length], siapa, n: hitungan.total })
+    setHitungan({ ...hitungan, [siapa]: ke + 1, total: hitungan.total + 1 })
   }
 
   const sedangTidur = tidur && !diam && !pesan
-  const teks = diam ? SAPAAN[halaman] : pesan ? pesan.teks : sedangTidur ? 'Zzz... Siku ketiduran. Klik Siku untuk membangunkan!' : SAPAAN[halaman]
+  const daftarSapaan = SAPAAN[halaman]
+  const nomorSapaan = diam || urutan.halaman !== halaman ? 0 : urutan.n % daftarSapaan.length
+  const sapaanMenu =
+    halaman === 'belajar' && nomorSapaan === 0 ? `${salamWaktu()} ${daftarSapaan[0]}` : daftarSapaan[nomorSapaan]
+  const teks = diam ? sapaanMenu : pesan ? pesan.teks : sedangTidur ? 'Zzz... Siku ketiduran. Klik Siku untuk membangunkan!' : sapaanMenu
   const suasanaSiku = pesan?.siapa === 'siku' ? 'senang' : sedangTidur ? 'tidur' : 'halo'
 
   return (
     <div className={`panggung ${diam ? 'diam' : ''}`}>
       {/* key: balon kata dianimasikan ulang setiap isinya berganti */}
-      <p className="gelembung" key={pesan ? `p${pesan.n}` : sedangTidur ? 'tidur' : halaman} aria-live="polite">
+      <p className="gelembung" key={pesan ? `p${pesan.n}` : sedangTidur ? 'tidur' : `${halaman}-${nomorSapaan}`} aria-live="polite">
         {teks}
       </p>
       <div className="panggung-isi" ref={isiRef}>

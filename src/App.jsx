@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
+import { AnakAyam, Anjing, Bebek, Katak, Panda } from './Hewan.jsx'
 import { Beruang, Kelinci, Kucing, LatarHalaman, LatarHeader } from './Hiasan.jsx'
+import { SUARA_HEWAN } from './kalimat.js'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
@@ -25,6 +27,18 @@ const MENU = [
 ]
 
 const KUNCI_ANIMASI = 'pythagoras-animasi'
+
+// Urutan hewan di taman bawah halaman
+const TAMAN = [
+  ['kelinci', Kelinci],
+  ['ayam', AnakAyam],
+  ['kucing', Kucing],
+  ['bebek', Bebek],
+  ['panda', Panda],
+  ['katak', Katak],
+  ['anjing', Anjing],
+  ['beruang', Beruang],
+]
 
 function bacaAnimasi() {
   try {
@@ -65,7 +79,8 @@ function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
   const [animasi, setAnimasi] = useState(bacaAnimasi)
-  const [suara, setSuara] = useState(null) // { hewan, n }: hewan yang sedang bersuara
+  const [suara, setSuara] = useState(null) // { hewan, n, urutan }: hewan yang sedang bersuara
+  const [klikHewan, setKlikHewan] = useState({}) // berapa kali tiap hewan sudah diklik
 
   useEffect(() => {
     if (!suara) return undefined
@@ -73,7 +88,11 @@ function App() {
     return () => clearTimeout(t)
   }, [suara])
 
-  const elus = (hewan) => setSuara((s) => ({ hewan, n: (s?.n ?? 0) + 1 }))
+  const elus = (hewan) => {
+    const urutan = klikHewan[hewan] ?? 0
+    setKlikHewan({ ...klikHewan, [hewan]: urutan + 1 })
+    setSuara((s) => ({ hewan, n: (s?.n ?? 0) + 1, urutan }))
+  }
 
   // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
   useEffect(() => {
@@ -237,10 +256,20 @@ function App() {
 
       <footer className="kaki">
         {!fokusTes && (
-          <div className="taman">
-            <Kelinci key={`kl${suara?.hewan === 'kelinci' ? suara.n : 0}`} bersuara={suara?.hewan === 'kelinci'} onKlik={() => elus('kelinci')} />
-            <Kucing key={`kc${suara?.hewan === 'kucing' ? suara.n : 0}`} mengeong={suara?.hewan === 'kucing'} onKlik={() => elus('kucing')} />
-            <Beruang key={`br${suara?.hewan === 'beruang' ? suara.n : 0}`} bersuara={suara?.hewan === 'beruang'} onKlik={() => elus('beruang')} />
+          <div className="taman" aria-label="Taman hewan">
+            {TAMAN.map(([hewan, Komponen]) => {
+              const aktif = suara?.hewan === hewan
+              const teks = SUARA_HEWAN[hewan][(suara?.urutan ?? 0) % SUARA_HEWAN[hewan].length]
+              return (
+                <Komponen
+                  key={`${hewan}-${aktif ? suara.n : 0}`}
+                  bersuara={aktif}
+                  mengeong={aktif}
+                  teks={teks}
+                  onKlik={() => elus(hewan)}
+                />
+              )
+            })}
           </div>
         )}
         <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
