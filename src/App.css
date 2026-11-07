@@ -1127,10 +1127,6 @@ tbody tr:last-child td {
     margin-top: 10px;
   }
 
-  .panggung .gelembung {
-    display: none;
-  }
-
   .panggung-isi {
     transform: scale(0.62);
     transform-origin: top left;
@@ -2402,8 +2398,7 @@ tbody tr:last-child td {
 }
 
 /* Mode tanpa animasi & kurangi gerakan untuk elemen baru */
-.tanpa-animasi .burung-jalur,
-.tanpa-animasi .meong {
+.tanpa-animasi .burung-jalur {
   display: none;
 }
 
@@ -2805,11 +2800,23 @@ tbody tr:last-child td {
 @media (max-width: 640px) {
   .panggung {
     width: 204px; /* 340 x 0,6 */
-    height: 128px; /* 214 x 0,6 */
+    height: auto;
+    align-items: center;
   }
 
   .panggung-isi {
     transform: scale(0.6);
+    /* transform tidak mengecilkan ruang tata letak, jadi ruang sisanya ditarik */
+    margin-bottom: -86px; /* 214 - 128 */
+    margin-right: -136px; /* 340 - 204 */
+    align-self: flex-start;
+  }
+
+  /* balon kata tetap tampil di HP, dibuat ringkas di atas karakter */
+  .panggung .gelembung {
+    max-width: 240px;
+    font-size: 0.78rem;
+    padding: 6px 10px;
   }
 }
 
@@ -3300,8 +3307,7 @@ tbody tr:last-child td {
 }
 
 /* Mati bila animasi dimatikan / gerak dikurangi */
-.tanpa-animasi .sabun,
-.tanpa-animasi .suara-hewan {
+.tanpa-animasi .sabun {
   display: none;
 }
 
@@ -3893,4 +3899,62 @@ tbody tr:last-child td {
   .hewan-hidup * {
     animation: none !important;
   }
+}
+
+/* =========================================================================
+   Perbaikan: hewan tidak tertutup menu & balon kata hewan selalu terlihat
+   ========================================================================= */
+/* kartu yang dihinggapi hewan diberi jarak dari menu di atasnya */
+.grid:has(> .ada-hewan) {
+  margin-top: 64px;
+}
+
+/* balon kata hewan selalu di lapisan paling atas agar tidak tertutup */
+.suara-hewan,
+.meong {
+  z-index: 30;
+}
+
+.hewan-hidup:has(.bersuara),
+.hewan-hidup:has(.mengeong) {
+  z-index: 45;
+}
+
+/* balon kata hewan di pinggir layar digeser ke dalam agar tidak terpotong */
+.pengintip.kanan .suara-hewan {
+  left: auto;
+  right: 12px;
+  transform: none;
+  animation-name: suara-muncul-tepi;
+}
+
+.pengintip.kiri .suara-hewan {
+  left: 12px;
+  transform: none;
+  animation-name: suara-muncul-tepi;
+}
+
+@keyframes suara-muncul-tepi {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1.05);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scale(1);
+  }
+}
+
+/* saat animasi dimatikan, balon kata tetap terlihat (tanpa efek muncul-hilang) */
+.tanpa-animasi .suara-hewan,
+.tanpa-animasi .meong {
+  opacity: 1;
 }
