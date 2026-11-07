@@ -54,7 +54,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
 - **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
-- Tampilan responsif (laptop dan HP) serta mendukung mode terang/gelap.
+- **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
+- Tema biru, responsif (laptop dan HP), serta mendukung mode terang/gelap.
 
 ## Rancangan Berdasarkan Teori Beban Kognitif
 
@@ -232,6 +233,8 @@ aplikasi-pythagoras/
     ├── main.jsx      titik awal aplikasi
     ├── App.jsx       halaman utama: menu, kalkulator, contoh soal
     ├── Belajar.jsx   pemutar materi belajar per sesi
+    ├── Maskot.jsx    karakter maskot "Siku" (SVG beranimasi)
+    ├── Ikon.jsx      ikon menu
     ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
     ├── tes.js        soal tes dan butir kuesioner
     ├── penyimpanan.js penyimpanan hasil, kirim ke Supabase, ekspor CSV

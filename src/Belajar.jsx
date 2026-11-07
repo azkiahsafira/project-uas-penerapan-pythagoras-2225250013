@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { SESI } from './materi.js'
 import { keAngka } from './pythagoras.js'
@@ -126,9 +127,15 @@ function Cek({ cek, onSelesai }) {
           </button>
         </form>
       )}
-      {hasil === 'salah' && <p className="umpan salah">Belum tepat. Petunjuk: {cek.petunjuk}</p>}
-      {hasil === 'benar' && <p className="umpan benar">Benar! {cek.penjelasan}</p>}
-      {hasil === 'dibuka' && <p className="umpan">Jawabannya: {cek.penjelasan}</p>}
+      {hasil && (
+        // key: maskot dianimasikan ulang setiap umpan balik baru
+        <div className="umpan-maskot" key={`${hasil}-${salah}`}>
+          <Maskot suasana={hasil === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+          {hasil === 'salah' && <p className="umpan salah">Belum tepat. Petunjuk: {cek.petunjuk}</p>}
+          {hasil === 'benar' && <p className="umpan benar">Benar! {cek.penjelasan}</p>}
+          {hasil === 'dibuka' && <p className="umpan">Tidak apa-apa, ini jawabannya: {cek.penjelasan}</p>}
+        </div>
+      )}
     </div>
   )
 }

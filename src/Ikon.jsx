@@ -45,25 +45,3 @@ export default function Ikon({ nama }) {
     </svg>
   )
 }
-
-// Hiasan header: segitiga 3-4-5 dengan persegi di tiap sisinya.
-export function HiasanPythagoras() {
-  const s = 14
-  const x0 = 4 * s + 8
-  const y0 = 7 * s + 8
-  const titik = (p) => p.map((q) => q.join(',')).join(' ')
-  const O = [x0, y0]
-  const A = [x0 + 3 * s, y0]
-  const B = [x0, y0 - 4 * s]
-  return (
-    <svg className="hiasan" viewBox={`0 0 ${11 * s + 16} ${10 * s + 16}`} aria-hidden="true">
-      <polygon points={titik([O, A, [A[0], y0 + 3 * s], [x0, y0 + 3 * s]])} className="h-persegi h1" />
-      <polygon points={titik([O, B, [x0 - 4 * s, B[1]], [x0 - 4 * s, y0]])} className="h-persegi h2" />
-      <polygon points={titik([A, B, [B[0] + 4 * s, B[1] - 3 * s], [A[0] + 4 * s, A[1] - 3 * s]])} className="h-persegi h3" />
-      <polygon points={titik([O, A, B])} className="h-segitiga" />
-      <text x={x0 + 1.5 * s} y={y0 + 1.8 * s} textAnchor="middle">9</text>
-      <text x={x0 - 2 * s} y={y0 - 1.8 * s} textAnchor="middle">16</text>
-      <text x={x0 + 3.5 * s} y={y0 - 3.2 * s} textAnchor="middle">25</text>
-    </svg>
-  )
-}

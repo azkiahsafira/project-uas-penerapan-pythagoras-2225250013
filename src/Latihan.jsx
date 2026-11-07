@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, keAngka } from './pythagoras.js'
 
@@ -117,13 +118,18 @@ export default function Latihan() {
           )}
         </form>
 
-        {status === 'benar' && <p className="umpan benar">Benar! {NAMA[soal.cari]} = {kunci}.</p>}
-        {status === 'salah' && (
-          <p className="umpan salah">
-            Belum tepat. Jawaban kamu {jawaban}, seharusnya {kunci}.
-          </p>
+        {status && (
+          <div className="umpan-maskot" key={`${status}-${skor.total}`}>
+            <Maskot suasana={status === 'benar' ? 'senang' : 'mikir'} ukuran={64} />
+            {status === 'benar' && <p className="umpan benar">Benar! {NAMA[soal.cari]} = {kunci}.</p>}
+            {status === 'salah' && (
+              <p className="umpan salah">
+                Belum tepat. Jawaban kamu {jawaban}, seharusnya {kunci}.
+              </p>
+            )}
+            {status === 'menyerah' && <p className="umpan">Jawabannya {NAMA[soal.cari]} = {kunci}.</p>}
+          </div>
         )}
-        {status === 'menyerah' && <p className="umpan">Jawabannya {NAMA[soal.cari]} = {kunci}.</p>}
 
         {selesai && (
           <div className="hasil">

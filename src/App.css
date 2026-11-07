@@ -113,53 +113,12 @@ h2 {
   opacity: 0.92;
 }
 
-.hiasan {
-  position: relative;
-  flex: 0 0 auto;
-  width: 170px;
-  height: auto;
-}
-
-.hiasan .h-persegi {
-  stroke: rgba(255, 255, 255, 0.85);
-  stroke-width: 1.5;
-}
-
-.hiasan .h1 {
-  fill: rgba(255, 255, 255, 0.18);
-}
-
-.hiasan .h2 {
-  fill: rgba(255, 255, 255, 0.26);
-}
-
-.hiasan .h3 {
-  fill: rgba(255, 255, 255, 0.34);
-}
-
-.hiasan .h-segitiga {
-  fill: rgba(255, 255, 255, 0.9);
-}
-
-.hiasan text {
-  fill: #fff;
-  font-size: 12px;
-  font-weight: 700;
-}
-
 @media (max-width: 560px) {
   .hero {
     padding: 22px 20px;
     border-radius: 20px;
   }
 
-  .hiasan {
-    position: absolute;
-    right: -18px;
-    bottom: -14px;
-    width: 120px;
-    opacity: 0.45;
-  }
 }
 
 .menu {
@@ -267,7 +226,7 @@ input:disabled {
 }
 
 .hitung {
-  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--accent-2)));
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--accent-3)));
   border-color: transparent;
   color: var(--on-accent);
   font-weight: 700;
@@ -503,7 +462,7 @@ code {
 }
 
 .segitiga .persegi.besar {
-  fill: color-mix(in srgb, var(--accent-2) 22%, transparent);
+  fill: color-mix(in srgb, var(--accent-2) 25%, transparent);
 }
 
 .segitiga .luas {
@@ -854,4 +813,318 @@ tbody tr:last-child td {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+/* =========================================================================
+   Maskot "Siku"
+   ========================================================================= */
+.maskot {
+  --maskot-garis: #13224a;
+  --maskot-isi: #ffffff;
+  overflow: visible;
+  flex: 0 0 auto;
+}
+
+.maskot .tubuh {
+  fill: var(--maskot-isi);
+  stroke: var(--maskot-garis);
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.maskot .kilau {
+  stroke: color-mix(in srgb, var(--accent) 35%, transparent);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.maskot .siku-tanda {
+  fill: none;
+  stroke: var(--maskot-garis);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.maskot .lengan path,
+.maskot .mata-senang path,
+.maskot .mulut {
+  fill: none;
+  stroke: var(--maskot-garis);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.maskot .mulut,
+.maskot .mata-senang path {
+  stroke-width: 3;
+}
+
+.maskot .lengan circle {
+  fill: var(--maskot-isi);
+  stroke: var(--maskot-garis);
+  stroke-width: 3;
+}
+
+.maskot .kaki,
+.maskot .mata ellipse,
+.maskot .mulut-buka {
+  fill: var(--maskot-garis);
+}
+
+.maskot .kilap {
+  fill: #fff;
+}
+
+.maskot .pipi {
+  fill: #fda4af;
+  opacity: 0.85;
+}
+
+.maskot .bayang {
+  fill: rgba(10, 25, 60, 0.18);
+}
+
+.maskot .bintang path {
+  fill: var(--accent-2);
+}
+
+.maskot .tanya {
+  fill: var(--accent-2);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+/* --- animasi --- */
+.maskot .badan,
+.maskot .bayang,
+.maskot .mata,
+.maskot .lengan-lambai,
+.maskot .bintang path,
+.maskot .tanya {
+  transform-box: view-box;
+}
+
+.maskot .badan {
+  animation: maskot-melayang 3s ease-in-out infinite;
+}
+
+.maskot .bayang {
+  transform-origin: 82px 142px;
+  animation: maskot-bayang 3s ease-in-out infinite;
+}
+
+.maskot .mata {
+  transform-origin: 66px 88px;
+  animation: maskot-kedip 4.5s infinite;
+}
+
+.maskot .lengan-lambai {
+  transform-origin: 87px 81px;
+  animation: maskot-lambai 1.8s ease-in-out infinite;
+}
+
+.maskot .bintang path {
+  transform-origin: 143px 37px;
+  animation: maskot-kelip 2.4s ease-in-out infinite;
+}
+
+.maskot .bintang .b2 {
+  transform-origin: 18px 51px;
+  animation-delay: 1.2s;
+}
+
+.maskot .tanya {
+  animation: maskot-tanya 1.6s ease-in-out infinite;
+}
+
+/* senang: melompat 3 kali lalu kembali melayang */
+.maskot.senang .badan {
+  animation:
+    maskot-lompat 0.7s ease-in-out 3,
+    maskot-melayang 3s ease-in-out 2.1s infinite;
+}
+
+.maskot.senang .lengan-lambai {
+  animation-duration: 0.7s;
+}
+
+.maskot.mikir .lengan-lambai {
+  animation: none;
+}
+
+@keyframes maskot-melayang {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes maskot-bayang {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.86);
+    opacity: 0.7;
+  }
+}
+
+@keyframes maskot-kedip {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes maskot-lambai {
+  0%,
+  100% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes maskot-kelip {
+  0%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes maskot-lompat {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  40% {
+    transform: translateY(-14px) scaleY(1.03);
+  }
+  80% {
+    transform: translateY(0) scaleY(0.96);
+  }
+}
+
+@keyframes maskot-tanya {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Tanpa animasi: saat tes, atau bila perangkat meminta gerak dikurangi */
+.maskot.diam *,
+.maskot.diam {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maskot,
+  .maskot * {
+    animation: none !important;
+  }
+}
+
+/* Maskot di header beserta balon kata */
+.hero-maskot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gelembung {
+  position: relative;
+  max-width: 190px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: #fff;
+  color: #13224a;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 0 8px 20px -10px rgba(10, 25, 60, 0.5);
+  animation: gelembung-muncul 0.35s ease-out;
+}
+
+.gelembung::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 3px;
+}
+
+@keyframes gelembung-muncul {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gelembung {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    align-items: flex-end;
+  }
+
+  .hero-maskot .gelembung {
+    display: none;
+  }
+
+  .hero-maskot .maskot {
+    width: 92px;
+    height: auto;
+  }
+}
+
+/* Maskot kecil di samping umpan balik jawaban */
+.umpan-maskot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.umpan-maskot .umpan {
+  flex: 1;
+  margin: 0;
+}
+
+.umpan-maskot .maskot {
+  --maskot-isi: color-mix(in srgb, var(--accent) 12%, var(--card));
+  --maskot-garis: var(--text);
 }

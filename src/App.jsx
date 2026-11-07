@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Belajar from './Belajar.jsx'
-import Ikon, { HiasanPythagoras } from './Ikon.jsx'
+import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
+import Maskot from './Maskot.jsx'
 import Tes from './Tes.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
@@ -20,6 +21,14 @@ const MENU = [
   ['latihan', 'Latihan Soal'],
   ['tes', 'Tes'],
 ]
+
+// Kalimat maskot di header, berganti sesuai menu
+const SAPAAN = {
+  belajar: 'Hai, aku Siku! Yuk belajar pelan-pelan, satu langkah dulu.',
+  kalkulator: 'Masukkan dua sisi, nanti aku bantu hitung sisi ketiga!',
+  latihan: 'Ayo latihan! Salah itu wajar, coba lagi ya.',
+  tes: 'Kerjakan sendiri ya. Kamu pasti bisa!',
+}
 
 const CONTOH = [
   {
@@ -83,7 +92,13 @@ function App() {
           <h1>Penerapan Teorema Pythagoras</h1>
           <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
         </div>
-        <HiasanPythagoras />
+        <div className="hero-maskot">
+          {/* key: balon kata dianimasikan ulang setiap ganti menu */}
+          <p className="gelembung" key={halaman} aria-live="polite">
+            {SAPAAN[halaman]}
+          </p>
+          <Maskot ukuran={130} diam={fokusTes} />
+        </div>
       </header>
 
       {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
