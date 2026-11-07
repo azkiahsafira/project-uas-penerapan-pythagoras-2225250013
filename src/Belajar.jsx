@@ -340,7 +340,7 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
 }
 
 // Form singkat nama siswa sebelum belajar (disimpan di perangkat & dipakai juga di menu Tes)
-function FormKenalan({ awal, onSimpan, onBatal }) {
+export function FormKenalan({ awal, onSimpan, onBatal }) {
   // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
   const [data, setData] = useState(() => ({ nama: '', sekolah: '', ...awal, kelas: '8' }))
   const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
@@ -392,7 +392,13 @@ export default function Belajar() {
   const [identitas, setIdentitas] = useState(identitasTerakhir)
   const [kenalan, setKenalan] = useState(null) // sesi yang akan dibuka setelah isi nama ('ganti' = hanya ganti nama)
 
-  const mulai = (s) => (identitas ? setAktif(s) : setKenalan(s))
+  const mulai = (s) => {
+    // identitas mungkin baru diisi di menu Latihan
+    const id = identitas ?? identitasTerakhir()
+    if (!id) return setKenalan(s)
+    setIdentitas(id)
+    setAktif(s)
+  }
 
   const tamat = (id) => {
     const baru = selesai.includes(id) ? selesai : [...selesai, id]
@@ -435,7 +441,7 @@ export default function Belajar() {
             <p>
               {selamat.id < SESI.length
                 ? `Sesi ${selamat.id + 1} sekarang sudah terbuka. Istirahat sebentar, lalu lanjut ya!`
-                : 'Kamu sudah menyelesaikan semua sesi. Coba menu Latihan Soal untuk berlatih lagi!'}
+                : 'Kamu sudah menyelesaikan semua sesi. Di pertemuan 4, terapkan ilmumu di menu Latihan Soal ya!'}
             </p>
             <button type="button" className="hitung" autoFocus onClick={() => setSelamat(null)}>
               Oke, siap!

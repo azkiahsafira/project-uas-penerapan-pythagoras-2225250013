@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TombolBacakan from './Bacakan.jsx'
+import { FormKenalan } from './Belajar.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, keAngka } from './pythagoras.js'
+import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
+
+// Pertemuan 4 (implementasi): siswa menerapkan Pythagoras pada soal sehari-hari.
+// Setiap soal yang dijawab dicatat ke tabel `aktivitas` (jenis 'latihan', sesi 4).
+export const PERTEMUAN_LATIHAN = 4
+export const TARGET_SOAL = 10
 
 // Tripel Pythagoras dasar (a, b, c) agar jawaban selalu bilangan bulat
 const TRIPEL = [
@@ -20,23 +27,26 @@ const TRIPEL = [
   [9, 40, 41],
 ]
 
-// Cerita soal untuk tiap sisi yang dicari
+// Cerita soal sehari-hari untuk tiap sisi yang dicari
 const CERITA = {
   c: [
     (s) => `Layar laptop lebarnya ${s.a} cm dan tingginya ${s.b} cm. Berapa cm panjang diagonal layar?`,
     (s) => `Rina berjalan ${s.a} m ke timur, lalu ${s.b} m ke utara. Berapa meter jarak terpendek Rina dari titik awal?`,
     (s) => `Taman berbentuk persegi panjang berukuran ${s.a} m × ${s.b} m. Berapa meter panjang jalan setapak yang memotong taman secara diagonal?`,
-    (s) => `Diketahui segitiga siku-siku dengan a = ${s.a} dan b = ${s.b}. Hitung panjang sisi miring c.`,
+    (s) => `Pada peta, rumah Dimas ${s.a} km di sebelah barat sekolah, dan pasar ${s.b} km di sebelah utara rumah Dimas. Berapa km jarak lurus dari sekolah ke pasar?`,
+    (s) => `Sebuah kapal berlayar ${s.a} km ke selatan, lalu ${s.b} km ke barat. Berapa km jarak kapal dari pelabuhan asalnya?`,
+    (s) => `Bingkai foto berukuran ${s.a} cm × ${s.b} cm akan diberi pita lurus dari sudut ke sudut yang berseberangan. Berapa cm panjang pita yang dibutuhkan?`,
   ],
   b: [
     (s) => `Tangga sepanjang ${s.c} m bersandar di dinding. Kaki tangga berjarak ${s.a} m dari dinding. Berapa meter tinggi dinding yang dicapai ujung tangga?`,
     (s) => `Benang layang-layang yang terulur sepanjang ${s.c} m. Jarak mendatar anak ke titik tepat di bawah layang-layang ${s.a} m. Berapa meter tinggi layang-layang?`,
-    (s) => `Diketahui segitiga siku-siku dengan a = ${s.a} dan sisi miring c = ${s.c}. Hitung tinggi b.`,
+    (s) => `Bayangan sebuah pohon panjangnya ${s.a} m. Jarak dari ujung bayangan ke puncak pohon ${s.c} m. Berapa meter tinggi pohon itu?`,
+    (s) => `Layar televisi diagonalnya ${s.c} inci dan lebarnya ${s.a} inci. Berapa inci tinggi layar televisi itu?`,
   ],
   a: [
     (s) => `Tiang bendera setinggi ${s.b} m ditopang kawat sepanjang ${s.c} m dari puncak tiang ke tanah. Berapa meter jarak ujung kawat di tanah ke kaki tiang?`,
     (s) => `Papan seluncur sepanjang ${s.c} m dipasang dari ketinggian ${s.b} m. Berapa meter jarak mendatar dari bawah tangga ke ujung seluncuran?`,
-    (s) => `Diketahui segitiga siku-siku dengan b = ${s.b} dan sisi miring c = ${s.c}. Hitung alas a.`,
+    (s) => `Jalan landai untuk kursi roda panjangnya ${s.c} m dan naik setinggi ${s.b} m. Berapa meter jarak mendatar jalan landai itu?`,
   ],
 }
 
@@ -53,11 +63,39 @@ function buatSoal(sebelumnya) {
 }
 
 export default function Latihan() {
+  // identitas dibaca ulang dari perangkat agar ikut berubah bila diisi/diganti di menu Belajar
+  const [, segarkan] = useState(0)
+  const identitas = identitasTerakhir()
   const [soal, setSoal] = useState(() => buatSoal())
   const [jawaban, setJawaban] = useState('')
   const [status, setStatus] = useState(null) // null | 'benar' | 'salah' | 'menyerah'
   const [skor, setSkor] = useState({ benar: 0, total: 0 })
   const [beruntun, setBeruntun] = useState(0) // jumlah benar berturut-turut
+
+  // waktu mulai & pemakaian Bacakan untuk soal yang sedang tampil
+  const catatan = useRef({ mulai: null, dibacakan: 0 })
+  useEffect(() => {
+    catatan.current = { mulai: new Date(), dibacakan: 0 }
+  }, [soal])
+
+  const catat = (hasil) => {
+    const selesai = new Date()
+    const mulai = catatan.current.mulai ?? selesai
+    catatAktivitas({
+      jenis: 'latihan',
+      ...identitasTerakhir(),
+      sesi: PERTEMUAN_LATIHAN,
+      langkah: skor.total + 1, // nomor soal
+      judul: soal.cerita,
+      mulai: mulai.toISOString(),
+      selesai: selesai.toISOString(),
+      durasiDetik: Math.round((selesai - mulai) / 1000),
+      salah: hasil === 'benar' ? 0 : 1,
+      hasil,
+      dibacakan: catatan.current.dibacakan,
+    })
+    kirimTertunda()
+  }
 
   const selesai = status !== null
   const kunci = soal.sisi[soal.cari]
@@ -70,12 +108,14 @@ export default function Latihan() {
     if (!Number.isFinite(n)) return
     const benar = Math.abs(n - kunci) < 0.01
     setStatus(benar ? 'benar' : 'salah')
+    catat(benar ? 'benar' : 'salah')
     setBeruntun((b) => (benar ? b + 1 : 0))
     setSkor((s) => ({ benar: s.benar + (benar ? 1 : 0), total: s.total + 1 }))
   }
 
   const menyerah = () => {
     setStatus('menyerah')
+    catat('menyerah')
     setBeruntun(0)
     setSkor((s) => ({ ...s, total: s.total + 1 }))
   }
@@ -86,16 +126,50 @@ export default function Latihan() {
     setStatus(null)
   }
 
+  if (!identitas) {
+    return (
+      <FormKenalan
+        awal={{}}
+        onSimpan={(baru) => {
+          simpanIdentitas(baru)
+          catatan.current = { mulai: new Date(), dibacakan: 0 } // waktu soal pertama dihitung setelah kenalan
+          segarkan((n) => n + 1)
+        }}
+      />
+    )
+  }
+
+  const tercapai = skor.total >= TARGET_SOAL
+
   return (
     <div className="grid">
       <section className="kartu ada-hewan">
         <HewanHidup jenis="katak" className="hinggap kanan" />
         <div className="kepala-latihan">
-          <h2>Latihan Soal</h2>
+          <span className="nomor-sesi warna-4">Pertemuan {PERTEMUAN_LATIHAN} · Implementasi</span>
           <span className="skor" aria-live="polite">
             Skor: {skor.benar} / {skor.total}
           </span>
         </div>
+        <h2>Latihan Soal Sehari-hari</h2>
+        <p className="ket">
+          Terapkan teorema Pythagoras pada masalah sehari-hari. Kerjakan minimal {TARGET_SOAL} soal, ya {identitas.nama}!
+        </p>
+        <div
+          className="progres"
+          role="progressbar"
+          aria-label="Target soal pertemuan 4"
+          aria-valuemin={0}
+          aria-valuemax={TARGET_SOAL}
+          aria-valuenow={Math.min(skor.total, TARGET_SOAL)}
+        >
+          <div style={{ width: `${(Math.min(skor.total, TARGET_SOAL) / TARGET_SOAL) * 100}%` }} />
+        </div>
+        <p className="ket target-latihan" aria-live="polite">
+          {tercapai
+            ? `🎯 Target ${TARGET_SOAL} soal tercapai! Boleh lanjut berlatih kalau masih mau.`
+            : `${skor.total} dari ${TARGET_SOAL} soal dikerjakan`}
+        </p>
         {beruntun >= 2 && (
           <p className="combo" key={beruntun} aria-live="polite">
             <span className="api">🔥</span> {beruntun} benar berturut-turut!
@@ -104,7 +178,14 @@ export default function Latihan() {
         )}
 
         <p className="soal">{soal.cerita}</p>
-        <TombolBacakan key={soal.cerita} bagian={[soal.cerita]} label="Bacakan soal" />
+        <TombolBacakan
+          key={soal.cerita}
+          bagian={[soal.cerita]}
+          label="Bacakan soal"
+          onMulai={() => {
+            catatan.current.dibacakan += 1
+          }}
+        />
 
         <form onSubmit={periksa}>
           <label>

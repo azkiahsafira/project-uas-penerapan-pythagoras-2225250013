@@ -72,3 +72,9 @@ grant insert on public.aktivitas to anon;
 
 -- Kolom tambahan: berapa kali siswa menekan tombol "Bacakan" di sebuah langkah
 alter table public.aktivitas add column if not exists dibacakan integer not null default 0;
+
+-- Pertemuan 4 (implementasi): setiap soal di menu Latihan dicatat sebagai jenis 'latihan'
+-- (sesi = 4, langkah = nomor soal, judul = teks soal, hasil = 'benar' | 'salah' | 'menyerah')
+alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
+alter table public.aktivitas add constraint aktivitas_jenis_check
+  check (jenis in ('langkah', 'sesi', 'latihan'));

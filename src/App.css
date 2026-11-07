@@ -4097,3 +4097,23 @@ tbody tr:last-child td {
     animation: none;
   }
 }
+
+/* =========================================================================
+   Latihan = Pertemuan 4 (implementasi)
+   ========================================================================= */
+.warna-4 {
+  --warna: var(--sesi-1);
+}
+
+.kepala-latihan .nomor-sesi {
+  margin-bottom: 0;
+}
+
+.kepala-latihan + h2 {
+  margin: 10px 0 4px;
+}
+
+.target-latihan {
+  margin: -10px 0 14px;
+  font-weight: 600;
+}

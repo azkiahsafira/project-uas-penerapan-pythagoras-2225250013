@@ -77,7 +77,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Deteksi tripel Pythagoras**: memberi tahu jika ketiga sisi bilangan bulat, misalnya (3, 4, 5).
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
-- **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
+- **Latihan soal = Pertemuan 4 (implementasi)**: soal cerita sehari-hari (tangga, layang-layang, peta, kapal, bayangan pohon, layar TV, jalan landai kursi roda, dan lain-lain) dibuat acak, jawaban diperiksa otomatis, ada skor, target minimal 10 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
 - **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
 - **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus 8 hewan yang tersebar di halaman: anak ayam & kelinci hinggap di kartu sesi, anjing di kartu kalkulator, kucing di samping judul contoh soal, katak di kartu latihan, panda & beruang mengintip dari pinggir layar (layar lebar), dan bebek yang sesekali berjalan melintas di bawah layar. Setiap karakter dan hewan punya beberapa kalimat yang bergantian, dan balon kata di header berganti sendiri sesuai menu (diawali salam sesuai jam). Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
 - **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai (pelangi dan Siku bertopi wisuda yang menari), Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
@@ -104,7 +104,7 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | 1 | Pre-test, lalu Sesi 1 | Tes → Pre-test, lalu Belajar → Sesi 1 |
 | 2 | Sesi 2 | Belajar → Sesi 2 |
 | 3 | Sesi 3 | Belajar → Sesi 3 |
-| 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal dan Kalkulator |
+| 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal (label "Pertemuan 4 · Implementasi", minimal 10 soal), Kalkulator untuk memeriksa |
 | 5 | Post-test dan skala beban kognitif | Tes → Post-test, lalu Tes → Kuesioner Beban Kognitif |
 
 Kedua siswa (yang belajar dengan aplikasi dan yang diajar langsung) mengerjakan pre-test, post-test, dan kuesioner yang sama.
@@ -218,7 +218,7 @@ Ada dua tabel. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabas
 | Tabel | Isi |
 | ----- | --- |
 | `hasil` | pre-test, post-test, dan kuesioner Leppink (nilai, jawaban, durasi, IL/EL/GL) |
-| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka, berapa kali tombol Bacakan dipakai) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah) |
+| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka, berapa kali tombol Bacakan dipakai) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah); serta tiap soal **latihan** pertemuan 4 (`sesi` = 4, `langkah` = nomor soal, hasil benar / salah / menyerah) |
 
 Sebelum mulai Sesi 1, siswa mengisi nama sekali ("Kenalan dulu, yuk!"); nama yang sama dipakai juga di menu Tes.
 
@@ -256,7 +256,7 @@ Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lew
 
 ## Analisis Data (Python)
 
-Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, serta langkah yang paling lama/paling banyak salah (indikasi intrinsic load). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
+Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, langkah yang paling lama/paling banyak salah (indikasi intrinsic load), serta rekap latihan pertemuan 4 per siswa (jumlah soal, persentase benar, rata-rata waktu per soal). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
 
 ```bash
 cd analisis

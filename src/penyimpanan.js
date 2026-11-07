@@ -1,6 +1,6 @@
 // Penyimpanan data penelitian:
 // - hasil     : pre-test, post-test, kuesioner Leppink  -> tabel `hasil`
-// - aktivitas : proses belajar di menu Belajar          -> tabel `aktivitas`
+// - aktivitas : proses belajar di menu Belajar & Latihan -> tabel `aktivitas`
 //
 // Semua data SELALU disimpan dulu di perangkat (localStorage), lalu dikirim
 // ke Supabase. Jika internet putus, data tetap aman di perangkat dengan tanda

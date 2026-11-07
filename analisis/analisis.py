@@ -7,8 +7,9 @@ aplikasi), lalu menghitung:
   2. Ketercapaian tiap indikator soal (pre vs post)
   3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
   4. Perbandingan kelompok "Belajar dengan aplikasi" vs "Diajar langsung"
-  5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, serta
-     total waktu tiap sesi, dari tabel `aktivitas`
+  5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, total
+     waktu tiap sesi, serta hasil latihan pertemuan 4 (implementasi), dari
+     tabel `aktivitas`
 
 Keluaran:
   - laporan di terminal
@@ -398,7 +399,7 @@ def baca_aktivitas(path):
     data = []
     for b in baris_baris:
         jenis = ambil(b, "jenis")
-        if jenis not in ("langkah", "sesi"):
+        if jenis not in ("langkah", "sesi", "latihan"):
             continue
         data.append({
             "jenis": jenis,
@@ -487,6 +488,57 @@ def laporan_aktivitas(aktivitas, langkah):
             print(f"   - Sesi {l['sesi']} langkah {l['langkah']} ({l['judul']}): {l['total_salah']} salah, {l['dibuka']} jawaban dibuka")
 
 
+def rekap_latihan(aktivitas):
+    """Rekap pertemuan 4 (implementasi) per siswa dari baris jenis 'latihan'."""
+    per_siswa = {}
+    for a in aktivitas:
+        if a["jenis"] != "latihan":
+            continue
+        r = per_siswa.setdefault(a["nama"], {"soal": 0, "benar": 0, "salah": 0, "menyerah": 0, "durasi": [], "dibacakan": 0})
+        r["soal"] += 1
+        r[a["hasil"] if a["hasil"] in ("benar", "salah", "menyerah") else "salah"] += 1
+        r["durasi"].append(a["durasi"])
+        r["dibacakan"] += a["dibacakan"]
+    hasil = []
+    for nama, r in sorted(per_siswa.items()):
+        hasil.append({
+            "nama": nama,
+            "soal": r["soal"],
+            "benar": r["benar"],
+            "salah": r["salah"],
+            "menyerah": r["menyerah"],
+            "persen": 100 * r["benar"] / r["soal"] if r["soal"] else None,
+            "rata_detik": rata(r["durasi"]),
+            "dibacakan": r["dibacakan"],
+        })
+    return hasil
+
+
+def laporan_latihan(latihan):
+    if not latihan:
+        print("\n8. LATIHAN PERTEMUAN 4 (IMPLEMENTASI): belum ada data.")
+        return
+    cetak_tabel(
+        "8. LATIHAN PERTEMUAN 4 (IMPLEMENTASI, menu Latihan Soal)",
+        ["Nama", "Soal", "Benar", "Salah", "Lihat jawaban", "% benar", "Rata-rata waktu/soal", "Dibacakan"],
+        [
+            [l["nama"], l["soal"], l["benar"], l["salah"], l["menyerah"], f"{fmt(l['persen'])}%", f"{fmt(l['rata_detik'])} dtk", f"{l['dibacakan']}x"]
+            for l in latihan
+        ],
+    )
+    print("   Lihat jawaban = siswa menekan \"Lihat jawaban\" tanpa menjawab. Target pertemuan 4: minimal 10 soal.")
+
+
+def simpan_latihan(latihan, folder):
+    with open(os.path.join(folder, "rekap_latihan.csv"), "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["nama", "jumlah_soal", "benar", "salah", "lihat_jawaban", "persen_benar", "rata_rata_detik", "dibacakan"])
+        for l in latihan:
+            w.writerow([l["nama"], l["soal"], l["benar"], l["salah"], l["menyerah"],
+                        None if l["persen"] is None else round(l["persen"], 1),
+                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["dibacakan"]])
+
+
 def simpan_aktivitas(langkah, folder):
     with open(os.path.join(folder, "rekap_langkah.csv"), "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
@@ -538,7 +590,10 @@ def main():
         langkah = rekap_langkah(aktivitas)
         laporan_aktivitas(aktivitas, langkah)
         simpan_aktivitas(langkah, args.keluaran)
-        berkas += ["rekap_langkah.csv", "grafik_waktu_langkah.svg", "grafik_salah_langkah.svg"]
+        latihan = rekap_latihan(aktivitas)
+        laporan_latihan(latihan)
+        simpan_latihan(latihan, args.keluaran)
+        berkas += ["rekap_langkah.csv", "grafik_waktu_langkah.svg", "grafik_salah_langkah.svg", "rekap_latihan.csv"]
 
     print(f"\nFile tersimpan di folder '{args.keluaran}': " + ", ".join(berkas))
 

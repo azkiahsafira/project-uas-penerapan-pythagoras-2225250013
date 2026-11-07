@@ -28,6 +28,7 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
    | `rekap_langkah.csv` | rata-rata waktu, total salah, dan jawaban dibuka per langkah materi (dengan `--aktivitas`) |
    | `grafik_waktu_langkah.svg` | rata-rata waktu per langkah (dengan `--aktivitas`) |
    | `grafik_salah_langkah.svg` | jumlah jawaban salah per langkah (dengan `--aktivitas`) |
+   | `rekap_latihan.csv` | latihan pertemuan 4 per siswa: jumlah soal, benar, salah, lihat jawaban, % benar, rata-rata waktu (dengan `--aktivitas`) |
 
    File SVG bisa dibuka di browser, atau dimasukkan ke Word lewat **Insert → Pictures**.
 
