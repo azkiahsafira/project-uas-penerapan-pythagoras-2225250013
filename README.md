@@ -4,6 +4,8 @@ Aplikasi web sederhana untuk menghitung sisi segitiga siku-siku menggunakan teor
 
 Dibuat untuk mata kuliah **Algoritma Pemrograman**.
 
+**Coba aplikasinya:** https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/
+
 ## Teorema Pythagoras
 
 Pada segitiga siku-siku, kuadrat sisi miring sama dengan jumlah kuadrat kedua sisi siku-sikunya:
@@ -127,6 +129,8 @@ Perintah lainnya:
 | `npm run build` | membuat versi siap pakai di folder `dist` |
 | `npm run preview` | menjalankan hasil build |
 | `npm run lint` | memeriksa kode |
+
+Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lewat GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)).
 
 ## Struktur Folder
 
