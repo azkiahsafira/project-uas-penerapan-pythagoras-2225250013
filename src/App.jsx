@@ -3,6 +3,7 @@ import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { PemberitahuanOffline, TombolInstall } from './Install.jsx'
+import { hentikan } from './suara.js'
 import { LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
@@ -78,6 +79,11 @@ function App() {
       // penyimpanan tidak tersedia: pilihan hanya berlaku selama halaman terbuka
     }
   }, [animasi])
+
+  // bacaan suara berhenti setiap pindah menu atau saat tes dimulai
+  useEffect(() => {
+    hentikan()
+  }, [halaman, fokusTes])
   const [cari, setCari] = useState('c')
   const [nilai, setNilai] = useState({ a: '3', b: '4', c: '' })
   const [hasil, setHasil] = useState(() => hitung('c', { a: '3', b: '4' }))

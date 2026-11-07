@@ -92,6 +92,7 @@ const keBarisAktivitas = (a) => ({
   durasi_detik: a.durasiDetik,
   salah: a.salah ?? 0,
   hasil: a.hasil ?? null,
+  dibacakan: a.dibacakan ?? 0,
 })
 
 const ANTREAN = [

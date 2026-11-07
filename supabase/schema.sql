@@ -69,3 +69,6 @@ create policy "aplikasi boleh menambah aktivitas"
   with check (true);
 
 grant insert on public.aktivitas to anon;
+
+-- Kolom tambahan: berapa kali siswa menekan tombol "Bacakan" di sebuah langkah
+alter table public.aktivitas add column if not exists dibacakan integer not null default 0;

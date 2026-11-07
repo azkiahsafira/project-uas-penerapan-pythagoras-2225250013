@@ -64,6 +64,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
   - Sesi 1: mengenal segitiga siku-siku, kuadrat, dan akar kuadrat.
   - Sesi 2: menemukan dan memakai teorema Pythagoras.
   - Sesi 3: Pythagoras dalam kehidupan sehari-hari (soal cerita).
+  - Tombol **🔊 Bacakan** membacakan judul, penjelasan, rumus (simbol dibaca sebagai kata, misalnya “c kuadrat sama dengan…”), dan pertanyaan; bagian yang sedang dibacakan disorot seperti stabilo. Soal di Latihan juga bisa dibacakan. Memakai suara bawaan perangkat (Web Speech API), gratis.
   - Setiap langkah punya cek pemahaman: petunjuk muncul jika salah, dan jawaban dibuka setelah 2 kali salah agar siswa tidak buntu. Progres sesi tersimpan di perangkat.
 - **Tes penelitian** (menu Tes):
   - **Pre-test** (pertemuan 1, sebelum Sesi 1) dan **post-test** (pertemuan 5): masing-masing 10 soal paralel, satu soal per layar, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
@@ -93,7 +94,7 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | Beban | Strategi | Penerapan di aplikasi |
 | ----- | -------- | --------------------- |
 | Intrinsic load | Dikelola | Materi dipecah jadi langkah kecil (satu konsep per layar); prasyarat kuadrat dan akar diajarkan dulu di Sesi 1; sesi berikutnya terkunci sampai sesi sebelumnya selesai. |
-| Extraneous load | Ditekan | Satu layar hanya berisi teks singkat, satu gambar, dan satu pertanyaan; tanpa animasi atau hiasan; di HP gambar ditaruh di atas teks agar tidak perlu scroll bolak-balik (*split-attention*). |
+| Extraneous load | Ditekan | Satu layar hanya berisi teks singkat, satu gambar, dan satu pertanyaan; tanpa animasi atau hiasan; di HP gambar ditaruh di atas teks agar tidak perlu scroll bolak-balik (*split-attention*); tombol **Bacakan** menyajikan penjelasan secara lisan sementara mata fokus pada gambar (*prinsip modalitas*). |
 | Germane load | Dioptimalkan | Contoh lengkap (*worked example*) diikuti contoh setengah jadi (*faded example*); cek pemahaman dengan umpan balik dan petunjuk di setiap langkah; strategi 4 langkah untuk soal cerita; refleksi di akhir. |
 
 ## Alur Penelitian
@@ -217,7 +218,7 @@ Ada dua tabel. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabas
 | Tabel | Isi |
 | ----- | --- |
 | `hasil` | pre-test, post-test, dan kuesioner Leppink (nilai, jawaban, durasi, IL/EL/GL) |
-| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah) |
+| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka, berapa kali tombol Bacakan dipakai) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah) |
 
 Sebelum mulai Sesi 1, siswa mengisi nama sekali ("Kenalan dulu, yuk!"); nama yang sama dipakai juga di menu Tes.
 
@@ -279,6 +280,8 @@ aplikasi-pythagoras/
     ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, kelinci, beruang, pelangi, gelembung, konfeti, ilustrasi sesi
     ├── Efek.jsx      hati & bintang saat klik, jejak kursor
     ├── Install.jsx   tombol install aplikasi & pemberitahuan offline
+    ├── Bacakan.jsx   tombol 🔊 Bacakan
+    ├── suara.js      membacakan teks & mengubah simbol rumus menjadi kata
     ├── Hewan.jsx     anak ayam, bebek, panda, katak, anjing + HewanHidup (hewan yang bisa ditaruh di mana saja)
     ├── kalimat.js    semua kalimat sapaan karakter & suara hewan (mudah diubah)
     ├── Ikon.jsx      ikon menu

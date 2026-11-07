@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import TombolBacakan from './Bacakan.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
@@ -68,7 +69,7 @@ function Visual({ visual }) {
 
 // Pertanyaan cek pemahaman. Setelah 2 kali salah, jawaban & penjelasan ditampilkan
 // agar siswa tidak buntu (menjaga beban kognitif tetap terkendali).
-function Cek({ cek, onSelesai, onSalah }) {
+function Cek({ cek, onSelesai, onSalah, disorot = false }) {
   const [isian, setIsian] = useState('')
   const [salah, setSalah] = useState(0)
   const [hasil, setHasil] = useState(null) // null | 'benar' | 'salah' | 'dibuka'
@@ -95,7 +96,7 @@ function Cek({ cek, onSelesai, onSalah }) {
 
   return (
     <div className="cek">
-      <p className="cek-tanya">{cek.tanya}</p>
+      <p className={`cek-tanya ${disorot ? 'dibaca' : ''}`}>{cek.tanya}</p>
       {cek.tipe === 'pilihan' ? (
         <div className="opsi">
           {cek.opsi.map((o) => (
@@ -159,8 +160,19 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
   const terakhir = idx === sesi.langkah.length - 1
   const bolehLanjut = !langkah.cek || beres.includes(idx)
 
+  // bagian yang dibacakan berurutan: judul, tiap paragraf, rumus, lalu pertanyaan
+  const [dibaca, setDibaca] = useState(null)
+  const bagianDibaca = [
+    langkah.judul,
+    ...langkah.isi,
+    ...(langkah.rumus ? [langkah.rumus.join('. ')] : []),
+    ...(langkah.cek
+      ? [langkah.cek.tanya + (langkah.cek.tipe === 'pilihan' ? ` Pilihannya: ${langkah.cek.opsi.join(', ')}.` : '')]
+      : []),
+  ]
+
   // catatan langkah yang sedang dibuka
-  const catatan = useRef({ mulai: null, salah: 0, hasil: null })
+  const catatan = useRef({ mulai: null, salah: 0, hasil: null, dibacakan: 0 })
   const sesiMulai = useRef(null)
 
   // waktu mulai sesi & langkah pertama dicatat sekali saat sesi dibuka
@@ -185,9 +197,10 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
       selesai: selesai.toISOString(),
       durasiDetik: Math.round((selesai - c.mulai) / 1000),
       salah: c.salah,
+      dibacakan: c.dibacakan,
       hasil: c.hasil,
     })
-    catatan.current = { mulai: selesai, salah: 0, hasil: null }
+    catatan.current = { mulai: selesai, salah: 0, hasil: null, dibacakan: 0 }
   }
 
   const catatSesi = (hasil) => {
@@ -219,6 +232,7 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
 
   const pindah = (ke) => {
     catatLangkah(idx)
+    setDibaca(null)
     idxRef.current = ke
     setIdx(ke)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -256,13 +270,26 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
 
       <div className={langkah.visual ? 'grid' : ''}>
         <section className="kartu">
-          <p className="ket">{sesi.judul}</p>
-          <h2>{langkah.judul}</h2>
-          {langkah.isi.map((p) => (
-            <p key={p} className="paragraf">{p}</p>
+          <div className="kepala-langkah">
+            <p className="ket">{sesi.judul}</p>
+            {/* key: bacaan berhenti otomatis saat pindah langkah */}
+            <TombolBacakan
+              key={`baca-${sesi.id}-${idx}`}
+              bagian={bagianDibaca}
+              onBagian={setDibaca}
+              onMulai={() => {
+                catatan.current.dibacakan += 1
+              }}
+            />
+          </div>
+          <h2 className={dibaca === 0 ? 'dibaca' : ''}>{langkah.judul}</h2>
+          {langkah.isi.map((p, i) => (
+            <p key={p} className={`paragraf ${dibaca === i + 1 ? 'dibaca' : ''}`}>
+              {p}
+            </p>
           ))}
           {langkah.rumus && (
-            <div className="rumus">
+            <div className={`rumus ${dibaca === langkah.isi.length + 1 ? 'dibaca' : ''}`}>
               {langkah.rumus.map((r) => (
                 <code key={r}>{r}</code>
               ))}
@@ -272,6 +299,7 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
           {langkah.cek && (
             <Cek
               key={`${sesi.id}-${idx}`}
+              disorot={dibaca === bagianDibaca.length - 1}
               cek={langkah.cek}
               onSalah={() => {
                 catatan.current.salah += 1

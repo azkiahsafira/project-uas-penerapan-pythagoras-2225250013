@@ -4023,3 +4023,77 @@ tbody tr:last-child td {
   margin: 10px 0 0;
   font-size: 0.9rem;
 }
+
+/* =========================================================================
+   Tombol Bacakan & sorotan teks yang sedang dibacakan
+   ========================================================================= */
+.kepala-langkah {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kepala-langkah .ket {
+  margin: 0;
+}
+
+.bacakan {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.tombol-bacakan {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-teks);
+}
+
+.tombol-bacakan.membaca {
+  background: var(--accent);
+  color: var(--on-accent);
+  animation: bacakan-denyut 1.2s ease-in-out infinite;
+}
+
+@keyframes bacakan-denyut {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+.catatan-suara {
+  max-width: 260px;
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+/* teks yang sedang dibacakan diberi stabilo lembut */
+.dibaca {
+  background: color-mix(in srgb, #fde047 40%, transparent);
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, #fde047 40%, transparent);
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.soal + .bacakan {
+  margin: -6px 0 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tombol-bacakan.membaca {
+    animation: none;
+  }
+}

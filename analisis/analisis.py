@@ -410,6 +410,7 @@ def baca_aktivitas(path):
             "durasi": ke_angka(ambil(b, "durasi_detik")) or 0,
             "salah": int(ke_angka(ambil(b, "salah")) or 0),
             "hasil": ambil(b, "hasil") or "",
+            "dibacakan": int(ke_angka(ambil(b, "dibacakan")) or 0),
         })
     return data
 
@@ -423,10 +424,11 @@ def rekap_langkah(aktivitas):
             continue
         kunci = (a["sesi"], a["langkah"])
         r = per_langkah.setdefault(kunci, {"judul": a["judul"], "siswa": {}})
-        s = r["siswa"].setdefault(a["nama"].lower(), {"durasi": 0, "salah": 0, "dibuka": False})
+        s = r["siswa"].setdefault(a["nama"].lower(), {"durasi": 0, "salah": 0, "dibuka": False, "dibacakan": 0})
         s["durasi"] += a["durasi"]
         s["salah"] += a["salah"]
         s["dibuka"] = s["dibuka"] or a["hasil"] == "dibuka"
+        s["dibacakan"] += a["dibacakan"]
     hasil = []
     for (sesi, langkah), r in sorted(per_langkah.items()):
         siswa = list(r["siswa"].values())
@@ -438,6 +440,7 @@ def rekap_langkah(aktivitas):
             "rata_detik": rata(s["durasi"] for s in siswa),
             "total_salah": sum(s["salah"] for s in siswa),
             "dibuka": sum(1 for s in siswa if s["dibuka"]),
+            "dibacakan": sum(s["dibacakan"] for s in siswa),
         })
     return hasil
 
@@ -445,13 +448,14 @@ def rekap_langkah(aktivitas):
 def laporan_aktivitas(aktivitas, langkah):
     cetak_tabel(
         "6. PROSES BELAJAR PER LANGKAH (menu Belajar)",
-        ["Sesi", "Langkah", "Judul", "Siswa", "Rata-rata waktu", "Total salah", "Jawaban dibuka"],
+        ["Sesi", "Langkah", "Judul", "Siswa", "Rata-rata waktu", "Total salah", "Jawaban dibuka", "Dibacakan"],
         [
-            [l["sesi"], l["langkah"], l["judul"][:34], l["siswa"], f"{fmt(l['rata_detik'])} dtk", l["total_salah"], l["dibuka"]]
+            [l["sesi"], l["langkah"], l["judul"][:34], l["siswa"], f"{fmt(l['rata_detik'])} dtk", l["total_salah"], l["dibuka"], f"{l['dibacakan']}x"]
             for l in langkah
         ],
     )
     print("   Jawaban dibuka = siswa salah 2 kali sehingga aplikasi menampilkan jawabannya.")
+    print("   Dibacakan = berapa kali tombol \"Bacakan\" (narasi suara) dipakai di langkah itu.")
 
     per_sesi = {}
     for a in aktivitas:
@@ -486,10 +490,10 @@ def laporan_aktivitas(aktivitas, langkah):
 def simpan_aktivitas(langkah, folder):
     with open(os.path.join(folder, "rekap_langkah.csv"), "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["sesi", "langkah", "judul", "jumlah_siswa", "rata_rata_detik", "total_salah", "jawaban_dibuka"])
+        w.writerow(["sesi", "langkah", "judul", "jumlah_siswa", "rata_rata_detik", "total_salah", "jawaban_dibuka", "dibacakan"])
         for l in langkah:
             w.writerow([l["sesi"], l["langkah"], l["judul"], l["siswa"],
-                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["total_salah"], l["dibuka"]])
+                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["total_salah"], l["dibuka"], l["dibacakan"]])
     label = [f"S{l['sesi']}-L{l['langkah']}" for l in langkah]
     waktu = [None if l["rata_detik"] is None else round(l["rata_detik"]) for l in langkah]
     salah = [l["total_salah"] for l in langkah]

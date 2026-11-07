@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import TombolBacakan from './Bacakan.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
@@ -103,6 +104,7 @@ export default function Latihan() {
         )}
 
         <p className="soal">{soal.cerita}</p>
+        <TombolBacakan key={soal.cerita} bagian={[soal.cerita]} label="Bacakan soal" />
 
         <form onSubmit={periksa}>
           <label>

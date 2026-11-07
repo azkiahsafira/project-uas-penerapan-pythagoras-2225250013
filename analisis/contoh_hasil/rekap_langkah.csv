@@ -1,20 +1,20 @@
-﻿sesi,langkah,judul,jumlah_siswa,rata_rata_detik,total_salah,jawaban_dibuka
-1,1,Apa itu segitiga siku-siku?,1,32.0,0,0
-1,2,Nama sisi-sisinya,1,85.0,0,0
-1,3,Kuadrat sebuah bilangan,1,103.0,2,1
-1,4,Akar kuadrat,1,116.0,1,0
-1,5,Ringkasan Sesi 1,1,129.0,0,0
-2,1,Menemukan pola,1,114.0,0,0
-2,2,Teorema Pythagoras,1,52.0,0,0
-2,3,Contoh: mencari sisi miring,1,35.0,0,0
-2,4,Giliran kamu (dibantu),1,123.0,0,0
-2,5,Mencari sisi siku-siku,1,31.0,0,0
-2,6,Coba sendiri,1,119.0,1,0
-2,7,Ringkasan Sesi 2,1,67.0,0,0
-3,1,Strategi 4 langkah,1,46.0,0,0
-3,2,Contoh: tangga,1,29.0,0,0
-3,3,Mengenali sisi miring dalam cerita,1,82.0,0,0
-3,4,Selesaikan soal layang-layang,1,100.0,2,1
-3,5,Soal cerita: layar TV,1,113.0,1,0
-3,6,Apakah sudutnya siku-siku?,1,91.0,0,0
-3,7,Refleksi,1,34.0,0,0
+﻿sesi,langkah,judul,jumlah_siswa,rata_rata_detik,total_salah,jawaban_dibuka,dibacakan
+1,1,Apa itu segitiga siku-siku?,1,32.0,0,0,0
+1,2,Nama sisi-sisinya,1,85.0,0,0,0
+1,3,Kuadrat sebuah bilangan,1,103.0,2,1,0
+1,4,Akar kuadrat,1,116.0,1,0,0
+1,5,Ringkasan Sesi 1,1,129.0,0,0,0
+2,1,Menemukan pola,1,114.0,0,0,0
+2,2,Teorema Pythagoras,1,52.0,0,0,0
+2,3,Contoh: mencari sisi miring,1,35.0,0,0,0
+2,4,Giliran kamu (dibantu),1,123.0,0,0,0
+2,5,Mencari sisi siku-siku,1,31.0,0,0,0
+2,6,Coba sendiri,1,119.0,1,0,0
+2,7,Ringkasan Sesi 2,1,67.0,0,0,0
+3,1,Strategi 4 langkah,1,46.0,0,0,0
+3,2,Contoh: tangga,1,29.0,0,0,0
+3,3,Mengenali sisi miring dalam cerita,1,82.0,0,0,0
+3,4,Selesaikan soal layang-layang,1,100.0,2,1,0
+3,5,Soal cerita: layar TV,1,113.0,1,0,0
+3,6,Apakah sudutnya siku-siku?,1,91.0,0,0,0
+3,7,Refleksi,1,34.0,0,0,0
