@@ -1043,13 +1043,27 @@ tbody tr:last-child td {
   }
 }
 
-/* Maskot di header beserta balon kata */
-.hero-maskot {
+/* Panggung di header: balon kata + prisma 3D + anak SMP + Siku */
+.panggung {
   position: relative;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.panggung-isi {
+  position: relative;
+  width: 270px;
+  height: 196px;
+}
+
+.panggung-isi .maskot {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  z-index: 2;
 }
 
 .gelembung {
@@ -1070,12 +1084,12 @@ tbody tr:last-child td {
 .gelembung::after {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 40px;
   bottom: -7px;
   width: 14px;
   height: 14px;
   background: #fff;
-  transform: translateX(-50%) rotate(45deg);
+  transform: rotate(45deg);
   border-radius: 3px;
 }
 
@@ -1096,18 +1110,262 @@ tbody tr:last-child td {
   }
 }
 
-@media (max-width: 560px) {
+/* HP: panggung ditaruh di bawah judul dan diperkecil */
+@media (max-width: 640px) {
   .hero {
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .hero-maskot .gelembung {
+  .panggung {
+    align-self: center;
+    width: 168px; /* 270 x 0,62 */
+    height: 122px; /* 196 x 0,62 */
+    margin-top: -4px;
+  }
+
+  .panggung .gelembung {
     display: none;
   }
 
-  .hero-maskot .maskot {
-    width: 92px;
-    height: auto;
+  .panggung-isi {
+    transform: scale(0.62);
+    transform-origin: top left;
+  }
+}
+
+/* =========================================================================
+   Prisma 3D
+   ========================================================================= */
+.prisma-wadah {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 130px;
+  height: 130px;
+  perspective: 520px;
+  z-index: 0;
+}
+
+.prisma {
+  position: absolute;
+  left: 35px;
+  top: 25px;
+  transform-style: preserve-3d;
+  transform-origin: 30px 40px;
+  animation: prisma-putar 14s linear infinite;
+}
+
+.p-muka {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  backface-visibility: visible;
+}
+
+.p-segitiga svg {
+  display: block;
+  overflow: visible;
+}
+
+.p-segitiga polygon {
+  fill: rgba(255, 255, 255, 0.26);
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.p-siku {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.p-sisi {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+}
+
+.p-miring {
+  background: color-mix(in srgb, var(--accent-2) 50%, transparent);
+}
+
+@keyframes prisma-putar {
+  from {
+    transform: rotateX(-22deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-22deg) rotateY(360deg);
+  }
+}
+
+/* =========================================================================
+   Karakter siswa SMP
+   ========================================================================= */
+.siswa {
+  position: absolute;
+  left: 76px;
+  bottom: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+.siswa .s-kulit {
+  fill: #f2c49b;
+}
+
+.siswa .s-rambut {
+  fill: #1f2937;
+}
+
+.siswa .s-kemeja {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+  stroke-width: 1.5;
+}
+
+.siswa .s-kerah {
+  fill: none;
+  stroke: #94a3b8;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.siswa .s-dongker {
+  fill: #1e3a8a;
+}
+
+.siswa .s-sepatu {
+  fill: #111827;
+}
+
+.siswa .s-lengan {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+
+.siswa .s-buku,
+.siswa .s-lencana {
+  fill: #f59e0b;
+}
+
+.siswa .s-buku-garis {
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.siswa .s-mata ellipse {
+  fill: #1f2937;
+}
+
+.siswa .s-kilap {
+  fill: #fff;
+}
+
+.siswa .s-alis {
+  fill: none;
+  stroke: #1f2937;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.siswa .s-pipi {
+  fill: #fda4af;
+  opacity: 0.8;
+}
+
+.siswa .s-mulut {
+  fill: none;
+  stroke: #9a3412;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.siswa .s-bayang {
+  fill: rgba(10, 25, 60, 0.2);
+}
+
+.siswa .s-badan,
+.siswa .s-kepala,
+.siswa .s-mata,
+.siswa .s-lambai,
+.siswa .s-bayang {
+  transform-box: view-box;
+}
+
+.siswa .s-badan {
+  animation: siswa-napas 3.2s ease-in-out infinite;
+}
+
+.siswa .s-bayang {
+  transform-origin: 60px 194px;
+  animation: maskot-bayang 3.2s ease-in-out infinite;
+}
+
+.siswa .s-kepala {
+  transform-origin: 60px 72px;
+  animation: siswa-geleng 4s ease-in-out infinite;
+}
+
+.siswa .s-mata {
+  transform-origin: 60px 53px;
+  animation: maskot-kedip 5s infinite;
+}
+
+.siswa .s-lambai {
+  transform-origin: 79px 86px;
+  animation: siswa-lambai 1.6s ease-in-out infinite;
+}
+
+@keyframes siswa-napas {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes siswa-geleng {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes siswa-lambai {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(24deg);
+  }
+}
+
+/* Semua animasi panggung berhenti saat tes atau bila gerak dikurangi */
+.panggung.diam *,
+.panggung.diam {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prisma,
+  .siswa * {
+    animation: none !important;
   }
 }
 

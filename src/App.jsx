@@ -3,6 +3,8 @@ import Belajar from './Belajar.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Maskot from './Maskot.jsx'
+import Prisma3D from './Prisma3D.jsx'
+import Siswa from './Siswa.jsx'
 import Tes from './Tes.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
@@ -88,16 +90,22 @@ function App() {
     <main>
       <header className="hero">
         <div className="hero-teks">
-          <span className="lencana">Media Belajar · SMP Kelas 7–8</span>
+          <span className="lencana">Media Belajar · SMP Kelas 8</span>
           <h1>Penerapan Teorema Pythagoras</h1>
           <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
         </div>
-        <div className="hero-maskot">
+        {/* Panggung: prisma 3D berputar, anak SMP, dan maskot Siku.
+            Semua animasi berhenti selama tes (kelas "diam"). */}
+        <div className={`panggung ${fokusTes ? 'diam' : ''}`}>
           {/* key: balon kata dianimasikan ulang setiap ganti menu */}
           <p className="gelembung" key={halaman} aria-live="polite">
             {SAPAAN[halaman]}
           </p>
-          <Maskot ukuran={130} diam={fokusTes} />
+          <div className="panggung-isi">
+            <Prisma3D />
+            <Siswa ukuran={104} />
+            <Maskot ukuran={92} diam={fokusTes} />
+          </div>
         </div>
       </header>
 
