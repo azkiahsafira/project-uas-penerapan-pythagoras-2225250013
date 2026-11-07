@@ -263,6 +263,15 @@ cd analisis
 python analisis.py data.csv --aktivitas aktivitas.csv
 ```
 
+## Bukti Pengerjaan dengan AI
+
+Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh percakapan, mulai dari perencanaan sampai deploy, didokumentasikan di folder [docs/bukti-ai](docs/bukti-ai):
+
+- [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)
+- [Percakapan-dengan-AI.html](docs/bukti-ai/Percakapan-dengan-AI.html): versi untuk dibuka di browser
+
+Screenshot tampilan aplikasi ada di [docs/screenshot](docs/screenshot).
+
 ## Struktur Folder
 
 ```
@@ -270,7 +279,7 @@ aplikasi-pythagoras/
 ├── index.html        halaman utama
 ├── public/           ikon, manifest.webmanifest & sw.js (PWA)
 ├── analisis/         script Python untuk mengolah data penelitian
-├── docs/             screenshot tampilan aplikasi untuk README
+├── docs/             screenshot tampilan aplikasi & bukti percakapan dengan AI
 ├── supabase/         skema database (SQL)
 └── src/
     ├── main.jsx      titik awal aplikasi
