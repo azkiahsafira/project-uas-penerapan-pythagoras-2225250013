@@ -3958,3 +3958,43 @@ tbody tr:last-child td {
 .tanpa-animasi .meong {
   opacity: 1;
 }
+
+/* =========================================================================
+   PWA: tombol install & pemberitahuan offline
+   ========================================================================= */
+.tombol-install {
+  margin-top: 14px;
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1d2a4d;
+  box-shadow: 0 6px 16px -8px rgba(30, 60, 120, 0.5);
+}
+
+.tombol-install:hover:not(:disabled) {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.petunjuk-install {
+  margin: 8px 0 0;
+  max-width: 340px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #1d2a4d;
+  font-size: 0.85rem;
+  text-shadow: none;
+}
+
+.offline {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, #fbbf24 22%, var(--card));
+  border: 1px solid color-mix(in srgb, #fbbf24 45%, transparent);
+  font-size: 0.9rem;
+  font-weight: 600;
+}

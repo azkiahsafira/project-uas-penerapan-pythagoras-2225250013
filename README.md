@@ -24,6 +24,18 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
 > Halaman repository ini hanya berisi kode. Warna, animasi, dan karakter aplikasinya terlihat di link di atas (GitHub Pages).
 
+## Install sebagai Aplikasi (Android, Windows, iPhone)
+
+Aplikasi ini adalah **PWA (Progressive Web App)**: bisa dipasang seperti aplikasi biasa (punya ikon sendiri) dan **tetap bisa dibuka tanpa internet** setelah dibuka sekali.
+
+| Perangkat | Cara install |
+| --------- | ------------ |
+| **Android** (Chrome) | Buka link aplikasi → ketuk tombol **📲 Install aplikasi** di header, atau menu ⋮ → **Instal aplikasi / Tambahkan ke layar utama** |
+| **Windows / Laptop** (Chrome atau Edge) | Buka link aplikasi → klik **📲 Install aplikasi**, atau ikon install di ujung kanan kolom alamat |
+| **iPhone / iPad** (Safari) | Buka link aplikasi → ketuk **Bagikan** (kotak dengan panah ke atas) → **Tambah ke Layar Utama** |
+
+Saat offline, materi, kalkulator, latihan, dan tes tetap bisa dipakai. Hasil tes disimpan di perangkat dan **dikirim otomatis ke Supabase** begitu internet kembali.
+
 ## Teorema Pythagoras
 
 Pada segitiga siku-siku, kuadrat sisi miring sama dengan jumlah kuadrat kedua sisi siku-sikunya:
@@ -195,6 +207,7 @@ SELESAI
 - [Vite](https://vite.dev) 8: server pengembangan dan build
 - [Oxlint](https://oxc.rs): pemeriksa kode (linter)
 - [Supabase](https://supabase.com): database penyimpanan hasil penelitian
+- PWA (manifest + service worker): bisa di-install dan dipakai offline
 - [Python](https://www.python.org) 3: analisis data penelitian
 
 ## Database (Supabase)
@@ -243,7 +256,7 @@ python analisis.py data.csv
 ```
 aplikasi-pythagoras/
 ├── index.html        halaman utama
-├── public/           ikon
+├── public/           ikon, manifest.webmanifest & sw.js (PWA)
 ├── analisis/         script Python untuk mengolah data penelitian
 ├── docs/             screenshot tampilan aplikasi untuk README
 ├── supabase/         skema database (SQL)
@@ -258,6 +271,7 @@ aplikasi-pythagoras/
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
     ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, kelinci, beruang, pelangi, gelembung, konfeti, ilustrasi sesi
     ├── Efek.jsx      hati & bintang saat klik, jejak kursor
+    ├── Install.jsx   tombol install aplikasi & pemberitahuan offline
     ├── Hewan.jsx     anak ayam, bebek, panda, katak, anjing + HewanHidup (hewan yang bisa ditaruh di mana saja)
     ├── kalimat.js    semua kalimat sapaan karakter & suara hewan (mudah diubah)
     ├── Ikon.jsx      ikon menu

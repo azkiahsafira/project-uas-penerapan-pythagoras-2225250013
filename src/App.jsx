@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
 import { HewanHidup } from './Hewan.jsx'
+import { PemberitahuanOffline, TombolInstall } from './Install.jsx'
 import { LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
@@ -114,12 +115,14 @@ function App() {
           <HewanHidup jenis="bebek" className="pejalan" />
         </>
       )}
+      <PemberitahuanOffline />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
         <div className="hero-teks">
           <span className="lencana">Media Belajar · SMP Kelas 8</span>
           <h1>Penerapan Teorema Pythagoras</h1>
           <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
+          {!fokusTes && <TombolInstall />}
         </div>
         <Panggung halaman={halaman} diam={fokusTes} />
       </header>
