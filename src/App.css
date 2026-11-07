@@ -381,3 +381,175 @@ input {
     max-height: 220px;
   }
 }
+
+.sempit {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+select {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px 12px;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+legend {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
+label.radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+label.radio input {
+  width: auto;
+  accent-color: var(--accent);
+}
+
+.opsi-tes {
+  display: grid;
+  gap: 8px;
+}
+
+label.pilihan {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+label.pilihan.dipilih {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.huruf {
+  font-weight: 600;
+}
+
+.nomor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 16px;
+}
+
+.nomor button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.nomor button.terjawab {
+  background: var(--accent-soft);
+}
+
+.nomor button.aktif {
+  border-color: var(--accent);
+  border-width: 2px;
+}
+
+.konfirmasi p {
+  margin: 0 0 8px;
+}
+
+.konfirmasi .navigasi {
+  margin-top: 8px;
+}
+
+.butir {
+  padding-left: 20px;
+  display: grid;
+  gap: 18px;
+}
+
+.butir p {
+  margin: 0 0 8px;
+}
+
+.skala {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.skala button {
+  padding: 8px 0;
+  font-size: 0.85rem;
+}
+
+.skala button.aktif {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.ujung-skala {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+.lebar {
+  width: 100%;
+}
+
+.jarak-atas {
+  margin-top: 32px;
+}
+
+.tabel-wadah {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+button.kecil {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+/* HP kecil: tombol skala 0–10 dibuat dua baris agar mudah disentuh */
+@media (max-width: 420px) {
+  .skala {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .skala button {
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+}

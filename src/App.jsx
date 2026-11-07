@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Belajar from './Belajar.jsx'
 import Latihan from './Latihan.jsx'
+import Tes from './Tes.jsx'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
@@ -11,6 +12,13 @@ const MODE = {
   a: { label: 'Alas (a)', input: ['b', 'c'] },
   b: { label: 'Tinggi (b)', input: ['a', 'c'] },
 }
+
+const MENU = [
+  ['belajar', 'Belajar'],
+  ['kalkulator', 'Kalkulator'],
+  ['latihan', 'Latihan Soal'],
+  ['tes', 'Tes'],
+]
 
 const CONTOH = [
   {
@@ -41,6 +49,7 @@ const CONTOH = [
 
 function App() {
   const [halaman, setHalaman] = useState('belajar')
+  const [fokusTes, setFokusTes] = useState(false)
   const [cari, setCari] = useState('c')
   const [nilai, setNilai] = useState({ a: '3', b: '4', c: '' })
   const [hasil, setHasil] = useState(() => hitung('c', { a: '3', b: '4' }))
@@ -70,32 +79,22 @@ function App() {
       <header>
         <h1>Penerapan Teorema Pythagoras</h1>
         <p>Media belajar teorema Pythagoras untuk siswa SMP.</p>
-        <nav className="menu">
-          <button
-            type="button"
-            className={halaman === 'belajar' ? 'aktif' : ''}
-            aria-current={halaman === 'belajar' ? 'page' : undefined}
-            onClick={() => setHalaman('belajar')}
-          >
-            Belajar
-          </button>
-          <button
-            type="button"
-            className={halaman === 'kalkulator' ? 'aktif' : ''}
-            aria-current={halaman === 'kalkulator' ? 'page' : undefined}
-            onClick={() => setHalaman('kalkulator')}
-          >
-            Kalkulator
-          </button>
-          <button
-            type="button"
-            className={halaman === 'latihan' ? 'aktif' : ''}
-            aria-current={halaman === 'latihan' ? 'page' : undefined}
-            onClick={() => setHalaman('latihan')}
-          >
-            Latihan Soal
-          </button>
-        </nav>
+        {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
+        {!fokusTes && (
+          <nav className="menu">
+            {MENU.map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                className={halaman === id ? 'aktif' : ''}
+                aria-current={halaman === id ? 'page' : undefined}
+                onClick={() => setHalaman(id)}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+        )}
       </header>
 
       {/* Belajar & Latihan tetap terpasang (hanya disembunyikan) agar progres dan skor tidak hilang saat pindah tab */}
@@ -105,6 +104,10 @@ function App() {
 
       <div hidden={halaman !== 'latihan'}>
         <Latihan />
+      </div>
+
+      <div hidden={halaman !== 'tes'}>
+        <Tes onFokus={setFokusTes} />
       </div>
 
       {halaman === 'kalkulator' && (
