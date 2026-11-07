@@ -26,5 +26,6 @@ dist-ssr
 # Data penelitian asli (berisi nama siswa) jangan ikut di-upload ke GitHub
 analisis/*.csv
 !analisis/contoh_data.csv
+!analisis/contoh_aktivitas.csv
 analisis/hasil_analisis/
 __pycache__/

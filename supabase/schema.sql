@@ -36,3 +36,36 @@ create policy "aplikasi boleh menambah hasil"
 
 -- Pastikan role anon punya hak INSERT (beberapa proyek baru tidak memberikannya otomatis).
 grant insert on public.hasil to anon;
+
+-- ===========================================================================
+-- Tabel aktivitas: catatan proses belajar siswa di menu Belajar
+-- (lama waktu & jumlah salah tiap langkah, serta total waktu tiap sesi).
+-- ===========================================================================
+create table if not exists public.aktivitas (
+  id            text primary key,              -- dibuat oleh aplikasi
+  jenis         text not null check (jenis in ('langkah', 'sesi')),
+  nama          text not null,
+  kelas         text not null,
+  sekolah       text not null,
+  kelompok      text not null,
+  sesi          integer not null,              -- nomor sesi (1-3)
+  langkah       integer,                        -- nomor langkah (kosong untuk jenis 'sesi')
+  judul         text not null,                  -- judul langkah / judul sesi
+  mulai         timestamptz not null,
+  selesai       timestamptz not null,
+  durasi_detik  integer not null,
+  salah         integer not null default 0,     -- berapa kali menjawab salah
+  hasil         text,                           -- 'benar' | 'dibuka' (2x salah) | 'selesai' | 'keluar'
+  dibuat        timestamptz not null default now()
+);
+
+alter table public.aktivitas enable row level security;
+
+drop policy if exists "aplikasi boleh menambah aktivitas" on public.aktivitas;
+create policy "aplikasi boleh menambah aktivitas"
+  on public.aktivitas
+  for insert
+  to anon
+  with check (true);
+
+grant insert on public.aktivitas to anon;

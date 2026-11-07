@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { SESI } from './materi.js'
+import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
 
 const KUNCI_PROGRES = 'pythagoras-sesi-selesai'
@@ -67,7 +68,7 @@ function Visual({ visual }) {
 
 // Pertanyaan cek pemahaman. Setelah 2 kali salah, jawaban & penjelasan ditampilkan
 // agar siswa tidak buntu (menjaga beban kognitif tetap terkendali).
-function Cek({ cek, onSelesai }) {
+function Cek({ cek, onSelesai, onSalah }) {
   const [isian, setIsian] = useState('')
   const [salah, setSalah] = useState(0)
   const [hasil, setHasil] = useState(null) // null | 'benar' | 'salah' | 'dibuka'
@@ -79,14 +80,16 @@ function Cek({ cek, onSelesai }) {
     const benar = cek.tipe === 'angka' ? Math.abs(keAngka(nilai) - cek.jawab) < 0.01 : nilai === cek.jawab
     if (benar) {
       setHasil('benar')
-      onSelesai()
+      onSelesai('benar')
     } else if (salah + 1 >= 2) {
       setSalah(salah + 1)
       setHasil('dibuka')
-      onSelesai()
+      onSalah()
+      onSelesai('dibuka')
     } else {
       setSalah(salah + 1)
       setHasil('salah')
+      onSalah()
     }
   }
 
@@ -145,22 +148,98 @@ function Cek({ cek, onSelesai }) {
   )
 }
 
-function PemutarSesi({ sesi, onKeluar, onTamat }) {
+// Mencatat proses belajar (lihat tabel `aktivitas` di supabase/schema.sql):
+// setiap kali siswa meninggalkan sebuah langkah, dicatat lama waktunya,
+// berapa kali salah, dan hasil pertanyaannya; saat sesi selesai/keluar,
+// dicatat total waktu sesi.
+function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
   const [idx, setIdx] = useState(0)
   const [beres, setBeres] = useState([]) // indeks langkah yang ceknya sudah dijawab
   const langkah = sesi.langkah[idx]
   const terakhir = idx === sesi.langkah.length - 1
   const bolehLanjut = !langkah.cek || beres.includes(idx)
 
+  // catatan langkah yang sedang dibuka
+  const catatan = useRef({ mulai: null, salah: 0, hasil: null })
+  const sesiMulai = useRef(null)
+
+  // waktu mulai sesi & langkah pertama dicatat sekali saat sesi dibuka
+  useEffect(() => {
+    const sekarang = new Date()
+    sesiMulai.current = sekarang
+    catatan.current.mulai = sekarang
+  }, [])
+  const totalSalah = useRef(0)
+  const idxRef = useRef(0)
+
+  const catatLangkah = (nomor) => {
+    const selesai = new Date()
+    const c = catatan.current
+    catatAktivitas({
+      jenis: 'langkah',
+      ...identitas,
+      sesi: sesi.id,
+      langkah: nomor + 1,
+      judul: sesi.langkah[nomor].judul,
+      mulai: c.mulai.toISOString(),
+      selesai: selesai.toISOString(),
+      durasiDetik: Math.round((selesai - c.mulai) / 1000),
+      salah: c.salah,
+      hasil: c.hasil,
+    })
+    catatan.current = { mulai: selesai, salah: 0, hasil: null }
+  }
+
+  const catatSesi = (hasil) => {
+    const selesai = new Date()
+    catatAktivitas({
+      jenis: 'sesi',
+      ...identitas,
+      sesi: sesi.id,
+      langkah: null,
+      judul: sesi.judul,
+      mulai: sesiMulai.current.toISOString(),
+      selesai: selesai.toISOString(),
+      durasiDetik: Math.round((selesai - sesiMulai.current) / 1000),
+      salah: totalSalah.current,
+      hasil,
+    })
+    kirimTertunda()
+  }
+
+  // bila halaman ditutup di tengah sesi, langkah terakhir tetap tercatat
+  useEffect(() => {
+    const tutup = () => {
+      catatLangkah(idxRef.current)
+      catatSesi('keluar')
+    }
+    window.addEventListener('pagehide', tutup)
+    return () => window.removeEventListener('pagehide', tutup)
+  })
+
   const pindah = (ke) => {
+    catatLangkah(idx)
+    idxRef.current = ke
     setIdx(ke)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const keluar = () => {
+    catatLangkah(idx)
+    catatSesi('keluar')
+    onKeluar()
+  }
+
+  const tamat = () => {
+    catatLangkah(idx)
+    catatSesi('selesai')
+    onTamat()
   }
 
   return (
     <div className="pemutar">
       <div className="kepala-sesi">
-        <button type="button" onClick={onKeluar}>← Daftar sesi</button>
+        <button type="button" onClick={keluar}>← Daftar sesi</button>
         <span className="ket">
           Langkah {idx + 1} dari {sesi.langkah.length}
         </span>
@@ -190,14 +269,27 @@ function PemutarSesi({ sesi, onKeluar, onTamat }) {
             </div>
           )}
           {/* key memastikan state cek direset saat pindah langkah */}
-          {langkah.cek && <Cek key={`${sesi.id}-${idx}`} cek={langkah.cek} onSelesai={() => setBeres((b) => [...b, idx])} />}
+          {langkah.cek && (
+            <Cek
+              key={`${sesi.id}-${idx}`}
+              cek={langkah.cek}
+              onSalah={() => {
+                catatan.current.salah += 1
+                totalSalah.current += 1
+              }}
+              onSelesai={(hasil) => {
+                catatan.current.hasil = hasil
+                setBeres((b) => [...b, idx])
+              }}
+            />
+          )}
 
           <div className="navigasi">
             <button type="button" disabled={idx === 0} onClick={() => pindah(idx - 1)}>
               Sebelumnya
             </button>
             {terakhir ? (
-              <button type="button" className="hitung" disabled={!bolehLanjut} onClick={onTamat}>
+              <button type="button" className="hitung" disabled={!bolehLanjut} onClick={tamat}>
                 Selesaikan sesi
               </button>
             ) : (
@@ -219,10 +311,61 @@ function PemutarSesi({ sesi, onKeluar, onTamat }) {
   )
 }
 
+// Form singkat nama siswa sebelum belajar (disimpan di perangkat & dipakai juga di menu Tes)
+function FormKenalan({ awal, onSimpan, onBatal }) {
+  const [data, setData] = useState(() => ({ nama: '', kelas: '', sekolah: '', ...awal }))
+  const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
+  const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
+  return (
+    <section className="kartu sempit kenalan">
+      <Maskot ukuran={70} topi />
+      <h2>Kenalan dulu, yuk!</h2>
+      <p className="ket">Namamu dipakai untuk mencatat perkembangan belajarmu.</p>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (!lengkap) return
+          onSimpan({
+            ...data,
+            nama: data.nama.trim(),
+            sekolah: data.sekolah.trim(),
+            kelompok: data.kelompok || 'Belajar dengan aplikasi',
+          })
+        }}
+      >
+        <label>
+          Nama
+          <input value={data.nama} onChange={ubah('nama')} autoComplete="off" />
+        </label>
+        <label>
+          Kelas
+          <select value={data.kelas} onChange={ubah('kelas')}>
+            <option value="">Pilih kelas</option>
+            <option value="7">Kelas 7 (SMP kelas 1)</option>
+            <option value="8">Kelas 8 (SMP kelas 2)</option>
+          </select>
+        </label>
+        <label>
+          Sekolah
+          <input value={data.sekolah} onChange={ubah('sekolah')} autoComplete="off" />
+        </label>
+        <div className="navigasi">
+          {onBatal ? <button type="button" onClick={onBatal}>Batal</button> : <span />}
+          <button type="submit" className="hitung" disabled={!lengkap}>Simpan & mulai</button>
+        </div>
+      </form>
+    </section>
+  )
+}
+
 export default function Belajar() {
   const [aktif, setAktif] = useState(null)
   const [selesai, setSelesai] = useState(bacaProgres)
   const [selamat, setSelamat] = useState(null) // sesi yang baru saja diselesaikan
+  const [identitas, setIdentitas] = useState(identitasTerakhir)
+  const [kenalan, setKenalan] = useState(null) // sesi yang akan dibuka setelah isi nama ('ganti' = hanya ganti nama)
+
+  const mulai = (s) => (identitas ? setAktif(s) : setKenalan(s))
 
   const tamat = (id) => {
     const baru = selesai.includes(id) ? selesai : [...selesai, id]
@@ -232,8 +375,23 @@ export default function Belajar() {
     setAktif(null)
   }
 
+  if (kenalan) {
+    return (
+      <FormKenalan
+        awal={identitas ?? {}}
+        onBatal={() => setKenalan(null)}
+        onSimpan={(baru) => {
+          simpanIdentitas(baru)
+          setIdentitas(baru)
+          if (kenalan !== 'ganti') setAktif(kenalan)
+          setKenalan(null)
+        }}
+      />
+    )
+  }
+
   if (aktif) {
-    return <PemutarSesi sesi={aktif} onKeluar={() => setAktif(null)} onTamat={() => tamat(aktif.id)} />
+    return <PemutarSesi sesi={aktif} identitas={identitas} onKeluar={() => setAktif(null)} onTamat={() => tamat(aktif.id)} />
   }
 
   return (
@@ -260,6 +418,12 @@ export default function Belajar() {
       )}
       <h2>Belajar Teorema Pythagoras</h2>
       <p className="ket">Ikuti sesi secara berurutan. Setiap sesi berisi penjelasan singkat, contoh, dan pertanyaan.</p>
+      {identitas && (
+        <p className="belajar-sebagai">
+          Belajar sebagai <strong>{identitas.nama}</strong> (kelas {identitas.kelas})
+          <button type="button" className="kecil" onClick={() => setKenalan('ganti')}>Ganti nama</button>
+        </p>
+      )}
       <div className="daftar-sesi ada-hewan">
         {/* anak ayam & kelinci hinggap di atas kartu sesi */}
         <HewanHidup jenis="ayam" className="hinggap kiri" />
@@ -279,7 +443,7 @@ export default function Belajar() {
                 {s.langkah.length} langkah{sudah ? ' · ✓ Selesai' : ''}
                 {terkunci ? ' · Selesaikan sesi sebelumnya dulu' : ''}
               </p>
-              <button type="button" className="hitung" disabled={terkunci} onClick={() => setAktif(s)}>
+              <button type="button" className="hitung" disabled={terkunci} onClick={() => mulai(s)}>
                 {sudah ? 'Ulangi sesi' : 'Mulai sesi'}
               </button>
             </article>

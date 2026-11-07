@@ -1,14 +1,16 @@
-// Penyimpanan hasil penelitian (pre-test, post-test, kuesioner Leppink).
+// Penyimpanan data penelitian:
+// - hasil     : pre-test, post-test, kuesioner Leppink  -> tabel `hasil`
+// - aktivitas : proses belajar di menu Belajar          -> tabel `aktivitas`
 //
-// Setiap hasil SELALU disimpan dulu di perangkat (localStorage), lalu dikirim
-// ke tabel `hasil` di Supabase. Jika internet putus, hasil tetap aman di
-// perangkat dengan tanda terkirim = false, dan dikirim ulang otomatis
-// (kirimTertunda) saat aplikasi dibuka lagi atau tes berikutnya selesai.
+// Semua data SELALU disimpan dulu di perangkat (localStorage), lalu dikirim
+// ke Supabase. Jika internet putus, data tetap aman di perangkat dengan tanda
+// terkirim = false, dan dikirim ulang otomatis (kirimTertunda) nanti.
 
 import { supabase } from './supabase.js'
 
 const KUNCI_HASIL = 'pythagoras-hasil'
 const KUNCI_IDENTITAS = 'pythagoras-identitas'
+const KUNCI_AKTIVITAS = 'pythagoras-aktivitas'
 
 function baca(kunci, bawaan) {
   try {
@@ -42,6 +44,16 @@ export function hapusHasil(id) {
 }
 
 export const identitasTerakhir = () => baca(KUNCI_IDENTITAS, null)
+
+export const buatId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
+export const daftarAktivitas = () => baca(KUNCI_AKTIVITAS, [])
+
+// Catat satu aktivitas belajar (lihat kolom tabel `aktivitas` di supabase/schema.sql)
+export function catatAktivitas(aktivitas) {
+  return tulis(KUNCI_AKTIVITAS, [...daftarAktivitas(), { id: buatId(), ...aktivitas, terkirim: false }])
+}
+
 export const simpanIdentitas = (identitas) => tulis(KUNCI_IDENTITAS, identitas)
 
 // Ubah format aplikasi menjadi kolom tabel Supabase (lihat supabase/schema.sql)
@@ -64,26 +76,52 @@ const keBaris = (h) => ({
   jawaban: h.jawaban,
 })
 
+// Ubah format aktivitas menjadi kolom tabel `aktivitas`
+const keBarisAktivitas = (a) => ({
+  id: a.id,
+  jenis: a.jenis,
+  nama: a.nama,
+  kelas: a.kelas,
+  sekolah: a.sekolah,
+  kelompok: a.kelompok,
+  sesi: a.sesi,
+  langkah: a.langkah ?? null,
+  judul: a.judul,
+  mulai: a.mulai,
+  selesai: a.selesai,
+  durasi_detik: a.durasiDetik,
+  salah: a.salah ?? 0,
+  hasil: a.hasil ?? null,
+})
+
+const ANTREAN = [
+  { kunci: KUNCI_HASIL, tabel: 'hasil', keBaris },
+  { kunci: KUNCI_AKTIVITAS, tabel: 'aktivitas', keBaris: keBarisAktivitas },
+]
+
 let sedangMengirim = null
 
-// Kirim semua hasil yang belum terkirim. Mengembalikan jumlah yang berhasil dikirim.
+// Kirim semua data yang belum terkirim (hasil tes & aktivitas belajar).
+// Mengembalikan jumlah baris yang berhasil dikirim.
 export function kirimTertunda() {
   if (!supabase) return Promise.resolve(0)
   if (sedangMengirim) return sedangMengirim
   sedangMengirim = (async () => {
     let berhasil = 0
-    for (const h of daftarHasil().filter((x) => !x.terkirim)) {
-      const { error } = await supabase.from('hasil').insert(keBaris(h))
-      // 23505 = id sudah ada di database (pernah terkirim), anggap berhasil
-      if (!error || error.code === '23505') {
-        tulis(
-          KUNCI_HASIL,
-          daftarHasil().map((x) => (x.id === h.id ? { ...x, terkirim: true } : x)),
-        )
-        berhasil += 1
-      } else {
-        console.warn('Gagal mengirim hasil ke Supabase:', error.message)
-        break // kemungkinan sedang offline; coba lagi nanti
+    for (const { kunci, tabel, keBaris: ubah } of ANTREAN) {
+      for (const data of baca(kunci, []).filter((x) => !x.terkirim)) {
+        const { error } = await supabase.from(tabel).insert(ubah(data))
+        // 23505 = id sudah ada di database (pernah terkirim), anggap berhasil
+        if (!error || error.code === '23505') {
+          tulis(
+            kunci,
+            baca(kunci, []).map((x) => (x.id === data.id ? { ...x, terkirim: true } : x)),
+          )
+          berhasil += 1
+        } else {
+          console.warn(`Gagal mengirim ke tabel ${tabel}:`, error.message)
+          return berhasil // kemungkinan sedang offline; coba lagi nanti
+        }
       }
     }
     return berhasil

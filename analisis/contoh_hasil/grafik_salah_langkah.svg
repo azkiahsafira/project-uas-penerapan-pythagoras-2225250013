@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2370" height="400" font-family="Segoe UI, Arial, sans-serif" font-size="12">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="60" y="24" font-size="15" font-weight="bold" fill="#1c1f2a">Jumlah Jawaban Salah per Langkah</text>
+<line x1="60" y1="310.0" x2="2350" y2="310.0" stroke="#e3e5ec"/>
+<text x="52" y="314.0" text-anchor="end" fill="#5b6172">0</text>
+<line x1="60" y1="258.0" x2="2350" y2="258.0" stroke="#e3e5ec"/>
+<text x="52" y="262.0" text-anchor="end" fill="#5b6172">0.6</text>
+<line x1="60" y1="206.0" x2="2350" y2="206.0" stroke="#e3e5ec"/>
+<text x="52" y="210.0" text-anchor="end" fill="#5b6172">1.2</text>
+<line x1="60" y1="154.0" x2="2350" y2="154.0" stroke="#e3e5ec"/>
+<text x="52" y="158.0" text-anchor="end" fill="#5b6172">1.8</text>
+<line x1="60" y1="102.0" x2="2350" y2="102.0" stroke="#e3e5ec"/>
+<text x="52" y="106.0" text-anchor="end" fill="#5b6172">2.4</text>
+<line x1="60" y1="50.0" x2="2350" y2="50.0" stroke="#e3e5ec"/>
+<text x="52" y="54.0" text-anchor="end" fill="#5b6172">3</text>
+<rect x="106.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="120.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="120.0" y="328" text-anchor="middle" fill="#1c1f2a">S1-L1</text>
+<rect x="226.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="240.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="240.0" y="328" text-anchor="middle" fill="#1c1f2a">S1-L2</text>
+<rect x="346.0" y="136.7" width="28" height="173.3" rx="3" fill="#f472b6"/>
+<text x="360.0" y="132.7" text-anchor="middle" fill="#1c1f2a">2</text>
+<text x="360.0" y="328" text-anchor="middle" fill="#1c1f2a">S1-L3</text>
+<rect x="466.0" y="223.3" width="28" height="86.7" rx="3" fill="#f472b6"/>
+<text x="480.0" y="219.3" text-anchor="middle" fill="#1c1f2a">1</text>
+<text x="480.0" y="328" text-anchor="middle" fill="#1c1f2a">S1-L4</text>
+<rect x="586.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="600.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="600.0" y="328" text-anchor="middle" fill="#1c1f2a">S1-L5</text>
+<rect x="706.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="720.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="720.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L1</text>
+<rect x="826.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="840.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="840.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L2</text>
+<rect x="946.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="960.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="960.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L3</text>
+<rect x="1066.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1080.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1080.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L4</text>
+<rect x="1186.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1200.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1200.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L5</text>
+<rect x="1306.0" y="223.3" width="28" height="86.7" rx="3" fill="#f472b6"/>
+<text x="1320.0" y="219.3" text-anchor="middle" fill="#1c1f2a">1</text>
+<text x="1320.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L6</text>
+<rect x="1426.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1440.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1440.0" y="328" text-anchor="middle" fill="#1c1f2a">S2-L7</text>
+<rect x="1546.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1560.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1560.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L1</text>
+<rect x="1666.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1680.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1680.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L2</text>
+<rect x="1786.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="1800.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="1800.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L3</text>
+<rect x="1906.0" y="136.7" width="28" height="173.3" rx="3" fill="#f472b6"/>
+<text x="1920.0" y="132.7" text-anchor="middle" fill="#1c1f2a">2</text>
+<text x="1920.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L4</text>
+<rect x="2026.0" y="223.3" width="28" height="86.7" rx="3" fill="#f472b6"/>
+<text x="2040.0" y="219.3" text-anchor="middle" fill="#1c1f2a">1</text>
+<text x="2040.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L5</text>
+<rect x="2146.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="2160.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="2160.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L6</text>
+<rect x="2266.0" y="310.0" width="28" height="0.0" rx="3" fill="#f472b6"/>
+<text x="2280.0" y="306.0" text-anchor="middle" fill="#1c1f2a">0</text>
+<text x="2280.0" y="328" text-anchor="middle" fill="#1c1f2a">S3-L7</text>
+<rect x="60" y="372" width="12" height="12" rx="2" fill="#f472b6"/>
+<text x="78" y="382" fill="#1c1f2a">Salah</text>
+</svg>

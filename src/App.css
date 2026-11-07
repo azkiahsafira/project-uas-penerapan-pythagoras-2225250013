@@ -3998,3 +3998,28 @@ tbody tr:last-child td {
   font-size: 0.9rem;
   font-weight: 600;
 }
+
+/* =========================================================================
+   Kenalan sebelum belajar
+   ========================================================================= */
+.kenalan {
+  text-align: center;
+}
+
+.kenalan .maskot {
+  margin: 0 auto;
+}
+
+.kenalan form {
+  text-align: left;
+  margin-top: 12px;
+}
+
+.belajar-sebagai {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+}

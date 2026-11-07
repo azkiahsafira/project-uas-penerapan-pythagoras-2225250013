@@ -212,10 +212,17 @@ SELESAI
 
 ## Database (Supabase)
 
-Hasil pre-test, post-test, dan kuesioner disimpan di tabel `hasil`. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabase/schema.sql).
+Ada dua tabel. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabase/schema.sql).
+
+| Tabel | Isi |
+| ----- | --- |
+| `hasil` | pre-test, post-test, dan kuesioner Leppink (nilai, jawaban, durasi, IL/EL/GL) |
+| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah) |
+
+Sebelum mulai Sesi 1, siswa mengisi nama sekali ("Kenalan dulu, yuk!"); nama yang sama dipakai juga di menu Tes.
 
 - Aplikasi hanya boleh **menambah** data (Row Level Security). Membaca, mengubah, dan menghapus data hanya bisa dilakukan peneliti lewat dashboard Supabase, sehingga nama dan nilai siswa tidak bisa dilihat orang lain.
-- Data untuk dianalisis: Supabase → **Table Editor** → tabel `hasil` → **Export to CSV**.
+- Data untuk dianalisis: Supabase → **Table Editor** → tabel `hasil` (dan `aktivitas`) → **Export to CSV**.
 
 Proyek Supabase: **penelitian-pythagoras** (region Singapore). URL dan *publishable key*-nya ada di file [.env](.env) dan ikut dipakai saat build di GitHub Actions. Publishable key memang aman dibagikan karena tabel dilindungi RLS; **jangan pernah** menaruh *secret key* di repo.
 
@@ -244,11 +251,11 @@ Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lew
 
 ## Analisis Data (Python)
 
-Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
+Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, serta langkah yang paling lama/paling banyak salah (indikasi intrinsic load). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
 
 ```bash
 cd analisis
-python analisis.py data.csv
+python analisis.py data.csv --aktivitas aktivitas.csv
 ```
 
 ## Struktur Folder

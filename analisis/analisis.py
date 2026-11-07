@@ -7,6 +7,8 @@ aplikasi), lalu menghitung:
   2. Ketercapaian tiap indikator soal (pre vs post)
   3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
   4. Perbandingan kelompok "Belajar dengan aplikasi" vs "Diajar langsung"
+  5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, serta
+     total waktu tiap sesi, dari tabel `aktivitas`
 
 Keluaran:
   - laporan di terminal
@@ -18,6 +20,7 @@ Keluaran:
 Cara pakai:
   python analisis.py data.csv
   python analisis.py data.csv --keluaran folder_hasil
+  python analisis.py data.csv --aktivitas aktivitas.csv
 
 Hanya memakai library bawaan Python, tidak perlu install apa pun.
 """
@@ -386,10 +389,127 @@ def simpan_grafik(rekap, folder):
     )
 
 
+# ---------------------------------------------------------------------------
+# Analisis proses belajar (tabel `aktivitas`): waktu & kesalahan per langkah
+# ---------------------------------------------------------------------------
+def baca_aktivitas(path):
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        baris_baris = list(csv.DictReader(f))
+    data = []
+    for b in baris_baris:
+        jenis = ambil(b, "jenis")
+        if jenis not in ("langkah", "sesi"):
+            continue
+        data.append({
+            "jenis": jenis,
+            "nama": (ambil(b, "nama") or "").strip(),
+            "kelompok": ambil(b, "kelompok") or "",
+            "sesi": int(ke_angka(ambil(b, "sesi")) or 0),
+            "langkah": int(ke_angka(ambil(b, "langkah")) or 0),
+            "judul": ambil(b, "judul") or "",
+            "durasi": ke_angka(ambil(b, "durasi_detik")) or 0,
+            "salah": int(ke_angka(ambil(b, "salah")) or 0),
+            "hasil": ambil(b, "hasil") or "",
+        })
+    return data
+
+
+def rekap_langkah(aktivitas):
+    """Gabungkan per langkah: total waktu tiap siswa dijumlahkan dulu (bila langkah dibuka
+    lebih dari sekali), lalu dirata-rata antarsiswa."""
+    per_langkah = {}
+    for a in aktivitas:
+        if a["jenis"] != "langkah":
+            continue
+        kunci = (a["sesi"], a["langkah"])
+        r = per_langkah.setdefault(kunci, {"judul": a["judul"], "siswa": {}})
+        s = r["siswa"].setdefault(a["nama"].lower(), {"durasi": 0, "salah": 0, "dibuka": False})
+        s["durasi"] += a["durasi"]
+        s["salah"] += a["salah"]
+        s["dibuka"] = s["dibuka"] or a["hasil"] == "dibuka"
+    hasil = []
+    for (sesi, langkah), r in sorted(per_langkah.items()):
+        siswa = list(r["siswa"].values())
+        hasil.append({
+            "sesi": sesi,
+            "langkah": langkah,
+            "judul": r["judul"],
+            "siswa": len(siswa),
+            "rata_detik": rata(s["durasi"] for s in siswa),
+            "total_salah": sum(s["salah"] for s in siswa),
+            "dibuka": sum(1 for s in siswa if s["dibuka"]),
+        })
+    return hasil
+
+
+def laporan_aktivitas(aktivitas, langkah):
+    cetak_tabel(
+        "6. PROSES BELAJAR PER LANGKAH (menu Belajar)",
+        ["Sesi", "Langkah", "Judul", "Siswa", "Rata-rata waktu", "Total salah", "Jawaban dibuka"],
+        [
+            [l["sesi"], l["langkah"], l["judul"][:34], l["siswa"], f"{fmt(l['rata_detik'])} dtk", l["total_salah"], l["dibuka"]]
+            for l in langkah
+        ],
+    )
+    print("   Jawaban dibuka = siswa salah 2 kali sehingga aplikasi menampilkan jawabannya.")
+
+    per_sesi = {}
+    for a in aktivitas:
+        if a["jenis"] != "sesi":
+            continue
+        kunci = (a["nama"], a["sesi"])
+        r = per_sesi.setdefault(kunci, {"durasi": 0, "salah": 0, "selesai": False, "keluar": 0})
+        r["durasi"] += a["durasi"]
+        r["salah"] += a["salah"]
+        r["selesai"] = r["selesai"] or a["hasil"] == "selesai"
+        r["keluar"] += 1 if a["hasil"] == "keluar" else 0
+    cetak_tabel(
+        "7. WAKTU BELAJAR PER SESI",
+        ["Nama", "Sesi", "Total waktu", "Total salah", "Status", "Keluar di tengah"],
+        [
+            [nama, sesi, f"{fmt(r['durasi'] / 60, 1)} mnt", r["salah"], "selesai" if r["selesai"] else "belum selesai", f"{r['keluar']}x"]
+            for (nama, sesi), r in sorted(per_sesi.items())
+        ],
+    )
+
+    if langkah:
+        terlama = sorted(langkah, key=lambda l: l["rata_detik"] or 0, reverse=True)[:3]
+        tersulit = sorted(langkah, key=lambda l: (l["total_salah"], l["dibuka"]), reverse=True)[:3]
+        print("\n   Langkah paling lama dipelajari:")
+        for l in terlama:
+            print(f"   - Sesi {l['sesi']} langkah {l['langkah']} ({l['judul']}): {fmt(l['rata_detik'])} detik")
+        print("   Langkah dengan kesalahan terbanyak (indikasi intrinsic load tinggi):")
+        for l in tersulit:
+            print(f"   - Sesi {l['sesi']} langkah {l['langkah']} ({l['judul']}): {l['total_salah']} salah, {l['dibuka']} jawaban dibuka")
+
+
+def simpan_aktivitas(langkah, folder):
+    with open(os.path.join(folder, "rekap_langkah.csv"), "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["sesi", "langkah", "judul", "jumlah_siswa", "rata_rata_detik", "total_salah", "jawaban_dibuka"])
+        for l in langkah:
+            w.writerow([l["sesi"], l["langkah"], l["judul"], l["siswa"],
+                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["total_salah"], l["dibuka"]])
+    label = [f"S{l['sesi']}-L{l['langkah']}" for l in langkah]
+    waktu = [None if l["rata_detik"] is None else round(l["rata_detik"]) for l in langkah]
+    salah = [l["total_salah"] for l in langkah]
+    svg_batang(
+        "Rata-rata Waktu per Langkah (detik)", label,
+        [("Waktu (detik)", "#5fb4ff", waktu)],
+        max([w for w in waktu if w is not None] + [10]), os.path.join(folder, "grafik_waktu_langkah.svg"),
+    )
+    svg_batang(
+        "Jumlah Jawaban Salah per Langkah", label,
+        [("Salah", "#f472b6", salah)],
+        max(salah + [3]), os.path.join(folder, "grafik_salah_langkah.svg"),
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description="Analisis hasil penelitian teorema Pythagoras")
     parser.add_argument("csv", help="file CSV ekspor dari Supabase (tabel hasil) atau dari menu Tes")
     parser.add_argument("--keluaran", default="hasil_analisis", help="folder untuk rekap CSV dan grafik")
+    parser.add_argument("--aktivitas", help="(opsional) file CSV ekspor tabel aktivitas dari Supabase")
     args = parser.parse_args()
 
     if not os.path.exists(args.csv):
@@ -405,7 +525,18 @@ def main():
     os.makedirs(args.keluaran, exist_ok=True)
     simpan_rekap_csv(rekap, os.path.join(args.keluaran, "rekap_siswa.csv"))
     simpan_grafik(rekap, args.keluaran)
-    print(f"\nFile tersimpan di folder '{args.keluaran}': rekap_siswa.csv, grafik_nilai.svg, grafik_beban.svg, grafik_indikator.svg")
+    berkas = ["rekap_siswa.csv", "grafik_nilai.svg", "grafik_beban.svg", "grafik_indikator.svg"]
+
+    if args.aktivitas:
+        if not os.path.exists(args.aktivitas):
+            sys.exit(f"File tidak ditemukan: {args.aktivitas}")
+        aktivitas = baca_aktivitas(args.aktivitas)
+        langkah = rekap_langkah(aktivitas)
+        laporan_aktivitas(aktivitas, langkah)
+        simpan_aktivitas(langkah, args.keluaran)
+        berkas += ["rekap_langkah.csv", "grafik_waktu_langkah.svg", "grafik_salah_langkah.svg"]
+
+    print(f"\nFile tersimpan di folder '{args.keluaran}': " + ", ".join(berkas))
 
 
 if __name__ == "__main__":
