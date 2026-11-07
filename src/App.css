@@ -1,0 +1,196 @@
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+header p {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+
+h2 {
+  font-size: 1.15rem;
+  margin: 0 0 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kartu {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.tab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+.tab button.aktif {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.hitung {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.error {
+  color: var(--danger);
+  margin: 12px 0 0;
+}
+
+.hasil {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.jawaban {
+  font-size: 1.2rem;
+  margin: 0 0 8px;
+}
+
+.jawaban strong {
+  color: var(--accent);
+}
+
+.hasil ol {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 4px;
+}
+
+code {
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.tripel {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  font-size: 0.9rem;
+}
+
+.gambar {
+  display: flex;
+  flex-direction: column;
+}
+
+.segitiga {
+  width: 100%;
+  height: auto;
+}
+
+.segitiga .bidang {
+  fill: var(--accent-soft);
+}
+
+.segitiga .sisi {
+  stroke: var(--text);
+  stroke-width: 2.5;
+}
+
+.segitiga .dicari {
+  stroke: var(--accent);
+  stroke-width: 4;
+}
+
+.segitiga .siku {
+  fill: none;
+  stroke: var(--muted);
+}
+
+.segitiga text {
+  fill: var(--text);
+  font-size: 13px;
+}
+
+.ket {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.contoh {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.contoh h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.contoh p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
