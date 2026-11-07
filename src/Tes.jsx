@@ -372,8 +372,8 @@ export default function Tes({ onFokus }) {
       <h2>Tes dan Kuesioner Penelitian</h2>
       <p className="ket">Dikerjakan oleh kedua siswa (kelompok aplikasi dan kelompok yang diajar langsung).</p>
       <div className="daftar-sesi">
-        {Object.entries(INSTRUMEN).map(([k, ins]) => (
-          <article key={k} className="kartu sesi">
+        {Object.entries(INSTRUMEN).map(([k, ins], i) => (
+          <article key={k} className={`kartu sesi warna-${i + 1}`}>
             <p className="ket">{ins.waktu}</p>
             <h3>{ins.judul}</h3>
             <p>{ins.ket}</p>

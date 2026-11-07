@@ -1,33 +1,55 @@
+/* Tema warna: pastel ungu–pink–peach.
+   Semua warna dipakai lewat variabel agar mode terang & gelap konsisten. */
 :root {
-  --bg: #f6f7fb;
+  --bg: #f6f4ff;
+  --bg-2: #fff3ec;
   --card: #ffffff;
-  --text: #1c1f2a;
-  --muted: #5b6172;
-  --border: #dde0ea;
-  --accent: #4b5bdc;
-  --accent-soft: rgba(75, 91, 220, 0.12);
-  --danger: #c4302b;
-  --danger-soft: rgba(196, 48, 43, 0.1);
-  --success: #1e7a3c;
-  --success-soft: rgba(30, 122, 60, 0.12);
+  --text: #2a2540;
+  --muted: #6b6585;
+  --border: #e8e4f5;
+  --accent: #6c5ce7;
+  --accent-2: #f472b6;
+  --accent-3: #fb923c;
+  --accent-soft: rgba(108, 92, 231, 0.1);
+  --on-accent: #ffffff;
+  --danger: #d64545;
+  --danger-soft: rgba(214, 69, 69, 0.1);
+  --success: #18865a;
+  --success-soft: rgba(24, 134, 90, 0.12);
+  --sesi-1: #6c5ce7;
+  --sesi-2: #c8417f;
+  --sesi-3: #11806a;
+  --gradasi: linear-gradient(120deg, #6c5ce7 0%, #a66cf0 45%, #f472b6 75%, #fb923c 100%);
+  --bayangan: 0 12px 32px -14px rgba(76, 60, 160, 0.28);
+  --bayangan-kecil: 0 4px 14px -6px rgba(76, 60, 160, 0.25);
   color-scheme: light dark;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
+  font-family: 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.55;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #14161d;
-    --card: #1d2029;
-    --text: #e8eaf2;
-    --muted: #a0a6b8;
-    --border: #2f3342;
-    --accent: #7c8aff;
-    --accent-soft: rgba(124, 138, 255, 0.16);
-    --danger: #ff7a73;
-    --danger-soft: rgba(255, 122, 115, 0.14);
-    --success: #5fd38a;
-    --success-soft: rgba(95, 211, 138, 0.14);
+    --bg: #13111d;
+    --bg-2: #1b1426;
+    --card: #1e1b2c;
+    --text: #ece9f7;
+    --muted: #a7a2c0;
+    --border: #312c47;
+    --accent: #a597ff;
+    --accent-2: #f78fc4;
+    --accent-3: #fdab6e;
+    --accent-soft: rgba(165, 151, 255, 0.15);
+    --on-accent: #16131f;
+    --danger: #ff8a85;
+    --danger-soft: rgba(255, 138, 133, 0.14);
+    --success: #5fd8a2;
+    --success-soft: rgba(95, 216, 162, 0.14);
+    --sesi-1: #a597ff;
+    --sesi-2: #f78fc4;
+    --sesi-3: #4fd6b6;
+    --gradasi: linear-gradient(120deg, #4b3fb5 0%, #7444b0 45%, #a53f86 75%, #b8613c 100%);
+    --bayangan: 0 12px 32px -14px rgba(0, 0, 0, 0.6);
+    --bayangan-kecil: 0 4px 14px -6px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -37,6 +59,17 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
   color: var(--text);
+  background:
+    radial-gradient(900px 500px at 0% 0%, var(--accent-soft), transparent 60%),
+    radial-gradient(800px 500px at 100% 0%, color-mix(in srgb, var(--accent-3) 12%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
 }

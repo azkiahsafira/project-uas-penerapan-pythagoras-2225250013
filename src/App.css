@@ -1,63 +1,289 @@
+/* =========================================================================
+   Tata letak dasar
+   ========================================================================= */
 main {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 32px 16px 64px;
-}
-
-header h1 {
-  margin: 0 0 8px;
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-}
-
-header p {
-  margin: 0 0 24px;
-  color: var(--muted);
+  padding: 24px 16px 40px;
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   margin: 0 0 12px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 16px;
+  gap: 18px;
   margin-bottom: 32px;
 }
 
+/* Cegah isi kartu melebar melewati layar sempit */
+.grid > *,
+.aksi > * {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sempit {
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.jarak-atas {
+  margin-top: 36px;
+}
+
+.lebar {
+  width: 100%;
+}
+
+/* =========================================================================
+   Header (hero) dan menu
+   ========================================================================= */
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 28px;
+  border-radius: 24px;
+  background: var(--gradasi);
+  color: #fff;
+  box-shadow: var(--bayangan);
+}
+
+/* Lingkaran samar sebagai hiasan latar header */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 220px;
+  height: 220px;
+  top: -90px;
+  right: 22%;
+}
+
+.hero::after {
+  width: 140px;
+  height: 140px;
+  bottom: -70px;
+  left: 38%;
+}
+
+.hero-teks {
+  position: relative;
+  max-width: 560px;
+}
+
+.lencana {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.hero h1 {
+  margin: 12px 0 8px;
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.hero p {
+  margin: 0;
+  opacity: 0.92;
+}
+
+.hiasan {
+  position: relative;
+  flex: 0 0 auto;
+  width: 170px;
+  height: auto;
+}
+
+.hiasan .h-persegi {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+}
+
+.hiasan .h1 {
+  fill: rgba(255, 255, 255, 0.18);
+}
+
+.hiasan .h2 {
+  fill: rgba(255, 255, 255, 0.26);
+}
+
+.hiasan .h3 {
+  fill: rgba(255, 255, 255, 0.34);
+}
+
+.hiasan .h-segitiga {
+  fill: rgba(255, 255, 255, 0.9);
+}
+
+.hiasan text {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 22px 20px;
+    border-radius: 20px;
+  }
+
+  .hiasan {
+    position: absolute;
+    right: -18px;
+    bottom: -14px;
+    width: 120px;
+    opacity: 0.45;
+  }
+}
+
+.menu {
+  position: sticky;
+  top: 8px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 16px 0 24px;
+  padding: 6px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: var(--bayangan-kecil);
+  backdrop-filter: blur(10px);
+}
+
+.menu button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 8px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.menu button:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.menu button.aktif {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 6px 16px -8px var(--accent);
+}
+
+.ikon {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+  .menu button {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.75rem;
+    padding: 8px 4px;
+  }
+}
+
+.kaki {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* =========================================================================
+   Kartu, tombol, dan isian
+   ========================================================================= */
 .kartu {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-}
-
-.tab {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: var(--bayangan-kecil);
 }
 
 button {
   font: inherit;
   cursor: pointer;
   border: 1px solid var(--border);
-  background: transparent;
+  background: var(--card);
   color: var(--text);
+  border-radius: 12px;
+  padding: 9px 14px;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+button:disabled,
+input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hitung {
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, var(--accent-2)));
+  border-color: transparent;
+  color: var(--on-accent);
+  font-weight: 700;
+  box-shadow: 0 8px 18px -10px var(--accent);
+}
+
+.hitung:hover:not(:disabled) {
+  border-color: transparent;
+  box-shadow: 0 10px 22px -10px var(--accent);
+  transform: translateY(-1px);
+}
+
+button.kecil {
+  padding: 4px 10px;
+  font-size: 0.8rem;
   border-radius: 8px;
-  padding: 8px 12px;
-}
-
-button:hover {
-  border-color: var(--accent);
-}
-
-.tab button.aktif {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
 }
 
 form {
@@ -67,30 +293,71 @@ form {
 
 label {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   font-size: 0.9rem;
+  font-weight: 500;
   color: var(--muted);
 }
 
-input {
+input,
+select {
   font: inherit;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  min-width: 0;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 60%, var(--card));
   color: var(--text);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
-input:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.hitung {
-  background: var(--accent);
+input:focus,
+select:focus {
+  outline: none;
   border-color: var(--accent);
-  color: #fff;
-  font-weight: 600;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+fieldset {
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 14px 14px;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+legend {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
+label.radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+label.radio input {
+  width: auto;
+  accent-color: var(--accent);
+}
+
+code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+.ket {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 8px 0 0;
 }
 
 .error {
@@ -98,10 +365,51 @@ input:focus {
   margin: 12px 0 0;
 }
 
+/* Umpan balik benar / salah / info */
+.umpan {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+}
+
+.umpan.benar {
+  background: var(--success-soft);
+  border-left-color: var(--success);
+  color: var(--success);
+}
+
+.umpan.salah {
+  background: var(--danger-soft);
+  border-left-color: var(--danger);
+  color: var(--danger);
+}
+
+/* =========================================================================
+   Kalkulator
+   ========================================================================= */
+.tab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.tab button {
+  border-radius: 999px;
+}
+
+.tab button.aktif {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
 .hasil {
   margin-top: 16px;
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  padding-top: 14px;
 }
 
 .jawaban {
@@ -120,21 +428,38 @@ input:focus {
   gap: 4px;
 }
 
-code {
-  font-family: ui-monospace, Consolas, monospace;
-}
-
 .tripel {
   margin: 12px 0 0;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
   background: var(--accent-soft);
   font-size: 0.9rem;
 }
 
+.contoh {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.contoh h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.contoh p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+
+/* =========================================================================
+   Gambar segitiga (SVG)
+   ========================================================================= */
 .gambar {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .segitiga {
@@ -149,11 +474,12 @@ code {
 .segitiga .sisi {
   stroke: var(--text);
   stroke-width: 2.5;
+  stroke-linecap: round;
 }
 
 .segitiga .dicari {
-  stroke: var(--accent);
-  stroke-width: 4;
+  stroke: var(--accent-2);
+  stroke-width: 4.5;
 }
 
 .segitiga .siku {
@@ -164,93 +490,130 @@ code {
 .segitiga text {
   fill: var(--text);
   font-size: 13px;
+  font-weight: 600;
 }
 
-.ket {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin: 8px 0 0;
+.segitiga .persegi {
+  stroke: var(--text);
+  stroke-width: 1.5;
 }
 
-.contoh {
+.segitiga .persegi.kecil {
+  fill: var(--accent-soft);
+}
+
+.segitiga .persegi.besar {
+  fill: color-mix(in srgb, var(--accent-2) 22%, transparent);
+}
+
+.segitiga .luas {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================================
+   Belajar (daftar sesi & pemutar langkah)
+   ========================================================================= */
+.daftar-sesi {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
 
-.contoh h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
-}
-
-.contoh p {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin: 0 0 12px;
-}
-
-@media (max-width: 700px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.menu {
+.sesi {
+  --warna: var(--sesi-1);
+  position: relative;
+  overflow: hidden;
   display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  padding-top: 26px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
-.menu button.aktif {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+.sesi::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 6px;
+  background: var(--warna);
 }
 
-.kepala-latihan {
+.sesi:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bayangan);
+}
+
+.warna-1 {
+  --warna: var(--sesi-1);
+}
+
+.warna-2 {
+  --warna: var(--sesi-2);
+}
+
+.warna-3 {
+  --warna: var(--sesi-3);
+}
+
+.nomor-sesi {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--warna) 15%, transparent);
+  color: var(--warna);
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.sesi h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.sesi p {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+}
+
+.sesi button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.sesi .hitung {
+  background: var(--warna);
+  box-shadow: 0 8px 18px -10px var(--warna);
+}
+
+.sesi.sudah {
+  border-color: color-mix(in srgb, var(--success) 50%, var(--border));
+}
+
+.kepala-sesi {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
+  margin-bottom: 10px;
 }
 
-.skor {
-  font-weight: 600;
-  color: var(--accent);
+.progres {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  margin-bottom: 18px;
+  overflow: hidden;
 }
 
-.soal {
-  font-size: 1.05rem;
-  margin: 0 0 16px;
-}
-
-.aksi {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-}
-
-button:disabled,
-input:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.umpan {
-  margin: 12px 0 0;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--accent-soft);
-}
-
-.umpan.benar {
-  background: var(--success-soft);
-  color: var(--success);
-}
-
-.umpan.salah {
-  background: var(--danger-soft);
-  color: var(--danger);
+.progres div {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--gradasi);
+  transition: width 0.35s ease;
 }
 
 .paragraf {
@@ -259,22 +622,23 @@ input:disabled {
 
 .rumus {
   display: grid;
-  gap: 4px;
-  margin: 12px 0;
-  padding: 12px 14px;
-  border-radius: 8px;
+  gap: 6px;
+  margin: 14px 0;
+  padding: 14px 16px;
+  border-radius: 14px;
   background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
   font-size: 1.05rem;
 }
 
 .cek {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
 }
 
 .cek-tanya {
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 0 10px;
 }
 
@@ -282,6 +646,10 @@ input:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.opsi button {
+  border-radius: 999px;
 }
 
 .opsi button.aktif {
@@ -298,78 +666,6 @@ input:disabled {
   margin-top: 20px;
 }
 
-.kepala-sesi {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.progres {
-  height: 6px;
-  border-radius: 3px;
-  background: var(--border);
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.progres div {
-  height: 100%;
-  background: var(--accent);
-  transition: width 0.3s;
-}
-
-.daftar-sesi {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.sesi h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
-}
-
-.sesi p {
-  margin: 0 0 10px;
-  font-size: 0.92rem;
-}
-
-.sesi.sudah {
-  border-color: var(--success);
-}
-
-.segitiga .persegi {
-  stroke: var(--text);
-  stroke-width: 1.5;
-}
-
-.segitiga .persegi.kecil {
-  fill: var(--accent-soft);
-}
-
-.segitiga .persegi.besar {
-  fill: var(--success-soft);
-}
-
-.segitiga .luas {
-  font-size: 12px;
-  font-weight: 600;
-}
-
-/* Cegah isi kartu melebar melewati layar sempit */
-.grid > *,
-.aksi > * {
-  min-width: 0;
-}
-
-input {
-  min-width: 0;
-  width: 100%;
-}
-
 /* Di layar sempit, gambar materi ditaruh di atas teks agar siswa tidak perlu
    scroll bolak-balik (mengurangi split-attention / extraneous load) */
 @media (max-width: 700px) {
@@ -382,58 +678,54 @@ input {
   }
 }
 
-.sempit {
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-select {
-  font: inherit;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-}
-
-fieldset {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 12px 12px;
-  margin: 0;
-  display: grid;
-  gap: 6px;
-}
-
-legend {
-  font-size: 0.9rem;
-  color: var(--muted);
-  padding: 0 4px;
-}
-
-label.radio {
+/* =========================================================================
+   Latihan soal
+   ========================================================================= */
+.kepala-latihan {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  align-items: baseline;
   gap: 8px;
-  color: var(--text);
-  font-size: 1rem;
-  cursor: pointer;
 }
 
-label.radio input {
-  width: auto;
-  accent-color: var(--accent);
+.skor {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-weight: 700;
+  color: var(--accent);
 }
 
+.soal {
+  font-size: 1.05rem;
+  margin: 0 0 16px;
+}
+
+.aksi {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+/* =========================================================================
+   Tes, kuesioner, dan riwayat hasil
+   ========================================================================= */
 .opsi-tes {
   display: grid;
   gap: 8px;
 }
 
 label.pilihan {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+label.pilihan:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
 }
 
 label.pilihan.dipilih {
@@ -442,7 +734,8 @@ label.pilihan.dipilih {
 }
 
 .huruf {
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .nomor {
@@ -453,13 +746,16 @@ label.pilihan.dipilih {
 }
 
 .nomor button {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   padding: 0;
+  border-radius: 50%;
+  font-weight: 600;
 }
 
 .nomor button.terjawab {
   background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
 }
 
 .nomor button.aktif {
@@ -478,7 +774,7 @@ label.pilihan.dipilih {
 .butir {
   padding-left: 20px;
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .butir p {
@@ -488,18 +784,19 @@ label.pilihan.dipilih {
 .skala {
   display: grid;
   grid-template-columns: repeat(11, minmax(0, 1fr));
-  gap: 3px;
+  gap: 4px;
 }
 
 .skala button {
   padding: 8px 0;
   font-size: 0.85rem;
+  border-radius: 10px;
 }
 
 .skala button.aktif {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .ujung-skala {
@@ -507,38 +804,6 @@ label.pilihan.dipilih {
   justify-content: space-between;
   font-size: 0.78rem;
   margin-top: 4px;
-}
-
-.lebar {
-  width: 100%;
-}
-
-.jarak-atas {
-  margin-top: 32px;
-}
-
-.tabel-wadah {
-  overflow-x: auto;
-  margin-bottom: 12px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 0.88rem;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-button.kecil {
-  padding: 4px 8px;
-  font-size: 0.8rem;
 }
 
 /* HP kecil: tombol skala 0–10 dibuat dua baris agar mudah disentuh */
@@ -552,6 +817,37 @@ button.kecil {
     padding: 10px 0;
     font-size: 1rem;
   }
+}
+
+.tabel-wadah {
+  overflow-x: auto;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.88rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+th {
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 .aksi-riwayat {

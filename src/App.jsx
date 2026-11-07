@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Belajar from './Belajar.jsx'
+import Ikon, { HiasanPythagoras } from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Tes from './Tes.jsx'
 import Segitiga from './Segitiga.jsx'
@@ -76,26 +77,32 @@ function App() {
 
   return (
     <main>
-      <header>
-        <h1>Penerapan Teorema Pythagoras</h1>
-        <p>Media belajar teorema Pythagoras untuk siswa SMP.</p>
-        {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
-        {!fokusTes && (
-          <nav className="menu">
-            {MENU.map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                className={halaman === id ? 'aktif' : ''}
-                aria-current={halaman === id ? 'page' : undefined}
-                onClick={() => setHalaman(id)}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        )}
+      <header className="hero">
+        <div className="hero-teks">
+          <span className="lencana">Media Belajar · SMP Kelas 7–8</span>
+          <h1>Penerapan Teorema Pythagoras</h1>
+          <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
+        </div>
+        <HiasanPythagoras />
       </header>
+
+      {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
+      {!fokusTes && (
+        <nav className="menu" aria-label="Menu utama">
+          {MENU.map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              className={halaman === id ? 'aktif' : ''}
+              aria-current={halaman === id ? 'page' : undefined}
+              onClick={() => setHalaman(id)}
+            >
+              <Ikon nama={id} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
 
       {/* Belajar & Latihan tetap terpasang (hanya disembunyikan) agar progres dan skor tidak hilang saat pindah tab */}
       <div hidden={halaman !== 'belajar'}>
@@ -189,6 +196,8 @@ function App() {
           </section>
         </>
       )}
+
+      <footer className="kaki">Project UAS Algoritma Pemrograman · Azkiah Safira · 2225250013</footer>
     </main>
   )
 }

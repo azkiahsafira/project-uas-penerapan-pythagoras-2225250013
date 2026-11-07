@@ -225,8 +225,9 @@ export default function Belajar() {
           const sudah = selesai.includes(s.id)
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)
           return (
-            <article key={s.id} className={`kartu sesi ${sudah ? 'sudah' : ''}`}>
-              <h3>{s.judul}</h3>
+            <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''}`}>
+              <span className="nomor-sesi">Sesi {s.id}</span>
+              <h3>{s.judul.replace(/^Sesi \d+: /, '')}</h3>
               <p>{s.tujuan}</p>
               <p className="ket">
                 {s.langkah.length} langkah{sudah ? ' · ✓ Selesai' : ''}
