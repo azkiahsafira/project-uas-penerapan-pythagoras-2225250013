@@ -1,0 +1,415 @@
+"""
+Analisis data penelitian "Penerapan Teorema Pythagoras".
+
+Membaca file CSV hasil tes (ekspor dari Supabase atau dari menu Tes di
+aplikasi), lalu menghitung:
+  1. Nilai pre-test, post-test, selisih, dan N-gain tiap siswa
+  2. Ketercapaian tiap indikator soal (pre vs post)
+  3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
+  4. Perbandingan kelompok "Belajar dengan aplikasi" vs "Diajar langsung"
+
+Keluaran:
+  - laporan di terminal
+  - rekap_siswa.csv          (bisa dibuka di Excel)
+  - grafik_nilai.svg         (pre vs post per siswa)
+  - grafik_beban.svg         (IL, EL, GL per siswa)
+  - grafik_indikator.svg     (jumlah siswa benar per indikator)
+
+Cara pakai:
+  python analisis.py data.csv
+  python analisis.py data.csv --keluaran folder_hasil
+
+Hanya memakai library bawaan Python, tidak perlu install apa pun.
+"""
+
+import argparse
+import csv
+import json
+import os
+import sys
+from html import escape
+
+# ---------------------------------------------------------------------------
+# Kunci jawaban. HARUS sama dengan src/tes.js di aplikasi.
+# Script akan memberi peringatan jika nilai hasil hitung ulang berbeda dengan
+# nilai yang tersimpan (tanda kunci di sini tidak sinkron dengan aplikasi).
+# ---------------------------------------------------------------------------
+INDIKATOR = [
+    "Mengenali sisi miring",
+    "Menghitung kuadrat",
+    "Menghitung akar kuadrat",
+    "Bentuk rumus Pythagoras",
+    "Menghitung sisi miring",
+    "Menghitung sisi siku-siku",
+    "Soal cerita: sisi siku-siku",
+    "Soal cerita: jarak (sisi miring)",
+    "Tripel Pythagoras",
+    "Soal cerita: diagonal layar",
+]
+
+KUNCI = {
+    "pretest": [
+        "Sisi yang berhadapan dengan sudut siku-siku", 81, 11, "c² = a² + b²",
+        15, 15, "8 m", 13, "5, 12, 13", 20,
+    ],
+    "posttest": [
+        "Sisi miring (hipotenusa)", 64, 14, "a² = c² − b²",
+        20, 24, "40 m", 17, "7, 24, 25", 45,
+    ],
+}
+
+NAMA_BEBAN = {
+    "IL": "Intrinsic load",
+    "EL": "Extraneous load",
+    "GL": "Germane load",
+}
+
+
+# ---------------------------------------------------------------------------
+# Membaca data
+# ---------------------------------------------------------------------------
+def ke_angka(teks):
+    """Ubah teks menjadi float; koma dianggap titik desimal. None jika gagal."""
+    if teks is None:
+        return None
+    teks = str(teks).strip().replace(",", ".")
+    if teks == "":
+        return None
+    try:
+        return float(teks)
+    except ValueError:
+        return None
+
+
+def ambil(baris, *nama_kolom):
+    """Ambil nilai kolom pertama yang ada (ekspor Supabase & aplikasi beda nama kolom)."""
+    for nama in nama_kolom:
+        if nama in baris and baris[nama] not in (None, ""):
+            return baris[nama]
+    return None
+
+
+def baca_csv(path):
+    # utf-8-sig agar BOM dari file ekspor aplikasi ikut terbaca dengan benar
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        baris_baris = list(csv.DictReader(f))
+
+    data = []
+    for b in baris_baris:
+        jenis = ambil(b, "jenis")
+        if jenis not in ("pretest", "posttest", "leppink"):
+            continue
+        try:
+            jawaban = json.loads(ambil(b, "jawaban") or "{}")
+        except json.JSONDecodeError:
+            jawaban = {}
+        data.append({
+            "jenis": jenis,
+            "nama": (ambil(b, "nama") or "").strip(),
+            "kelas": ambil(b, "kelas") or "",
+            "sekolah": ambil(b, "sekolah") or "",
+            "kelompok": ambil(b, "kelompok") or "",
+            "selesai": ambil(b, "selesai", "waktu_selesai") or "",
+            "durasi": ke_angka(ambil(b, "durasi_detik")),
+            "skor": ke_angka(ambil(b, "skor")),
+            "IL": ke_angka(ambil(b, "il", "IL")),
+            "EL": ke_angka(ambil(b, "el", "EL")),
+            "GL": ke_angka(ambil(b, "gl", "GL")),
+            "jawaban": jawaban,
+        })
+    return data
+
+
+# ---------------------------------------------------------------------------
+# Perhitungan
+# ---------------------------------------------------------------------------
+def koreksi(jenis, jawaban):
+    """Kembalikan daftar True/False per nomor soal."""
+    hasil = []
+    for i, kunci in enumerate(KUNCI[jenis]):
+        j = jawaban.get(str(i))
+        if isinstance(kunci, (int, float)):
+            n = ke_angka(j)
+            hasil.append(n is not None and abs(n - kunci) < 0.01)
+        else:
+            hasil.append(j == kunci)
+    return hasil
+
+
+def n_gain(pre, post):
+    """N-gain Hake: (post - pre) / (100 - pre)."""
+    if pre is None or post is None:
+        return None
+    if pre >= 100:
+        return None  # tidak terdefinisi jika pre-test sudah 100
+    return (post - pre) / (100 - pre)
+
+
+def kategori_n_gain(g):
+    if g is None:
+        return "-"
+    if g >= 0.7:
+        return "tinggi"
+    if g >= 0.3:
+        return "sedang"
+    return "rendah"
+
+
+def kategori_beban(nilai):
+    """Skala 0-10 dibagi tiga sama besar."""
+    if nilai is None:
+        return "-"
+    if nilai < 3.34:
+        return "rendah"
+    if nilai < 6.67:
+        return "sedang"
+    return "tinggi"
+
+
+def rata(nilai):
+    nilai = [n for n in nilai if n is not None]
+    return sum(nilai) / len(nilai) if nilai else None
+
+
+def rekap_per_siswa(data):
+    """Gabungkan pre, post, dan leppink per siswa. Jika ada ganda, pakai yang terbaru."""
+    siswa = {}
+    for d in sorted(data, key=lambda x: x["selesai"]):
+        kunci = d["nama"].lower()
+        s = siswa.setdefault(kunci, {"nama": d["nama"], "kelas": d["kelas"], "kelompok": d["kelompok"]})
+        s[d["jenis"]] = d  # yang lebih baru menimpa yang lama
+        s["kelas"] = d["kelas"] or s["kelas"]
+        s["kelompok"] = d["kelompok"] or s["kelompok"]
+
+    rekap = []
+    peringatan = []
+    for s in siswa.values():
+        r = {"nama": s["nama"], "kelas": s["kelas"], "kelompok": s["kelompok"]}
+        for jenis in ("pretest", "posttest"):
+            d = s.get(jenis)
+            if not d:
+                r[jenis] = None
+                r[jenis + "_benar"] = None
+                r[jenis + "_menit"] = None
+                continue
+            benar = koreksi(jenis, d["jawaban"])
+            hitung = round(sum(benar) / len(benar) * 100)
+            if d["skor"] is not None and round(d["skor"]) != hitung:
+                peringatan.append(
+                    f"{s['nama']} ({jenis}): nilai tersimpan {d['skor']:.0f}, hitung ulang {hitung}. "
+                    "Kunci jawaban di analisis.py mungkin tidak sama dengan src/tes.js."
+                )
+            r[jenis] = hitung
+            r[jenis + "_benar"] = benar
+            r[jenis + "_menit"] = round(d["durasi"] / 60, 1) if d["durasi"] is not None else None
+        r["selisih"] = r["posttest"] - r["pretest"] if r["pretest"] is not None and r["posttest"] is not None else None
+        r["n_gain"] = n_gain(r["pretest"], r["posttest"])
+        lp = s.get("leppink")
+        for k in ("IL", "EL", "GL"):
+            r[k] = lp[k] if lp else None
+        rekap.append(r)
+    return rekap, peringatan
+
+
+# ---------------------------------------------------------------------------
+# Laporan terminal
+# ---------------------------------------------------------------------------
+def fmt(n, desimal=0):
+    if n is None:
+        return "-"
+    return f"{n:.{desimal}f}"
+
+
+def cetak_tabel(judul, kolom, baris):
+    print(f"\n{judul}")
+    lebar = [max(len(str(k)), *(len(str(b[i])) for b in baris)) if baris else len(str(k)) for i, k in enumerate(kolom)]
+    garis = "-+-".join("-" * w for w in lebar)
+    print(garis)
+    print(" | ".join(str(k).ljust(w) for k, w in zip(kolom, lebar)))
+    print(garis)
+    for b in baris:
+        print(" | ".join(str(v).ljust(w) for v, w in zip(b, lebar)))
+    print(garis)
+
+
+def laporan(rekap, peringatan):
+    print("=" * 70)
+    print("ANALISIS HASIL PENELITIAN - PENERAPAN TEOREMA PYTHAGORAS")
+    print("=" * 70)
+    print(f"Jumlah siswa: {len(rekap)}")
+
+    cetak_tabel(
+        "1. NILAI PRE-TEST, POST-TEST, DAN N-GAIN",
+        ["Nama", "Kelas", "Kelompok", "Pre", "Post", "Selisih", "N-gain", "Kategori"],
+        [
+            [r["nama"], r["kelas"], r["kelompok"], fmt(r["pretest"]), fmt(r["posttest"]),
+             fmt(r["selisih"]), fmt(r["n_gain"], 2), kategori_n_gain(r["n_gain"])]
+            for r in rekap
+        ],
+    )
+    print("   N-gain = (post - pre) / (100 - pre). Kategori Hake: >= 0,7 tinggi; 0,3-0,7 sedang; < 0,3 rendah.")
+
+    cetak_tabel(
+        "2. DURASI PENGERJAAN (MENIT)",
+        ["Nama", "Pre-test", "Post-test"],
+        [[r["nama"], fmt(r["pretest_menit"], 1), fmt(r["posttest_menit"], 1)] for r in rekap],
+    )
+
+    baris_ind = []
+    for i, ind in enumerate(INDIKATOR):
+        pre = [r["pretest_benar"][i] for r in rekap if r["pretest_benar"]]
+        post = [r["posttest_benar"][i] for r in rekap if r["posttest_benar"]]
+        baris_ind.append([i + 1, ind, f"{sum(pre)}/{len(pre)}", f"{sum(post)}/{len(post)}"])
+    cetak_tabel("3. KETERCAPAIAN INDIKATOR (jumlah siswa menjawab benar)", ["No", "Indikator", "Pre", "Post"], baris_ind)
+
+    cetak_tabel(
+        "4. BEBAN KOGNITIF LEPPINK (skala 0-10)",
+        ["Nama", "Kelompok", "IL", "EL", "GL"],
+        [
+            [r["nama"], r["kelompok"],
+             f"{fmt(r['IL'], 2)} ({kategori_beban(r['IL'])})",
+             f"{fmt(r['EL'], 2)} ({kategori_beban(r['EL'])})",
+             f"{fmt(r['GL'], 2)} ({kategori_beban(r['GL'])})"]
+            for r in rekap
+        ],
+    )
+    print("   Harapan (Activation/Balance Model): IL dikelola, EL serendah mungkin, GL setinggi mungkin.")
+
+    kelompok = sorted({r["kelompok"] for r in rekap if r["kelompok"]})
+    if len(kelompok) > 1:
+        cetak_tabel(
+            "5. PERBANDINGAN KELOMPOK (rata-rata)",
+            ["Kelompok", "Siswa", "Pre", "Post", "N-gain", "IL", "EL", "GL"],
+            [
+                [k, len(rs := [r for r in rekap if r["kelompok"] == k]),
+                 fmt(rata(r["pretest"] for r in rs)), fmt(rata(r["posttest"] for r in rs)),
+                 fmt(rata(r["n_gain"] for r in rs), 2), fmt(rata(r["IL"] for r in rs), 2),
+                 fmt(rata(r["EL"] for r in rs), 2), fmt(rata(r["GL"] for r in rs), 2)]
+                for k in kelompok
+            ],
+        )
+
+    belum = [r["nama"] for r in rekap if r["pretest"] is None or r["posttest"] is None or r["IL"] is None]
+    if belum:
+        print("\nCatatan: data belum lengkap (pre/post/kuesioner) untuk: " + ", ".join(belum))
+    for p in peringatan:
+        print("PERINGATAN: " + p)
+
+
+# ---------------------------------------------------------------------------
+# Keluaran file
+# ---------------------------------------------------------------------------
+def simpan_rekap_csv(rekap, path):
+    kolom = ["nama", "kelas", "kelompok", "pretest", "posttest", "selisih", "n_gain", "kategori_n_gain",
+             "pretest_menit", "posttest_menit", "IL", "EL", "GL"]
+    with open(path, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(kolom)
+        for r in rekap:
+            w.writerow([r["nama"], r["kelas"], r["kelompok"], r["pretest"], r["posttest"], r["selisih"],
+                        None if r["n_gain"] is None else round(r["n_gain"], 3), kategori_n_gain(r["n_gain"]),
+                        r["pretest_menit"], r["posttest_menit"], r["IL"], r["EL"], r["GL"]])
+
+
+def svg_batang(judul, label_grup, seri, nilai_maks, path, satuan=""):
+    """
+    Grafik batang berkelompok sederhana dalam format SVG.
+    seri: list of (nama_seri, warna, [nilai per grup])
+    """
+    lebar_grup = max(120, 40 * len(seri) + 40)
+    kiri, atas, tinggi_area = 60, 50, 260
+    lebar_legenda = sum(30 + 7 * len(nama) for nama, _, _ in seri)
+    lebar = max(kiri + lebar_grup * len(label_grup) + 30, kiri + lebar_legenda + 20)
+    tinggi = atas + tinggi_area + 90
+    bagian = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{lebar}" height="{tinggi}" '
+        f'font-family="Segoe UI, Arial, sans-serif" font-size="12">',
+        f'<rect width="100%" height="100%" fill="#ffffff"/>',
+        f'<text x="{kiri}" y="24" font-size="15" font-weight="bold" fill="#1c1f2a">{escape(judul)}</text>',
+    ]
+    # garis bantu
+    for k in range(6):
+        nilai = nilai_maks * k / 5
+        y = atas + tinggi_area - tinggi_area * k / 5
+        bagian.append(f'<line x1="{kiri}" y1="{y:.1f}" x2="{lebar - 20}" y2="{y:.1f}" stroke="#e3e5ec"/>')
+        bagian.append(f'<text x="{kiri - 8}" y="{y + 4:.1f}" text-anchor="end" fill="#5b6172">{nilai:g}{satuan}</text>')
+    # batang
+    lebar_batang = 28
+    for g, label in enumerate(label_grup):
+        x0 = kiri + g * lebar_grup + (lebar_grup - lebar_batang * len(seri) - 4 * (len(seri) - 1)) / 2
+        for s, (_, warna, nilai) in enumerate(seri):
+            v = nilai[g]
+            x = x0 + s * (lebar_batang + 4)
+            if v is None:
+                bagian.append(f'<text x="{x + lebar_batang / 2:.1f}" y="{atas + tinggi_area - 4}" text-anchor="middle" fill="#9aa0b0">-</text>')
+                continue
+            h = tinggi_area * min(v, nilai_maks) / nilai_maks
+            y = atas + tinggi_area - h
+            bagian.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{lebar_batang}" height="{h:.1f}" rx="3" fill="{warna}"/>')
+            bagian.append(f'<text x="{x + lebar_batang / 2:.1f}" y="{y - 4:.1f}" text-anchor="middle" fill="#1c1f2a">{v:g}</text>')
+        bagian.append(
+            f'<text x="{kiri + g * lebar_grup + lebar_grup / 2:.1f}" y="{atas + tinggi_area + 18}" '
+            f'text-anchor="middle" fill="#1c1f2a">{escape(str(label))}</text>'
+        )
+    # legenda
+    lx = kiri
+    for nama, warna, _ in seri:
+        bagian.append(f'<rect x="{lx}" y="{tinggi - 28}" width="12" height="12" rx="2" fill="{warna}"/>')
+        bagian.append(f'<text x="{lx + 18}" y="{tinggi - 18}" fill="#1c1f2a">{escape(nama)}</text>')
+        lx += 30 + 7 * len(nama)
+    bagian.append("</svg>")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(bagian))
+
+
+def simpan_grafik(rekap, folder):
+    nama = [r["nama"] for r in rekap]
+    svg_batang(
+        "Nilai Pre-test dan Post-test", nama,
+        [("Pre-test", "#9aa6f0", [r["pretest"] for r in rekap]),
+         ("Post-test", "#4b5bdc", [r["posttest"] for r in rekap])],
+        100, os.path.join(folder, "grafik_nilai.svg"),
+    )
+    svg_batang(
+        "Beban Kognitif Leppink (skala 0-10)", nama,
+        [("Intrinsic (IL)", "#e0a33a", [r["IL"] for r in rekap]),
+         ("Extraneous (EL)", "#c4302b", [r["EL"] for r in rekap]),
+         ("Germane (GL)", "#1e7a3c", [r["GL"] for r in rekap])],
+        10, os.path.join(folder, "grafik_beban.svg"),
+    )
+    pre = [sum(r["pretest_benar"][i] for r in rekap if r["pretest_benar"]) for i in range(len(INDIKATOR))]
+    post = [sum(r["posttest_benar"][i] for r in rekap if r["posttest_benar"]) for i in range(len(INDIKATOR))]
+    svg_batang(
+        "Jumlah Siswa Menjawab Benar per Nomor Soal", [f"No {i + 1}" for i in range(len(INDIKATOR))],
+        [("Pre-test", "#9aa6f0", pre), ("Post-test", "#4b5bdc", post)],
+        max(1, len(rekap)), os.path.join(folder, "grafik_indikator.svg"),
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Analisis hasil penelitian teorema Pythagoras")
+    parser.add_argument("csv", help="file CSV ekspor dari Supabase (tabel hasil) atau dari menu Tes")
+    parser.add_argument("--keluaran", default="hasil_analisis", help="folder untuk rekap CSV dan grafik")
+    args = parser.parse_args()
+
+    if not os.path.exists(args.csv):
+        sys.exit(f"File tidak ditemukan: {args.csv}")
+
+    data = baca_csv(args.csv)
+    if not data:
+        sys.exit("Tidak ada data pre-test/post-test/kuesioner di file tersebut.")
+
+    rekap, peringatan = rekap_per_siswa(data)
+    laporan(rekap, peringatan)
+
+    os.makedirs(args.keluaran, exist_ok=True)
+    simpan_rekap_csv(rekap, os.path.join(args.keluaran, "rekap_siswa.csv"))
+    simpan_grafik(rekap, args.keluaran)
+    print(f"\nFile tersimpan di folder '{args.keluaran}': rekap_siswa.csv, grafik_nilai.svg, grafik_beban.svg, grafik_indikator.svg")
+
+
+if __name__ == "__main__":
+    # Agar karakter seperti ² dan − tampil benar di terminal Windows
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    main()

@@ -177,6 +177,7 @@ SELESAI
 - [Vite](https://vite.dev) 8: server pengembangan dan build
 - [Oxlint](https://oxc.rs): pemeriksa kode (linter)
 - [Supabase](https://supabase.com): database penyimpanan hasil penelitian
+- [Python](https://www.python.org) 3: analisis data penelitian
 
 ## Database (Supabase)
 
@@ -210,12 +211,23 @@ Perintah lainnya:
 
 Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lewat GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)).
 
+## Analisis Data (Python)
+
+Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
+
+```bash
+cd analisis
+python analisis.py data.csv
+```
+
 ## Struktur Folder
 
 ```
 aplikasi-pythagoras/
 ├── index.html        halaman utama
 ├── public/           ikon
+├── analisis/         script Python untuk mengolah data penelitian
+├── supabase/         skema database (SQL)
 └── src/
     ├── main.jsx      titik awal aplikasi
     ├── App.jsx       halaman utama: menu, kalkulator, contoh soal

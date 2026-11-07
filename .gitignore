@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Data penelitian asli (berisi nama siswa) jangan ikut di-upload ke GitHub
+analisis/*.csv
+!analisis/contoh_data.csv
+analisis/hasil_analisis/
+__pycache__/
