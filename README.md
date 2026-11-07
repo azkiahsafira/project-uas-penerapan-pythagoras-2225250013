@@ -185,14 +185,9 @@ Hasil pre-test, post-test, dan kuesioner disimpan di tabel `hasil`. Skema dan at
 - Aplikasi hanya boleh **menambah** data (Row Level Security). Membaca, mengubah, dan menghapus data hanya bisa dilakukan peneliti lewat dashboard Supabase, sehingga nama dan nilai siswa tidak bisa dilihat orang lain.
 - Data untuk dianalisis: Supabase → **Table Editor** → tabel `hasil` → **Export to CSV**.
 
-Cara menghubungkan:
+Proyek Supabase: **penelitian-pythagoras** (region Singapore). URL dan *publishable key*-nya ada di file [.env](.env) dan ikut dipakai saat build di GitHub Actions. Publishable key memang aman dibagikan karena tabel dilindungi RLS; **jangan pernah** menaruh *secret key* di repo.
 
-1. Buat proyek di [supabase.com](https://supabase.com), lalu jalankan isi `supabase/schema.sql` di **SQL Editor**.
-2. Salin **Project URL** dan **anon / publishable key** dari **Project Settings → API**.
-3. Untuk komputer sendiri: salin `.env.example` menjadi `.env.local`, lalu isi kedua nilai tersebut.
-4. Untuk GitHub Pages: isi `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` di **Settings → Secrets and variables → Actions → Variables**, lalu jalankan ulang workflow deploy.
-
-Tanpa pengaturan ini, aplikasi tetap berjalan dan hasil hanya tersimpan di perangkat.
+Jika ingin memakai proyek Supabase lain: jalankan `supabase/schema.sql` di **SQL Editor** proyek tersebut, lalu ganti isi `.env` dengan **Project URL** dan **publishable key** dari **Project Settings → API Keys**.
 
 ## Cara Menjalankan
 

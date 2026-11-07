@@ -3,8 +3,7 @@
 // URL dan anon key dibaca dari environment variable saat build:
 //   VITE_SUPABASE_URL      contoh: https://abcdefgh.supabase.co
 //   VITE_SUPABASE_ANON_KEY kunci "anon" / "publishable" dari Supabase
-// Di komputer sendiri: isi di file .env.local (lihat .env.example).
-// Di GitHub Pages: isi di Settings → Secrets and variables → Actions → Variables.
+// Nilainya ada di file .env (ikut di-commit, dipakai juga saat build di GitHub Actions).
 //
 // Anon key memang dirancang untuk dipakai di aplikasi web (bukan rahasia);
 // keamanan data dijaga oleh aturan Row Level Security di supabase/schema.sql,
