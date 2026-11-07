@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { HewanHidup } from './Hewan.jsx'
 import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
@@ -86,7 +87,8 @@ export default function Latihan() {
 
   return (
     <div className="grid">
-      <section className="kartu">
+      <section className="kartu ada-hewan">
+        <HewanHidup jenis="katak" className="hinggap kanan" />
         <div className="kepala-latihan">
           <h2>Latihan Soal</h2>
           <span className="skor" aria-live="polite">

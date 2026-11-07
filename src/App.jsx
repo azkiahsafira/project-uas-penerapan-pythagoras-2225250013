@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
-import { AnakAyam, Anjing, Bebek, Katak, Panda } from './Hewan.jsx'
-import { Beruang, Kelinci, Kucing, LatarHalaman, LatarHeader } from './Hiasan.jsx'
-import { SUARA_HEWAN } from './kalimat.js'
+import { HewanHidup } from './Hewan.jsx'
+import { LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
@@ -28,17 +27,6 @@ const MENU = [
 
 const KUNCI_ANIMASI = 'pythagoras-animasi'
 
-// Urutan hewan di taman bawah halaman
-const TAMAN = [
-  ['kelinci', Kelinci],
-  ['ayam', AnakAyam],
-  ['kucing', Kucing],
-  ['bebek', Bebek],
-  ['panda', Panda],
-  ['katak', Katak],
-  ['anjing', Anjing],
-  ['beruang', Beruang],
-]
 
 function bacaAnimasi() {
   try {
@@ -79,20 +67,6 @@ function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
   const [animasi, setAnimasi] = useState(bacaAnimasi)
-  const [suara, setSuara] = useState(null) // { hewan, n, urutan }: hewan yang sedang bersuara
-  const [klikHewan, setKlikHewan] = useState({}) // berapa kali tiap hewan sudah diklik
-
-  useEffect(() => {
-    if (!suara) return undefined
-    const t = setTimeout(() => setSuara(null), 1600)
-    return () => clearTimeout(t)
-  }, [suara])
-
-  const elus = (hewan) => {
-    const urutan = klikHewan[hewan] ?? 0
-    setKlikHewan({ ...klikHewan, [hewan]: urutan + 1 })
-    setSuara((s) => ({ hewan, n: (s?.n ?? 0) + 1, urutan }))
-  }
 
   // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
   useEffect(() => {
@@ -132,6 +106,14 @@ function App() {
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
       <EfekKlik aktif={!fokusTes && animasi} />
+      {/* Hewan di pinggir layar: panda & beruang mengintip, bebek berjalan melintas */}
+      {!fokusTes && (
+        <>
+          <HewanHidup jenis="panda" className="pengintip kanan" />
+          <HewanHidup jenis="beruang" className="pengintip kiri" />
+          <HewanHidup jenis="bebek" className="pejalan" />
+        </>
+      )}
       <header className="hero">
         {!fokusTes && <LatarHeader />}
         <div className="hero-teks">
@@ -176,7 +158,8 @@ function App() {
       {halaman === 'kalkulator' && (
         <div className="halaman">
           <div className="grid">
-            <section className="kartu">
+            <section className="kartu ada-hewan">
+              <HewanHidup jenis="anjing" className="hinggap kanan" />
               <h2>Kalkulator</h2>
               <div className="tab" role="tablist">
                 {Object.keys(MODE).map((m) => (
@@ -240,7 +223,10 @@ function App() {
           </div>
     
           <section>
-            <h2>Contoh Soal Kehidupan Sehari-hari</h2>
+            <h2 className="judul-hewan">
+              Contoh Soal Kehidupan Sehari-hari
+              <HewanHidup jenis="kucing" className="sebaris" />
+            </h2>
             <div className="contoh">
               {CONTOH.map((ct) => (
                 <article key={ct.judul} className="kartu">
@@ -255,23 +241,6 @@ function App() {
       )}
 
       <footer className="kaki">
-        {!fokusTes && (
-          <div className="taman" aria-label="Taman hewan">
-            {TAMAN.map(([hewan, Komponen]) => {
-              const aktif = suara?.hewan === hewan
-              const teks = SUARA_HEWAN[hewan][(suara?.urutan ?? 0) % SUARA_HEWAN[hewan].length]
-              return (
-                <Komponen
-                  key={`${hewan}-${aktif ? suara.n : 0}`}
-                  bersuara={aktif}
-                  mengeong={aktif}
-                  teks={teks}
-                  onKlik={() => elus(hewan)}
-                />
-              )
-            })}
-          </div>
-        )}
         <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
           {animasi ? '✨ Animasi: nyala' : '⏸ Animasi: mati'}
         </button>

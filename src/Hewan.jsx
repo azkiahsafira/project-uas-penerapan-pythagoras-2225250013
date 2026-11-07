@@ -1,6 +1,11 @@
-// Hewan-hewan tambahan di taman bawah halaman: anak ayam, bebek, panda,
-// katak, dan anjing. Masing-masing bergerak sendiri dan "bersuara" saat diklik.
-// Gaya & animasinya ada di bagian "Taman hewan tambahan" di App.css.
+// Hewan-hewan lucu yang tersebar di halaman: anak ayam, bebek, panda,
+// katak, dan anjing (kelinci, kucing, beruang ada di Hiasan.jsx).
+// Masing-masing bergerak sendiri dan "bersuara" saat diklik.
+// Gaya & animasinya ada di bagian "Taman hewan" dan "Hewan tersebar" di App.css.
+
+import { useEffect, useState } from 'react'
+import { Beruang, Kelinci, Kucing } from './Hiasan.jsx'
+import { SUARA_HEWAN } from './kalimat.js'
 
 function Tombol({ nama, label, bersuara, teks, onKlik, children }) {
   return (
@@ -177,5 +182,49 @@ export function Anjing(props) {
         </g>
       </svg>
     </Tombol>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// HewanHidup: hewan yang mengurus suaranya sendiri, sehingga bisa diletakkan
+// di mana saja (di atas kartu, di pinggir layar, berjalan melintas).
+// Setiap diklik, hewan memunculkan kalimat berikutnya dari SUARA_HEWAN.
+// ---------------------------------------------------------------------------
+const KOMPONEN = {
+  kelinci: Kelinci,
+  ayam: AnakAyam,
+  kucing: Kucing,
+  bebek: Bebek,
+  panda: Panda,
+  katak: Katak,
+  anjing: Anjing,
+  beruang: Beruang,
+}
+
+export function HewanHidup({ jenis, className = '' }) {
+  const [klik, setKlik] = useState(0)
+  const [bersuara, setBersuara] = useState(false)
+
+  useEffect(() => {
+    if (!bersuara) return undefined
+    const t = setTimeout(() => setBersuara(false), 1700)
+    return () => clearTimeout(t)
+  }, [bersuara, klik])
+
+  const Komponen = KOMPONEN[jenis]
+  const daftar = SUARA_HEWAN[jenis]
+  return (
+    <div className={`hewan-hidup ${className}`}>
+      <Komponen
+        key={klik}
+        bersuara={bersuara}
+        mengeong={bersuara}
+        teks={daftar[(klik - 1 + daftar.length) % daftar.length]}
+        onKlik={() => {
+          setKlik(klik + 1)
+          setBersuara(true)
+        }}
+      />
+    </div>
   )
 }

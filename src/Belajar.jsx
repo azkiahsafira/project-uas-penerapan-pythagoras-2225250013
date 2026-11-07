@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
@@ -259,7 +260,10 @@ export default function Belajar() {
       )}
       <h2>Belajar Teorema Pythagoras</h2>
       <p className="ket">Ikuti sesi secara berurutan. Setiap sesi berisi penjelasan singkat, contoh, dan pertanyaan.</p>
-      <div className="daftar-sesi">
+      <div className="daftar-sesi ada-hewan">
+        {/* anak ayam & kelinci hinggap di atas kartu sesi */}
+        <HewanHidup jenis="ayam" className="hinggap kiri" />
+        <HewanHidup jenis="kelinci" className="hinggap kanan" />
         {SESI.map((s, i) => {
           const sudah = selesai.includes(s.id)
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)

@@ -3698,3 +3698,199 @@ tbody tr:last-child td {
     animation: none !important;
   }
 }
+
+/* =========================================================================
+   Hewan tersebar di halaman
+   ========================================================================= */
+.hewan-hidup {
+  z-index: 4;
+}
+
+.hewan-hidup .hewan-tombol svg,
+.hewan-hidup .kucing-tombol svg {
+  display: block;
+  height: auto;
+}
+
+/* ukuran standar tiap hewan */
+.hewan-hidup .kelinci {
+  width: 54px;
+}
+
+.hewan-hidup .kucing {
+  width: 64px;
+}
+
+.hewan-hidup .beruang {
+  width: 70px;
+}
+
+/* --- hinggap di tepi atas kartu --- */
+.ada-hewan {
+  position: relative;
+}
+
+.hinggap {
+  position: absolute;
+  bottom: calc(100% - 8px);
+}
+
+.hinggap.kanan {
+  right: 18px;
+}
+
+.hinggap.kiri {
+  left: 18px;
+}
+
+/* daftar sesi diberi ruang di atas untuk hewan yang hinggap */
+.daftar-sesi.ada-hewan {
+  margin-top: 60px;
+}
+
+/* --- sebaris dengan judul --- */
+.judul-hewan {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.sebaris {
+  display: inline-block;
+  margin-bottom: -6px;
+}
+
+.sebaris .kucing {
+  width: 52px;
+}
+
+/* --- mengintip dari pinggir layar (hanya layar lebar yang punya ruang kosong) --- */
+.pengintip {
+  position: fixed;
+  z-index: 40;
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .pengintip {
+    display: block;
+  }
+}
+
+.pengintip.kanan {
+  right: -8px;
+  top: 46vh;
+  animation: intip-kanan 12s ease-in-out infinite;
+}
+
+.pengintip.kiri {
+  left: -8px;
+  top: 72vh;
+  animation: intip-kiri 14s ease-in-out 4s infinite backwards;
+}
+
+.pengintip .panda {
+  width: 76px;
+}
+
+.pengintip .beruang {
+  width: 80px;
+}
+
+/* saat disentuh, berhenti di posisi keluar agar mudah diklik */
+.pengintip:hover {
+  animation-play-state: paused;
+}
+
+@keyframes intip-kanan {
+  0%,
+  30%,
+  100% {
+    transform: translateX(72%) rotate(-12deg);
+  }
+  40%,
+  80% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes intip-kiri {
+  0%,
+  30%,
+  100% {
+    transform: translateX(-72%) rotate(12deg);
+  }
+  40%,
+  80% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+/* --- bebek berjalan melintasi bagian bawah layar --- */
+.pejalan {
+  position: fixed;
+  left: -90px;
+  bottom: 6px;
+  z-index: 40;
+  animation: jalan-lintas 30s linear 2s infinite backwards;
+}
+
+/* bebek menghadap ke kanan (arah jalan) */
+.pejalan .bebek {
+  width: 62px;
+  scale: -1 1;
+}
+
+.pejalan .bb-badan {
+  animation-duration: 0.5s;
+}
+
+.pejalan:hover {
+  animation-play-state: paused;
+}
+
+@keyframes jalan-lintas {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  48% {
+    transform: translateX(calc(100vw + 180px));
+    opacity: 1;
+  }
+  49%,
+  100% {
+    transform: translateX(calc(100vw + 180px));
+    opacity: 0;
+  }
+}
+
+/* HP: hewan yang hinggap sedikit lebih kecil */
+@media (max-width: 480px) {
+  .hinggap .hewan-tombol svg,
+  .hinggap .kucing-tombol svg {
+    scale: 0.85;
+    transform-origin: bottom center;
+  }
+
+  .pejalan .bebek {
+    width: 50px;
+  }
+}
+
+/* Animasi dimatikan / gerak dikurangi: pengintip & pejalan disembunyikan */
+.tanpa-animasi .pengintip,
+.tanpa-animasi .pejalan {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pengintip,
+  .pejalan {
+    display: none;
+  }
+
+  .hewan-hidup * {
+    animation: none !important;
+  }
+}
