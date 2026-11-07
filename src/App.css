@@ -194,3 +194,61 @@ code {
     grid-template-columns: 1fr;
   }
 }
+
+.menu {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.menu button.aktif {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.kepala-latihan {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.skor {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.soal {
+  font-size: 1.05rem;
+  margin: 0 0 16px;
+}
+
+.aksi {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.umpan {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+}
+
+.umpan.benar {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.umpan.salah {
+  background: var(--danger-soft);
+  color: var(--danger);
+}

@@ -34,11 +34,12 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Deteksi tripel Pythagoras**: memberi tahu jika ketiga sisi bilangan bulat, misalnya (3, 4, 5).
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
+- **Latihan soal**: soal cerita dibuat acak, jawaban diperiksa otomatis, ada skor, dan pembahasan langkah demi langkah ditampilkan setelah menjawab.
 - Tampilan responsif (laptop dan HP) serta mendukung mode terang/gelap.
 
 ## Algoritma
 
-Algoritma perhitungan ada di fungsi `hitung()` pada [src/App.jsx](src/App.jsx).
+Algoritma perhitungan ada di fungsi `hitung()` pada [src/pythagoras.js](src/pythagoras.js).
 
 ```
 MULAI
@@ -77,6 +78,31 @@ b² = 16
 b  = √16 = 4 m
 ```
 
+### Algoritma Latihan Soal
+
+Ada di [src/Latihan.jsx](src/Latihan.jsx). Soal dibuat dari daftar *tripel Pythagoras* (misalnya 3-4-5, 5-12-13, 8-15-17) supaya jawabannya selalu bilangan bulat.
+
+```
+MULAI
+  skor ← 0, total ← 0
+  ULANGI
+    pilih acak satu tripel (a, b, c)
+    pilih acak sisi yang dicari (a, b, atau c)
+    pilih acak cerita soal yang sesuai, tidak sama dengan soal sebelumnya
+    TAMPILKAN soal dan gambar (sisi yang dicari ditulis "?")
+
+    BACA jawaban
+    total ← total + 1
+    JIKA |jawaban − kunci| < 0,01 MAKA
+      skor ← skor + 1
+      TAMPILKAN "Benar!"
+    SELAIN ITU
+      TAMPILKAN "Belum tepat" dan kunci jawaban
+    TAMPILKAN pembahasan (memakai fungsi hitung())
+  SAMPAI pengguna berhenti
+SELESAI
+```
+
 ## Teknologi
 
 - [React](https://react.dev) 19: antarmuka pengguna
@@ -110,7 +136,10 @@ aplikasi-pythagoras/
 ├── public/           ikon
 └── src/
     ├── main.jsx      titik awal aplikasi
-    ├── App.jsx       logika perhitungan dan tampilan
+    ├── App.jsx       halaman utama: menu, kalkulator, contoh soal
+    ├── Latihan.jsx   mode latihan soal
+    ├── Segitiga.jsx  gambar segitiga (SVG)
+    ├── pythagoras.js logika perhitungan
     ├── App.css       gaya komponen
     └── index.css     warna dan gaya dasar
 ```

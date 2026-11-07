@@ -7,6 +7,9 @@
   --accent: #4b5bdc;
   --accent-soft: rgba(75, 91, 220, 0.12);
   --danger: #c4302b;
+  --danger-soft: rgba(196, 48, 43, 0.1);
+  --success: #1e7a3c;
+  --success-soft: rgba(30, 122, 60, 0.12);
   color-scheme: light dark;
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
@@ -22,6 +25,9 @@
     --accent: #7c8aff;
     --accent-soft: rgba(124, 138, 255, 0.16);
     --danger: #ff7a73;
+    --danger-soft: rgba(255, 122, 115, 0.14);
+    --success: #5fd38a;
+    --success-soft: rgba(95, 211, 138, 0.14);
   }
 }
 
