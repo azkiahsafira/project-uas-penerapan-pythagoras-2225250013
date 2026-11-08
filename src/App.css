@@ -4405,3 +4405,331 @@ tbody tr:last-child td {
     animation: none !important;
   }
 }
+
+/* =========================================================================
+   Gedung SMP & bus sekolah di header (Sekolah.jsx)
+   ========================================================================= */
+.hero {
+  container-type: inline-size;
+}
+
+/* header diberi "halaman sekolah" di bagian bawah: rumput, gedung SMP, bus lewat */
+.hero:has(.gedung-smp) {
+  padding-bottom: 150px;
+}
+
+.rumput-hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(#bbf7d0, #86efac);
+  border-radius: 50% 50% 0 0 / 16px 16px 0 0;
+}
+
+.rumput-hero::before {
+  /* jalan kecil untuk bus */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 7px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0 18px, transparent 18px 34px);
+  opacity: 0.7;
+}
+
+.gedung-smp {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  width: 270px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 10px rgba(30, 42, 77, 0.12));
+}
+
+.gs-rumput { fill: #bbf7d0; }
+.gs-batang { fill: #c08457; }
+.gs-daun { fill: #86efac; stroke: #4ade80; stroke-width: 1.5; }
+.gs-buah { fill: #fb7185; }
+.gs-tiang { fill: #94a3b8; }
+.gs-tiang-bola { fill: #fbbf24; }
+.gs-dinding { fill: #fff7fb; stroke: #1e2a4d; stroke-width: 2; }
+.gs-atap { fill: #f9a8d4; stroke: #1e2a4d; stroke-width: 2; stroke-linejoin: round; }
+.gs-lis { fill: #f472b6; }
+.gs-menara { fill: #e0f2fe; stroke: #1e2a4d; stroke-width: 2; }
+.gs-atap-menara { fill: #7cc3ff; stroke: #1e2a4d; stroke-width: 2; stroke-linejoin: round; }
+.gs-jam { fill: #fff; stroke: #1e2a4d; stroke-width: 2; }
+.gs-poros { fill: #f472b6; }
+.gs-papan { fill: #7cc3ff; stroke: #1e2a4d; stroke-width: 2; }
+.gs-tulisan { fill: #fff; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-anchor: middle; }
+.gs-kaca { fill: #bfe3ff; stroke: #1e2a4d; stroke-width: 2; }
+.gs-bingkai { stroke: #1e2a4d; stroke-width: 1.5; fill: none; }
+.gs-pintu { fill: #7cc3ff; stroke: #1e2a4d; stroke-width: 2; }
+.gs-gagang { fill: #fbbf24; }
+.gs-tangga { fill: #e2e8f0; stroke: #1e2a4d; stroke-width: 1.5; }
+.gs-pagar rect { fill: #fff; stroke: #1e2a4d; stroke-width: 1; }
+
+/* jarum jam berputar */
+.gs-jarum {
+  stroke: #1e2a4d;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 160px 46px;
+}
+.jam-panjang { animation: gs-putar 8s linear infinite; }
+.jam-pendek { animation: gs-putar 96s linear infinite; }
+
+@keyframes gs-putar {
+  to { transform: rotate(360deg); }
+}
+
+/* bendera berkibar */
+.gs-bendera {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: gs-kibar 1.6s ease-in-out infinite;
+}
+
+@keyframes gs-kibar {
+  0%, 100% { transform: skewY(0deg) scaleX(1); }
+  25% { transform: skewY(-5deg) scaleX(0.94); }
+  50% { transform: skewY(2deg) scaleX(1.02); }
+  75% { transform: skewY(-3deg) scaleX(0.96); }
+}
+
+/* pohon bergoyang */
+.gs-pohon {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: gs-goyang 4s ease-in-out infinite;
+}
+.gs-pohon.kanan { animation-delay: -2s; }
+
+@keyframes gs-goyang {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+
+/* siswa muncul dari jendela lalu melambai */
+.gs-anak-gerak {
+  transform: translateY(16px);
+  animation: gs-intip 7s ease-in-out infinite;
+}
+.a2 .gs-anak-gerak { animation-delay: 1.8s; }
+.a5 .gs-anak-gerak { animation-delay: 3.6s; }
+.a7 .gs-anak-gerak { animation-delay: 5.2s; }
+
+@keyframes gs-intip {
+  0%, 12%, 58%, 100% { transform: translateY(16px); }
+  20%, 50% { transform: translateY(0); }
+}
+
+.gs-tangan { animation: gs-lambai 0.5s ease-in-out infinite alternate; }
+
+@keyframes gs-lambai {
+  from { transform: translate(0, 0); }
+  to { transform: translate(1px, -3px); }
+}
+
+/* bus sekolah lewat */
+.bus-jalur {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 92px;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateX(-140px);
+  animation: bus-lewat 22s linear 3s infinite;
+}
+
+.bus {
+  display: block;
+  width: 92px;
+  height: auto;
+  animation: bus-goyang 0.4s ease-in-out infinite alternate;
+}
+
+.bus-tulisan { fill: #1e2a4d; font-size: 7px; font-weight: 800; text-anchor: middle; letter-spacing: 1px; }
+
+.bus-roda {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gs-putar 0.6s linear infinite;
+}
+
+.bus-penumpang { animation: bus-goyang 0.8s ease-in-out infinite alternate; }
+.bus-penumpang.p1, .bus-penumpang.p3 { animation-delay: 0.4s; }
+
+.bus-asap {
+  position: absolute;
+  left: -6px;
+  bottom: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  animation: bus-asap 1.2s ease-out infinite;
+}
+.bus-asap.a2 { animation-delay: 0.6s; }
+
+@keyframes bus-lewat {
+  0% { transform: translateX(-140px); }
+  45%, 100% { transform: translateX(calc(100cqw + 40px)); }
+}
+
+@keyframes bus-goyang {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1.5px); }
+}
+
+@keyframes bus-asap {
+  0% { opacity: 0.9; transform: translate(0, 0) scale(0.6); }
+  100% { opacity: 0; transform: translate(-18px, -10px) scale(1.6); }
+}
+
+/* =========================================================================
+   Hiasan lucu di latar halaman (Sekolah.jsx)
+   ========================================================================= */
+.hiasan-lucu {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kupu { position: absolute; top: 0; left: 0; }
+.kupu svg { display: block; }
+.kupu.k1 { animation: kupu-terbang-1 26s ease-in-out infinite; }
+.kupu.k2 { animation: kupu-terbang-2 32s ease-in-out -10s infinite; }
+.kupu.k3 { animation: kupu-terbang-3 29s ease-in-out -18s infinite; }
+
+.kupu-sayap {
+  transform-box: view-box;
+  transform-origin: 20px 16px;
+  animation: kupu-kepak 0.28s ease-in-out infinite alternate;
+}
+
+@keyframes kupu-kepak {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0.35); }
+}
+
+@keyframes kupu-terbang-1 {
+  0% { transform: translate(-60px, 70vh) rotate(10deg); }
+  25% { transform: translate(25vw, 45vh) rotate(-8deg); }
+  50% { transform: translate(50vw, 62vh) rotate(12deg); }
+  75% { transform: translate(78vw, 38vh) rotate(-10deg); }
+  100% { transform: translate(105vw, 55vh) rotate(8deg); }
+}
+
+@keyframes kupu-terbang-2 {
+  0% { transform: translate(105vw, 30vh) rotate(-10deg); }
+  30% { transform: translate(70vw, 55vh) rotate(8deg); }
+  60% { transform: translate(35vw, 25vh) rotate(-12deg); }
+  100% { transform: translate(-60px, 48vh) rotate(6deg); }
+}
+
+@keyframes kupu-terbang-3 {
+  0% { transform: translate(10vw, 105vh) rotate(0deg); }
+  35% { transform: translate(30vw, 70vh) rotate(14deg); }
+  70% { transform: translate(15vw, 35vh) rotate(-10deg); }
+  100% { transform: translate(40vw, -60px) rotate(8deg); }
+}
+
+.balon {
+  position: absolute;
+  bottom: -100px;
+  animation: balon-naik 24s linear infinite;
+}
+.balon svg {
+  display: block;
+  transform-origin: 50% 0;
+  animation: balon-ayun 3s ease-in-out infinite alternate;
+}
+.balon.b2 { animation-duration: 30s; animation-delay: -12s; }
+.balon.b3 { animation-duration: 27s; animation-delay: -21s; }
+
+@keyframes balon-naik {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(calc(-100vh - 200px)); }
+}
+
+@keyframes balon-ayun {
+  from { transform: rotate(-6deg) translateX(-6px); }
+  to { transform: rotate(6deg) translateX(6px); }
+}
+
+.pesawat-kertas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-80px, 30vh);
+  animation: pesawat-terbang 20s ease-in-out 5s infinite;
+}
+
+@keyframes pesawat-terbang {
+  0% { transform: translate(-80px, 30vh) rotate(8deg); }
+  20% { transform: translate(30vw, 18vh) rotate(-6deg); }
+  30% { transform: translate(45vw, 24vh) rotate(10deg); }
+  45%, 100% { transform: translate(110vw, 12vh) rotate(-4deg); }
+}
+
+.awan-senyum {
+  position: absolute;
+  top: 58vh;
+  left: 0;
+  opacity: 0.85;
+  animation: awan-geser 60s linear -25s infinite;
+}
+.awan-senyum svg {
+  display: block;
+  animation: balon-ayun 4s ease-in-out infinite alternate;
+}
+
+@keyframes awan-geser {
+  from { transform: translateX(-130px); }
+  to { transform: translateX(105vw); }
+}
+
+/* layar sempit: gedung lebih kecil & samar, hiasan dikurangi */
+@media (max-width: 760px) {
+  .hero:has(.gedung-smp) {
+    padding-bottom: 128px;
+  }
+
+  .gedung-smp {
+    width: 220px;
+  }
+
+  .kupu.k3,
+  .balon.b3,
+  .awan-senyum {
+    display: none;
+  }
+}
+
+.tanpa-animasi .hiasan-lucu,
+.tanpa-animasi .bus-jalur {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiasan-lucu,
+  .bus-jalur {
+    display: none;
+  }
+
+  .gedung-smp * {
+    animation: none !important;
+  }
+}

@@ -12,6 +12,7 @@ import Tes from './Tes.jsx'
 import LayarBenar from './Tepuk.jsx'
 import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
+import { BusSekolah, GedungSMP, HiasanLucu } from './Sekolah.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
 
@@ -115,6 +116,7 @@ function App() {
     <main>
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
+      {!fokusTes && <HiasanLucu />}
       <EfekKlik aktif={!fokusTes && animasi} />
       {/* Hewan di pinggir layar: panda & beruang mengintip, bebek berjalan melintas */}
       {!fokusTes && (
@@ -129,6 +131,8 @@ function App() {
       <LayarBenar />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
+        {!fokusTes && <GedungSMP />}
+        {!fokusTes && <BusSekolah />}
         <div className="hero-teks">
           <span className="lencana">Media Belajar · SMP Kelas 8</span>
           <h1>Penerapan Teorema Pythagoras</h1>
