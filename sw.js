@@ -8,7 +8,7 @@
 // - Permintaan ke Supabase (database) TIDAK di-cache. Bila offline, hasil tes
 //   tetap tersimpan di perangkat dan dikirim ulang otomatis oleh aplikasi.
 
-const VERSI = 'pythagoras-v1'
+const VERSI = 'pythagoras-v2'
 const INTI = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './favicon.svg']
 
 self.addEventListener('install', (event) => {
@@ -37,7 +37,9 @@ self.addEventListener('fetch', (event) => {
   // halaman: internet dulu, cache bila offline
   if (req.mode === 'navigate') {
     event.respondWith(
-      fetch(req)
+      // cache: 'no-cache' = selalu tanya server apakah ada versi baru
+      // (tanpa ini browser bisa memakai salinan lama sampai 10 menit)
+      fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' })
         .then((res) => {
           const salinan = res.clone()
           caches.open(VERSI).then((cache) => cache.put('./index.html', salinan))
