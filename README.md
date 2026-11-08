@@ -18,7 +18,7 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
 <p align="center">
   <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/">
-    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header bergradasi biru muda-pink dengan maskot Siku bertopi wisuda, siswa Raka dan siswi berjilbab Nisa, pelangi, dan prisma 3D, menu Belajar/Kalkulator/Latihan Soal/Tes, serta kartu Sesi 1–3" width="820">
+    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header dengan halaman sekolah (gedung SMP, Siku, Raka, dan Nisa berdiri di rumput), menu Belajar/Kalkulator/Latihan Soal/Tes, dan latar bawah laut (gurita, paus, rumput laut, bintang laut)" width="820">
   </a>
 </p>
 
