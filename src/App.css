@@ -4117,3 +4117,291 @@ tbody tr:last-child td {
   margin: -10px 0 14px;
   font-weight: 600;
 }
+
+/* =========================================================================
+   Layar perayaan penuh saat jawaban benar (Tepuk.jsx)
+   ========================================================================= */
+.layar-benar {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.82), rgba(214, 236, 255, 0.78) 45%, rgba(252, 220, 238, 0.8));
+  backdrop-filter: blur(5px);
+  animation: lb-masuk 1.9s ease forwards;
+}
+
+@media (prefers-color-scheme: dark) {
+  .layar-benar {
+    background: radial-gradient(circle at 50% 45%, rgba(40, 55, 105, 0.88), rgba(20, 26, 58, 0.9) 55%, rgba(60, 25, 60, 0.88));
+  }
+}
+
+@keyframes lb-masuk {
+  0% {
+    opacity: 0;
+  }
+  8%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.lb-sinar {
+  position: absolute;
+  width: 160vmax;
+  height: 160vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(56, 189, 248, 0.09) 0 10deg, rgba(244, 114, 182, 0.08) 10deg 20deg, transparent 20deg 30deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 18%, #000 45%);
+  mask-image: radial-gradient(circle, transparent 18%, #000 45%);
+  animation: lb-putar 6s linear infinite;
+}
+
+@keyframes lb-putar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lb-isi {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 16px;
+  text-align: center;
+}
+
+.lb-maskot {
+  animation: lb-loncat 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+
+.lb-kata {
+  margin: 0;
+  max-width: 94vw;
+  font-size: clamp(2.5rem, 8.6vw, 7.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #ec4899;
+  background: linear-gradient(90deg, #0284c7, #4f46e5 35%, #db2777 70%, #ea580c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.95);
+  paint-order: stroke fill;
+  text-shadow: none;
+  filter: drop-shadow(0 5px 0 rgba(30, 41, 99, 0.18)) drop-shadow(0 12px 20px rgba(219, 39, 119, 0.3));
+  animation: lb-tumbuh 0.7s cubic-bezier(0.25, 1.7, 0.45, 1) 0.05s both, lb-goyang 0.9s ease-in-out 0.75s 2;
+}
+
+.lb-sub {
+  margin: 6px 0 0;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18);
+  font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+  font-weight: 800;
+  color: #1d2a4d;
+  animation: lb-naik 0.5s ease-out 0.35s both;
+}
+
+.lb-ket {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  animation: lb-naik 0.5s ease-out 0.6s both;
+}
+
+@keyframes lb-tumbuh {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) rotate(-12deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes lb-goyang {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  25% {
+    transform: rotate(-4deg) scale(1.05);
+  }
+  75% {
+    transform: rotate(4deg) scale(1.05);
+  }
+}
+
+@keyframes lb-loncat {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lb-naik {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* hujan konfeti satu layar */
+.lb-hujan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lb-hujan i {
+  position: absolute;
+  top: -20px;
+  opacity: 0;
+  animation-name: lb-jatuh;
+  animation-timing-function: cubic-bezier(0.3, 0.4, 0.6, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes lb-jatuh {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translate(var(--geser), 108vh) rotate(var(--putar));
+  }
+}
+
+/* tangan bertepuk & bintang */
+.lb-tangan {
+  position: absolute;
+  top: 24%;
+  font-size: clamp(3rem, 12vw, 6rem);
+  animation: lb-tepuk 0.32s ease-in-out infinite alternate;
+}
+
+.lb-tangan.kiri {
+  left: 6%;
+}
+
+.lb-tangan.kanan {
+  right: 6%;
+  animation-delay: 0.16s;
+}
+
+@keyframes lb-tepuk {
+  0% {
+    transform: translateY(-50%) scale(0.85) rotate(-10deg);
+  }
+  100% {
+    transform: translateY(-50%) scale(1.15) rotate(10deg);
+  }
+}
+
+.lb-bintang {
+  position: absolute;
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  animation: lb-kelip 0.8s ease-in-out infinite alternate, lb-tumbuh 0.5s ease-out both;
+}
+
+.lb-bintang.b1 {
+  top: 14%;
+  left: 18%;
+}
+
+.lb-bintang.b2 {
+  top: 18%;
+  right: 16%;
+  animation-delay: 0.2s;
+}
+
+.lb-bintang.b3 {
+  bottom: 16%;
+  left: 22%;
+  animation-delay: 0.35s;
+}
+
+.lb-bintang.b4 {
+  bottom: 14%;
+  right: 20%;
+  animation-delay: 0.1s;
+}
+
+@keyframes lb-kelip {
+  0% {
+    opacity: 0.55;
+    scale: 0.85;
+  }
+  100% {
+    opacity: 1;
+    scale: 1.2;
+  }
+}
+
+@media (max-width: 600px) {
+  .lb-kata {
+    font-size: 14vw;
+  }
+
+  .lb-maskot svg {
+    width: 110px;
+    height: auto;
+  }
+
+  .lb-tangan {
+    top: auto;
+    bottom: 10%;
+  }
+
+  .lb-tangan.kiri {
+    left: 12%;
+  }
+
+  .lb-tangan.kanan {
+    right: 12%;
+  }
+
+  .lb-bintang.b3,
+  .lb-bintang.b4 {
+    bottom: 26%;
+  }
+}
+
+/* animasi dimatikan: tulisan besar tetap tampil, tanpa gerakan & konfeti */
+.tanpa-animasi .layar-benar .lb-hujan,
+.tanpa-animasi .layar-benar .lb-sinar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layar-benar .lb-hujan,
+  .layar-benar .lb-sinar {
+    display: none;
+  }
+
+  .layar-benar,
+  .layar-benar * {
+    animation: none !important;
+  }
+}

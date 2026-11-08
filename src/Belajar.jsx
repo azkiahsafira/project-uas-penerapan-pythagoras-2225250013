@@ -4,6 +4,7 @@ import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
+import { rayakan } from './perayaan.js'
 import { SESI } from './materi.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
@@ -82,6 +83,7 @@ function Cek({ cek, onSelesai, onSalah, disorot = false }) {
     if (benar) {
       setHasil('benar')
       onSelesai('benar')
+      rayakan()
     } else if (salah + 1 >= 2) {
       setSalah(salah + 1)
       setHasil('dibuka')

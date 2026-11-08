@@ -9,6 +9,8 @@ import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
 import Tes from './Tes.jsx'
+import LayarBenar from './Tepuk.jsx'
+import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
@@ -69,6 +71,7 @@ function App() {
   const [halaman, setHalaman] = useState('belajar')
   const [fokusTes, setFokusTes] = useState(false)
   const [animasi, setAnimasi] = useState(bacaAnimasi)
+  const [suaraTepuk, setSuaraTepuk] = useState(suaraTepukNyala)
 
   // Kelas di <html> mematikan semua animasi (lihat "tanpa-animasi" di App.css)
   useEffect(() => {
@@ -122,6 +125,8 @@ function App() {
         </>
       )}
       <PemberitahuanOffline />
+      {/* layar perayaan penuh saat jawaban benar (tidak pernah dipicu di menu Tes) */}
+      <LayarBenar />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
         <div className="hero-teks">
@@ -252,6 +257,17 @@ function App() {
       <footer className="kaki">
         <button type="button" className="kecil tombol-animasi" aria-pressed={animasi} onClick={() => setAnimasi(!animasi)}>
           {animasi ? '✨ Animasi: nyala' : '⏸ Animasi: mati'}
+        </button>
+        <button
+          type="button"
+          className="kecil tombol-animasi"
+          aria-pressed={suaraTepuk}
+          onClick={() => {
+            aturSuaraTepuk(!suaraTepuk)
+            setSuaraTepuk(!suaraTepuk)
+          }}
+        >
+          {suaraTepuk ? '👏 Suara tepuk tangan: nyala' : '🔇 Suara tepuk tangan: mati'}
         </button>
         <p>Project UAS Algoritma Pemrograman · Azkiah Safira · 2225250013</p>
       </footer>
