@@ -12,7 +12,7 @@ import Tes from './Tes.jsx'
 import LayarBenar from './Tepuk.jsx'
 import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
-import { BusSekolah, GedungSMP, HiasanLucu } from './Sekolah.jsx'
+import { HiasanLucu } from './Sekolah.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
 
@@ -131,15 +131,13 @@ function App() {
       <LayarBenar />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
-        {!fokusTes && <GedungSMP />}
-        {!fokusTes && <BusSekolah />}
         <div className="hero-teks">
           <span className="lencana">Media Belajar · SMP Kelas 8</span>
           <h1>Penerapan Teorema Pythagoras</h1>
           <p>Belajar sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
           {!fokusTes && <TombolInstall />}
         </div>
-        <Panggung halaman={halaman} diam={fokusTes} />
+        <Panggung halaman={halaman} diam={fokusTes} sekolah={!fokusTes} />
       </header>
 
       {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}

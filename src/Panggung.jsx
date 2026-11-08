@@ -3,6 +3,7 @@ import { Konfeti, Pelangi } from './Hiasan.jsx'
 import { SAPA, SAPAAN, SORAK, salamWaktu } from './kalimat.js'
 import Maskot from './Maskot.jsx'
 import Prisma3D from './Prisma3D.jsx'
+import { BusSekolah, GedungSMP } from './Sekolah.jsx'
 import Siswa from './Siswa.jsx'
 import Siswi from './Siswi.jsx'
 
@@ -14,7 +15,8 @@ const GANTI_SAPAAN = 7000 // ms sebelum balon kata berganti ke kalimat berikutny
 // - Siku, Raka, dan Nisa bisa diklik, dan bola mata mereka mengikuti kursor/jari.
 // - Bila halaman lama tidak disentuh, Siku tertidur (Zzz) sampai ada gerakan.
 // - Saat `diam` (tes berlangsung) semua animasi berhenti dan karakter tidak bisa diklik.
-export default function Panggung({ halaman, diam }) {
+// - `sekolah`: karakter berdiri di halaman sekolah (gedung SMP, rumput, bus lewat).
+export default function Panggung({ halaman, diam, sekolah = false }) {
   const [pesan, setPesan] = useState(null) // { teks, siapa, n }
   const [hitungan, setHitungan] = useState({ total: 0 }) // jumlah klik per karakter (+ total untuk key animasi)
   const [lirik, setLirik] = useState(null)
@@ -98,7 +100,7 @@ export default function Panggung({ halaman, diam }) {
   const suasanaSiku = pesan?.siapa === 'siku' ? 'senang' : sedangTidur ? 'tidur' : 'halo'
 
   return (
-    <div className={`panggung ${diam ? 'diam' : ''}`}>
+    <div className={`panggung ${diam ? 'diam' : ''} ${sekolah ? 'sekolah' : ''}`}>
       {/* key: balon kata dianimasikan ulang setiap isinya berganti */}
       <p className="gelembung" key={pesan ? `p${pesan.n}` : sedangTidur ? 'tidur' : `${halaman}-${nomorSapaan}`} aria-live="polite">
         {teks}
@@ -106,6 +108,12 @@ export default function Panggung({ halaman, diam }) {
       <div className="panggung-isi" ref={isiRef}>
         <Pelangi />
         <Prisma3D />
+        {sekolah && (
+          <>
+            <GedungSMP />
+            <BusSekolah />
+          </>
+        )}
         <button
           type="button"
           className={`tombol-karakter tombol-siswa ${pesan?.siapa === 'siswa' ? 'disapa' : ''}`}
