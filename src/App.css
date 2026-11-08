@@ -4914,3 +4914,123 @@ tbody tr:last-child td {
     left: 30%;
   }
 }
+
+/* =========================================================================
+   Balon kata di atas karakter yang sedang bicara (adegan sekolah).
+   Posisi dihitung dari letak & tinggi tiap karakter agar balon tidak
+   menutupi gedung, pelangi, maupun karakter lain.
+   ========================================================================= */
+.panggung.sekolah .gelembung {
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  margin-left: 0;
+  translate: none;
+  width: max-content;
+}
+
+.panggung.sekolah .gelembung.oleh-siku {
+  left: max(6px, calc(50% - 470px));
+  bottom: 150px; /* tinggi Siku + jarak */
+  max-width: 175px;
+}
+
+.panggung.sekolah .gelembung.oleh-raka {
+  left: calc(max(118px, calc(50% - 350px)) - 10px);
+  bottom: 259px; /* tinggi Raka + jarak */
+  max-width: 240px;
+}
+
+.panggung.sekolah .gelembung.oleh-nisa {
+  right: max(10px, calc(50% - 370px));
+  bottom: 259px;
+  max-width: 240px;
+}
+
+.panggung.sekolah .gelembung.oleh-siku::after {
+  left: 48px;
+}
+
+.panggung.sekolah .gelembung.oleh-raka::after {
+  left: 70px;
+}
+
+.panggung.sekolah .gelembung.oleh-nisa::after {
+  left: auto;
+  right: 60px;
+}
+
+/* prisma 3D pindah ke langit kanan, di samping Nisa */
+.panggung.sekolah .prisma-wadah {
+  top: 130px;
+  right: max(4px, calc(50% - 484px));
+  transform: scale(0.7);
+  transform-origin: top right;
+}
+
+/* petunjuk klik di rumput bawah, tidak menutupi gedung/pelangi */
+.panggung.sekolah .petunjuk-klik {
+  top: auto;
+  bottom: 4px;
+}
+
+@media (max-width: 980px) {
+  /* layar sedang: balon Siku dinaikkan setinggi kepala Raka agar tidak menutupinya */
+  .panggung.sekolah .gelembung.oleh-siku {
+    bottom: 224px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-raka {
+    left: 94px;
+    bottom: 224px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-nisa {
+    bottom: 224px;
+  }
+
+  .panggung.sekolah .prisma-wadah {
+    display: none;
+  }
+}
+
+/* HP: ruang sempit, balon ada di langit tepat di atas karakter yang bicara
+   (di atas kepala, di atas pelangi tanpa menutupinya) */
+@media (max-width: 640px) {
+  .panggung.sekolah .pelangi {
+    top: 132px;
+    width: 240px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-siku,
+  .panggung.sekolah .gelembung.oleh-raka,
+  .panggung.sekolah .gelembung.oleh-nisa {
+    top: auto;
+    bottom: 184px; /* tepat di atas kepala Raka & Nisa */
+    max-width: min(250px, calc(100% - 24px));
+  }
+
+  .panggung.sekolah .gelembung.oleh-siku,
+  .panggung.sekolah .gelembung.oleh-raka {
+    left: 10px;
+    right: auto;
+  }
+
+  .panggung.sekolah .gelembung.oleh-nisa {
+    left: auto;
+    right: 10px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-siku::after {
+    left: 30px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-raka::after {
+    left: 70px;
+  }
+
+  .panggung.sekolah .gelembung.oleh-nisa::after {
+    right: 50px;
+  }
+}
