@@ -1,17 +1,15 @@
-// Adegan lucu di latar belakang halaman (bukan header):
-// - Raka belajar di meja (menulis, membalik buku, "Hmm… → Aha!")
-// - Dua Siku mengobrol bergantian
-// - Nisa menulis di papan tulis
-// - Siku mengibarkan bendera "SEMANGAT!" bersama kelinci
-// Di layar lebar adegan ditaruh di ruang kosong kiri & kanan kartu;
-// di layar sempit ditampilkan berjajar di bawah halaman (TamanBawah).
-// Semua hanya hiasan (aria-hidden) dan disembunyikan saat tes.
+// Adegan lucu bergambar besar untuk latar belakang kotak sesi (menu Belajar):
+// - Sesi 1: Raka belajar di meja (menulis, membalik buku, "Hmm… → Aha!")
+// - Sesi 2: dua Siku mengobrol bergantian
+// - Sesi 3: Nisa menulis di papan tulis
+// Gambar terlihat samar dari balik kotak yang dibuat tembus pandang.
+// Semua hanya hiasan (aria-hidden) dan ikut berhenti saat animasi dimatikan.
 
 import { useId } from 'react'
 
 const GARIS = '#1e2a4d'
 
-function RakaBelajar() {
+export function RakaBelajar() {
   return (
     <svg className="tb tb-belajar" viewBox="0 0 160 150">
       {/* lampu meja */}
@@ -81,7 +79,7 @@ function SikuKecil({ warna, balik = false, kelas }) {
   )
 }
 
-function SikuNgobrol() {
+export function SikuNgobrol() {
   const kalimat = [
     ['k1', 8, 'Hai! 👋'],
     ['k2', 92, 'Halo, Siku!'],
@@ -108,7 +106,7 @@ function SikuNgobrol() {
   )
 }
 
-function NisaPapanTulis() {
+export function NisaPapanTulis() {
   // id unik: adegan ini bisa tampil dua kali (samping & bawah)
   const idKlip = `tb-tulis-${useId().replace(/:/g, '')}`
   return (
@@ -153,92 +151,5 @@ function NisaPapanTulis() {
         </g>
       </g>
     </svg>
-  )
-}
-
-function SikuSemangat() {
-  return (
-    <svg className="tb tb-semangat" viewBox="0 0 160 150">
-      {/* hati melayang */}
-      <text className="tb-hati h1" x="30" y="40">
-        💗
-      </text>
-      <text className="tb-hati h2" x="70" y="30">
-        💙
-      </text>
-      {/* Siku dengan bendera */}
-      <g className="tb-loncat">
-        <ellipse cx="54" cy="142" rx="30" ry="4" fill="rgba(30,42,77,0.12)" />
-        <path d="M24 136 L24 66 L86 136 Z" fill="#bfe3ff" stroke={GARIS} strokeWidth="2.5" strokeLinejoin="round" />
-        <rect x="24" y="124" width="12" height="12" fill="none" stroke={GARIS} strokeWidth="1.8" />
-        <circle cx="40" cy="108" r="2.6" fill={GARIS} />
-        <circle cx="52" cy="108" r="2.6" fill={GARIS} />
-        <path d="M41 115 Q46 120 51 115" stroke={GARIS} strokeWidth="2" fill="none" strokeLinecap="round" />
-        <circle cx="34" cy="115" r="3" fill="#fbcfe8" />
-        <circle cx="58" cy="115" r="3" fill="#fbcfe8" />
-        {/* tiang & bendera */}
-        <path d="M66 112 L80 46" stroke={GARIS} strokeWidth="2.5" strokeLinecap="round" />
-        <circle cx="69" cy="100" r="4" fill="#fff" stroke={GARIS} strokeWidth="1.8" />
-        <g className="tb-panji">
-          <path
-            d="M80 46 L152 38 L142 58 L154 78 L76 72 Z"
-            fill="#f9a8d4"
-            stroke={GARIS}
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
-          <text x="112" y="62" transform="rotate(-5 112 62)">
-            SEMANGAT!
-          </text>
-        </g>
-      </g>
-      {/* kelinci melompat */}
-      <g className="tb-kelinci">
-        <ellipse cx="130" cy="143" rx="14" ry="3" fill="rgba(30,42,77,0.12)" />
-        <ellipse cx="124" cy="104" rx="4" ry="12" fill="#fff" stroke={GARIS} strokeWidth="1.8" />
-        <ellipse cx="136" cy="104" rx="4" ry="12" fill="#fff" stroke={GARIS} strokeWidth="1.8" />
-        <ellipse cx="130" cy="130" rx="14" ry="11" fill="#fff" stroke={GARIS} strokeWidth="1.8" />
-        <circle cx="130" cy="118" r="10" fill="#fff" stroke={GARIS} strokeWidth="1.8" />
-        <circle cx="126" cy="117" r="1.6" fill={GARIS} />
-        <circle cx="134" cy="117" r="1.6" fill={GARIS} />
-        <circle cx="130" cy="121" r="1.6" fill="#fb7185" />
-      </g>
-    </svg>
-  )
-}
-
-// Layar lebar: adegan di ruang kosong kiri & kanan kartu
-export function TamanSamping() {
-  return (
-    <div className="taman-samping" aria-hidden="true">
-      <div className="taman-kolom kiri">
-        <div className="taman-adegan atas">
-          <RakaBelajar />
-        </div>
-        <div className="taman-adegan bawah">
-          <NisaPapanTulis />
-        </div>
-      </div>
-      <div className="taman-kolom kanan">
-        <div className="taman-adegan atas">
-          <SikuNgobrol />
-        </div>
-        <div className="taman-adegan bawah">
-          <SikuSemangat />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Layar sempit (HP/tablet): adegan berjajar di bawah halaman
-export function TamanBawah() {
-  return (
-    <div className="taman-bawah" aria-hidden="true">
-      <RakaBelajar />
-      <SikuNgobrol />
-      <NisaPapanTulis />
-      <SikuSemangat />
-    </div>
   )
 }

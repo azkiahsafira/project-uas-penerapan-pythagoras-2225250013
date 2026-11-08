@@ -5,6 +5,7 @@ import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { rayakan } from './perayaan.js'
+import { NisaPapanTulis, RakaBelajar, SikuNgobrol } from './Taman.jsx'
 import { SESI } from './materi.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
@@ -50,7 +51,12 @@ function PersegiPythagoras() {
     )
   }
   return (
-    <svg viewBox={`0 0 ${11 * s + 20} ${10 * s + 20}`} className="segitiga" role="img" aria-label="Persegi pada sisi segitiga: 9 + 16 = 25">
+    <svg
+      viewBox={`0 0 ${11 * s + 20} ${10 * s + 20}`}
+      className="segitiga"
+      role="img"
+      aria-label="Persegi pada sisi segitiga: 9 + 16 = 25"
+    >
       <polygon points={titik(...kotakA)} className="persegi kecil" />
       <polygon points={titik(...kotakB)} className="persegi kecil" />
       <polygon points={titik(...kotakC)} className="persegi besar" />
@@ -255,7 +261,9 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
   return (
     <div className="pemutar">
       <div className="kepala-sesi">
-        <button type="button" onClick={keluar}>← Daftar sesi</button>
+        <button type="button" onClick={keluar}>
+          ← Daftar sesi
+        </button>
         <span className="ket">
           Langkah {idx + 1} dari {sesi.langkah.length}
         </span>
@@ -379,8 +387,16 @@ export function FormKenalan({ awal, onSimpan, onBatal }) {
           <input value={data.sekolah} onChange={ubah('sekolah')} autoComplete="off" />
         </label>
         <div className="navigasi">
-          {onBatal ? <button type="button" onClick={onBatal}>Batal</button> : <span />}
-          <button type="submit" className="hitung" disabled={!lengkap}>Simpan & mulai</button>
+          {onBatal ? (
+            <button type="button" onClick={onBatal}>
+              Batal
+            </button>
+          ) : (
+            <span />
+          )}
+          <button type="submit" className="hitung" disabled={!lengkap}>
+            Simpan & mulai
+          </button>
         </div>
       </form>
     </section>
@@ -456,7 +472,9 @@ export default function Belajar() {
       {identitas && (
         <p className="belajar-sebagai">
           Belajar sebagai <strong>{identitas.nama}</strong> (kelas {identitas.kelas})
-          <button type="button" className="kecil" onClick={() => setKenalan('ganti')}>Ganti nama</button>
+          <button type="button" className="kecil" onClick={() => setKenalan('ganti')}>
+            Ganti nama
+          </button>
         </p>
       )}
       <div className="daftar-sesi ada-hewan">
@@ -470,6 +488,12 @@ export default function Belajar() {
           const berikutnya = !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
           return (
             <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''} ${berikutnya ? 'berikutnya' : ''}`}>
+              {/* gambar besar beranimasi di belakang kotak (kotak dibuat tembus pandang) */}
+              <div className="sesi-latar" aria-hidden="true">
+                {i === 0 && <RakaBelajar />}
+                {i === 1 && <SikuNgobrol />}
+                {i === 2 && <NisaPapanTulis />}
+              </div>
               <IlustrasiSesi nomor={s.id} />
               <span className="nomor-sesi">Sesi {s.id}</span>
               <h3>{s.judul.replace(/^Sesi \d+: /, '')}</h3>
