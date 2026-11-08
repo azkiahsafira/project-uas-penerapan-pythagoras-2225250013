@@ -69,7 +69,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Tes penelitian** (menu Tes):
   - **Pre-test** (pertemuan 1, sebelum Sesi 1) dan **post-test** (pertemuan 5): masing-masing 10 soal paralel, satu soal per layar, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
   - **Kuesioner beban kognitif Leppink** (pertemuan 5, setelah post-test): 10 pernyataan skala 0–10 untuk intrinsic, extraneous, dan germane load.
-  - Identitas siswa (nama, kelas, sekolah, kelompok aplikasi/diajar langsung), durasi pengerjaan, dan nilai dicatat. Menu lain disembunyikan selama tes.
+  - Identitas siswa (nama, kelas, sekolah, kelompok: belajar dengan aplikasi), durasi pengerjaan, dan nilai dicatat. Menu lain disembunyikan selama tes.
   - Hasil disimpan di perangkat lalu dikirim ke database **Supabase**. Jika internet putus, hasil tetap aman di perangkat dan dikirim ulang otomatis. Hasil juga bisa diunduh sebagai CSV.
 - **Kalkulator tiga mode**: mencari sisi miring, alas, atau tinggi.
 - **Langkah penyelesaian**: perhitungan ditampilkan baris per baris, dari rumus sampai hasil akhir.
@@ -81,7 +81,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
 - **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus 8 hewan yang tersebar di halaman: anak ayam & kelinci hinggap di kartu sesi, anjing di kartu kalkulator, kucing di samping judul contoh soal, katak di kartu latihan, panda & beruang mengintip dari pinggir layar (layar lebar), dan bebek yang sesekali berjalan melintas di bawah layar. Setiap karakter dan hewan punya beberapa kalimat yang bergantian, dan balon kata di header berganti sendiri sesuai menu (diawali salam sesuai jam). Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
 - **Halaman sekolah di header**: Raka, Nisa, dan Siku berdiri di rumput halaman sekolah (tidak melayang), di depan gedung SMP dengan bendera merah putih yang berkibar, jam menara yang berputar, siswa yang muncul dan melambai dari jendela, pohon yang bergoyang, serta bus sekolah yang lewat di jalan. Latar halaman juga dihiasi kupu-kupu yang terbang, balon tersenyum yang naik, pesawat kertas, dan awan tersenyum. Semuanya disembunyikan saat tes dan berhenti bila animasi dimatikan.
-- **Gambar besar beranimasi di belakang kotak Sesi 1–3** (kotak dibuat tembus pandang): Sesi 1 Raka belajar di meja (menulis, membalik buku, “Hmm… 🤔 → Aha! 💡”), Sesi 2 dua Siku mengobrol bergantian, Sesi 3 Nisa menulis 3² + 4² = 5² di papan tulis. Gambar dibuat samar dan tulisan diberi bayangan putih agar tetap mudah dibaca.
+- **Adegan besar beranimasi di latar belakang semua menu**: Nisa menulis 3² + 4² = 5² di papan tulis, dua Siku yang mengobrol bergantian, Raka belajar di meja (“Hmm… 🤔 → Aha! 💡”), dan Siku mengibarkan bendera “SEMANGAT!” bersama kelinci. Kotak-kotak di bawah header dibuat tembus pandang sehingga adegan tetap terlihat saat digulir; header tetap padat. Tulisan diberi bayangan putih agar tetap mudah dibaca. Disembunyikan saat tes berlangsung.
 - **Layar perayaan penuh saat jawaban benar** (menu Belajar dan Latihan): tulisan besar acak seperti “HEBAT!” atau “LUAR BIASA!”, hujan konfeti satu layar, tangan bertepuk 👏, Siku menari, dan suara “ta-da” + tepuk tangan yang dibuat langsung dengan Web Audio (tanpa file suara). Tampil ±2 detik lalu hilang sendiri (atau klik untuk langsung lanjut) agar siswa cepat kembali ke penjelasan. Suara bisa dimatikan lewat tombol “👏 Suara tepuk tangan” di bagian bawah halaman. Tidak pernah muncul di menu Tes.
 - **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai (pelangi dan Siku bertopi wisuda yang menari), Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
@@ -110,7 +110,7 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal (label "Pertemuan 4 · Implementasi", minimal 10 soal), Kalkulator untuk memeriksa |
 | 5 | Post-test dan skala beban kognitif | Tes → Post-test, lalu Tes → Kuesioner Beban Kognitif |
 
-Kedua siswa (yang belajar dengan aplikasi dan yang diajar langsung) mengerjakan pre-test, post-test, dan kuesioner yang sama.
+Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes; semua data tercatat dengan kelompok "Belajar dengan aplikasi".
 
 ### Instrumen
 

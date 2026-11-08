@@ -13,6 +13,7 @@ import LayarBenar from './Tepuk.jsx'
 import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
 import { HiasanLucu } from './Sekolah.jsx'
+import LatarAdegan from './Taman.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
 
@@ -117,6 +118,7 @@ function App() {
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
       {!fokusTes && <HiasanLucu />}
+      {!fokusTes && <LatarAdegan />}
       <EfekKlik aktif={!fokusTes && animasi} />
       {/* Hewan di pinggir layar: panda & beruang mengintip, bebek berjalan melintas */}
       {!fokusTes && (

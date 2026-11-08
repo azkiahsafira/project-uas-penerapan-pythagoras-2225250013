@@ -24,12 +24,13 @@ const INSTRUMEN = {
   },
 }
 
-const KELOMPOK = ['Belajar dengan aplikasi', 'Diajar langsung oleh mahasiswa']
+// semua siswa yang memakai aplikasi ini belajar dengan aplikasi
+const KELOMPOK = 'Belajar dengan aplikasi'
 
 function FormIdentitas({ jenis, onMulai, onBatal }) {
   // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
-  const [data, setData] = useState(() => ({ nama: '', sekolah: '', kelompok: '', ...identitasTerakhir(), kelas: '8' }))
-  const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim() && data.kelompok
+  const [data, setData] = useState(() => ({ nama: '', sekolah: '', ...identitasTerakhir(), kelas: '8', kelompok: KELOMPOK }))
+  const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
   const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
 
   return (
@@ -60,15 +61,6 @@ function FormIdentitas({ jenis, onMulai, onBatal }) {
           Sekolah
           <input value={data.sekolah} onChange={ubah('sekolah')} autoComplete="off" />
         </label>
-        <fieldset>
-          <legend>Kelompok</legend>
-          {KELOMPOK.map((k) => (
-            <label key={k} className="radio">
-              <input type="radio" name="kelompok" value={k} checked={data.kelompok === k} onChange={ubah('kelompok')} />
-              {k}
-            </label>
-          ))}
-        </fieldset>
         <div className="navigasi">
           <button type="button" onClick={onBatal}>Batal</button>
           <button type="submit" className="hitung" disabled={!lengkap}>Mulai</button>
@@ -369,7 +361,7 @@ export default function Tes({ onFokus }) {
   return (
     <section>
       <h2>Tes dan Kuesioner Penelitian</h2>
-      <p className="ket">Dikerjakan oleh kedua siswa (kelompok aplikasi dan kelompok yang diajar langsung).</p>
+      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini.</p>
       <div className="daftar-sesi">
         {Object.entries(INSTRUMEN).map(([k, ins], i) => (
           <article key={k} className={`kartu sesi warna-${i + 1}`}>

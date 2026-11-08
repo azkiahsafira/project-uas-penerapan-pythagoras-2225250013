@@ -6,7 +6,7 @@ aplikasi), lalu menghitung:
   1. Nilai pre-test, post-test, selisih, dan N-gain tiap siswa
   2. Ketercapaian tiap indikator soal (pre vs post)
   3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
-  4. Perbandingan kelompok "Belajar dengan aplikasi" vs "Diajar langsung"
+  4. Perbandingan antarkelompok (hanya bila data berisi lebih dari satu kelompok)
   5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, total
      waktu tiap sesi, serta hasil latihan pertemuan 4 (implementasi), dari
      tabel `aktivitas`

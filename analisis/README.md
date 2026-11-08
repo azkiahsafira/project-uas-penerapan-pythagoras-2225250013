@@ -48,7 +48,7 @@ Contoh keluarannya ada di folder [contoh_hasil/](contoh_hasil/).
 | N-gain (Hake) | (post − pre) ÷ (100 − pre); ≥ 0,7 tinggi, 0,3–0,7 sedang, < 0,3 rendah |
 | Ketercapaian indikator | jumlah siswa yang menjawab benar tiap nomor, pre vs post |
 | Beban kognitif | rata-rata butir tiap dimensi (skala 0–10); < 3,34 rendah, 3,34–6,66 sedang, ≥ 6,67 tinggi |
-| Perbandingan kelompok | rata-rata semua ukuran untuk kelompok aplikasi vs diajar langsung |
+| Perbandingan kelompok | rata-rata semua ukuran per kelompok (hanya muncul bila data berisi lebih dari satu kelompok; aplikasi kini memakai satu kelompok, "Belajar dengan aplikasi") |
 | Proses belajar per langkah | waktu tiap siswa dijumlah per langkah (bila dibuka lebih dari sekali), lalu dirata-rata; jumlah salah, jawaban dibuka, dan berapa kali tombol Bacakan dipakai; ditampilkan pula 3 langkah terlama dan 3 langkah dengan salah terbanyak |
 
 Jika seorang siswa mengerjakan tes yang sama lebih dari sekali, yang dipakai adalah hasil **terakhir**.

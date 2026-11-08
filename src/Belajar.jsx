@@ -5,7 +5,6 @@ import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { rayakan } from './perayaan.js'
-import { NisaPapanTulis, RakaBelajar, SikuNgobrol } from './Taman.jsx'
 import { SESI } from './materi.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
@@ -488,12 +487,6 @@ export default function Belajar() {
           const berikutnya = !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
           return (
             <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''} ${berikutnya ? 'berikutnya' : ''}`}>
-              {/* gambar besar beranimasi di belakang kotak (kotak dibuat tembus pandang) */}
-              <div className="sesi-latar" aria-hidden="true">
-                {i === 0 && <RakaBelajar />}
-                {i === 1 && <SikuNgobrol />}
-                {i === 2 && <NisaPapanTulis />}
-              </div>
               <IlustrasiSesi nomor={s.id} />
               <span className="nomor-sesi">Sesi {s.id}</span>
               <h3>{s.judul.replace(/^Sesi \d+: /, '')}</h3>
