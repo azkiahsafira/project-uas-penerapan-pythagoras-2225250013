@@ -17,6 +17,22 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
 
    (Tanpa `--aktivitas`, hanya hasil tes yang dianalisis.)
 
+   **Siswa yang diajar langsung (lembar kertas):** cetak lembar di folder [`docs/instrumen-cetak`](../docs/instrumen-cetak)
+   (pre-test, post-test, kuesioner, dan kunci jawaban; soalnya sama persis dengan di aplikasi). Setelah dikerjakan,
+   salin [`templat_kertas.csv`](templat_kertas.csv) menjadi `data_kertas.csv`, hapus baris contoh, lalu isi satu baris per lembar:
+
+   | Kolom | Isi |
+   | ----- | --- |
+   | `jenis` | `pretest`, `posttest`, atau `leppink` |
+   | `nama`, `sekolah`, `tanggal` | identitas dari lembar |
+   | `kelompok` | `Diajar langsung` |
+   | `durasi_menit` | jam selesai − jam mulai (menit) |
+   | `s1`–`s10` | jawaban tes: huruf A–D untuk soal pilihan, angka untuk soal hitungan |
+   | `b1`–`b10` | kuesioner: angka 0–10 yang dicentang |
+
+   Lalu jalankan `python analisis.py data.csv --kertas data_kertas.csv` (bisa digabung dengan `--aktivitas`).
+   Jawaban dikoreksi otomatis dengan kunci yang sama, dan tabel perbandingan kelompok muncul kembali.
+
 4. Hasilnya tampil di terminal dan tersimpan di folder `hasil_analisis/`:
 
    | File | Isi |
@@ -35,7 +51,7 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
 Mau mencoba dulu? Jalankan dengan data contoh (fiktif):
 
 ```bash
-python analisis.py contoh_data.csv --aktivitas contoh_aktivitas.csv
+python analisis.py contoh_data.csv --aktivitas contoh_aktivitas.csv --kertas templat_kertas.csv
 ```
 
 Contoh keluarannya ada di folder [contoh_hasil/](contoh_hasil/).

@@ -112,7 +112,7 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal (label "Pertemuan 4 · Implementasi", minimal 10 soal), Kalkulator untuk memeriksa |
 | 5 | Post-test dan skala beban kognitif | Tes → Post-test, lalu Tes → Kuesioner Beban Kognitif |
 
-Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes; semua data tercatat dengan kelompok "Belajar dengan aplikasi".
+Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis ([docs/instrumen-cetak](docs/instrumen-cetak): pre-test, post-test, kuesioner, dan kunci jawaban, dibuat otomatis dari `src/tes.js` dengan `node scripts/buat-lembar-tes.mjs`); jawabannya dimasukkan ke analisis lewat `analisis/templat_kertas.csv`.
 
 ### Instrumen
 

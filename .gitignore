@@ -29,3 +29,4 @@ analisis/*.csv
 !analisis/contoh_aktivitas.csv
 analisis/hasil_analisis/
 __pycache__/
+!analisis/templat_kertas.csv

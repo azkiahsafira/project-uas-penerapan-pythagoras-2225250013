@@ -22,6 +22,7 @@ Cara pakai:
   python analisis.py data.csv
   python analisis.py data.csv --keluaran folder_hasil
   python analisis.py data.csv --aktivitas aktivitas.csv
+  python analisis.py data.csv --kertas data_kertas.csv   (jawaban lembar kertas)
 
 Hanya memakai library bawaan Python, tidak perlu install apa pun.
 """
@@ -60,6 +61,13 @@ KUNCI = {
         "Sisi miring (hipotenusa)", 64, 14, "a² = c² − b²",
         20, 24, "40 m", 17, "7, 24, 25", 45,
     ],
+}
+
+# Huruf kunci untuk soal pilihan pada lembar kertas (urutan opsi sama dengan src/tes.js).
+# None = soal isian angka.
+KUNCI_HURUF = {
+    "pretest": ["B", None, None, "A", None, None, "B", None, "B", None],
+    "posttest": ["C", None, None, "B", None, None, "B", None, "A", None],
 }
 
 NAMA_BEBAN = {
@@ -124,6 +132,40 @@ def baca_csv(path):
     return data
 
 
+def baca_kertas(path):
+    """Baca jawaban dari lembar kertas (templat_kertas.csv) untuk siswa yang diajar langsung.
+    Kolom: jenis, nama, kelas, sekolah, kelompok, tanggal, durasi_menit,
+    s1..s10 (huruf A-D atau angka) untuk pretest/posttest, b1..b10 (0-10) untuk leppink."""
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        baris_baris = list(csv.DictReader(f))
+    data = []
+    for b in baris_baris:
+        jenis = (ambil(b, "jenis") or "").strip().lower().replace("-", "")
+        if jenis not in ("pretest", "posttest", "leppink"):
+            continue
+        menit = ke_angka(ambil(b, "durasi_menit"))
+        d = {
+            "jenis": jenis,
+            "nama": (ambil(b, "nama") or "").strip(),
+            "kelas": ambil(b, "kelas") or "8",
+            "sekolah": ambil(b, "sekolah") or "",
+            "kelompok": ambil(b, "kelompok") or "Diajar langsung",
+            "selesai": ambil(b, "tanggal") or "",
+            "durasi": menit * 60 if menit is not None else None,
+            "skor": None,
+            "IL": None, "EL": None, "GL": None,
+            "jawaban": {},
+        }
+        if jenis == "leppink":
+            skor = [ke_angka(ambil(b, f"b{i}")) for i in range(1, 11)]
+            rata_bagian = lambda xs: (sum(xs) / len(xs)) if xs and None not in xs else None
+            d["IL"], d["EL"], d["GL"] = rata_bagian(skor[0:3]), rata_bagian(skor[3:6]), rata_bagian(skor[6:10])
+        else:
+            d["jawaban"] = {str(i): (ambil(b, f"s{i + 1}") or "").strip() for i in range(10)}
+        data.append(d)
+    return data
+
+
 # ---------------------------------------------------------------------------
 # Perhitungan
 # ---------------------------------------------------------------------------
@@ -132,7 +174,11 @@ def koreksi(jenis, jawaban):
     hasil = []
     for i, kunci in enumerate(KUNCI[jenis]):
         j = jawaban.get(str(i))
-        if isinstance(kunci, (int, float)):
+        huruf = KUNCI_HURUF[jenis][i]
+        if huruf and isinstance(j, str) and j.strip().upper() in ("A", "B", "C", "D"):
+            # jawaban dari lembar kertas berupa huruf
+            hasil.append(j.strip().upper() == huruf)
+        elif isinstance(kunci, (int, float)):
             n = ke_angka(j)
             hasil.append(n is not None and abs(n - kunci) < 0.01)
         else:
@@ -566,12 +612,17 @@ def main():
     parser.add_argument("csv", help="file CSV ekspor dari Supabase (tabel hasil) atau dari menu Tes")
     parser.add_argument("--keluaran", default="hasil_analisis", help="folder untuk rekap CSV dan grafik")
     parser.add_argument("--aktivitas", help="(opsional) file CSV ekspor tabel aktivitas dari Supabase")
+    parser.add_argument("--kertas", help="(opsional) file CSV jawaban lembar kertas (lihat templat_kertas.csv)")
     args = parser.parse_args()
 
     if not os.path.exists(args.csv):
         sys.exit(f"File tidak ditemukan: {args.csv}")
 
     data = baca_csv(args.csv)
+    if args.kertas:
+        if not os.path.exists(args.kertas):
+            sys.exit(f"File tidak ditemukan: {args.kertas}")
+        data += baca_kertas(args.kertas)
     if not data:
         sys.exit("Tidak ada data pre-test/post-test/kuesioner di file tersebut.")
 
