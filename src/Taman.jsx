@@ -57,6 +57,53 @@ export function RakaBelajar() {
       <text className="tb-pikir p2" x="127" y="18">
         Aha! 💡
       </text>
+      {/* bintang berkilau saat "Aha!" */}
+      <g className="tb-aha">
+        <text x="28" y="26">
+          ✨
+        </text>
+        <text x="82" y="12">
+          ⭐
+        </text>
+        <text x="20" y="52">
+          ✨
+        </text>
+      </g>
+      {/* kucing tidur di bawah meja */}
+      <g className="tb-kucing">
+        <path
+          className="tb-ekor"
+          d="M112 139 Q126 134 119 124"
+          stroke="#fde68a"
+          strokeWidth="4"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <ellipse cx="96" cy="138" rx="18" ry="8" fill="#fde68a" stroke={GARIS} strokeWidth="1.8" />
+        <path
+          d="M74 128 L75 120 L80 126 Z M82 126 L86 120 L87 128 Z"
+          fill="#fde68a"
+          stroke={GARIS}
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <circle cx="80" cy="134" r="8" fill="#fde68a" stroke={GARIS} strokeWidth="1.8" />
+        <path
+          d="M75 134 Q77 136 79 134 M81 134 Q83 136 85 134"
+          stroke={GARIS}
+          strokeWidth="1.3"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <circle cx="76" cy="137" r="1.8" fill="#fbcfe8" />
+        <circle cx="85" cy="137" r="1.8" fill="#fbcfe8" />
+      </g>
+      <text className="tb-zzz z1" x="70" y="122">
+        z
+      </text>
+      <text className="tb-zzz z2" x="64" y="114">
+        z
+      </text>
     </svg>
   )
 }
@@ -91,6 +138,25 @@ export function SikuNgobrol() {
     <svg className="tb tb-ngobrol" viewBox="0 0 170 140">
       <SikuKecil warna="#bfe3ff" kelas="tb-siku kiri" />
       <SikuKecil warna="#fbcfe8" kelas="tb-siku kanan" balik />
+      {/* bunga bergoyang di antara keduanya */}
+      {[
+        [85, 112, 6, '#f9a8d4', 'b1'],
+        [73, 120, 4.5, '#bfe3ff', 'b2'],
+        [97, 120, 4.5, '#fde68a', 'b3'],
+      ].map(([x, y, r, w, k]) => (
+        <g key={k} className={`tb-bunga ${k}`}>
+          <path d={`M${x} 134 L${x} ${y + r}`} stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" />
+          <circle cx={x} cy={y} r={r} fill={w} stroke={GARIS} strokeWidth="1.2" />
+          <circle cx={x} cy={y} r={r / 2.4} fill="#fbbf24" />
+        </g>
+      ))}
+      {/* hati yang melayang naik */}
+      <text className="tb-hati-naik n1" x="85" y="104">
+        💕
+      </text>
+      <text className="tb-hati-naik n2" x="80" y="104">
+        💗
+      </text>
       {kalimat.map(([k, x, teks]) => (
         <g key={k} className={`tb-ucap ${k}`}>
           <rect x={x} y="22" width="70" height="24" rx="12" fill="#fff" stroke="#bfdbfe" strokeWidth="1.5" />
@@ -130,6 +196,21 @@ export function NisaPapanTulis() {
         ✓
       </text>
       <rect x="60" y="84" width="78" height="4" rx="2" fill="#a16207" />
+      {/* burung kecil hinggap di papan tulis */}
+      <g className="tb-burung">
+        <ellipse cx="122" cy="4" rx="8" ry="6.5" fill="#7cc3ff" stroke={GARIS} strokeWidth="1.5" />
+        <path className="tb-sayap-burung" d="M115 4 Q119 -2 124 5 Z" fill="#bfe3ff" stroke={GARIS} strokeWidth="1" />
+        <circle cx="125" cy="1.5" r="1.3" fill={GARIS} />
+        <path d="M129 2.5 L134 4 L129 5.5 Z" fill="#fbbf24" />
+        <path d="M120 10 L120 12 M124 10 L124 12" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
+      <text className="tb-cuit" x="146" y="-2">
+        cuit!
+      </text>
+      {/* debu kapur */}
+      <circle className="tb-debu d1" cx="72" cy="62" r="1.6" fill="#fff" />
+      <circle className="tb-debu d2" cx="68" cy="58" r="1.2" fill="#fff" />
+      <circle className="tb-debu d3" cx="75" cy="57" r="1.3" fill="#fff" />
       {/* Nisa */}
       <g className="tb-nisa">
         <path d="M14 140 Q14 100 34 98 Q54 100 54 140 Z" fill="#1e3a8a" stroke={GARIS} strokeWidth="2" />
@@ -201,7 +282,21 @@ export function SikuSemangat() {
         <circle cx="126" cy="117" r="1.6" fill={GARIS} />
         <circle cx="134" cy="117" r="1.6" fill={GARIS} />
         <circle cx="130" cy="121" r="1.6" fill="#fb7185" />
+        {/* wortel */}
+        <path d="M140 128 L153 122 L150 133 Z" fill="#fb923c" stroke={GARIS} strokeWidth="1.2" strokeLinejoin="round" />
+        <path d="M152 122 L157 117 M152 122 L158 121" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" />
       </g>
+      {/* hujan konfeti */}
+      {[
+        [18, '#f472b6'],
+        [46, '#7cc3ff'],
+        [72, '#fb7185'],
+        [98, '#fbbf24'],
+        [122, '#a78bfa'],
+        [146, '#34d399'],
+      ].map(([x, w], i) => (
+        <rect key={x} className={`tb-konfeti c${i}`} x={x} y="-8" width="5" height="8" rx="1.5" fill={w} />
+      ))}
     </svg>
   )
 }
