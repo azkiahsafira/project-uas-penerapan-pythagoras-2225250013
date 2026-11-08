@@ -13,8 +13,17 @@ createRoot(document.getElementById('root')).render(
 // agar aplikasi bisa di-install dan dibuka tanpa internet.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch((err) => {
-      console.warn('Service worker gagal didaftarkan:', err)
-    })
+    navigator.serviceWorker
+      .register('./sw.js', { scope: './', updateViaCache: 'none' })
+      .then((reg) => {
+        // cek versi baru setiap kali aplikasi dibuka lagi (mis. dari layar utama HP)
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {})
+        })
+      })
+      .catch((err) => {
+        console.warn('Service worker gagal didaftarkan:', err)
+      })
+
   })
 }
