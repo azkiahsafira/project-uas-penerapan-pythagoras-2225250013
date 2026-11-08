@@ -5564,3 +5564,304 @@ tbody tr:last-child td {
     display: none;
   }
 }
+
+/* =========================================================================
+   Pesan semangat Siku saat jawaban salah (Tepuk.jsx)
+   ========================================================================= */
+.layar-semangat {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(440px, calc(100vw - 32px));
+  padding: 8px 18px 8px 10px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid #f9a8d4;
+  box-shadow: 0 14px 30px -12px rgba(219, 39, 119, 0.45);
+  cursor: pointer;
+  translate: -50% 0;
+  animation: ls-masuk 2.6s ease forwards;
+}
+
+.ls-maskot {
+  flex: 0 0 auto;
+  animation: ls-tepuk 0.5s ease-in-out 3 alternate;
+}
+
+.ls-teks {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #1d2a4d;
+}
+
+.ls-hati {
+  font-size: 1.2rem;
+  animation: ls-hati 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes ls-masuk {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.03);
+  }
+  20%,
+  85% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+}
+
+@keyframes ls-tepuk {
+  from {
+    transform: rotate(-8deg);
+  }
+  to {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes ls-hati {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layar-semangat,
+  .layar-semangat * {
+    animation: none !important;
+  }
+}
+
+/* =========================================================================
+   Hewan laut bisa diklik (Laut.jsx)
+   ========================================================================= */
+/* klik di area kosong tembus ke latar laut; kotak, tombol, & isian tetap bisa dipakai */
+body,
+#root,
+main {
+  pointer-events: none;
+}
+
+main > * {
+  pointer-events: auto;
+}
+
+.halaman,
+.halaman > section,
+.halaman > .grid,
+.halaman > div {
+  pointer-events: none;
+}
+
+.halaman .kartu,
+.halaman button,
+.halaman input,
+.halaman select,
+.halaman textarea,
+.halaman label,
+.halaman a,
+.halaman .hewan-hidup,
+.selamat-latar {
+  pointer-events: auto;
+}
+
+.laut-tombol {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 30px;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.laut-tombol:hover {
+  filter: brightness(1.05) drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+}
+
+/* balon kata hewan */
+.laut-ucap {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  max-width: 220px;
+  padding: 7px 12px;
+  border-radius: 14px;
+  background: #fff;
+  color: #13224a;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px -10px rgba(10, 25, 60, 0.5);
+  translate: -50% -100%;
+  animation: laut-ucap 2.4s ease forwards;
+}
+
+@keyframes laut-ucap {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.8);
+  }
+  12%,
+  85% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(1);
+  }
+}
+
+/* saat disapa: hewan tampil lebih jelas & bereaksi */
+.latar-laut .disapa {
+  opacity: 1;
+}
+
+.disapa .laut-tombol {
+  animation: laut-girang 0.5s ease-in-out 2;
+}
+
+@keyframes laut-girang {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  30% {
+    transform: translateY(-14px) rotate(-4deg);
+  }
+  60% {
+    transform: translateY(-4px) rotate(4deg);
+  }
+}
+
+/* paus: semburan besar */
+.laut-paus.disapa .lt-semburan {
+  animation: lt-semburan-besar 0.9s ease-out 2;
+}
+
+@keyframes lt-semburan-besar {
+  0% {
+    opacity: 0;
+    transform: scale(0.3, 0.2);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.4, 1.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4, 1.8) translateY(-10px);
+  }
+}
+
+/* gurita: tentakel melambai cepat */
+.laut-gurita.disapa .lt-tentakel {
+  animation-duration: 0.25s;
+}
+
+/* ikan segitiga: salto */
+.laut-ikan-siku.disapa .laut-tombol {
+  animation: laut-salto 0.9s ease-in-out;
+}
+
+@keyframes laut-salto {
+  0% {
+    transform: rotate(0) translateY(0);
+  }
+  50% {
+    transform: rotate(-180deg) translateY(-20px);
+  }
+  100% {
+    transform: rotate(-360deg) translateY(0);
+  }
+}
+
+/* gerombolan ikan: berpencar */
+.laut-gerombolan .laut-tombol {
+  display: flex;
+  gap: inherit;
+}
+
+.laut-gerombolan.disapa .lt-ikan-kecil:nth-child(1) {
+  animation: ikan-pencar-1 0.8s ease-out 2 alternate;
+}
+
+.laut-gerombolan.disapa .lt-ikan-kecil:nth-child(3) {
+  animation: ikan-pencar-3 0.8s ease-out 2 alternate;
+}
+
+@keyframes ikan-pencar-1 {
+  to {
+    transform: translate(-20px, -24px);
+  }
+}
+
+@keyframes ikan-pencar-3 {
+  to {
+    transform: translate(20px, 24px);
+  }
+}
+
+/* bintang laut: berputar */
+.laut-bintang.disapa .laut-tombol {
+  animation: laut-putar 0.8s ease-in-out;
+}
+
+@keyframes laut-putar {
+  to {
+    transform: rotate(360deg) scale(1.1);
+  }
+}
+
+/* kerang: mutiara muncul */
+.lt-mutiara {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.laut-kerang.disapa .lt-mutiara {
+  animation: lt-mutiara 2.2s ease forwards;
+}
+
+@keyframes lt-mutiara {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.3);
+  }
+  25%,
+  80% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(1);
+  }
+}
+
+/* hewan yang berenang berhenti sebentar saat disapa agar balon kata terbaca */
+.laut-renang.disapa {
+  animation-play-state: paused;
+}

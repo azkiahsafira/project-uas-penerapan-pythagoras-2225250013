@@ -3,8 +3,10 @@
 // - paus menyemburkan air
 // - kura-kura & Siku si ikan segitiga berenang melintas, diikuti gerombolan ikan kecil
 // - rumput laut bergoyang, bintang laut, kerang, pasir, dan gelembung naik
+// Hewan bisa diklik: masing-masing bereaksi dan mengucapkan kalimat lucu.
 // Semua hanya hiasan (aria-hidden), disembunyikan saat tes, dan berhenti saat animasi dimatikan.
-import { useId } from 'react'
+import { useEffect, useId, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const GARIS = '#1e2a4d'
 
@@ -284,6 +286,8 @@ function Kerang() {
         fill="none"
       />
       <rect x="26" y="46" width="18" height="7" rx="3" fill="#f9a8d4" stroke={GARIS} strokeWidth="1.8" />
+      {/* mutiara muncul saat kerang diklik */}
+      <circle className="lt-mutiara" cx="35" cy="2" r="7" fill="#fff" stroke="#c4b5fd" strokeWidth="2" />
     </svg>
   )
 }
@@ -299,6 +303,59 @@ const GELEMBUNG = [
   [97, 8, 14, -1],
 ]
 
+// Kalimat tiap hewan saat diklik (bergantian)
+const SAPAAN_LAUT = {
+  paus: ['Byuuurr! 💦', 'Halo! Aku paus biru 🐳', 'Semprot air untukmu! 💧'],
+  gurita: ['Halo! Aku si Gurita pintar 🐙', '3² + 4² = 5², betul kan? ✍️', 'Aku menulis pakai tentakel! 😄'],
+  sikuIkan: ['Aku ikan segitiga siku-siku! 🔺', 'Sisi terpanjangku sisi miring 😎', 'Blub blub! 🫧'],
+  ikan: ['Wusss! 🐟', 'Kami berenang bersama! 🐠', 'Kejar kami kalau bisa! 😆'],
+  kura: ['Pelan-pelan asal paham 🐢', 'Hai! Semangat belajar ya 🐢'],
+  bintang: ['Kamu bintangnya! ⭐', 'Berkilau seperti kamu ✨'],
+  kerang: ['Ada mutiara! ✨', 'Ilmu itu berharga seperti mutiara 🦪'],
+}
+
+// Pembungkus hewan yang bisa diklik: bereaksi (kelas .disapa) dan memunculkan balon kata
+function HewanLaut({ nama, kelas, label, children }) {
+  const [sapa, setSapa] = useState(null) // { teks, n, x, y }
+  const [hitung, setHitung] = useState(0)
+
+  useEffect(() => {
+    if (!sapa) return undefined
+    const t = setTimeout(() => setSapa(null), 2400)
+    return () => clearTimeout(t)
+  }, [sapa])
+
+  const daftar = SAPAAN_LAUT[nama]
+  return (
+    <div className={`${kelas} ${sapa ? 'disapa' : ''}`}>
+      <button
+        type="button"
+        tabIndex={-1}
+        className="laut-tombol"
+        aria-label={label}
+        key={sapa ? `s${sapa.n}` : 'diam'}
+        onClick={(e) => {
+          // balon kata digambar di lapisan paling depan (bukan di latar) agar tidak tertutup kotak
+          const r = e.currentTarget.getBoundingClientRect()
+          const x = Math.min(Math.max(r.left + r.width / 2, 130), window.innerWidth - 130)
+          const y = Math.max(r.top + r.height * 0.15, 70)
+          setSapa({ teks: daftar[hitung % daftar.length], n: hitung, x, y })
+          setHitung(hitung + 1)
+        }}
+      >
+        {children}
+      </button>
+      {sapa &&
+        createPortal(
+          <span className="laut-ucap" key={sapa.n} style={{ left: sapa.x, top: sapa.y }} role="status">
+            {sapa.teks}
+          </span>,
+          document.body,
+        )}
+    </div>
+  )
+}
+
 export default function LatarLaut() {
   return (
     <div className="latar-adegan latar-laut" aria-hidden="true">
@@ -310,20 +367,20 @@ export default function LatarLaut() {
           style={{ left: `${x}%`, width: ukuran, height: ukuran, animationDuration: `${lama}s`, animationDelay: `${tunda}s` }}
         />
       ))}
-      <div className="laut-paus">
+      <HewanLaut nama="paus" kelas="laut-paus" label="Sapa paus">
         <Paus />
-      </div>
-      <div className="laut-renang laut-ikan-siku">
+      </HewanLaut>
+      <HewanLaut nama="sikuIkan" kelas="laut-renang laut-ikan-siku" label="Sapa ikan segitiga">
         <IkanSiku />
-      </div>
-      <div className="laut-renang laut-gerombolan">
+      </HewanLaut>
+      <HewanLaut nama="ikan" kelas="laut-renang laut-gerombolan" label="Sapa gerombolan ikan">
         <IkanKecil warna="#fdba74" />
         <IkanKecil warna="#a5f3fc" />
         <IkanKecil warna="#c4b5fd" />
-      </div>
-      <div className="laut-renang laut-kura">
+      </HewanLaut>
+      <HewanLaut nama="kura" kelas="laut-renang laut-kura" label="Sapa kura-kura">
         <KuraKura />
-      </div>
+      </HewanLaut>
       <div className="laut-dasar">
         <DasarLaut />
       </div>
@@ -333,15 +390,15 @@ export default function LatarLaut() {
       <div className="laut-rumput-kanan">
         <RumputLaut kelas="kanan" />
       </div>
-      <div className="laut-gurita">
+      <HewanLaut nama="gurita" kelas="laut-gurita" label="Sapa gurita">
         <Gurita />
-      </div>
-      <div className="laut-bintang">
+      </HewanLaut>
+      <HewanLaut nama="bintang" kelas="laut-bintang" label="Sapa bintang laut">
         <BintangLaut />
-      </div>
-      <div className="laut-kerang">
+      </HewanLaut>
+      <HewanLaut nama="kerang" kelas="laut-kerang" label="Buka kerang">
         <Kerang />
-      </div>
+      </HewanLaut>
     </div>
   )
 }

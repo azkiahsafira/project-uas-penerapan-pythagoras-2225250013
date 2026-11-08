@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Maskot from './Maskot.jsx'
-import { PERISTIWA, bunyikan, suaraTepukNyala } from './perayaan.js'
+import { PERISTIWA, PERISTIWA_SEMANGAT, bunyikan, suaraTepukNyala } from './perayaan.js'
 
 // Layar perayaan penuh saat jawaban benar (menu Belajar & Latihan, TIDAK dipakai saat tes).
 // Cara memakai: panggil rayakan({ beruntun }) dari perayaan.js; <LayarBenar /> dipasang sekali di App.
@@ -78,12 +78,24 @@ export default function LayarBenar() {
           />
         ))}
       </div>
-      <span className="lb-tangan kiri" aria-hidden="true">👏</span>
-      <span className="lb-tangan kanan" aria-hidden="true">👏</span>
-      <span className="lb-bintang b1" aria-hidden="true">⭐</span>
-      <span className="lb-bintang b2" aria-hidden="true">🌟</span>
-      <span className="lb-bintang b3" aria-hidden="true">✨</span>
-      <span className="lb-bintang b4" aria-hidden="true">🎉</span>
+      <span className="lb-tangan kiri" aria-hidden="true">
+        👏
+      </span>
+      <span className="lb-tangan kanan" aria-hidden="true">
+        👏
+      </span>
+      <span className="lb-bintang b1" aria-hidden="true">
+        ⭐
+      </span>
+      <span className="lb-bintang b2" aria-hidden="true">
+        🌟
+      </span>
+      <span className="lb-bintang b3" aria-hidden="true">
+        ✨
+      </span>
+      <span className="lb-bintang b4" aria-hidden="true">
+        🎉
+      </span>
       <div className="lb-isi">
         <div className="lb-maskot">
           <Maskot suasana="menari" ukuran={150} topi />
@@ -92,6 +104,60 @@ export default function LayarBenar() {
         <p className="lb-sub">{tampil.sub}</p>
         <p className="lb-ket">Klik di mana saja untuk lanjut</p>
       </div>
+    </div>
+  )
+}
+
+// Kalimat semangat saat jawaban salah
+const SEMANGAT = {
+  petunjuk: [
+    'Hampir! Coba lagi ya 💪',
+    'Sedikit lagi! Lihat petunjuknya 👀',
+    'Tidak apa-apa, ayo coba sekali lagi 😊',
+    'Salah itu bagian dari belajar ✨',
+  ],
+  dibuka: [
+    'Tidak apa-apa! Lihat jawabannya, lalu lanjut ya 😊',
+    'Sekarang kamu jadi tahu caranya 💡',
+    'Pelan-pelan, kamu pasti bisa 🌱',
+  ],
+  pembahasan: [
+    'Tidak apa-apa! Baca pembahasannya ya 📖',
+    'Hampir! Lihat langkahnya pelan-pelan 👀',
+    'Semangat! Soal berikutnya pasti bisa 💪',
+  ],
+}
+
+// Siku muncul di bawah layar memberi semangat saat jawaban salah (±2,6 detik)
+export function LayarSemangat() {
+  const [tampil, setTampil] = useState(null)
+  const pengatur = useRef(null)
+
+  useEffect(() => {
+    const saatSalah = (e) => {
+      const daftar = SEMANGAT[e.detail.jenis] ?? SEMANGAT.petunjuk
+      clearTimeout(pengatur.current)
+      setTampil({ id: Date.now(), teks: acak(daftar) })
+      pengatur.current = setTimeout(() => setTampil(null), 2600)
+    }
+    window.addEventListener(PERISTIWA_SEMANGAT, saatSalah)
+    return () => {
+      window.removeEventListener(PERISTIWA_SEMANGAT, saatSalah)
+      clearTimeout(pengatur.current)
+    }
+  }, [])
+
+  if (!tampil) return null
+
+  return (
+    <div className="layar-semangat" key={tampil.id} role="status" aria-live="polite" onClick={() => setTampil(null)}>
+      <div className="ls-maskot">
+        <Maskot suasana="halo" ukuran={64} />
+      </div>
+      <p className="ls-teks">{tampil.teks}</p>
+      <span className="ls-hati" aria-hidden="true">
+        💗
+      </span>
     </div>
   )
 }

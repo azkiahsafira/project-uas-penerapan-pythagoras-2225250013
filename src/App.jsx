@@ -9,7 +9,7 @@ import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
 import Tes from './Tes.jsx'
-import LayarBenar from './Tepuk.jsx'
+import LayarBenar, { LayarSemangat } from './Tepuk.jsx'
 import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
 import { HiasanLucu } from './Sekolah.jsx'
@@ -131,6 +131,7 @@ function App() {
       <PemberitahuanOffline />
       {/* layar perayaan penuh saat jawaban benar (tidak pernah dipicu di menu Tes) */}
       <LayarBenar />
+      <LayarSemangat />
       <header className="hero">
         {!fokusTes && <LatarHeader />}
         <div className="hero-teks">

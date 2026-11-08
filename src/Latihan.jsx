@@ -5,7 +5,7 @@ import { HewanHidup } from './Hewan.jsx'
 import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
-import { rayakan } from './perayaan.js'
+import { rayakan, semangati } from './perayaan.js'
 import { NAMA, bulat, hitung, keAngka } from './pythagoras.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
 
@@ -112,6 +112,7 @@ export default function Latihan() {
     catat(benar ? 'benar' : 'salah')
     setBeruntun((b) => (benar ? b + 1 : 0))
     if (benar) rayakan({ beruntun: beruntun + 1 })
+    else semangati({ jenis: 'pembahasan' })
     setSkor((s) => ({ benar: s.benar + (benar ? 1 : 0), total: s.total + 1 }))
   }
 

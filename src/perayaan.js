@@ -8,6 +8,14 @@ export function rayakan({ beruntun = 0 } = {}) {
   window.dispatchEvent(new CustomEvent(PERISTIWA, { detail: { beruntun } }))
 }
 
+// Pesan semangat saat jawaban salah (kecil, tanpa suara, tidak menutupi soal).
+// jenis: 'petunjuk' (salah pertama, ada petunjuk) | 'dibuka' (jawaban ditampilkan) | 'pembahasan' (Latihan)
+export const PERISTIWA_SEMANGAT = 'pythagoras-semangati'
+
+export function semangati({ jenis = 'petunjuk' } = {}) {
+  window.dispatchEvent(new CustomEvent(PERISTIWA_SEMANGAT, { detail: { jenis } }))
+}
+
 export function suaraTepukNyala() {
   try {
     return localStorage.getItem(KUNCI_SUARA) !== 'mati'
