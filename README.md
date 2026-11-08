@@ -270,7 +270,10 @@ python analisis.py data.csv --aktivitas aktivitas.csv
 
 ## Bukti Pengerjaan dengan AI
 
-Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh percakapan, mulai dari perencanaan sampai deploy, didokumentasikan di folder [docs/bukti-ai](docs/bukti-ai):
+Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh percakapan, mulai dari perencanaan sampai deploy, didokumentasikan di folder [docs/bukti-ai](docs/bukti-ai).
+
+👉 **[Buka percakapan lengkap dengan AI di browser](https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/bukti-ai/)**
+
 
 - [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)
 - [Percakapan-dengan-AI.html](docs/bukti-ai/Percakapan-dengan-AI.html): versi untuk dibuka di browser
