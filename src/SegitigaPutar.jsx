@@ -55,6 +55,8 @@ export default function SegitigaPutar({ sisi, cari, orientasi, onPilih, pilihan,
   }
   const kelas = (k) => {
     if (onPilih) return `sisi ${pilihan?.salah?.includes(k) ? 'keliru' : ''}`
+    // sebelum langkah 1-2 selesai, sisi yang dicari belum diwarnai agar tidak membocorkan jawaban "Ditanya"
+    if (!tampilLabel) return 'sisi'
     if (k === cari) return 'sisi dicari'
     return `sisi ${pilihan?.benar === k ? 'miring-ketemu' : ''}`
   }

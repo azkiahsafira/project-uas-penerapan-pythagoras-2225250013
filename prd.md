@@ -35,7 +35,7 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 | Pemasangan | **PWA dari Chrome** (tanpa APK); satu siswa satu HP |
 | Internet | **Kuota HP siswa** → hemat data, bisa offline |
 | Animasi | **Tetap seperti versi sekarang** (keputusan pengembang, lihat §5 EL3) |
-| Backend | **Python + FastAPI**, di layanan web gratis (rencana: **Render** free web service, ±2 bulan penelitian) |
+| Backend | **Python + FastAPI**, di layanan web gratis **Vercel** (gratis tanpa kartu, untuk ±2 bulan penelitian; Render sempat dipilih tetapi kini meminta kartu) |
 | Data & hosting basis data | **Supabase** (PostgreSQL) |
 
 ## 4. Pengguna
@@ -101,7 +101,7 @@ Materi selain Pythagoras, akun guru lengkap, chat, papan peringkat antarsiswa, p
 
 ## 9. Hasil wawancara pengembang (AI → Azkiah)
 Jawaban lengkap ada di [task.md](task.md) bagian F: HP campuran (dibuat ringan), kuota HP siswa, PWA dari Chrome, satu siswa satu HP,
-kode siswa = kelas + nomor absen, 3D tangga–dinding, backend Render, dan animasi dipertahankan.
+kode siswa = kelas + nomor absen, 3D tangga–dinding, backend Render (akhirnya dipasang di Vercel karena Render meminta kartu), dan animasi dipertahankan.
 
 **Risiko & mitigasi kode kelas+absen:** kode mudah ditebak → hanya kode yang didaftarkan peneliti yang diterima, dibatasi 5 percobaan/menit,
 dan kode dinonaktifkan setelah penelitian selesai.

@@ -31,14 +31,14 @@ Dokumen perancangan versi 2, disusun dari hasil wawancara kebutuhan siswa (tahap
 | Dokumen | Isi |
 | --- | --- |
 | [prd.md](prd.md) | Kebutuhan produk: tujuan literasi matematis, temuan wawancara → fitur, MVP |
-| [architecture.md](architecture.md) | Arsitektur: React + three.js (JavaScript), FastAPI (Python) di Render, Supabase |
+| [architecture.md](architecture.md) | Arsitektur: React + three.js (JavaScript), FastAPI (Python) di Vercel, Supabase |
 | [design.md](design.md) | Desain antarmuka Android, Mode Fokus, warna bermakna, petunjuk bertingkat, 3D |
 | [api.md](api.md) | Rancangan API backend: masuk dengan kode siswa, hasil, aktivitas, rekap peneliti |
 | [task.md](task.md) | Daftar tugas per tahap ADDIE + wawancara kebutuhan Android |
 | [agents.md](agents.md) | Aturan untuk AI agent/asisten koding di proyek ini |
 | [konten.md](konten.md) | Spesifikasi isi: bab & subbab, tujuan, indikator literasi matematis, aturan menulis soal |
 | [testing.md](testing.md) | Rencana pengujian: otomatis, fungsional, perangkat Android, validasi ahli, uji coba |
-| [deploy.md](deploy.md) | Pemasangan & pemeliharaan: GitHub Pages, Supabase, Render, checklist sebelum penelitian, cadangan data |
+| [deploy.md](deploy.md) | Pemasangan & pemeliharaan: GitHub Pages, Supabase, Vercel, checklist sebelum penelitian, cadangan data |
 | [privasi.md](privasi.md) | Etika penelitian & perlindungan data siswa (persetujuan, kode siswa, penyimpanan) |
 | [panduan.md](panduan.md) | Panduan penggunaan untuk siswa dan peneliti/guru, plus solusi masalah umum |
 | [changelog.md](changelog.md) | Riwayat perubahan aplikasi per versi |
@@ -86,6 +86,13 @@ Dari rumus tersebut diperoleh tiga bentuk:
   - Sesi 3: Pythagoras dalam kehidupan sehari-hari (soal cerita).
   - Tombol **🔊 Bacakan** membacakan judul, penjelasan, rumus (simbol dibaca sebagai kata, misalnya “c kuadrat sama dengan…”), dan pertanyaan; bagian yang sedang dibacakan disorot seperti stabilo. Soal di Latihan juga bisa dibacakan. Memakai suara bawaan perangkat (Web Speech API), gratis.
   - Setiap langkah punya cek pemahaman: petunjuk muncul jika salah, dan jawaban dibuka setelah 2 kali salah agar siswa tidak buntu. Progres sesi tersimpan di perangkat.
+- **Fitur dari temuan wawancara** (lihat [prd.md](prd.md) §5):
+  - **Cek prasyarat** (kartu "Pemanasan" di menu Belajar): 4 soal kuadrat & akar kuadrat sebelum Sesi 1; bila benar < 3, siswa diarahkan ke bagian kuadrat & akar di Sesi 1 (IL3).
+  - **Diketahui & Ditanya** (Latihan langkah 1): siswa mengetuk angka di soal cerita, menentukan sisi siku-siku/sisi miring, dan apa yang ditanya; ringkasannya tetap tampil saat menghitung (EL1).
+  - **Tunjuk sisi miring** (langkah 2): segitiga digambar dalam posisi diputar/dicerminkan; siswa mengetuk sisi di depan tanda sudut siku-siku (IL1).
+  - **Petunjuk bertingkat 5 tahap** (cari segitiga siku-siku → sisi miring → rumus → hitung → cek) yang **memudar**: setelah 3 soal benar tanpa bantuan, langkah 1–2 disembunyikan dan petunjuk tinggal 3 tahap; muncul lagi bila siswa salah (GL3).
+  - **Cek kewajaran**: jawaban yang mustahil (mis. sisi miring lebih pendek) tidak langsung dinilai; siswa diajak memeriksa dulu (GL2).
+  - **Refleksi "Mengapa…?"** setiap soal ke-3, dengan alasan tertulis opsional (GL4).
 - **Tes penelitian** (menu Tes):
   - **Pre-test** (pertemuan 1, sebelum Sesi 1) dan **post-test** (pertemuan 5): masing-masing 10 soal paralel, satu soal per layar, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
   - **Kuesioner beban kognitif Leppink** (pertemuan 5, setelah post-test): 10 pernyataan skala 0–10 untuk intrinsic, extraneous, dan germane load.
@@ -214,16 +221,24 @@ MULAI
     pilih acak satu tripel (a, b, c)
     pilih acak sisi yang dicari (a, b, atau c)
     pilih acak cerita soal yang sesuai, tidak sama dengan soal sebelumnya
-    TAMPILKAN soal dan gambar (sisi yang dicari ditulis "?")
+    pilih acak posisi segitiga (diputar 0–320°, boleh dicerminkan)
+    JIKA lancar < 3 MAKA                     // bantuan penuh
+      langkah 1: siswa mengetuk angka & mengisi Diketahui/Ditanya (2× salah → jawaban dibuka)
+      langkah 2: siswa mengetuk sisi miring pada segitiga yang diputar
+    TAMPILKAN gambar dengan label (sisi yang dicari ditulis "?")
 
-    BACA jawaban
+    BACA jawaban (boleh membuka petunjuk 1..5, atau 1..3 bila lancar)
+    JIKA jawaban tidak wajar (sisi miring tidak terpanjang) MAKA
+      TAMPILKAN peringatan cek kewajaran; siswa boleh memperbaiki
     total ← total + 1
     JIKA |jawaban − kunci| < 0,01 MAKA
       skor ← skor + 1
       TAMPILKAN "Benar!"
+      JIKA tanpa petunjuk & tanpa salah langkah MAKA lancar ← lancar + 1 SELAIN ITU lancar ← 0
     SELAIN ITU
-      TAMPILKAN "Belum tepat" dan kunci jawaban
-    TAMPILKAN pembahasan (memakai fungsi hitung())
+      TAMPILKAN "Belum tepat" dan kunci jawaban; lancar ← 0
+    TAMPILKAN pembahasan (memakai fungsi hitung()) + kalimat cek kewajaran
+    JIKA total habis dibagi 3 MAKA TAMPILKAN pertanyaan refleksi "Mengapa…?"
   SAMPAI pengguna berhenti
 SELESAI
 ```
@@ -287,13 +302,13 @@ Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lew
 ```bash
 python -m venv backend/.venv
 backend/.venv/Scripts/python -m pip install -r backend/requirements.txt   # Windows
-backend/.venv/Scripts/python -m pytest backend -q                         # 14 pengujian
+backend/.venv/Scripts/python -m pytest backend -q                         # 15 pengujian
 backend/.venv/Scripts/python -m uvicorn backend.main:app --reload         # http://127.0.0.1:8000/docs
 ```
 
 Tanpa variabel `SUPABASE_URL`/`SUPABASE_SERVICE_KEY`, backend menyimpan data di memori (aman untuk mencoba; kode contoh `8A-01`, `8A-02`).
 Untuk menyambungkan aplikasi ke backend, isi `VITE_API_URL` di `.env` (mis. `http://127.0.0.1:8000`). Bila kosong, aplikasi memakai cara lama
-(langsung ke Supabase). Cara memasang di Render ada di [deploy.md](deploy.md) dan [render.yaml](render.yaml).
+(langsung ke Supabase). Backend sudah aktif di **Vercel**: https://pythagoras-api.vercel.app/api/sehat. Cara memasangnya ada di [deploy.md](deploy.md).
 
 ## Analisis Data (Python)
 
@@ -314,7 +329,7 @@ Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh perca
 - [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)
 - [Percakapan-dengan-AI.html](docs/bukti-ai/Percakapan-dengan-AI.html): versi untuk dibuka di browser
 
-Screenshot tampilan aplikasi ada di [docs/screenshot](docs/screenshot).
+Screenshot tampilan aplikasi ada di [docs/screenshot](docs/screenshot) (termasuk fitur cek prasyarat, Diketahui/Ditanya, tunjuk sisi miring, petunjuk bertingkat, cek kewajaran, dan refleksi).
 
 ## Struktur Folder
 
@@ -347,7 +362,10 @@ aplikasi-pythagoras/
     ├── penyimpanan.js penyimpanan hasil, kirim ke Supabase, ekspor CSV
     ├── supabase.js   koneksi ke Supabase
     ├── materi.js     isi materi 3 sesi
-    ├── Latihan.jsx   mode latihan soal
+    ├── Latihan.jsx   latihan soal pertemuan 4 (Diketahui/Ditanya, sisi miring, petunjuk, refleksi)
+    ├── Prasyarat.jsx cek prasyarat kuadrat & akar
+    ├── SegitigaPutar.jsx segitiga yang diputar untuk menunjuk sisi miring
+    ├── bantuan.js    petunjuk bertingkat, cek kewajaran, refleksi, soal prasyarat
     ├── Segitiga.jsx  gambar segitiga (SVG)
     ├── pythagoras.js logika perhitungan
     ├── App.css       gaya komponen

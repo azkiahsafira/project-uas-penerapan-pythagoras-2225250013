@@ -29,7 +29,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 
 ### Revisi (versi 2)
 - [x] Login **kode siswa** (ganti nama + sekolah) — `src/Masuk.jsx`
-- [x] Backend **FastAPI** (Python): `/masuk`, `/saya`, `/aktivitas`, `/hasil`, `/sehat`, `/soal/latihan`, rekap & ekspor peneliti + 14 pengujian pytest — `backend/`
+- [x] Backend **FastAPI** (Python): `/masuk`, `/saya`, `/aktivitas`, `/hasil`, `/sehat`, `/soal/latihan`, rekap & ekspor peneliti + 15 pengujian pytest — `backend/`
 - [x] Pasang backend di **Vercel** (https://pythagoras-api.vercel.app) — Render kini meminta kartu
 - [ ] Daftarkan kode siswa di tabel `siswa` & sambungkan aplikasi (`VITE_API_URL`)
 - [x] Penilaian tes di server (`backend/penilaian.py`) — aktif setelah `VITE_API_URL` diisi

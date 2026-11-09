@@ -1,6 +1,6 @@
 # Arsitektur Aplikasi
 
-> Status: **v2 sudah dikoding** (backend FastAPI, login kode siswa, three.js). Backend tinggal dipasang di Render; selama `VITE_API_URL` kosong, aplikasi memakai jalur cadangan langsung ke Supabase.
+> Status: **v2 sudah dikoding** (backend FastAPI, login kode siswa, three.js). Backend sudah aktif di **Vercel** (https://pythagoras-api.vercel.app). Aplikasi disambungkan (`VITE_API_URL`) setelah kode siswa didaftarkan; selama `VITE_API_URL` kosong, aplikasi memakai jalur cadangan langsung ke Supabase.
 
 ## 1. Gambaran besar
 
@@ -13,7 +13,7 @@ flowchart LR
     LS["localStorage<br/>kode siswa, progres, antrean data"]
   end
   GP["GitHub Pages<br/>file statis aplikasi"]
-  API["FastAPI (Python)<br/>Render free web service"]
+  API["FastAPI (Python)<br/>Vercel (serverless, gratis)"]
   DB[("Supabase<br/>PostgreSQL")]
   PY["Python analisis.py<br/>N-gain, Leppink, rekap"]
 
@@ -30,7 +30,7 @@ flowchart LR
 | --- | --- | --- |
 | Tampilan | **React 19 + Vite** (JavaScript) | Menu Belajar, Latihan, Tes, Kalkulator; PWA bisa di-install di Android |
 | Ilustrasi 3D | **three.js** | Adegan tangga–dinding yang bisa diputar; dimuat hanya saat dibuka |
-| Backend | **FastAPI** (Python) di **Render** (gratis) | Masuk dengan kode siswa, menilai tes di server, menyimpan hasil & aktivitas |
+| Backend | **FastAPI** (Python) di **Vercel** (gratis, tanpa kartu) | Masuk dengan kode siswa, menilai tes di server, menyimpan hasil & aktivitas |
 | Basis data | **Supabase** (PostgreSQL) | Tabel `siswa`, `hasil`, `aktivitas` |
 | Analisis | **Python** (pustaka bawaan) | Rekap pre/post, N-gain, Leppink, jejak belajar |
 | Hosting aplikasi | **GitHub Pages** | File statis hasil `npm run build` |
@@ -65,7 +65,7 @@ sequenceDiagram
 4. Memenuhi syarat dosen: **Python + framework** (FastAPI) dan **JavaScript + framework** (React).
 
 ## 4. Ketahanan (layanan gratis)
-- Render free web service **tidur** setelah ±15 menit tanpa permintaan; permintaan pertama bisa butuh 30–60 detik.
+- Vercel menjalankan FastAPI sebagai fungsi *serverless*: setelah lama tidak dipakai, permintaan pertama sedikit lebih lambat (*cold start*, ±1–3 detik).
   → Aplikasi **tidak menunggu**: data masuk antrean lokal dan dikirim ulang otomatis; `GET /api/sehat` dipanggil saat aplikasi dibuka untuk "membangunkan" server.
 - Supabase gratis dijeda setelah 7 hari tanpa aktivitas → workflow GitHub Actions menyapa database setiap 3 hari (sudah ada).
 - Jika backend mati total: aplikasi tetap bisa dipakai belajar; data tersimpan di HP dan bisa diunduh sebagai CSV.
@@ -103,4 +103,4 @@ aplikasi-pythagoras/
 - Tidak ada nama asli di basis data; hubungan kode ↔ nama hanya dipegang peneliti (di luar aplikasi).
 - Token sesi bertanda tangan (HMAC) berumur 30 hari; tidak ada password.
 - CORS backend hanya mengizinkan domain GitHub Pages aplikasi dan `localhost`.
-- Rahasia (`SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`) disimpan sebagai *environment variable* di Render, **tidak** di repositori.
+- Rahasia (`SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`) disimpan sebagai *environment variable* di Vercel, **tidak** di repositori.

@@ -10,8 +10,8 @@ Pengujian dilakukan berlapis: dari kode (otomatis), fitur, perangkat Android, sa
 | Lint JavaScript | `npm run lint` | tanpa error/peringatan |
 | Build produksi | `npm run build` | berhasil, ukuran bundel utama < 600 KB |
 | Analisis Python | `python analisis/analisis.py analisis/contoh_data.csv --aktivitas analisis/contoh_aktivitas.csv --kertas analisis/templat_kertas.csv` | laporan & grafik terbentuk tanpa peringatan kunci |
-| Kunci jawaban sinkron | bandingkan `src/tes.js`, `analisis/analisis.py`, (nanti) `backend/penilaian.py` | kunci ketiganya sama |
-| Backend (rencana) | `pytest backend/` | semua uji lulus |
+| Kunci jawaban sinkron | bandingkan `src/tes.js`, `analisis/analisis.py`, `backend/penilaian.py` | kunci ketiganya sama |
+| Backend FastAPI | `backend/.venv/Scripts/python -m pytest backend -q` | 15 uji lulus |
 
 Uji unit yang direncanakan:
 - `src/pythagoras.js`: sisi miring, sisi siku-siku, input tidak valid (c ≤ a), tripel Pythagoras, koma desimal.
@@ -32,6 +32,12 @@ Uji unit yang direncanakan:
 | 8 | Tombol Bacakan | teks dibaca, bagian yang dibaca disorot, musik mengecil |
 | 9 | Tombol Animasi mati / Musik mati | animasi berhenti / musik berhenti, pilihan diingat |
 | 10 | Kalkulator: c lebih pendek dari a | pesan kesalahan yang jelas |
+| 11 | Cek prasyarat: 2 dari 4 benar | diarahkan ke kuadrat & akar Sesi 1; skor tampil di kartu Pemanasan |
+| 12 | Latihan langkah 1: sisi miring ditandai sisi siku-siku | pesan "Ada sisi yang tertukar"; setelah 2× salah, Diketahui/Ditanya yang benar ditampilkan |
+| 13 | Latihan langkah 2: ketuk sisi siku-siku pada segitiga diputar | sisi ditandai merah + penjelasan; sisi miring benar → label muncul |
+| 14 | Jawab sisi miring lebih pendek dari sisi lain | peringatan cek kewajaran, belum dinilai salah |
+| 15 | 3 soal benar tanpa bantuan | langkah 1–2 disembunyikan, petunjuk tinggal 3 tahap; salah sekali → bantuan muncul lagi |
+| 16 | Soal ke-3, 6, 9 | pertanyaan refleksi; "Soal berikutnya" terkunci sampai dijawab |
 
 ## 3. Uji perangkat Android
 

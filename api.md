@@ -1,7 +1,7 @@
 # api.md — Rancangan API Backend (FastAPI)
 
-> Status: **rancangan v2**. Backend Python **FastAPI** di **Render** (free web service), basis data **Supabase** (PostgreSQL).
-> Basis URL (rencana): `https://pythagoras-api.onrender.com/api` · Format: JSON (UTF-8) · Zona waktu: UTC (ISO 8601)
+> Status: **v2 aktif**. Backend Python **FastAPI** di **Vercel** (gratis), basis data **Supabase** (PostgreSQL).
+> Basis URL: `https://pythagoras-api.vercel.app/api` (dokumentasi interaktif: `/docs`) · Format: JSON (UTF-8) · Zona waktu: UTC (ISO 8601)
 
 ## 1. Autentikasi — kode siswa
 - Siswa masuk dengan **kode siswa = kelas + nomor absen** (mis. `8A-07`) yang didaftarkan peneliti di tabel `siswa`. Tidak ada password dan nama asli.
