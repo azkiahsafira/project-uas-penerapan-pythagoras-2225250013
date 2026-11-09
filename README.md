@@ -36,7 +36,7 @@ Dokumen perancangan versi 2, disusun dari hasil wawancara kebutuhan siswa (tahap
 | [api.md](api.md) | Rancangan API backend: masuk dengan kode siswa, hasil, aktivitas, rekap peneliti |
 | [task.md](task.md) | Daftar tugas per tahap ADDIE + wawancara kebutuhan Android |
 | [agents.md](agents.md) | Aturan untuk AI agent/asisten koding di proyek ini |
-| [Materi ajar (PDF)](docs/materi/Materi-Teorema-Pythagoras.pdf) | Materi Teorema Pythagoras 11 halaman yang disusun dari temuan wawancara (dibuat dengan `python scripts/buat_materi.py`) |
+| [Materi ajar (PDF)](docs/materi/Materi-Teorema-Pythagoras.pdf) | Bab Teorema Pythagoras, subbab *Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah* (11 halaman), disusun dari temuan wawancara (dibuat dengan `python scripts/buat_materi.py`) |
 
 ## Install sebagai Aplikasi (Android, Windows, iPhone)
 

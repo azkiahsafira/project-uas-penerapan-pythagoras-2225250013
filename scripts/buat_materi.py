@@ -1,4 +1,5 @@
-"""Membuat materi ajar "Teorema Pythagoras dan Penerapannya" (HTML siap cetak/PDF).
+"""Membuat materi ajar Bab Teorema Pythagoras, subbab "Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah"
+(HTML siap cetak/PDF).
 
 Isi disusun dari temuan wawancara kebutuhan (informan S01, data simulasi):
 IL1 sisi miring tertukar saat segitiga diputar, IL2 banyak unsur sekaligus, IL3 prasyarat kuadrat & akar,
@@ -189,15 +190,17 @@ th { background: #eff6ff; text-align: left; }
 
 def halaman():
     return f"""<!doctype html><html lang="id"><head><meta charset="utf-8">
-<title>Materi Teorema Pythagoras dan Penerapannya</title><style>{GAYA}</style></head><body>
+<title>Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah</title><style>{GAYA}</style></head><body>
 
 <section class="sampul">
-  <span class="pita">Matematika SMP · Kelas VIII · Geometri</span>
-  <h1>Teorema Pythagoras<br>dan Penerapannya</h1>
+  <span class="pita">Matematika SMP · Kelas VIII · Bab Teorema Pythagoras</span>
+  <h1>Penerapan Teorema Pythagoras<br>dalam Menyelesaikan Masalah</h1>
   <p class="sub">Materi ajar untuk membangun literasi matematis,<br>disusun berdasarkan hasil wawancara kebutuhan siswa</p>
   {segitiga(4, 3, "a = 4", "b = 3", "c = ?", ("k", "k", "d"), lebar=260, tinggi_kotak=190)}
   <p class="legenda"><span class="biru">■ biru = diketahui</span><span class="pink">■ merah muda = dicari</span></p>
   <table>
+    <tr><td>Bab</td><td>: Teorema Pythagoras</td></tr>
+    <tr><td>Subbab</td><td>: Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah</td></tr>
     <tr><td>Penyusun</td><td>: Azkiah Safira (2225250013) · Kelas 3F</td></tr>
     <tr><td>Dosen Pengampu</td><td>: Dr. Aan Hendrayana, S.Si., M.Pd.</td></tr>
     <tr><td>Mata kuliah</td><td>: Algoritma Pemrograman (Project UAS)</td></tr>

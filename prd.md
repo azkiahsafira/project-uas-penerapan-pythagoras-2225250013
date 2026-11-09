@@ -26,7 +26,7 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 
 | Aspek | Keputusan |
 | --- | --- |
-| Materi | Geometri (bentuk): **Teorema Pythagoras dan penerapannya** (kelas VIII) |
+| Materi | **Bab Teorema Pythagoras**, subbab **Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah** (kelas VIII) |
 | Peran pengguna | **Siswa SMP** (pengguna utama); peneliti/guru hanya melihat data |
 | Perangkat | **Smartphone Android** (utama), tetap bisa dibuka di laptop |
 | Login | **Kode siswa = kelas + nomor absen** (mis. `8A-07`), didaftarkan peneliti; tanpa nama asli dan tanpa password |
