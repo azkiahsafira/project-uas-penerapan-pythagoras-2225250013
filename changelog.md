@@ -8,6 +8,7 @@ Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat comm
 - **React**: login **kode siswa** (`8A-07`) menggantikan nama + sekolah di menu Belajar, Latihan, dan Tes; penghubung API dengan cadangan ke Supabase langsung.
 - **three.js**: ilustrasi 3D tangga–dinding yang bisa diputar, dengan segitiga siku-siku & label (biru = diketahui, merah muda = dicari); dimuat hanya saat dibuka.
 - Tabel `siswa` di `supabase/schema.sql` untuk daftar kode siswa.
+- Backend terpasang di **Vercel**: https://pythagoras-api.vercel.app (Render kini meminta kartu pembayaran untuk paket gratis).
 
 ## [2.0-rancangan] · 9 November 2026 — Revisi dosen
 - Dokumen perancangan: prd, readme, agents, architecture, task, design, api.
