@@ -29,9 +29,12 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 | Materi | Geometri (bentuk): **Teorema Pythagoras dan penerapannya** (kelas VIII) |
 | Peran pengguna | **Siswa SMP** (pengguna utama); peneliti/guru hanya melihat data |
 | Perangkat | **Smartphone Android** (utama), tetap bisa dibuka di laptop |
-| Login | **Kode siswa** (mis. `PYT-01`), tanpa nama asli dan tanpa password |
+| Login | **Kode siswa = kelas + nomor absen** (mis. `8A-07`), didaftarkan peneliti; tanpa nama asli dan tanpa password |
 | Bahasa | **Bahasa Indonesia** |
-| Frontend | **JavaScript + React (Vite)**, ilustrasi 3D dengan **three.js** |
+| Frontend | **JavaScript + React (Vite)**, ilustrasi 3D **tangga–dinding** dengan **three.js** |
+| Pemasangan | **PWA dari Chrome** (tanpa APK); satu siswa satu HP |
+| Internet | **Kuota HP siswa** → hemat data, bisa offline |
+| Animasi | **Tetap seperti versi sekarang** (keputusan pengembang, lihat §5 EL3) |
 | Backend | **Python + FastAPI**, di layanan web gratis (rencana: **Render** free web service, ±2 bulan penelitian) |
 | Data & hosting basis data | **Supabase** (PostgreSQL) |
 
@@ -55,7 +58,7 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 | IL4 | Kesulitan naik saat soal cerita & gambar tidak langsung | Konteks menambah unsur | **F9** Latihan berjenjang: angka → gambar → cerita | Waktu & benar per jenjang |
 | EL1 | Kalimat soal panjang, bingung mana tinggi & mana sisi miring | Instruksi tidak terstruktur | **F5** Tandai "Diketahui" & "Ditanya" pada soal cerita | Siswa memilih data relevan dengan benar |
 | EL2 | Bolak-balik antara teks & gambar | Split-attention | **D1** Teks soal, gambar, dan label sisi **dalam satu layar berdekatan** | Siswa mencocokkan angka teks dengan sisi gambar |
-| EL3 | Terlalu banyak warna/animasi/hiasan mengganggu | Distraksi | **D2** Mode Fokus: layar belajar & soal tanpa animasi hiasan; warna hanya untuk sisi diketahui vs dicari | Skor EL Leppink |
+| EL3 | Terlalu banyak warna/animasi/hiasan mengganggu | Distraksi | **Keputusan pengembang: animasi dipertahankan.** Pengendalian: semua hiasan & musik disembunyikan saat tes, tombol "Animasi: mati", `prefers-reduced-motion`, warna pada segitiga hanya untuk sisi diketahui vs dicari | Skor EL Leppink dibandingkan kelompok diajar langsung |
 | EL4 | Penjelasan terlalu cepat saat memasukkan angka ke rumus | Pacing | **F3** Materi per langkah, tombol ulangi/kembali, **Bacakan** | Jumlah ulangi per langkah |
 | GL1 | Paham setelah menggambar & memberi nama sisi | Elaborasi | **F4** Siswa menandai sendiri sisi a, b, c | Ketepatan penandaan |
 | GL2 | Memeriksa: sisi miring harus terpanjang | Penalaran | **F8** Cek kewajaran jawaban | Siswa bisa menjelaskan kewajaran |
@@ -66,10 +69,10 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 ## 6. Fitur
 
 ### MVP (wajib untuk penelitian)
-- **F1 Masuk dengan kode siswa** — tanpa nama; kode dibagikan peneliti; tersimpan di perangkat.
+- **F1 Masuk dengan kode siswa** (`8A-07`) — tanpa nama; kode didaftarkan peneliti; tersimpan di HP (satu siswa satu HP).
 - **F2 Cek prasyarat** — 4 soal kuadrat & akar; jika lemah, diarahkan ke Sesi 1.
 - **F3 Materi 3 sesi bertahap** — satu konsep per layar, Bacakan, ulangi.
-- **F4 Segitiga interaktif** — 2D (SVG) untuk soal, **3D (three.js)** untuk ilustrasi konteks (tangga–dinding, layang-layang) yang bisa diputar.
+- **F4 Segitiga interaktif** — 2D (SVG) untuk soal, **3D (three.js)** untuk ilustrasi tangga–dinding yang bisa diputar.
 - **F5 Penanda Diketahui/Ditanya** — ketuk angka pada soal cerita, isi tabel Diketahui–Ditanya sebelum menghitung.
 - **F6 Petunjuk bertingkat** — 5 tingkat: (1) cari segitiga siku-siku, (2) tentukan sisi miring, (3) pilih rumus, (4) hitung, (5) cek jawaban; makin jarang ditawarkan bila siswa makin benar.
 - **F7 Refleksi singkat** — satu pertanyaan "Mengapa…?" setelah soal kunci.
@@ -77,11 +80,9 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 - **F9 Latihan berjenjang** (pertemuan 4).
 - **F10 Pre-test, post-test, kuesioner Leppink** (pertemuan 1 & 5), menu lain dikunci saat tes.
 - **F11 Pencatatan aktivitas** — waktu, salah, petunjuk dipakai, per langkah/soal → Supabase lewat backend.
-- **D2 Mode Fokus** — bawaan **aktif** di layar belajar/soal (sesuai EL3).
 
 ### Lanjutan (bila waktu cukup)
 - Rekap untuk peneliti (halaman sederhana / ekspor CSV).
-- Paket APK Android (Capacitor) selain PWA.
 
 ## 7. Kebutuhan non-fungsional
 
@@ -98,6 +99,9 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 ## 8. Di luar cakupan
 Materi selain Pythagoras, akun guru lengkap, chat, papan peringkat antarsiswa, pembayaran.
 
-## 9. Pertanyaan terbuka (dijawab lewat wawancara pengembang)
-Lihat bagian "Wawancara kebutuhan Android" di [task.md](task.md) — spesifikasi HP siswa, akses internet di sekolah, cara pemasangan (PWA atau APK),
-siapa yang membagikan kode siswa, dan tingkat animasi yang diinginkan.
+## 9. Hasil wawancara pengembang (AI → Azkiah)
+Jawaban lengkap ada di [task.md](task.md) bagian F: HP campuran (dibuat ringan), kuota HP siswa, PWA dari Chrome, satu siswa satu HP,
+kode siswa = kelas + nomor absen, 3D tangga–dinding, backend Render, dan animasi dipertahankan.
+
+**Risiko & mitigasi kode kelas+absen:** kode mudah ditebak → hanya kode yang didaftarkan peneliti yang diterima, dibatasi 5 percobaan/menit,
+dan kode dinonaktifkan setelah penelitian selesai.

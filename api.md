@@ -4,7 +4,7 @@
 > Basis URL (rencana): `https://pythagoras-api.onrender.com/api` · Format: JSON (UTF-8) · Zona waktu: UTC (ISO 8601)
 
 ## 1. Autentikasi — kode siswa
-- Siswa masuk dengan **kode siswa** (mis. `PYT-01`) yang terdaftar di tabel `siswa`. Tidak ada password dan nama asli.
+- Siswa masuk dengan **kode siswa = kelas + nomor absen** (mis. `8A-07`) yang didaftarkan peneliti di tabel `siswa`. Tidak ada password dan nama asli.
 - Server membalas **token** (HMAC-SHA256, berlaku 30 hari). Token dikirim di header: `Authorization: Bearer <token>`.
 - Endpoint peneliti memakai header `X-Kunci-Peneliti` (rahasia di environment variable).
 
@@ -31,11 +31,11 @@
 ### `POST /masuk`
 Permintaan:
 ```json
-{ "kode": "PYT-01" }
+{ "kode": "8A-07" }
 ```
 Balasan 200:
 ```json
-{ "token": "eyJ...", "siswa": { "kode": "PYT-01", "kelas": "8", "kelompok": "aplikasi" } }
+{ "token": "eyJ...", "siswa": { "kode": "8A-07", "kelas": "8", "kelompok": "aplikasi" } }
 ```
 Kesalahan: `404` kode tidak terdaftar · `403` kode dinonaktifkan · `429` terlalu banyak percobaan (5/menit per IP).
 
@@ -71,7 +71,7 @@ Tingkat: 1 = angka langsung, 2 = dengan gambar, 3 = soal cerita (temuan IL4).
 
 ### `GET /peneliti/rekap`
 ```json
-{ "siswa": [ { "kode": "PYT-01", "kelompok": "aplikasi", "pre": 30, "post": 80, "n_gain": 0.71,
+{ "siswa": [ { "kode": "8A-07", "kelompok": "aplikasi", "pre": 30, "post": 80, "n_gain": 0.71,
   "IL": 4.3, "EL": 2.7, "GL": 7.5, "petunjuk_rata2": 1.4 } ] }
 ```
 
@@ -96,7 +96,7 @@ Pesan selalu dalam Bahasa Indonesia yang ramah siswa.
 const r = await fetch(`${API}/masuk`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ kode: 'PYT-01' }),
+  body: JSON.stringify({ kode: '8A-07' }),
 })
 const { token } = await r.json()
 ```

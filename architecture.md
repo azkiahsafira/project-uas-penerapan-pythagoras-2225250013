@@ -6,7 +6,7 @@
 
 ```mermaid
 flowchart LR
-  subgraph HP["📱 Smartphone Android (Chrome / PWA / APK)"]
+  subgraph HP["📱 Smartphone Android (Chrome / PWA)"]
     UI["React + Vite<br/>(JavaScript)"]
     TJS["three.js<br/>ilustrasi 3D (lazy)"]
     SW["Service Worker<br/>offline + antrean"]
@@ -29,7 +29,7 @@ flowchart LR
 | Lapisan | Teknologi | Tugas |
 | --- | --- | --- |
 | Tampilan | **React 19 + Vite** (JavaScript) | Menu Belajar, Latihan, Tes, Kalkulator; PWA bisa di-install di Android |
-| Ilustrasi 3D | **three.js** | Adegan konteks (tangga–dinding, layang-layang) yang bisa diputar; dimuat hanya saat dibuka |
+| Ilustrasi 3D | **three.js** | Adegan tangga–dinding yang bisa diputar; dimuat hanya saat dibuka |
 | Backend | **FastAPI** (Python) di **Render** (gratis) | Masuk dengan kode siswa, menilai tes di server, menyimpan hasil & aktivitas |
 | Basis data | **Supabase** (PostgreSQL) | Tabel `siswa`, `hasil`, `aktivitas` |
 | Analisis | **Python** (pustaka bawaan) | Rekap pre/post, N-gain, Leppink, jejak belajar |
@@ -43,7 +43,7 @@ sequenceDiagram
   participant A as Aplikasi React
   participant B as FastAPI
   participant D as Supabase
-  S->>A: ketik kode siswa (mis. PYT-01)
+  S->>A: ketik kode siswa (mis. 8A-07)
   A->>B: POST /api/masuk {kode}
   B->>D: cek tabel siswa (aktif?)
   D-->>B: data siswa
@@ -92,12 +92,12 @@ aplikasi-pythagoras/
 
 | Bagian | Sekarang (sudah berjalan) | Target |
 | --- | --- | --- |
-| Identitas | Nama + sekolah diketik siswa | **Kode siswa** dari tabel `siswa` |
+| Identitas | Nama + sekolah diketik siswa | **Kode siswa** kelas + absen (`8A-07`) dari tabel `siswa` |
 | Simpan data | Aplikasi langsung ke Supabase (kunci publik, insert-only) | Lewat **FastAPI**; Supabase hanya bisa ditulis server |
 | Penilaian | Di aplikasi (ikut dicek ulang di `analisis.py`) | Di **server** (FastAPI) |
-| 3D | Prisma CSS sederhana | **three.js**: tangga–dinding, layang-layang, segitiga putar |
-| Animasi | Banyak hiasan | **Mode Fokus** di layar belajar/soal (temuan EL3) |
-| Android | PWA (bisa di-install) | PWA + opsi APK (Capacitor) |
+| 3D | Prisma CSS sederhana | **three.js**: tangga–dinding |
+| Animasi | Banyak hiasan | **Tetap** (keputusan pengembang), disembunyikan saat tes |
+| Android | PWA (bisa di-install) | PWA dari Chrome (tanpa APK), satu siswa satu HP |
 
 ## 7. Keamanan & privasi
 - Tidak ada nama asli di basis data; hubungan kode ↔ nama hanya dipegang peneliti (di luar aplikasi).

@@ -29,12 +29,12 @@ Sebelum menyelesaikan pekerjaan: **`npm run lint` dan `npm run build` harus lolo
 1. **Satu konsep per layar**; jangan menumpuk teks panjang.
 2. **Teks, gambar, dan label sisi berdekatan** (hindari split-attention).
 3. Warna di layar soal hanya untuk membedakan **sisi diketahui** dan **sisi yang dicari**.
-4. Animasi hiasan **tidak boleh** muncul di layar soal/tes; hormati Mode Fokus dan `prefers-reduced-motion`.
+4. **Jangan mengubah animasi/hiasan yang sudah ada** (keputusan pemilik proyek). Animasi wajib tetap disembunyikan saat tes dan mematuhi tombol "Animasi: mati" & `prefers-reduced-motion`.
 5. Petunjuk bertingkat (5 tingkat) dan memudar; jangan langsung memberi jawaban kecuali setelah 2 kali salah.
 6. Saat tes (pre-test/post-test/kuesioner): tanpa umpan balik benar/salah, tanpa musik, tanpa hiasan, menu lain dikunci.
 
 ## 5. Privasi & keamanan (wajib)
-- **Jangan pernah** menyimpan atau menampilkan nama asli siswa di kode, data contoh, prompt, atau repositori. Gunakan kode siswa (`PYT-01`) atau "Siswa A".
+- **Jangan pernah** menyimpan atau menampilkan nama asli siswa di kode, data contoh, prompt, atau repositori. Gunakan kode siswa (`8A-07`) atau "Siswa A".
 - **Jangan** commit rahasia: `SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`, password database. Hanya *publishable key* yang boleh ada di `.env` publik.
 - CSV data asli (`analisis/*.csv` selain contoh) di-*ignore* git.
 - Saat menguji di komputer, **jangan menulis ke Supabase produksi**: jalankan frontend dengan `VITE_SUPABASE_URL=` kosong atau backend dengan basis data uji.

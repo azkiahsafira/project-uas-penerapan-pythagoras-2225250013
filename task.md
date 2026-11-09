@@ -6,7 +6,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] Wawancara kebutuhan siswa (pedoman + data simulasi S01, kelas IX-B)
 - [x] Peta temuan IL/EL/GL → kebutuhan fitur ([prd.md](prd.md) §5)
 - [x] Keputusan teknis dari catatan dosen (FastAPI, Supabase, kode siswa, Bahasa Indonesia, three.js)
-- [ ] **Wawancara kebutuhan Android dengan pengembang** (lihat bagian F) — dijawab Azkiah
+- [x] **Wawancara kebutuhan Android dengan pengembang** (lihat bagian F) — dijawab Azkiah
 - [ ] Wawancara siswa sungguhan (minimal 2 informan) + persetujuan orang tua & siswa
 
 ## B. Design
@@ -30,14 +30,13 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [ ] 🔁 Login **kode siswa** (ganti nama + sekolah)
 - [ ] 🔁 Backend **FastAPI** (Python) di Render: `/masuk`, `/aktivitas`, `/hasil`, `/sehat`
 - [ ] 🔁 Penilaian tes pindah ke server; Supabase hanya ditulis backend
-- [ ] **three.js**: adegan tangga–dinding & layang-layang yang bisa diputar (lazy load)
+- [ ] **three.js**: adegan tangga–dinding yang bisa diputar (lazy load)
 - [ ] Latihan **identifikasi sisi miring** pada segitiga yang diputar (IL1)
 - [ ] Penanda **Diketahui/Ditanya** pada soal cerita (EL1, EL5)
 - [ ] **Petunjuk bertingkat** 5 tahap + fading (GL3)
 - [ ] Pertanyaan **refleksi** "Mengapa…?" (GL4) & **cek kewajaran** (GL2)
 - [ ] **Cek prasyarat** kuadrat/akar di awal (IL3)
-- [ ] 🔁 **Mode Fokus**: hiasan & animasi hanya di beranda (EL3, DS03)
-- [ ] Opsi paket **APK** (Capacitor)
+- [x] Animasi & hiasan **dipertahankan apa adanya** (keputusan pengembang); tetap disembunyikan saat tes
 
 ## D. Implementation
 - [ ] Uji coba di 2–3 HP Android (murah & menengah)
@@ -55,11 +54,11 @@ Pertanyaan yang diajukan AI kepada Azkiah sebelum coding (jawaban dicatat di sin
 
 | No | Pertanyaan | Jawaban |
 | --- | --- | --- |
-| 1 | HP Android seperti apa yang dipakai siswa (merek/RAM/ukuran layar)? | _(menunggu)_ |
-| 2 | Bagaimana akses internet saat pembelajaran (Wi-Fi sekolah, kuota, tidak ada)? | _(menunggu)_ |
-| 3 | Aplikasi dipasang sebagai PWA (dari Chrome) atau file APK? | _(menunggu)_ |
-| 4 | Seberapa banyak animasi/hiasan yang diinginkan, mengingat temuan EL3? | _(menunggu)_ |
-| 5 | Siapa yang membagikan kode siswa, dan formatnya? | _(menunggu)_ |
-| 6 | Di mana ilustrasi 3D three.js paling dibutuhkan? | _(menunggu)_ |
-| 7 | HP dipakai sendiri atau bergantian? | _(menunggu)_ |
-| 8 | Backend gratis mana yang dipilih (Render / lainnya)? | _(menunggu)_ |
+| 1 | HP Android seperti apa yang dipakai siswa (merek/RAM/ukuran layar)? | Belum dipastikan → aplikasi dibuat ringan untuk HP campuran |
+| 2 | Bagaimana akses internet saat pembelajaran (Wi-Fi sekolah, kuota, tidak ada)? | **Kuota HP siswa** → hemat data, bisa offline setelah dibuka sekali |
+| 3 | Aplikasi dipasang sebagai PWA (dari Chrome) atau file APK? | **PWA dari Chrome** (tanpa APK) |
+| 4 | Seberapa banyak animasi/hiasan yang diinginkan, mengingat temuan EL3? | **Animasi tetap seperti sekarang, tidak diubah** (keputusan pengembang) |
+| 5 | Siapa yang membagikan kode siswa, dan formatnya? | **Kelas + nomor absen**, mis. `8A-07`, didaftarkan peneliti |
+| 6 | Di mana ilustrasi 3D three.js paling dibutuhkan? | **Tangga & dinding** (soal tangga dari wawancara) |
+| 7 | HP dipakai sendiri atau bergantian? | **Satu siswa satu HP** → cukup masuk sekali |
+| 8 | Backend gratis mana yang dipilih (Render / lainnya)? | **Render** (free web service) |
