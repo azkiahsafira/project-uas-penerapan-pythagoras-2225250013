@@ -39,7 +39,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] **Petunjuk bertingkat** 5 tahap + fading: bantuan langkah disembunyikan setelah 3 soal benar mandiri, petunjuk tinggal 3 tahap (GL3)
 - [x] Pertanyaan **refleksi** "Mengapa…?" setiap soal ke-3 (GL4) & **cek kewajaran** sebelum dinilai (GL2) — `src/bantuan.js`
 - [x] **Cek prasyarat** kuadrat/akar (4 soal) sebelum Sesi 1, skor < 3 diarahkan ke Sesi 1 (IL3) — `src/Prasyarat.jsx`
-- [ ] Jalankan perubahan kolom `aktivitas` (`petunjuk`, `catatan`, jenis `prasyarat`/`refleksi`) di Supabase SQL Editor
+- [x] Jalankan perubahan kolom `aktivitas` (`petunjuk`, `catatan`, jenis `prasyarat`/`refleksi`) di Supabase SQL Editor
 - [x] Animasi & hiasan **dipertahankan apa adanya** (keputusan pengembang); tetap disembunyikan saat tes
 
 ## D. Implementation
