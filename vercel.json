@@ -1,8 +1,7 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "routes": [
     {
-      "src": "/sw\.js",
+      "src": "/sw[.]js",
       "has": [{ "type": "host", "value": "penerapan-pythagoras.vercel.app" }],
       "dest": "/sw-mati.js",
       "headers": { "Cache-Control": "no-cache" }
@@ -12,7 +11,6 @@
       "has": [{ "type": "host", "value": "penerapan-pythagoras.vercel.app" }],
       "status": 404,
       "dest": "/link-mati.html"
-    },
-    { "handle": "filesystem" }
+    }
   ]
 }
