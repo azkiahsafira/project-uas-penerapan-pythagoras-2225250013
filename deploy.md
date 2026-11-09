@@ -7,6 +7,8 @@
 - Variabel build: `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` (publishable key, aman publik) di file `.env`.
 - Service worker (`public/sw.js`) selalu mengecek versi terbaru; naikkan `VERSI` bila strategi cache berubah.
 - Bila tampilan belum berubah setelah push: tunggu 1–3 menit, lalu **Ctrl + Shift + R** (laptop) atau tutup-buka aplikasi (HP).
+- Sejak cache `pythagoras-v4`, aplikasi mengecek versi baru setiap dibuka lagi (dan tiap 15 menit) lalu menampilkan tombol
+  **"Perbarui sekarang"** di atas layar (tidak muncul saat tes).
 
 ## 2. Basis data — Supabase
 | Hal | Keterangan |

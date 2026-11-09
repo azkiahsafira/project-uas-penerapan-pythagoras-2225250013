@@ -3,7 +3,7 @@ import { bangunkanServer } from './api.js'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
 import { HewanHidup } from './Hewan.jsx'
-import { PemberitahuanOffline, TombolInstall } from './Install.jsx'
+import { PemberitahuanOffline, PemberitahuanVersiBaru, TombolInstall } from './Install.jsx'
 import { hentikan } from './suara.js'
 import { LatarHalaman, LatarHeader } from './Hiasan.jsx'
 import Ikon from './Ikon.jsx'
@@ -141,6 +141,7 @@ function App() {
         </>
       )}
       <PemberitahuanOffline />
+      <PemberitahuanVersiBaru sembunyikan={fokusTes} />
       {/* layar perayaan penuh saat jawaban benar (tidak pernah dipicu di menu Tes) */}
       <LayarBenar />
       <LayarSemangat />

@@ -8,7 +8,7 @@
 // - Permintaan ke Supabase (database) TIDAK di-cache. Bila offline, hasil tes
 //   tetap tersimpan di perangkat dan dikirim ulang otomatis oleh aplikasi.
 
-const VERSI = 'pythagoras-v3'
+const VERSI = 'pythagoras-v4'
 const INTI = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './favicon.svg']
 
 self.addEventListener('install', (event) => {
@@ -33,6 +33,9 @@ self.addEventListener('fetch', (event) => {
 
   // database & API: selalu langsung ke internet
   if (url.hostname.endsWith('supabase.co')) return
+
+  // pengecekan versi baru (Install.jsx): selalu langsung ke internet, tidak disimpan
+  if (url.searchParams.has('cek-versi')) return
 
   // halaman bukti percakapan AI bukan bagian aplikasi: biarkan browser memuatnya biasa
   if (url.pathname.includes('/bukti-ai/')) return

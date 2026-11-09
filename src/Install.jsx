@@ -93,3 +93,46 @@ export function PemberitahuanOffline() {
     </p>
   )
 }
+
+// Pemberitahuan versi baru. Aplikasi yang di-install di HP sering hanya "disembunyikan", bukan ditutup,
+// sehingga tetap memakai versi lama. Saat aplikasi dibuka lagi (dan tiap 15 menit), index.html terbaru
+// dicek; bila nama berkas JavaScript-nya berbeda, muncul tombol "Perbarui sekarang".
+// Tidak muncul saat tes agar jawaban yang sedang dikerjakan tidak hilang.
+const skripSekarang = () => document.querySelector('script[type="module"][src*="assets/index-"]')?.getAttribute('src')?.split('/').pop()
+
+export function PemberitahuanVersiBaru({ sembunyikan = false }) {
+  const [ada, setAda] = useState(false)
+
+  useEffect(() => {
+    if (!import.meta.env.PROD) return
+    const cek = async () => {
+      try {
+        const res = await fetch(`./index.html?cek-versi=${Date.now()}`, { cache: 'no-store' })
+        const teks = await res.text()
+        const terbaru = teks.match(/assets\/(index-[^"']+\.js)/)?.[1]
+        const sekarang = skripSekarang()
+        if (terbaru && sekarang && terbaru !== sekarang) setAda(true)
+      } catch {
+        // offline: coba lagi nanti
+      }
+    }
+    const saatTerlihat = () => document.visibilityState === 'visible' && cek()
+    cek()
+    const jeda = setInterval(cek, 15 * 60 * 1000)
+    document.addEventListener('visibilitychange', saatTerlihat)
+    return () => {
+      clearInterval(jeda)
+      document.removeEventListener('visibilitychange', saatTerlihat)
+    }
+  }, [])
+
+  if (!ada || sembunyikan) return null
+  return (
+    <div className="versi-baru" role="status">
+      <span>✨ Versi baru aplikasi sudah tersedia.</span>
+      <button type="button" className="hitung kecil" onClick={() => window.location.reload()}>
+        Perbarui sekarang
+      </button>
+    </div>
+  )
+}

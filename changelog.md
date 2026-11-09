@@ -2,6 +2,9 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.3.1] · 10 November 2026
+- Pemberitahuan **"Versi baru aplikasi sudah tersedia → Perbarui sekarang"** untuk aplikasi yang di-install di HP; cache service worker v4.
+
 ## [2.3] · 10 November 2026 — Soal disamakan dengan materi PDF
 - Belajar mengikuti urutan & contoh PDF: kuadrat → akar → tabel kuadrat → segitiga siku-siku → sisi miring pada segitiga diputar;
   memilih rumus; Strategi 5 Langkah; panjang tangga 3–4–5, layang-layang 20–21–29, jarak terpendek 15–20–25, diagonal layar 21–28–35, tripel Pythagoras.

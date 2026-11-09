@@ -6365,3 +6365,26 @@ main > * {
   font-size: 0.85rem;
   font-weight: 800;
 }
+
+/* Pemberitahuan versi baru: menempel di atas layar agar terlihat walau halaman sudah digulir */
+.versi-baru {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 1000;
+  translate: -50% 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 2px solid var(--accent);
+  box-shadow: var(--bayangan);
+  font-weight: 700;
+  pointer-events: auto;
+}
