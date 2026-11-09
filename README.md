@@ -24,6 +24,19 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
 > Halaman repository ini hanya berisi kode. Warna, animasi, dan karakter aplikasinya terlihat di link di atas (GitHub Pages).
 
+## Dokumen Perancangan (revisi dosen)
+
+Dokumen perancangan versi 2, disusun dari hasil wawancara kebutuhan siswa (tahap *Analysis* ADDIE):
+
+| Dokumen | Isi |
+| --- | --- |
+| [prd.md](prd.md) | Kebutuhan produk: tujuan literasi matematis, temuan wawancara → fitur, MVP |
+| [architecture.md](architecture.md) | Arsitektur: React + three.js (JavaScript), FastAPI (Python) di Render, Supabase |
+| [design.md](design.md) | Desain antarmuka Android, Mode Fokus, warna bermakna, petunjuk bertingkat, 3D |
+| [api.md](api.md) | Rancangan API backend: masuk dengan kode siswa, hasil, aktivitas, rekap peneliti |
+| [task.md](task.md) | Daftar tugas per tahap ADDIE + wawancara kebutuhan Android |
+| [agents.md](agents.md) | Aturan untuk AI agent/asisten koding di proyek ini |
+
 ## Install sebagai Aplikasi (Android, Windows, iPhone)
 
 Aplikasi ini adalah **PWA (Progressive Web App)**: bisa dipasang seperti aplikasi biasa (punya ikon sendiri) dan **tetap bisa dibuka tanpa internet** setelah dibuka sekali.
