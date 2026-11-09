@@ -64,4 +64,4 @@ Pertanyaan yang diajukan AI kepada Azkiah sebelum coding (jawaban dicatat di sin
 | 5 | Siapa yang membagikan kode siswa, dan formatnya? | **Kelas + nomor absen**, mis. `8A-07`, didaftarkan peneliti |
 | 6 | Di mana ilustrasi 3D three.js paling dibutuhkan? | **Tangga & dinding** (soal tangga dari wawancara) |
 | 7 | HP dipakai sendiri atau bergantian? | **Satu siswa satu HP** → cukup masuk sekali |
-| 8 | Backend gratis mana yang dipilih (Render / lainnya)? | **Render** (free web service) |
+| 8 | Backend gratis mana yang dipilih (Render / lainnya)? | **Render** (free web service) → akhirnya **Vercel** karena Render meminta kartu |
