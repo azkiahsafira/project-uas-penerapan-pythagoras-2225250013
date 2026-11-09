@@ -55,7 +55,7 @@ def test_sehat():
 
 
 def test_masuk_berhasil_dan_kode_dirapikan():
-    r = klien.post("/api/masuk", json={"kode": " 8a-01 "})
+    r = klien.post("/api/masuk", json={"kode": " 8a-1 "})
     assert r.status_code == 200
     assert r.json()["siswa"]["kode"] == "8A-01"
 

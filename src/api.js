@@ -8,10 +8,14 @@ export const apiAktif = API !== ''
 const KUNCI_TOKEN = 'pythagoras-token'
 export const POLA_KODE = /^[0-9]{1,2}[A-Z]?-[0-9]{1,3}$/ // contoh: 8A-07
 
-export const rapikanKode = (kode) =>
-  String(kode || '')
+// Spasi dibuang, huruf besar, nomor absen 2 digit: '8a-1' -> '8A-01' (sama dengan kode yang didaftarkan)
+export const rapikanKode = (kode) => {
+  const k = String(kode || '')
     .replace(/\s+/g, '')
     .toUpperCase()
+  const m = k.match(/^([0-9]{1,2}[A-Z]?)-([0-9]{1,3})$/)
+  return m ? `${m[1]}-${String(Number(m[2])).padStart(2, '0')}` : k
+}
 
 export function tokenSaya() {
   try {

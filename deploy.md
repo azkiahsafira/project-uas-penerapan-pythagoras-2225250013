@@ -32,7 +32,8 @@
 Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap tersedia).
 
 ## 4. Sebelum penelitian dimulai (checklist)
-- [ ] Daftarkan kode siswa (kelas + nomor absen, mis. `8A-07`); kode uji `8Z-99` sudah dinonaktifkan
+- [x] Daftarkan kode siswa: `8A-01` s.d. `8F-36` (216 kode, kelompok "Belajar dengan aplikasi"); kode uji `8Z-99` sudah dinonaktifkan.
+  Siswa boleh mengetik `8a-1`; aplikasi & backend merapikannya menjadi `8A-01`.
 - [ ] Hapus semua data uji di tabel `hasil` dan `aktivitas`; pastikan **0 baris**
 - [ ] Di HP/laptop yang dipakai mencoba: klik "Ganti nama" / keluar dari kode uji
 - [ ] Coba buka aplikasi di 1 HP siswa: bisa di-install, materi terbuka, tidak ada geser ke samping

@@ -73,7 +73,10 @@ async def tampilkan_galat(_request, exc):
 
 
 def rapikan_kode(kode: str) -> str:
-    return re.sub(r"\s+", "", kode or "").upper()
+    """Spasi dibuang, huruf besar, nomor absen 2 digit: '8a-1' -> '8A-01' (sama dengan kode yang didaftarkan)."""
+    k = re.sub(r"\s+", "", kode or "").upper()
+    m = re.match(r"^([0-9]{1,2}[A-Z]?)-([0-9]{1,3})$", k)
+    return f"{m.group(1)}-{int(m.group(2)):02d}" if m else k
 
 
 _percobaan = defaultdict(deque)

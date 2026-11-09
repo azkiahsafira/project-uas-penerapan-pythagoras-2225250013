@@ -2,6 +2,12 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.2] · 10 November 2026 — Aplikasi tersambung ke backend Python
+- Kode siswa `8A-01` s.d. `8F-36` (216 kode) didaftarkan di tabel `siswa`; hanya kode terdaftar yang bisa masuk.
+- Aplikasi memakai backend FastAPI di Vercel (`VITE_API_URL`): login dicek server, nilai tes dihitung di server.
+- Kode dirapikan otomatis: `8a-1` → `8A-01`.
+- Dokumen diselaraskan (backend Vercel), 24 screenshot, bukti percakapan AI diperbarui.
+
 ## [2.1] · 10 November 2026 — Fitur dari temuan wawancara
 - **Cek prasyarat** kuadrat & akar (4 soal) sebelum Sesi 1; skor < 3 diarahkan ke bagian kuadrat & akar Sesi 1 (IL3).
 - Latihan per soal: **1) Diketahui & Ditanya** (ketuk angka di soal, tentukan sisinya) → **2) tunjuk sisi miring** pada segitiga
