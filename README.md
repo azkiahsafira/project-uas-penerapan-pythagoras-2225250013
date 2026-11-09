@@ -81,9 +81,10 @@ Dari rumus tersebut diperoleh tiga bentuk:
 ## Fitur
 
 - **Belajar 3 sesi**: materi bertahap yang harus diikuti berurutan.
-  - Sesi 1: mengenal segitiga siku-siku, kuadrat, dan akar kuadrat.
-  - Sesi 2: menemukan dan memakai teorema Pythagoras.
-  - Sesi 3: Pythagoras dalam kehidupan sehari-hari (soal cerita).
+  - Urutan & contoh sama dengan [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf).
+  - Sesi 1 (PDF Bagian 1–2): kuadrat, akar kuadrat, tabel kuadrat, segitiga siku-siku, dan sisi miring pada segitiga yang diputar.
+  - Sesi 2 (PDF Bagian 3): pola luas 9 + 16 = 25, teorema Pythagoras, dan memilih rumus (tambah/kurang).
+  - Sesi 3 (PDF Bagian 4–5): Strategi 5 Langkah, panjang tangga, tinggi layang-layang, jarak terpendek, diagonal layar, tripel Pythagoras, refleksi.
   - Tombol **🔊 Bacakan** membacakan judul, penjelasan, rumus (simbol dibaca sebagai kata, misalnya “c kuadrat sama dengan…”), dan pertanyaan; bagian yang sedang dibacakan disorot seperti stabilo. Soal di Latihan juga bisa dibacakan. Memakai suara bawaan perangkat (Web Speech API), gratis.
   - Setiap langkah punya cek pemahaman: petunjuk muncul jika salah, dan jawaban dibuka setelah 2 kali salah agar siswa tidak buntu. Progres sesi tersimpan di perangkat.
 - **Fitur dari temuan wawancara** (lihat [prd.md](prd.md) §5):
@@ -103,8 +104,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Gambar segitiga**: ukuran segitiga menyesuaikan input, dan sisi yang dicari diberi warna.
 - **Deteksi tripel Pythagoras**: memberi tahu jika ketiga sisi bilangan bulat, misalnya (3, 4, 5).
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
-- **Contoh soal sehari-hari**: tangga bersandar, diagonal layar TV, tinggi layang-layang, dan jalan pintas di lapangan.
-- **Latihan soal = Pertemuan 4 (implementasi)**: soal cerita sehari-hari (tangga, layang-layang, peta, kapal, bayangan pohon, layar TV, jalan landai kursi roda, dan lain-lain) dibuat acak, jawaban diperiksa otomatis, ada skor, target minimal 10 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
+- **Contoh soal sehari-hari** (Kalkulator, sama dengan Contoh 1–3 materi PDF): panjang tangga, tinggi layang-layang, jarak terpendek, dan diagonal layar.
+- **Latihan soal = Pertemuan 4 (implementasi)**: berjenjang seperti Latihan Berjenjang materi PDF: soal 1–3 angka langsung, soal 4–6 dengan gambar yang diputar, soal 7 dst. soal cerita (tangga, layang-layang, jarak berjalan, perahu, diagonal layar, kawat tiang bendera, diagonal taman); angka dibuat acak dari tripel Pythagoras yang tidak dipakai di pre/post-test, jawaban diperiksa otomatis, ada skor, target minimal 10 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
 - **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
 - **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus 8 hewan yang tersebar di halaman: anak ayam & kelinci hinggap di kartu sesi, anjing di kartu kalkulator, kucing di samping judul contoh soal, katak di kartu latihan, panda & beruang mengintip dari pinggir layar (layar lebar), dan bebek yang sesekali berjalan melintas di bawah layar. Setiap karakter dan hewan punya beberapa kalimat yang bergantian, dan balon kata di header berganti sendiri sesuai menu (diawali salam sesuai jam). Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
 - **Halaman sekolah di header**: Raka, Nisa, dan Siku berdiri di rumput halaman sekolah (tidak melayang), di depan gedung SMP dengan bendera merah putih yang berkibar, jam menara yang berputar, siswa yang muncul dan melambai dari jendela, pohon yang bergoyang, serta bus sekolah yang lewat di jalan. Latar halaman juga dihiasi kupu-kupu yang terbang, balon tersenyum yang naik, pesawat kertas, dan awan tersenyum. Semuanya disembunyikan saat tes dan berhenti bila animasi dimatikan.
@@ -128,7 +129,7 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | ----- | -------- | --------------------- |
 | Intrinsic load | Dikelola | Materi dipecah jadi langkah kecil (satu konsep per layar); prasyarat kuadrat dan akar diajarkan dulu di Sesi 1; sesi berikutnya terkunci sampai sesi sebelumnya selesai. |
 | Extraneous load | Ditekan | Satu layar hanya berisi teks singkat, satu gambar, dan satu pertanyaan; tanpa animasi atau hiasan; di HP gambar ditaruh di atas teks agar tidak perlu scroll bolak-balik (*split-attention*); tombol **Bacakan** menyajikan penjelasan secara lisan sementara mata fokus pada gambar (*prinsip modalitas*). |
-| Germane load | Dioptimalkan | Contoh lengkap (*worked example*) diikuti contoh setengah jadi (*faded example*); cek pemahaman dengan umpan balik dan petunjuk di setiap langkah; strategi 4 langkah untuk soal cerita; refleksi di akhir. |
+| Germane load | Dioptimalkan | Contoh lengkap (*worked example*) diikuti contoh setengah jadi (*faded example*); cek pemahaman dengan umpan balik dan petunjuk di setiap langkah; Strategi 5 Langkah untuk soal cerita; refleksi di akhir. |
 
 ## Alur Penelitian
 

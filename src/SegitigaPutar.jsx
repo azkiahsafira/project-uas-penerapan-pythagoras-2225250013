@@ -4,7 +4,16 @@ import { bulat } from './pythagoras.js'
 // menentukan sisi miring bila segitiga tidak dalam posisi biasa).
 // - mode tunjuk (onPilih ada): sisi bisa diketuk, label panjang disembunyikan
 // - setelah itu: label a, b, c tampil seperti gambar biasa (biru = diketahui, merah muda = dicari)
-export default function SegitigaPutar({ sisi, cari, orientasi, onPilih, pilihan, sembunyikan = false, tampilLabel = true }) {
+export default function SegitigaPutar({
+  sisi,
+  cari,
+  orientasi,
+  onPilih,
+  pilihan,
+  sembunyikan = false,
+  tampilLabel = true,
+  huruf = null,
+}) {
   const W = 300
   const H = 240
   const pad = 44
@@ -50,6 +59,7 @@ export default function SegitigaPutar({ sisi, cari, orientasi, onPilih, pilihan,
     return [m[0] + (d[0] / pj) * 22, m[1] + (d[1] / pj) * 22]
   }
   const label = (k) => {
+    if (huruf) return huruf[k] // hanya nama sisi (mis. p, q, r), tanpa panjang
     if (sembunyikan && k === cari) return `${k} = ?`
     return `${k} = ${bulat(sisi[k])}`
   }

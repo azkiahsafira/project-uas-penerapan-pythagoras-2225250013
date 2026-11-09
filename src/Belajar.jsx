@@ -6,6 +6,7 @@ import Maskot from './Maskot.jsx'
 import FormKode from './Masuk.jsx'
 import CekPrasyarat from './Prasyarat.jsx'
 import Segitiga from './Segitiga.jsx'
+import SegitigaPutar from './SegitigaPutar.jsx'
 import { BATAS_SIAP, JUMLAH_PRASYARAT, bacaPrasyarat } from './bantuan.js'
 import { rayakan, semangati } from './perayaan.js'
 import { SESI } from './materi.js'
@@ -76,6 +77,7 @@ function PersegiPythagoras() {
 function Visual({ visual }) {
   if (!visual) return null
   if (visual.jenis === 'persegi') return <PersegiPythagoras />
+  if (visual.jenis === 'putar') return <SegitigaPutar sisi={visual.sisi} orientasi={visual.orientasi} huruf={visual.label} />
   if (visual.jenis === 'tangga3d') {
     const { a, b, c } = visual.sisi
     const datar = <Segitiga sisi={visual.sisi} cari={visual.cari} />

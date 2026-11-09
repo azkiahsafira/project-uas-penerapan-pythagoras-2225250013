@@ -30,61 +30,93 @@ import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.
 export const PERTEMUAN_LATIHAN = 4
 export const TARGET_SOAL = 10
 
-// Tripel Pythagoras dasar (a, b, c) agar jawaban selalu bilangan bulat
+// Tripel Pythagoras (a, b, c) agar jawaban selalu bilangan bulat. Diambil dari materi PDF dan kelipatannya;
+// sengaja TIDAK memakai tripel butir pre-test/post-test (5-12-13, 6-8-10, 7-24-25, 8-15-17, 9-12-15,
+// 12-16-20, 27-36-45, 30-40-50) agar latihan pertemuan 4 tidak membocorkan soal tes (konten.md §5).
 const TRIPEL = [
   [3, 4, 5],
-  [6, 8, 10],
-  [5, 12, 13],
-  [8, 15, 17],
-  [9, 12, 15],
-  [7, 24, 25],
-  [12, 16, 20],
   [15, 20, 25],
   [20, 21, 29],
+  [10, 24, 26],
+  [21, 28, 35],
+  [16, 30, 34],
+  [14, 48, 50],
   [9, 40, 41],
+  [18, 24, 30],
+  [24, 32, 40],
 ]
 
-// Cerita soal sehari-hari untuk tiap sisi yang dicari
-const CERITA = {
+// Latihan berjenjang seperti materi PDF (docs/materi): tingkat 1 angka langsung (soal 1–3),
+// tingkat 2 dengan gambar yang diputar (soal 4–6), tingkat 3 soal cerita (soal 7 dst.).
+const NAMA_TINGKAT = { 1: 'Angka langsung', 2: 'Dengan gambar', 3: 'Soal cerita' }
+const tingkatSoal = (nomor) => (nomor <= 3 ? 1 : nomor <= 6 ? 2 : 3)
+
+const SOAL_ANGKA = {
+  c: [(s) => `Segitiga siku-siku dengan a = ${s.a} cm dan b = ${s.b} cm. Berapa cm panjang c?`],
+  a: [(s) => `Segitiga siku-siku dengan c = ${s.c} cm dan b = ${s.b} cm. Berapa cm panjang a?`],
+  b: [(s) => `Segitiga siku-siku dengan c = ${s.c} cm dan a = ${s.a} cm. Berapa cm panjang b?`],
+}
+
+const SOAL_GAMBAR = {
   c: [
-    (s) => `Layar laptop lebarnya ${s.a} cm dan tingginya ${s.b} cm. Berapa cm panjang diagonal layar?`,
-    (s) => `Rina berjalan ${s.a} m ke timur, lalu ${s.b} m ke utara. Berapa meter jarak terpendek Rina dari titik awal?`,
     (s) =>
-      `Taman berbentuk persegi panjang berukuran ${s.a} m × ${s.b} m. Berapa meter panjang jalan setapak yang memotong taman secara diagonal?`,
-    (s) =>
-      `Pada peta, rumah Dimas ${s.a} km di sebelah barat sekolah, dan pasar ${s.b} km di sebelah utara rumah Dimas. Berapa km jarak lurus dari sekolah ke pasar?`,
-    (s) => `Sebuah kapal berlayar ${s.a} km ke selatan, lalu ${s.b} km ke barat. Berapa km jarak kapal dari pelabuhan asalnya?`,
-    (s) =>
-      `Bingkai foto berukuran ${s.a} cm × ${s.b} cm akan diberi pita lurus dari sudut ke sudut yang berseberangan. Berapa cm panjang pita yang dibutuhkan?`,
-  ],
-  b: [
-    (s) =>
-      `Tangga sepanjang ${s.c} m bersandar di dinding. Kaki tangga berjarak ${s.a} m dari dinding. Berapa meter tinggi dinding yang dicapai ujung tangga?`,
-    (s) =>
-      `Benang layang-layang yang terulur sepanjang ${s.c} m. Jarak mendatar anak ke titik tepat di bawah layang-layang ${s.a} m. Berapa meter tinggi layang-layang?`,
-    (s) =>
-      `Bayangan sebuah pohon panjangnya ${s.a} m. Jarak dari ujung bayangan ke puncak pohon ${s.c} m. Berapa meter tinggi pohon itu?`,
-    (s) => `Layar televisi diagonalnya ${s.c} inci dan lebarnya ${s.a} inci. Berapa inci tinggi layar televisi itu?`,
+      `Perhatikan segitiga siku-siku pada gambar (posisinya diputar). Dua sisi yang mengapit sudut siku-siku panjangnya ${s.a} cm dan ${s.b} cm. Tentukan dulu sisi miringnya, lalu hitung panjangnya.`,
   ],
   a: [
     (s) =>
-      `Tiang bendera setinggi ${s.b} m ditopang kawat sepanjang ${s.c} m dari puncak tiang ke tanah. Berapa meter jarak ujung kawat di tanah ke kaki tiang?`,
+      `Perhatikan segitiga siku-siku pada gambar (posisinya diputar). Sisi miringnya ${s.c} cm dan salah satu sisi siku-sikunya ${s.b} cm. Hitung panjang sisi yang ditandai "?".`,
+  ],
+  b: [
     (s) =>
-      `Papan seluncur sepanjang ${s.c} m dipasang dari ketinggian ${s.b} m. Berapa meter jarak mendatar dari bawah tangga ke ujung seluncuran?`,
-    (s) =>
-      `Jalan landai untuk kursi roda panjangnya ${s.c} m dan naik setinggi ${s.b} m. Berapa meter jarak mendatar jalan landai itu?`,
+      `Perhatikan segitiga siku-siku pada gambar (posisinya diputar). Sisi miringnya ${s.c} cm dan salah satu sisi siku-sikunya ${s.a} cm. Hitung panjang sisi yang ditandai "?".`,
   ],
 }
 
+// Konteks soal cerita sama dengan materi PDF: tangga–dinding, benang layang-layang, diagonal layar,
+// jarak berjalan, perahu, kawat penopang tiang bendera, dan diagonal taman.
+// a = sisi mendatar, b = sisi tegak, c = sisi miring.
+const CERITA = {
+  c: [
+    (s) =>
+      `Sebuah tangga disandarkan pada dinding. Jarak kaki tangga ke dinding ${s.a} m, dan ujung atas tangga menyentuh dinding pada ketinggian ${s.b} m. Berapa meter panjang tangga?`,
+    (s) => `Andi berjalan ${s.a} m ke timur, lalu ${s.b} m ke utara. Berapa meter jarak terpendek Andi dari titik awal?`,
+    (s) => `Layar laptop berukuran lebar ${s.a} cm dan tinggi ${s.b} cm. Berapa cm panjang diagonal layarnya?`,
+    (s) => `Sebuah perahu berlayar ${s.b} km ke utara, lalu ${s.a} km ke barat. Berapa km jarak perahu dari titik berangkat?`,
+    (s) =>
+      `Taman berbentuk persegi panjang berukuran ${s.a} m × ${s.b} m. Rina berjalan memotong diagonal taman. Berapa meter panjang jalannya?`,
+  ],
+  b: [
+    (s) =>
+      `Tangga sepanjang ${s.c} m disandarkan pada dinding. Jarak kaki tangga ke dinding ${s.a} m. Berapa meter tinggi dinding yang dicapai ujung tangga?`,
+    (s) =>
+      `Benang layang-layang yang terulur panjangnya ${s.c} m. Jarak mendatar dari Dimas ke titik tepat di bawah layang-layang ${s.a} m. Berapa meter tinggi layang-layang?`,
+    (s) => `Layar televisi diagonalnya ${s.c} inci dan lebarnya ${s.a} inci. Berapa inci tinggi layar televisi itu?`,
+    (s) =>
+      `Kawat sepanjang ${s.c} m dipasang dari puncak tiang bendera ke tanah. Ujung kawat di tanah berjarak ${s.a} m dari kaki tiang. Berapa meter tinggi tiang bendera?`,
+  ],
+  a: [
+    (s) =>
+      `Sebuah tiang bendera setinggi ${s.b} m ditopang kawat dari puncak tiang ke tanah. Panjang kawat ${s.c} m. Berapa meter jarak ujung kawat di tanah ke kaki tiang?`,
+    (s) =>
+      `Tangga sepanjang ${s.c} m disandarkan pada dinding dan ujungnya menyentuh dinding pada ketinggian ${s.b} m. Berapa meter jarak kaki tangga ke dinding?`,
+    (s) =>
+      `Benang layang-layang yang terulur panjangnya ${s.c} m dan layang-layang terbang setinggi ${s.b} m. Berapa meter jarak mendatar dari pemegang benang ke titik tepat di bawah layang-layang?`,
+  ],
+}
+
+const BANK = { 1: SOAL_ANGKA, 2: SOAL_GAMBAR, 3: CERITA }
+
 const acak = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-function buatSoal(sebelumnya) {
+// nomor = nomor soal (1, 2, 3, ...) untuk menentukan tingkat
+function buatSoal(sebelumnya, nomor = 1) {
+  const tingkat = tingkatSoal(nomor)
   for (;;) {
     const [a, b, c] = acak(TRIPEL)
     const sisi = { a, b, c }
     const cari = acak(['a', 'b', 'c'])
-    const cerita = acak(CERITA[cari])(sisi)
-    if (cerita !== sebelumnya?.cerita) return { sisi, cari, cerita, orientasi: buatOrientasi() }
+    const cerita = acak(BANK[tingkat][cari])(sisi)
+    if (cerita !== sebelumnya?.cerita) return { sisi, cari, cerita, tingkat, orientasi: buatOrientasi() }
   }
 }
 
@@ -271,6 +303,7 @@ export default function Latihan() {
       dibacakan: catatan.current.dibacakan,
       petunjuk: k.petunjuk,
       catatan: [
+        `tingkat:${soal.tingkat}`,
         `bantuan:${penuh ? 'penuh' : 'pudar'}`,
         `diketahui_salah:${k.salahDiketahui}`,
         `miring_salah:${k.salahMiring.length}`,
@@ -338,7 +371,7 @@ export default function Latihan() {
     rekamRefleksi()
     setRefleksi(null)
     setMintaBantuan(false)
-    setSoal(buatSoal(soal))
+    setSoal(buatSoal(soal, skor.total + 1))
     setK(awalSoal(lancar < BATAS_LANCAR))
     setJawaban('')
     setStatus(null)
@@ -394,6 +427,10 @@ export default function Latihan() {
             {beruntun >= 5 && ' Luar biasa!'}
           </p>
         )}
+
+        <p className="tingkat-soal">
+          Tingkat {soal.tingkat} · {NAMA_TINGKAT[soal.tingkat]}
+        </p>
 
         {/* F6 fading: bantuan langkah disembunyikan bila siswa sudah lancar, tetapi bisa dibuka lagi */}
         {!penuh && !selesai && (

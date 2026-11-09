@@ -25,7 +25,8 @@ export const JUMLAH_PRASYARAT = 4
 export const BATAS_SIAP = 3 // minimal benar agar dianggap siap
 
 export function buatPrasyarat() {
-  const [k1, k2] = kocok([3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 15])
+  // 8 dan 9 tidak dipakai karena 8² dan 9² adalah butir post-test/pre-test
+  const [k1, k2] = kocok([3, 4, 5, 6, 7, 11, 12, 13, 15, 16])
   const [r1, r2] = kocok([4, 5, 6, 7, 8, 9, 10, 12, 13, 15])
   return kocok([
     {

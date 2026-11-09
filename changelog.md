@@ -2,6 +2,12 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.3] · 10 November 2026 — Soal disamakan dengan materi PDF
+- Belajar mengikuti urutan & contoh PDF: kuadrat → akar → tabel kuadrat → segitiga siku-siku → sisi miring pada segitiga diputar;
+  memilih rumus; Strategi 5 Langkah; panjang tangga 3–4–5, layang-layang 20–21–29, jarak terpendek 15–20–25, diagonal layar 21–28–35, tripel Pythagoras.
+- Latihan berjenjang (angka → gambar → cerita) dengan konteks PDF; tripel yang sama dengan pre/post-test tidak dipakai lagi.
+- Contoh Kalkulator = Contoh 1–3 PDF + diagonal layar. Pre-test/post-test tidak diubah (sudah sesuai indikator materi).
+
 ## [2.2] · 10 November 2026 — Aplikasi tersambung ke backend Python
 - Kode siswa `8A-01` s.d. `8F-36` (216 kode) didaftarkan di tabel `siswa`; hanya kode terdaftar yang bisa masuk.
 - Aplikasi memakai backend FastAPI di Vercel (`VITE_API_URL`): login dicek server, nilai tes dihitung di server.

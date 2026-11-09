@@ -12,45 +12,27 @@
 //   judul   : judul layar
 //   isi     : paragraf penjelasan (array string)
 //   rumus   : (opsional) baris-baris rumus/perhitungan
-//   visual  : (opsional) { jenis: 'segitiga', sisi, cari, sembunyikan } atau { jenis: 'persegi' }
+//   visual  : (opsional) { jenis: 'segitiga', sisi, cari, sembunyikan } · { jenis: 'persegi' } · { jenis: 'tangga3d', sisi, cari }
+//             · { jenis: 'putar', sisi, orientasi, label } (segitiga diputar dengan nama sisi bebas)
 //   cek     : (opsional) pertanyaan pemahaman
 //             { tanya, tipe: 'angka' | 'pilihan', opsi?, jawab, petunjuk, penjelasan }
+//
+// Isi & urutan disamakan dengan materi PDF (docs/materi/Materi-Teorema-Pythagoras.pdf):
+//   Sesi 1 = Bagian 1 (kuadrat & akar) + Bagian 2 (segitiga siku-siku & sisi miring, termasuk posisi diputar)
+//   Sesi 2 = Bagian 3 (teorema Pythagoras & memilih rumus)
+//   Sesi 3 = Bagian 4 (Strategi 5 Langkah, contoh tangga & layang-layang) + Bagian 5 (jarak terpendek, tripel, refleksi)
 
 export const SESI = [
   {
     id: 1,
-    judul: 'Sesi 1: Mengenal Segitiga Siku-siku, Kuadrat, dan Akar',
-    tujuan: 'Mengenali sisi-sisi segitiga siku-siku dan menghitung kuadrat serta akar kuadrat.',
+    judul: 'Sesi 1: Kuadrat, Akar, dan Segitiga Siku-siku',
+    tujuan: 'Menghitung kuadrat dan akar kuadrat, lalu menunjukkan sisi miring segitiga siku-siku walaupun gambarnya diputar.',
     langkah: [
-      {
-        judul: 'Apa itu segitiga siku-siku?',
-        isi: [
-          'Segitiga siku-siku adalah segitiga yang salah satu sudutnya 90° (sudut siku-siku). Tanda kotak kecil di pojok gambar menunjukkan sudut siku-siku.',
-          'Contohnya ada di sekitar kita: tangga yang bersandar di dinding, atau penggaris segitiga.',
-        ],
-        visual: { jenis: 'segitiga', sisi: { a: 4, b: 3, c: 5 }, cari: null },
-      },
-      {
-        judul: 'Nama sisi-sisinya',
-        isi: [
-          'Dua sisi yang membentuk sudut siku-siku disebut sisi siku-siku. Kita beri nama a (alas) dan b (tinggi).',
-          'Sisi yang berada di depan sudut siku-siku disebut sisi miring atau hipotenusa, kita beri nama c. Sisi miring selalu sisi yang paling panjang.',
-        ],
-        visual: { jenis: 'segitiga', sisi: { a: 4, b: 3, c: 5 }, cari: 'c' },
-        cek: {
-          tanya: 'Pada gambar, sisi mana yang merupakan sisi miring?',
-          tipe: 'pilihan',
-          opsi: ['a', 'b', 'c'],
-          jawab: 'c',
-          petunjuk: 'Cari sisi yang berada di depan (berhadapan dengan) kotak siku-siku.',
-          penjelasan: 'Sisi c berhadapan dengan sudut siku-siku dan paling panjang, jadi c adalah sisi miring.',
-        },
-      },
       {
         judul: 'Kuadrat sebuah bilangan',
         isi: [
           'Kuadrat artinya bilangan dikalikan dengan dirinya sendiri. Ditulis dengan angka 2 kecil di atas.',
-          'Kuadrat juga sama dengan luas persegi: persegi bersisi 3 luasnya 3 × 3 = 9.',
+          'Kuadrat juga sama dengan luas persegi: persegi bersisi 5 luasnya 5 × 5 = 25.',
         ],
         rumus: ['3² = 3 × 3 = 9', '5² = 5 × 5 = 25', '10² = 10 × 10 = 100'],
         cek: {
@@ -65,7 +47,7 @@ export const SESI = [
         judul: 'Akar kuadrat',
         isi: [
           'Akar kuadrat (√) adalah kebalikan dari kuadrat. Pertanyaannya: bilangan berapa yang jika dikuadratkan menghasilkan angka ini?',
-          'Karena 5² = 25, maka √25 = 5.',
+          'Karena 5 × 5 = 25, maka √25 = 5.',
         ],
         rumus: ['√9 = 3, karena 3² = 9', '√25 = 5, karena 5² = 25', '√100 = 10, karena 10² = 100'],
         cek: {
@@ -77,18 +59,82 @@ export const SESI = [
         },
       },
       {
-        judul: 'Ringkasan Sesi 1',
+        judul: 'Tabel kuadrat 11–20',
         isi: [
-          'Segitiga siku-siku punya satu sudut 90°.',
-          'Sisi siku-siku: a dan b. Sisi miring: c, selalu paling panjang.',
-          'Kuadrat: bilangan dikali dirinya sendiri (4² = 16). Akar kuadrat adalah kebalikannya (√16 = 4).',
+          'Tabel ini menjadi pegangan selama belajar. Teorema Pythagoras selalu memakai kuadrat di awal dan akar di akhir.',
+          'Cara memakai tabel untuk akar: √196 = ? → cari 196 di tabel → 14² = 196, jadi √196 = 14.',
+        ],
+        rumus: [
+          '11² = 121 · 12² = 144 · 13² = 169',
+          '14² = 196 · 15² = 225 · 16² = 256',
+          '17² = 289 · 18² = 324 · 19² = 361 · 20² = 400',
         ],
         cek: {
-          tanya: 'Cek terakhir: berapa √144?',
+          tanya: 'Pakai tabel: berapa √289?',
           tipe: 'angka',
-          jawab: 12,
-          petunjuk: 'Coba hitung 11², 12², 13².',
-          penjelasan: '√144 = 12, karena 12 × 12 = 144.',
+          jawab: 17,
+          petunjuk: 'Cari 289 di tabel. Bilangan berapa yang kuadratnya 289?',
+          penjelasan: '√289 = 17, karena 17² = 289.',
+        },
+      },
+      {
+        judul: 'Apa itu segitiga siku-siku?',
+        isi: [
+          'Segitiga siku-siku punya satu sudut siku-siku (90°). Tanda kotak kecil di pojok gambar menunjukkan sudut siku-siku.',
+          'Contohnya ada di sekitar kita: tangga yang bersandar di dinding, atau penggaris segitiga.',
+        ],
+        visual: { jenis: 'segitiga', sisi: { a: 4, b: 3, c: 5 }, cari: null },
+      },
+      {
+        judul: 'Nama sisi-sisinya',
+        isi: [
+          'Dua sisi yang mengapit sudut siku-siku disebut sisi siku-siku. Kita beri nama a dan b.',
+          'Sisi yang berhadapan (di depan) sudut siku-siku disebut sisi miring atau hipotenusa, kita beri nama c. Sisi miring selalu sisi yang paling panjang.',
+        ],
+        visual: { jenis: 'segitiga', sisi: { a: 4, b: 3, c: 5 }, cari: 'c' },
+        cek: {
+          tanya: 'Pada gambar, sisi mana yang merupakan sisi miring?',
+          tipe: 'pilihan',
+          opsi: ['a', 'b', 'c'],
+          jawab: 'c',
+          petunjuk: 'Cari sisi yang berada di depan (berhadapan dengan) kotak siku-siku.',
+          penjelasan: 'Sisi c berhadapan dengan sudut siku-siku dan paling panjang, jadi c adalah sisi miring.',
+        },
+      },
+      {
+        judul: 'Awas keliru: segitiga yang diputar',
+        isi: [
+          'Sisi miring BUKAN selalu sisi paling bawah atau sisi yang tampak "miring". Segitiga bisa diputar atau dibalik.',
+          'Caranya: temukan dulu kotak sudut siku-siku, lalu lihat sisi di depannya. Sisi miring juga selalu sisi terpanjang.',
+        ],
+        visual: {
+          jenis: 'putar',
+          sisi: { a: 4, b: 3, c: 5 },
+          orientasi: { sudut: 200, cermin: true },
+          label: { a: 'p', b: 'q', c: 'r' },
+        },
+        cek: {
+          tanya: 'Segitiga pada gambar sudah diputar. Sisi mana yang merupakan sisi miring?',
+          tipe: 'pilihan',
+          opsi: ['p', 'q', 'r'],
+          jawab: 'r',
+          petunjuk: 'Cari dulu kotak kecil (sudut siku-siku). Sisi miring ada di depannya, tidak menempel pada kotak itu.',
+          penjelasan: 'Sisi r berhadapan dengan kotak sudut siku-siku, jadi r adalah sisi miring walaupun posisinya diputar.',
+        },
+      },
+      {
+        judul: 'Ringkasan Sesi 1',
+        isi: [
+          'Kuadrat: bilangan dikali dirinya sendiri (4² = 16). Akar kuadrat adalah kebalikannya (√16 = 4).',
+          'Segitiga siku-siku punya satu sudut 90°. Sisi siku-siku: a dan b. Sisi miring: c, di depan sudut siku-siku dan paling panjang.',
+          'Walaupun segitiga diputar, sisi miring tetap sisi di depan sudut siku-siku.',
+        ],
+        cek: {
+          tanya: 'Cek terakhir: berapa hasil 13²?',
+          tipe: 'angka',
+          jawab: 169,
+          petunjuk: '13² = 13 × 13. Lihat juga tabel kuadrat.',
+          penjelasan: '13² = 13 × 13 = 169.',
         },
       },
     ],
@@ -96,7 +142,7 @@ export const SESI = [
   {
     id: 2,
     judul: 'Sesi 2: Teorema Pythagoras',
-    tujuan: 'Memahami rumus c² = a² + b² dan menggunakannya untuk mencari sisi segitiga siku-siku.',
+    tujuan: 'Memahami rumus c² = a² + b² dan memilih rumus yang tepat untuk mencari sisi segitiga siku-siku.',
     langkah: [
       {
         judul: 'Menemukan pola',
@@ -123,6 +169,23 @@ export const SESI = [
         visual: { jenis: 'segitiga', sisi: { a: 4, b: 3, c: 5 }, cari: 'c' },
       },
       {
+        judul: 'Pilih rumus sesuai yang dicari',
+        isi: [
+          'Mencari sisi miring c (sisi terpanjang) → TAMBAH: c² = a² + b², lalu c = √(a² + b²).',
+          'Mencari sisi siku-siku a atau b (sisi yang lebih pendek) → KURANG: a² = c² − b² atau b² = c² − a².',
+          'Saat mengurangkan, kuadrat sisi miring selalu ditulis di depan (yang besar dikurangi yang kecil).',
+        ],
+        rumus: ['c² = a² + b²', 'a² = c² − b²', 'b² = c² − a²'],
+        cek: {
+          tanya: 'Yang dicari sisi miring. Kuadrat kedua sisi lainnya dijumlah atau dikurang?',
+          tipe: 'pilihan',
+          opsi: ['Dijumlah', 'Dikurang'],
+          jawab: 'Dijumlah',
+          petunjuk: 'Sisi miring adalah sisi terpanjang, jadi hasilnya harus lebih besar.',
+          penjelasan: 'Dijumlah: c² = a² + b², karena sisi miring adalah sisi terpanjang.',
+        },
+      },
+      {
         judul: 'Contoh: mencari sisi miring',
         isi: ['Diketahui a = 6 dan b = 8. Kita cari c dengan langkah berikut:'],
         rumus: ['c² = a² + b²', 'c² = 6² + 8²', 'c² = 36 + 64', 'c² = 100', 'c = √100 = 10'],
@@ -130,21 +193,23 @@ export const SESI = [
       },
       {
         judul: 'Giliran kamu (dibantu)',
-        isi: ['Diketahui a = 5 dan b = 12. Langkah awal sudah dikerjakan. Lanjutkan langkah terakhirnya.'],
-        rumus: ['c² = 5² + 12²', 'c² = 25 + 144', 'c² = 169', 'c = √169 = ...'],
-        visual: { jenis: 'segitiga', sisi: { a: 5, b: 12, c: 13 }, cari: 'c', sembunyikan: true },
+        isi: [
+          'Segitiga siku-siku dengan sisi siku-siku 15 cm dan 20 cm. Langkah awal sudah dikerjakan. Lanjutkan langkah terakhirnya.',
+        ],
+        rumus: ['c² = 15² + 20²', 'c² = 225 + 400', 'c² = 625', 'c = √625 = ... cm'],
+        visual: { jenis: 'segitiga', sisi: { a: 20, b: 15, c: 25 }, cari: 'c', sembunyikan: true },
         cek: {
-          tanya: 'Berapa panjang c?',
+          tanya: 'Berapa cm panjang c?',
           tipe: 'angka',
-          jawab: 13,
-          petunjuk: 'Bilangan berapa yang dikuadratkan hasilnya 169? Coba 13 × 13.',
-          penjelasan: 'c = √169 = 13, karena 13 × 13 = 169.',
+          jawab: 25,
+          petunjuk: 'Bilangan berapa yang dikuadratkan hasilnya 625? Coba 25 × 25.',
+          penjelasan: 'c = √625 = 25 cm, karena 25 × 25 = 625.',
         },
       },
       {
         judul: 'Mencari sisi siku-siku',
         isi: [
-          'Jika yang dicari sisi siku-siku (a atau b), rumusnya dibalik: kuadrat sisi miring DIKURANGI kuadrat sisi yang diketahui.',
+          'Jika yang dicari sisi siku-siku (a atau b), kuadrat sisi miring DIKURANGI kuadrat sisi yang diketahui.',
           'Contoh: c = 10 dan a = 6. Cari b.',
         ],
         rumus: ['b² = c² − a²', 'b² = 10² − 6²', 'b² = 100 − 36', 'b² = 64', 'b = √64 = 8'],
@@ -166,7 +231,7 @@ export const SESI = [
         judul: 'Ringkasan Sesi 2',
         isi: [
           'Mencari sisi miring: jumlahkan kuadrat, lalu akarkan.',
-          'Mencari sisi siku-siku: kurangkan kuadrat (yang besar dikurangi yang kecil), lalu akarkan.',
+          'Mencari sisi siku-siku: kurangkan kuadrat (kuadrat sisi miring dikurangi kuadrat sisi yang diketahui), lalu akarkan.',
         ],
         rumus: ['c = √(a² + b²)', 'a = √(c² − b²)', 'b = √(c² − a²)'],
         cek: {
@@ -183,91 +248,116 @@ export const SESI = [
   {
     id: 3,
     judul: 'Sesi 3: Pythagoras dalam Kehidupan Sehari-hari',
-    tujuan: 'Menggunakan teorema Pythagoras untuk menyelesaikan soal cerita (literasi matematis).',
+    tujuan: 'Menyelesaikan soal cerita dengan Strategi 5 Langkah (literasi matematis: merumuskan, menerapkan, menafsirkan).',
     langkah: [
       {
-        judul: 'Strategi 4 langkah',
+        judul: 'Strategi 5 Langkah soal cerita',
         isi: [
-          'Saat bertemu soal cerita, gunakan 4 langkah ini:',
-          '1. Pahami: apa yang diketahui dan apa yang ditanya?',
-          '2. Gambar: buat segitiga siku-siku dan tandai sisinya.',
-          '3. Hitung: pilih rumus yang tepat (dijumlah atau dikurang).',
-          '4. Periksa: apakah jawabannya masuk akal? Sisi miring harus paling panjang.',
+          'Soal cerita sering panjang. Jangan langsung menghitung. Ikuti lima langkah ini satu per satu:',
+          '1. Baca & tandai: garis bawahi angka penting dan kalimat pertanyaannya.',
+          '2. Tulis Diketahui – Ditanya: pindahkan angka ke tabel, lengkap dengan satuannya.',
+          '3. Gambar segitiga siku-siku: tandai sudut sikunya, tulis angka di samping sisinya, warnai sisi yang dicari.',
+          '4. Pilih rumus & hitung: yang dicari sisi miring → tambah; yang dicari sisi siku-siku → kurang.',
+          '5. Cek kewajaran: sisi miring harus paling panjang. Apakah jawabannya masuk akal?',
         ],
       },
       {
-        judul: 'Contoh: tangga',
+        judul: 'Contoh 1: panjang tangga',
         isi: [
-          'Tangga sepanjang 5 m bersandar di dinding. Kaki tangga berjarak 3 m dari dinding. Berapa tinggi dinding yang dicapai tangga?',
-          'Pahami: tangga = sisi miring (c = 5), jarak ke dinding = alas (a = 3), tinggi dinding = b (ditanya).',
-          'Hitung: karena mencari sisi siku-siku, kuadratnya dikurang.',
-          'Periksa: 4 m lebih pendek dari tangga 5 m, jadi masuk akal.',
+          'Sebuah tangga disandarkan pada dinding. Jarak kaki tangga ke dinding 3 m, dan ujung atas tangga menyentuh dinding pada ketinggian 4 m. Berapa panjang tangga?',
+          'Diketahui: kaki tangga ke dinding = 3 m, tinggi dinding = 4 m. Ditanya: panjang tangga. Tangga berada di depan sudut siku-siku, jadi tangga adalah sisi miring.',
+          'Rumus: c² = a² + b² (mencari sisi miring → tambah).',
+          'Cek: 5 m lebih panjang dari 3 m dan 4 m, jadi masuk akal.',
         ],
-        rumus: ['b² = 5² − 3² = 25 − 9 = 16', 'b = √16 = 4 m'],
+        rumus: ['c² = 3² + 4² = 9 + 16 = 25', 'c = √25 = 5 m'],
         // ilustrasi 3D three.js tangga–dinding (soal tangga dari wawancara kebutuhan)
-        visual: { jenis: 'tangga3d', sisi: { a: 3, b: 4, c: 5 }, cari: 'b' },
+        visual: { jenis: 'tangga3d', sisi: { a: 3, b: 4, c: 5 }, cari: 'c' },
       },
       {
         judul: 'Mengenali sisi miring dalam cerita',
         isi: [
-          'Benang layang-layang terulur sepanjang 25 m. Jarak mendatar dari anak ke titik tepat di bawah layang-layang adalah 15 m.',
+          'Benang layang-layang yang terulur panjangnya 29 m. Jarak mendatar dari Dimas ke titik tepat di bawah layang-layang 20 m. Berapa tinggi layang-layang?',
         ],
         cek: {
           tanya: 'Dalam cerita ini, apa yang menjadi sisi miring?',
           tipe: 'pilihan',
           opsi: ['Panjang benang', 'Jarak mendatar', 'Tinggi layang-layang'],
           jawab: 'Panjang benang',
-          petunjuk: 'Sisi miring adalah yang miring dan paling panjang, menghubungkan anak dengan layang-layang.',
-          penjelasan: 'Benang membentang miring dari tangan anak ke layang-layang, jadi benang adalah sisi miring.',
+          petunjuk:
+            'Bayangkan gambarnya: sudut siku-siku ada di tanah, tepat di bawah layang-layang. Sisi mana yang berada di depannya?',
+          penjelasan:
+            'Benang membentang dari tangan Dimas ke layang-layang, di depan sudut siku-siku, jadi benang adalah sisi miring.',
         },
       },
       {
-        judul: 'Selesaikan soal layang-layang',
-        isi: ['Benang = 25 m (sisi miring), jarak mendatar = 15 m. Berapa meter tinggi layang-layang?'],
-        visual: { jenis: 'segitiga', sisi: { a: 15, b: 20, c: 25 }, cari: 'b', sembunyikan: true },
-        cek: {
-          tanya: 'Tinggi layang-layang (meter)?',
-          tipe: 'angka',
-          jawab: 20,
-          petunjuk: 'b² = 25² − 15² = 625 − 225.',
-          penjelasan: 'b² = 625 − 225 = 400, jadi b = √400 = 20 m.',
-        },
-      },
-      {
-        judul: 'Soal cerita: layar TV',
+        judul: 'Contoh 2: tinggi layang-layang',
         isi: [
-          'Ukuran TV disebut dari panjang diagonal layarnya. Sebuah layar lebarnya 80 cm dan tingginya 60 cm.',
+          'Diketahui: benang = 29 m (sisi miring), jarak mendatar = 20 m. Ditanya: tinggi layang-layang (sisi siku-siku).',
+          'Karena yang dicari sisi siku-siku, kuadratnya dikurang: b² = 29² − 20² = 841 − 400.',
+        ],
+        visual: { jenis: 'segitiga', sisi: { a: 20, b: 21, c: 29 }, cari: 'b', sembunyikan: true },
+        cek: {
+          tanya: 'Berapa meter tinggi layang-layang?',
+          tipe: 'angka',
+          jawab: 21,
+          petunjuk: 'b² = 841 − 400 = 441. Bilangan berapa yang kuadratnya 441?',
+          penjelasan: 'b² = 441, jadi b = √441 = 21 m. Cek: 21 m lebih pendek dari benang 29 m, masuk akal.',
+        },
+      },
+      {
+        judul: 'Contoh 3: jarak terpendek',
+        isi: [
+          'Andi berjalan 15 m ke timur, lalu 20 m ke utara. Berapa jarak terpendek Andi dari titik awal?',
+          'Arah timur dan utara membentuk sudut siku-siku. Jarak terpendek adalah garis lurus dari titik awal ke titik akhir, yaitu sisi miring.',
+        ],
+        visual: { jenis: 'segitiga', sisi: { a: 15, b: 20, c: 25 }, cari: 'c', sembunyikan: true },
+        cek: {
+          tanya: 'Berapa meter jarak terpendek Andi?',
+          tipe: 'angka',
+          jawab: 25,
+          petunjuk: 'c² = 15² + 20² = 225 + 400. Lalu cari akarnya.',
+          penjelasan:
+            'c² = 625, jadi c = √625 = 25 m. Menafsirkan: berjalan memutar 15 + 20 = 35 m, sedangkan jalan lurus hanya 25 m, lebih hemat 10 m.',
+        },
+      },
+      {
+        judul: 'Soal cerita: diagonal layar',
+        isi: [
+          'Ukuran layar disebut dari panjang diagonalnya. Sebuah layar laptop lebarnya 28 cm dan tingginya 21 cm.',
           'Berapa cm panjang diagonal layar tersebut?',
         ],
-        visual: { jenis: 'segitiga', sisi: { a: 80, b: 60, c: 100 }, cari: 'c', sembunyikan: true },
+        visual: { jenis: 'segitiga', sisi: { a: 28, b: 21, c: 35 }, cari: 'c', sembunyikan: true },
         cek: {
           tanya: 'Panjang diagonal (cm)?',
           tipe: 'angka',
-          jawab: 100,
-          petunjuk: 'Diagonal adalah sisi miring: c² = 80² + 60² = 6400 + 3600.',
-          penjelasan: 'c² = 6400 + 3600 = 10000, jadi c = √10000 = 100 cm.',
+          jawab: 35,
+          petunjuk: 'Diagonal adalah sisi miring: c² = 28² + 21² = 784 + 441.',
+          penjelasan: 'c² = 784 + 441 = 1.225, jadi c = √1.225 = 35 cm.',
         },
       },
       {
-        judul: 'Apakah sudutnya siku-siku?',
+        judul: 'Tripel Pythagoras',
         isi: [
-          'Tukang bangunan memeriksa sudut lantai dengan mengukur 6 m, 8 m, dan 10 m. Jika 6² + 8² = 10², maka sudutnya pasti siku-siku.',
+          'Tiga bilangan bulat yang memenuhi c² = a² + b² disebut tripel Pythagoras. Contoh: 3, 4, 5 · 6, 8, 10 · 20, 21, 29 · 9, 40, 41.',
+          'Kelipatannya juga tripel, misalnya 3, 4, 5 dikali 5 menjadi 15, 20, 25.',
+          'Cara memeriksa: kuadratkan dua bilangan terkecil, jumlahkan, lalu bandingkan dengan kuadrat bilangan terbesar.',
         ],
-        rumus: ['6² + 8² = 36 + 64 = 100', '10² = 100'],
+        rumus: ['15² + 20² = 225 + 400 = 625', '25² = 625 ✓ tripel Pythagoras'],
         cek: {
-          tanya: 'Apakah sisi 6, 8, dan 10 membentuk segitiga siku-siku?',
+          tanya: 'Manakah yang merupakan tripel Pythagoras?',
           tipe: 'pilihan',
-          opsi: ['Ya', 'Tidak'],
-          jawab: 'Ya',
-          petunjuk: 'Bandingkan 6² + 8² dengan 10².',
-          penjelasan: 'Ya. 36 + 64 = 100 = 10², jadi memenuhi teorema Pythagoras.',
+          opsi: ['4, 5, 6', '6, 8, 10', '5, 7, 9'],
+          jawab: '6, 8, 10',
+          petunjuk: 'Untuk tiap pilihan, bandingkan jumlah kuadrat dua bilangan kecil dengan kuadrat bilangan terbesar.',
+          penjelasan: '6² + 8² = 36 + 64 = 100 = 10², jadi 6, 8, 10 adalah tripel Pythagoras (kelipatan 3, 4, 5).',
         },
       },
       {
         judul: 'Refleksi',
         isi: [
           'Selamat, kamu sudah menyelesaikan semua sesi!',
-          'Coba pikirkan: di mana lagi kamu bisa menemukan segitiga siku-siku di sekitarmu? Misalnya di atap rumah, jalan pintas memotong lapangan, atau ramp kursi roda.',
+          'Pola yang sama, cerita berbeda: tangga–dinding, benang layang-layang, diagonal layar, jarak berjalan, kawat penopang tiang, dan diagonal taman semuanya segitiga siku-siku. Cari dulu sudut sikunya, tentukan sisi miring, lalu gunakan rumus yang sama.',
+          'Pikirkan: 1) Mengapa saat mencari sisi siku-siku kita memakai pengurangan, bukan penjumlahan? 2) Bagaimana kamu tahu jawabanmu masuk akal tanpa menghitung ulang?',
           'Untuk berlatih lebih banyak, buka menu Latihan Soal.',
         ],
       },

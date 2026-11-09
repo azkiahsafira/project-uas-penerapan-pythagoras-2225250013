@@ -44,30 +44,33 @@ function bacaAnimasi() {
   }
 }
 
+// Contoh soal kalkulator = contoh pada materi PDF (docs/materi): Contoh 1–3 dan diagonal layar
 const CONTOH = [
   {
-    judul: 'Tangga bersandar di dinding',
-    cerita: 'Tangga sepanjang 5 m bersandar di dinding. Jarak kaki tangga ke dinding 3 m. Berapa tinggi dinding yang dicapai tangga?',
-    cari: 'b',
-    nilai: { a: '3', c: '5' },
-  },
-  {
-    judul: 'Ukuran layar TV',
-    cerita: 'Layar TV lebarnya 80 cm dan tingginya 45 cm. Berapa panjang diagonal layar?',
+    judul: 'Panjang tangga',
+    cerita:
+      'Tangga disandarkan pada dinding. Jarak kaki tangga ke dinding 3 m dan ujung atas tangga menyentuh dinding pada ketinggian 4 m. Berapa panjang tangga?',
     cari: 'c',
-    nilai: { a: '80', b: '45' },
+    nilai: { a: '3', b: '4' },
   },
   {
-    judul: 'Layang-layang',
-    cerita: 'Benang layang-layang sepanjang 25 m. Jarak mendatar anak ke titik di bawah layang-layang 15 m. Berapa tinggi layang-layang?',
+    judul: 'Tinggi layang-layang',
+    cerita:
+      'Benang layang-layang yang terulur panjangnya 29 m. Jarak mendatar ke titik tepat di bawah layang-layang 20 m. Berapa tinggi layang-layang?',
     cari: 'b',
-    nilai: { a: '15', c: '25' },
+    nilai: { a: '20', c: '29' },
   },
   {
-    judul: 'Jalan pintas di lapangan',
-    cerita: 'Lapangan berukuran 40 m × 30 m. Berapa jarak jika berjalan memotong secara diagonal?',
+    judul: 'Jarak terpendek',
+    cerita: 'Andi berjalan 15 m ke timur, lalu 20 m ke utara. Berapa jarak terpendek Andi dari titik awal?',
     cari: 'c',
-    nilai: { a: '40', b: '30' },
+    nilai: { a: '15', b: '20' },
+  },
+  {
+    judul: 'Diagonal layar',
+    cerita: 'Layar monitor lebarnya 32 cm dan tingginya 24 cm. Berapa panjang diagonal layarnya?',
+    cari: 'c',
+    nilai: { a: '32', b: '24' },
   },
 ]
 

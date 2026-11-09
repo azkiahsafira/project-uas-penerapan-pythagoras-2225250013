@@ -33,8 +33,12 @@
 | Penerapan sehari-hari | Sesi 3, Latihan (pertemuan 4) | Bagian 5, Latihan | IL4, GL5 |
 
 ## 4. Konteks masalah yang dipakai
-Tangga–dinding, layang-layang, jarak berjalan/berlayar, diagonal layar (laptop, TV, ponsel), kawat penopang tiang,
-diagonal taman/lapangan, papan seluncur, jalan landai kursi roda, bayangan pohon.
+Sama dengan materi PDF (Bagian 5 "Pola yang sama, cerita berbeda"): tangga–dinding, benang layang-layang, jarak berjalan,
+perahu berlayar, diagonal layar (laptop, TV, monitor), kawat penopang tiang bendera, dan diagonal taman.
+
+Latihan pertemuan 4 berjenjang seperti "Latihan Berjenjang" di PDF: soal 1–3 **angka langsung**, soal 4–6 **dengan gambar**
+(segitiga diputar), soal 7 dst. **soal cerita**. Contoh soal di Kalkulator = Contoh 1–3 PDF (panjang tangga 3–4–5,
+tinggi layang-layang 20–21–29, jarak terpendek 15–20–25) + diagonal layar.
 
 ## 5. Aturan menulis soal
 - Angka memakai **tripel Pythagoras** agar hasil bilangan bulat (3–4–5, 5–12–13, 8–15–17, 7–24–25, 20–21–29, 9–40–41 dan kelipatannya).

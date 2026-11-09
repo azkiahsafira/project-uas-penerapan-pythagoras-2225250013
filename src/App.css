@@ -6353,3 +6353,15 @@ main > * {
     animation: none !important;
   }
 }
+
+/* Tingkat latihan berjenjang (angka → gambar → cerita), sama dengan materi PDF */
+.tingkat-soal {
+  display: inline-block;
+  margin: 10px 0 0;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sesi-3) 22%, transparent);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
