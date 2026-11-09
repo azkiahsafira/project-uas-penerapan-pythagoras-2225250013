@@ -79,6 +79,14 @@ alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
 alter table public.aktivitas add constraint aktivitas_jenis_check
   check (jenis in ('langkah', 'sesi', 'latihan'));
 
+-- Versi 2 (fitur temuan wawancara): cek prasyarat & refleksi ikut dicatat, ditambah
+-- jumlah petunjuk bertingkat yang dibuka dan catatan singkat (rincian bantuan / jawaban refleksi)
+alter table public.aktivitas add column if not exists petunjuk integer not null default 0;
+alter table public.aktivitas add column if not exists catatan text;
+alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
+alter table public.aktivitas add constraint aktivitas_jenis_check
+  check (jenis in ('langkah', 'sesi', 'latihan', 'prasyarat', 'refleksi'));
+
 -- ===========================================================================
 -- Versi 2: tabel kode siswa untuk login (dibaca/ditulis hanya oleh backend FastAPI
 -- dengan service key; peran anon TIDAK punya akses). Kode = kelas + nomor absen.

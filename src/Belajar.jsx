@@ -4,7 +4,9 @@ import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import FormKode from './Masuk.jsx'
+import CekPrasyarat from './Prasyarat.jsx'
 import Segitiga from './Segitiga.jsx'
+import { BATAS_SIAP, JUMLAH_PRASYARAT, bacaPrasyarat } from './bantuan.js'
 import { rayakan, semangati } from './perayaan.js'
 import { SESI } from './materi.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
@@ -370,13 +372,17 @@ export default function Belajar() {
   const [selamat, setSelamat] = useState(null) // sesi yang baru saja diselesaikan
   const [identitas, setIdentitas] = useState(identitasTerakhir)
   const [kenalan, setKenalan] = useState(null) // sesi yang akan dibuka setelah masuk ('ganti' = hanya ganti kode)
+  const [prasyarat, setPrasyarat] = useState(bacaPrasyarat) // hasil cek prasyarat terakhir
+  const [cekPrasyarat, setCekPrasyarat] = useState(false)
 
+  // s = sesi, atau 'prasyarat' untuk membuka cek prasyarat
   const mulai = (s) => {
     // identitas mungkin baru diisi di menu Latihan
     const id = identitas ?? identitasTerakhir()
     if (!id) return setKenalan(s)
     setIdentitas(id)
-    setAktif(s)
+    if (s === 'prasyarat') setCekPrasyarat(true)
+    else setAktif(s)
   }
 
   const tamat = (id) => {
@@ -394,8 +400,27 @@ export default function Belajar() {
         onBatal={() => setKenalan(null)}
         onMasuk={(baru) => {
           setIdentitas(baru)
-          if (kenalan !== 'ganti') setAktif(kenalan)
+          if (kenalan === 'prasyarat') setCekPrasyarat(true)
+          else if (kenalan !== 'ganti') setAktif(kenalan)
           setKenalan(null)
+        }}
+      />
+    )
+  }
+
+  if (cekPrasyarat) {
+    const tutup = () => {
+      setPrasyarat(bacaPrasyarat())
+      setCekPrasyarat(false)
+    }
+    return (
+      <CekPrasyarat
+        identitas={identitas}
+        onKeluar={() => setCekPrasyarat(false)}
+        onSelesai={tutup}
+        onKeSesi1={() => {
+          tutup()
+          setAktif(SESI[0])
         }}
       />
     )
@@ -437,6 +462,23 @@ export default function Belajar() {
           </button>
         </p>
       )}
+      {/* F2 Cek prasyarat kuadrat & akar (temuan IL3), dianjurkan sebelum Sesi 1 */}
+      <article className={`kartu kartu-prasyarat ${prasyarat ? 'sudah' : 'berikutnya'}`}>
+        <div>
+          <span className="nomor-sesi">Pemanasan</span>
+          <h3>Cek Prasyarat: Kuadrat & Akar</h3>
+          <p className="ket">
+            {prasyarat
+              ? `Skor terakhir ${prasyarat.benar} / ${prasyarat.total}${
+                  prasyarat.benar >= BATAS_SIAP ? ' · ✓ Siap belajar' : ' · Pelajari kuadrat & akar di Sesi 1'
+                }`
+              : `${JUMLAH_PRASYARAT} soal singkat (±2 menit) sebelum mulai Sesi 1.`}
+          </p>
+        </div>
+        <button type="button" className="hitung" onClick={() => mulai('prasyarat')}>
+          {prasyarat ? 'Ulangi cek' : 'Mulai cek'}
+        </button>
+      </article>
       <div className="daftar-sesi ada-hewan">
         {/* anak ayam & kelinci hinggap di atas kartu sesi */}
         <HewanHidup jenis="ayam" className="hinggap kiri" />
@@ -445,7 +487,7 @@ export default function Belajar() {
           const sudah = selesai.includes(s.id)
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)
           // sesi pertama yang belum selesai & tidak terkunci diberi tanda berdenyut
-          const berikutnya = !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
+          const berikutnya = prasyarat && !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
           return (
             <article key={s.id} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''} ${berikutnya ? 'berikutnya' : ''}`}>
               <IlustrasiSesi nomor={s.id} />

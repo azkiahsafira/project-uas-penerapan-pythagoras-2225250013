@@ -34,11 +34,12 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [ ] Daftarkan kode siswa di tabel `siswa` & sambungkan aplikasi (`VITE_API_URL`)
 - [x] Penilaian tes di server (`backend/penilaian.py`) — aktif setelah `VITE_API_URL` diisi
 - [x] **three.js**: adegan tangga–dinding yang bisa diputar (lazy load) — `src/Tangga3D.jsx`, Sesi 3 langkah "Contoh: tangga"
-- [ ] Latihan **identifikasi sisi miring** pada segitiga yang diputar (IL1)
-- [ ] Penanda **Diketahui/Ditanya** pada soal cerita (EL1, EL5)
-- [ ] **Petunjuk bertingkat** 5 tahap + fading (GL3)
-- [ ] Pertanyaan **refleksi** "Mengapa…?" (GL4) & **cek kewajaran** (GL2)
-- [ ] **Cek prasyarat** kuadrat/akar di awal (IL3)
+- [x] Latihan **tunjuk sisi miring** pada segitiga yang diputar/dicerminkan (IL1) — `src/SegitigaPutar.jsx`
+- [x] Penanda **Diketahui/Ditanya**: ketuk angka di soal cerita, tentukan sisinya (EL1, EL5) — `src/Latihan.jsx`
+- [x] **Petunjuk bertingkat** 5 tahap + fading: bantuan langkah disembunyikan setelah 3 soal benar mandiri, petunjuk tinggal 3 tahap (GL3)
+- [x] Pertanyaan **refleksi** "Mengapa…?" setiap soal ke-3 (GL4) & **cek kewajaran** sebelum dinilai (GL2) — `src/bantuan.js`
+- [x] **Cek prasyarat** kuadrat/akar (4 soal) sebelum Sesi 1, skor < 3 diarahkan ke Sesi 1 (IL3) — `src/Prasyarat.jsx`
+- [ ] Jalankan perubahan kolom `aktivitas` (`petunjuk`, `catatan`, jenis `prasyarat`/`refleksi`) di Supabase SQL Editor
 - [x] Animasi & hiasan **dipertahankan apa adanya** (keputusan pengembang); tetap disembunyikan saat tes
 
 ## D. Implementation

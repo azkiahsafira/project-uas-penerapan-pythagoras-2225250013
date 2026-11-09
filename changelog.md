@@ -2,6 +2,16 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.1] · 10 November 2026 — Fitur dari temuan wawancara
+- **Cek prasyarat** kuadrat & akar (4 soal) sebelum Sesi 1; skor < 3 diarahkan ke bagian kuadrat & akar Sesi 1 (IL3).
+- Latihan per soal: **1) Diketahui & Ditanya** (ketuk angka di soal, tentukan sisinya) → **2) tunjuk sisi miring** pada segitiga
+  yang diputar/dicerminkan → **3) hitung** (EL1, IL1, IL2).
+- **Petunjuk bertingkat** 5 tahap; bantuan **memudar** setelah 3 soal benar tanpa bantuan dan muncul lagi bila salah (GL3).
+- **Cek kewajaran** sebelum jawaban dinilai (sisi miring harus terpanjang) + kalimat kewajaran di pembahasan (GL2).
+- **Refleksi "Mengapa…?"** setiap soal ke-3, dengan alasan tertulis opsional (GL4).
+- Data baru di tabel `aktivitas`: kolom `petunjuk` & `catatan`, jenis `prasyarat` & `refleksi`; analisis Python menampilkan
+  petunjuk per soal (soal 1–5 vs 6+), refleksi benar, dan skor prasyarat. Animasi tidak diubah.
+
 ## [2.0] · 9 November 2026 — Coding (Langkah 4)
 - **Backend Python + FastAPI** (`backend/`): masuk dengan kode siswa (token HMAC, batas percobaan), penilaian pre/post-test & Leppink di server,
   simpan hasil & aktivitas (kirim ulang aman), soal latihan berjenjang, rekap & ekspor CSV peneliti; 14 pengujian pytest; `render.yaml`.

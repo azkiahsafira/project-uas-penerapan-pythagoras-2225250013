@@ -155,7 +155,7 @@ def saya(siswa=Depends(siswa_masuk)):
 
 class Aktivitas(BaseModel):
     id: str
-    jenis: str = Field(pattern="^(langkah|sesi|latihan)$")
+    jenis: str = Field(pattern="^(langkah|sesi|latihan|prasyarat|refleksi)$")
     sesi: int
     langkah: int | None = None
     judul: str
@@ -164,6 +164,8 @@ class Aktivitas(BaseModel):
     salah: int = 0
     hasil: str | None = None
     dibacakan: int = 0
+    petunjuk: int = Field(0, ge=0, le=20)  # jumlah petunjuk bertingkat yang dibuka (latihan)
+    catatan: str | None = Field(None, max_length=500)  # rincian bantuan / jawaban refleksi siswa
 
 
 class KirimAktivitas(BaseModel):

@@ -111,6 +111,8 @@ const keBarisAktivitas = (a) => ({
   salah: a.salah ?? 0,
   hasil: a.hasil ?? null,
   dibacakan: a.dibacakan ?? 0,
+  petunjuk: a.petunjuk ?? 0,
+  catatan: a.catatan ?? null,
 })
 
 const ANTREAN = [

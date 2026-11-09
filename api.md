@@ -46,13 +46,15 @@ Kesalahan: `404` kode tidak terdaftar · `403` kode dinonaktifkan · `429` terla
     {
       "id": "1794-abc", "jenis": "langkah", "sesi": 2, "langkah": 3, "judul": "Menemukan pola",
       "mulai": "2026-11-10T01:02:00Z", "selesai": "2026-11-10T01:03:10Z",
-      "salah": 1, "hasil": "benar", "dibacakan": 0, "petunjuk": 2
+      "salah": 1, "hasil": "benar", "dibacakan": 0, "petunjuk": 2,
+      "catatan": "bantuan:penuh;diketahui_salah:0;miring_salah:1;kewajaran:0"
     }
   ]
 }
 ```
 Balasan 200: `{ "diterima": 1, "duplikat": 0 }` — `id` dari aplikasi membuat pengiriman ulang aman (idempoten).
-`jenis`: `langkah` · `sesi` · `latihan` · `prasyarat` · `identifikasi_sisi`.
+`jenis`: `langkah` · `sesi` · `latihan` · `prasyarat` (cek kuadrat & akar, sesi 0) · `refleksi` (jawaban "Mengapa…?", `catatan` = alasan siswa).
+`petunjuk` = jumlah petunjuk bertingkat yang dibuka (0–20); `catatan` = rincian bantuan pada soal latihan (maks. 500 karakter).
 
 ### `POST /hasil`
 ```json
@@ -81,7 +83,7 @@ Tingkat: 1 = angka langsung, 2 = dengan gambar, 3 = soal cerita (temuan IL4).
 | --- | --- |
 | `siswa` | `kode` (PK), `kelas`, `kelompok` (`aplikasi` / `langsung`), `aktif`, `dibuat` |
 | `hasil` | `id` (PK), `kode` → siswa, `jenis`, `mulai`, `selesai`, `durasi_detik`, `benar`, `total`, `skor`, `il`, `el`, `gl`, `jawaban` (jsonb) |
-| `aktivitas` | `id` (PK), `kode` → siswa, `jenis`, `sesi`, `langkah`, `judul`, `mulai`, `selesai`, `durasi_detik`, `salah`, `hasil`, `dibacakan`, `petunjuk` |
+| `aktivitas` | `id` (PK), `kode` → siswa, `jenis`, `sesi`, `langkah`, `judul`, `mulai`, `selesai`, `durasi_detik`, `salah`, `hasil`, `dibacakan`, `petunjuk`, `catatan` |
 
 Keamanan: RLS aktif; peran `anon` **tidak** boleh menulis langsung — hanya backend (service role) yang menulis.
 

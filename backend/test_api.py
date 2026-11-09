@@ -103,6 +103,23 @@ def test_aktivitas_kirim_ulang_tidak_dobel():
     assert main.db.semua("aktivitas")[0]["durasi_detik"] == 65
 
 
+def test_aktivitas_prasyarat_refleksi_dan_petunjuk():
+    kepala = masuk()
+    isi = {"aktivitas": [
+        {"id": "p1", "jenis": "prasyarat", "sesi": 0, "langkah": 1, "judul": "7² = …", "mulai": "2026-11-10T01:00:00Z",
+         "selesai": "2026-11-10T01:00:20Z", "hasil": "benar", "catatan": "jawaban:49"},
+        {"id": "l1", "jenis": "latihan", "sesi": 4, "langkah": 3, "judul": "Tangga", "mulai": "2026-11-10T01:00:00Z",
+         "selesai": "2026-11-10T01:02:00Z", "hasil": "benar", "petunjuk": 2, "catatan": "bantuan:penuh;kewajaran:1"},
+        {"id": "r1", "jenis": "refleksi", "sesi": 4, "langkah": 3, "judul": "Mengapa…?", "mulai": "2026-11-10T01:02:00Z",
+         "selesai": "2026-11-10T01:02:00Z", "hasil": "benar", "catatan": "karena sisi miring paling panjang"},
+    ]}
+    assert klien.post("/api/aktivitas", headers=kepala, json=isi).json() == {"diterima": 3, "duplikat": 0}
+    baris = {b["id"]: b for b in main.db.semua("aktivitas")}
+    assert baris["l1"]["petunjuk"] == 2 and baris["r1"]["catatan"].startswith("karena")
+    isi["aktivitas"][0].update(id="x", jenis="lain")
+    assert klien.post("/api/aktivitas", headers=kepala, json=isi).status_code == 422
+
+
 def test_soal_latihan_berjenjang():
     soal = klien.get("/api/soal/latihan?tingkat=3&jumlah=4", headers=masuk()).json()["soal"]
     assert len(soal) == 4 and all("cerita" in s and s["dicari"] in ("b", "c") for s in soal)

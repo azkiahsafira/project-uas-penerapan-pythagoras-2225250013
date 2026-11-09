@@ -445,7 +445,7 @@ def baca_aktivitas(path):
     data = []
     for b in baris_baris:
         jenis = ambil(b, "jenis")
-        if jenis not in ("langkah", "sesi", "latihan"):
+        if jenis not in ("langkah", "sesi", "latihan", "prasyarat", "refleksi"):
             continue
         data.append({
             "jenis": jenis,
@@ -458,6 +458,8 @@ def baca_aktivitas(path):
             "salah": int(ke_angka(ambil(b, "salah")) or 0),
             "hasil": ambil(b, "hasil") or "",
             "dibacakan": int(ke_angka(ambil(b, "dibacakan")) or 0),
+            "petunjuk": int(ke_angka(ambil(b, "petunjuk")) or 0),
+            "catatan": ambil(b, "catatan") or "",
         })
     return data
 
@@ -535,13 +537,27 @@ def laporan_aktivitas(aktivitas, langkah):
 
 
 def rekap_latihan(aktivitas):
-    """Rekap pertemuan 4 (implementasi) per siswa dari baris jenis 'latihan'."""
+    """Rekap pertemuan 4 (implementasi) per siswa dari baris jenis 'latihan', ditambah
+    jumlah petunjuk (GL3), refleksi (GL4), dan skor cek prasyarat (IL3)."""
     per_siswa = {}
+    baru = lambda: {"soal": 0, "benar": 0, "salah": 0, "menyerah": 0, "durasi": [], "dibacakan": 0, "petunjuk": 0,
+                    "petunjuk_awal": [], "petunjuk_akhir": [], "refleksi": 0, "refleksi_benar": 0, "prasyarat": {}}
     for a in aktivitas:
+        if a["jenis"] == "refleksi":
+            r = per_siswa.setdefault(a["nama"], baru())
+            r["refleksi"] += 1
+            r["refleksi_benar"] += a["hasil"] == "benar"
+            continue
+        if a["jenis"] == "prasyarat":
+            # nomor soal 1-4; bila cek diulang, yang tercatat terakhir dipakai
+            per_siswa.setdefault(a["nama"], baru())["prasyarat"][a["langkah"]] = a["hasil"] == "benar"
+            continue
         if a["jenis"] != "latihan":
             continue
-        r = per_siswa.setdefault(a["nama"], {"soal": 0, "benar": 0, "salah": 0, "menyerah": 0, "durasi": [], "dibacakan": 0})
+        r = per_siswa.setdefault(a["nama"], baru())
         r["soal"] += 1
+        r["petunjuk"] += a["petunjuk"]
+        (r["petunjuk_awal"] if a["langkah"] <= 5 else r["petunjuk_akhir"]).append(a["petunjuk"])
         r[a["hasil"] if a["hasil"] in ("benar", "salah", "menyerah") else "salah"] += 1
         r["durasi"].append(a["durasi"])
         r["dibacakan"] += a["dibacakan"]
@@ -556,6 +572,11 @@ def rekap_latihan(aktivitas):
             "persen": 100 * r["benar"] / r["soal"] if r["soal"] else None,
             "rata_detik": rata(r["durasi"]),
             "dibacakan": r["dibacakan"],
+            "petunjuk": r["petunjuk"],
+            "petunjuk_awal": rata(r["petunjuk_awal"]),
+            "petunjuk_akhir": rata(r["petunjuk_akhir"]),
+            "refleksi": f"{r['refleksi_benar']}/{r['refleksi']}" if r["refleksi"] else "-",
+            "prasyarat": f"{sum(r['prasyarat'].values())}/{len(r['prasyarat'])}" if r["prasyarat"] else "-",
         })
     return hasil
 
@@ -566,23 +587,29 @@ def laporan_latihan(latihan):
         return
     cetak_tabel(
         "8. LATIHAN PERTEMUAN 4 (IMPLEMENTASI, menu Latihan Soal)",
-        ["Nama", "Soal", "Benar", "Salah", "Lihat jawaban", "% benar", "Rata-rata waktu/soal", "Dibacakan"],
+        ["Nama", "Soal", "Benar", "Salah", "Lihat jawaban", "% benar", "Rata-rata waktu/soal", "Dibacakan",
+         "Petunjuk", "Petunjuk/soal 1-5", "Petunjuk/soal 6+", "Refleksi benar", "Prasyarat"],
         [
-            [l["nama"], l["soal"], l["benar"], l["salah"], l["menyerah"], f"{fmt(l['persen'])}%", f"{fmt(l['rata_detik'])} dtk", f"{l['dibacakan']}x"]
+            [l["nama"], l["soal"], l["benar"], l["salah"], l["menyerah"], f"{fmt(l['persen'])}%", f"{fmt(l['rata_detik'])} dtk", f"{l['dibacakan']}x",
+             l["petunjuk"], fmt(l["petunjuk_awal"], 1), fmt(l["petunjuk_akhir"], 1), l["refleksi"], l["prasyarat"]]
             for l in latihan
         ],
     )
     print("   Lihat jawaban = siswa menekan \"Lihat jawaban\" tanpa menjawab. Target pertemuan 4: minimal 10 soal.")
+    print("   Petunjuk/soal yang menurun dari soal 1-5 ke soal 6+ menandakan bantuan berhasil dipudarkan (GL3).")
 
 
 def simpan_latihan(latihan, folder):
     with open(os.path.join(folder, "rekap_latihan.csv"), "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["nama", "jumlah_soal", "benar", "salah", "lihat_jawaban", "persen_benar", "rata_rata_detik", "dibacakan"])
+        w.writerow(["nama", "jumlah_soal", "benar", "salah", "lihat_jawaban", "persen_benar", "rata_rata_detik", "dibacakan",
+                    "petunjuk", "petunjuk_per_soal_1_5", "petunjuk_per_soal_6_dst", "refleksi_benar", "prasyarat"])
         for l in latihan:
             w.writerow([l["nama"], l["soal"], l["benar"], l["salah"], l["menyerah"],
                         None if l["persen"] is None else round(l["persen"], 1),
-                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["dibacakan"]])
+                        None if l["rata_detik"] is None else round(l["rata_detik"], 1), l["dibacakan"], l["petunjuk"],
+                        None if l["petunjuk_awal"] is None else round(l["petunjuk_awal"], 2),
+                        None if l["petunjuk_akhir"] is None else round(l["petunjuk_akhir"], 2), l["refleksi"], l["prasyarat"]])
 
 
 def simpan_aktivitas(langkah, folder):
