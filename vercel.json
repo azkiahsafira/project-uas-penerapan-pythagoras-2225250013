@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo 'Vercel hanya menjalankan backend Python; aplikasi React ada di GitHub Pages'",
+  "buildCommand": "echo 'tanpa build frontend'",
+  "outputDirectory": "public",
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/index" }]
+}

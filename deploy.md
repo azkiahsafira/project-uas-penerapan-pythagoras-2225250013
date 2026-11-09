@@ -17,12 +17,19 @@
 | Tetap aktif | workflow [supabase-aktif.yml](.github/workflows/supabase-aktif.yml) menyapa database setiap 3 hari |
 | Rahasia | password database & service key **tidak** disimpan di repo atau dibagikan ke siapa pun |
 
-## 3. Backend Python — Render (rencana versi 2)
-1. Buat akun Render (login dengan GitHub) → **New → Web Service** → pilih repo ini, folder `backend/`.
-2. Build: `pip install -r backend/requirements.txt` · Start: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`.
-3. Environment variables: `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`, `KUNCI_PENELITI`, `ASAL_DIIZINKAN` (domain GitHub Pages).
-4. Paket gratis: server tidur bila tidak dipakai ±15 menit; aplikasi memanggil `GET /api/sehat` saat dibuka agar server bangun.
-5. Setelah penelitian (±2 bulan): ekspor data, lalu hentikan layanan.
+## 3. Backend Python — Vercel (FastAPI serverless, gratis tanpa kartu)
+> Render sempat dicoba, tetapi kini meminta kartu pembayaran bahkan untuk paket gratis, jadi backend dipasang di **Vercel**.
+1. Daftar di https://vercel.com/signup dengan **GitHub** (dilakukan sendiri oleh pemilik proyek).
+2. **Add New → Project** → impor repo `project-uas-penerapan-pythagoras-2225250013` (izinkan Vercel membaca repo ini).
+3. Pengaturan proyek dibaca dari [vercel.json](vercel.json): tanpa build frontend, `api/index.py` menjalankan FastAPI, semua `/api/...` diteruskan ke sana.
+   Dependensi Python dari [requirements.txt](requirements.txt).
+4. **Environment Variables**: `SUPABASE_URL` = `https://hjhltqqwwzbbgkpwzcxx.supabase.co`, dan `SUPABASE_SERVICE_KEY` = kunci `sb_secret_...`
+   (**diisi sendiri**, jangan dibagikan). Opsional: `KUNCI_PENELITI` untuk endpoint rekap peneliti.
+5. Deploy → alamat backend, mis. `https://<nama-proyek>.vercel.app`; cek `https://<nama-proyek>.vercel.app/api/sehat`.
+6. Isi `VITE_API_URL` di `.env` dengan alamat itu lalu push, agar aplikasi di GitHub Pages memakai backend.
+7. Setiap push ke `main` otomatis memperbarui backend di Vercel.
+
+Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap tersedia).
 
 ## 4. Sebelum penelitian dimulai (checklist)
 - [ ] Daftarkan kode siswa (kelas + nomor absen, mis. `8A-07`)
