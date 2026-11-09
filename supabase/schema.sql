@@ -78,3 +78,21 @@ alter table public.aktivitas add column if not exists dibacakan integer not null
 alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
 alter table public.aktivitas add constraint aktivitas_jenis_check
   check (jenis in ('langkah', 'sesi', 'latihan'));
+
+-- ===========================================================================
+-- Versi 2: tabel kode siswa untuk login (dibaca/ditulis hanya oleh backend FastAPI
+-- dengan service key; peran anon TIDAK punya akses). Kode = kelas + nomor absen.
+-- ===========================================================================
+create table if not exists public.siswa (
+  kode      text primary key check (kode ~ '^[0-9]{1,2}[A-Z]?-[0-9]{1,3}$'),
+  kelas     text not null default '8',
+  kelompok  text not null default 'Belajar dengan aplikasi',
+  aktif     boolean not null default true,
+  dibuat    timestamptz not null default now()
+);
+alter table public.siswa enable row level security;
+
+-- Contoh mendaftarkan kode (jalankan sendiri, sesuaikan dengan daftar absen):
+-- insert into public.siswa (kode) values ('8A-01'), ('8A-02'), ('8A-03');
+-- Menonaktifkan kode setelah penelitian:
+-- update public.siswa set aktif = false;

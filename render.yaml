@@ -1,0 +1,22 @@
+# Blueprint Render untuk backend FastAPI (Python). Lihat deploy.md bagian 3.
+services:
+  - type: web
+    name: pythagoras-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/sehat
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: SUPABASE_URL
+        value: https://hjhltqqwwzbbgkpwzcxx.supabase.co
+      - key: SUPABASE_SERVICE_KEY
+        sync: false # rahasia: diisi sendiri di dashboard Render, JANGAN ditulis di sini
+      - key: KUNCI_TOKEN
+        generateValue: true
+      - key: KUNCI_PENELITI
+        generateValue: true
+      - key: ASAL_DIIZINKAN
+        value: https://azkiahsafira.github.io,http://localhost:5173

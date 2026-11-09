@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import TombolBacakan from './Bacakan.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
+import FormKode from './Masuk.jsx'
 import Segitiga from './Segitiga.jsx'
 import { rayakan, semangati } from './perayaan.js'
 import { SESI } from './materi.js'
-import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
+import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
+
+// three.js berukuran besar: komponen 3D baru diunduh saat langkahnya dibuka
+const Tangga3D = lazy(() => import('./Tangga3D.jsx'))
 
 const KUNCI_PROGRES = 'pythagoras-sesi-selesai'
 
@@ -70,6 +74,16 @@ function PersegiPythagoras() {
 function Visual({ visual }) {
   if (!visual) return null
   if (visual.jenis === 'persegi') return <PersegiPythagoras />
+  if (visual.jenis === 'tangga3d') {
+    const { a, b, c } = visual.sisi
+    const datar = <Segitiga sisi={visual.sisi} cari={visual.cari} />
+    const nama = { a: 'kaki', b: 'tinggi', c: 'panjang' }
+    return (
+      <Suspense fallback={datar}>
+        <Tangga3D kaki={a} tinggi={b} panjang={c} cari={nama[visual.cari]} cadangan={datar} />
+      </Suspense>
+    )
+  }
   return <Segitiga sisi={visual.sisi} cari={visual.cari} sembunyikan={visual.sembunyikan} />
 }
 
@@ -350,66 +364,12 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
   )
 }
 
-// Form singkat nama siswa sebelum belajar (disimpan di perangkat & dipakai juga di menu Tes)
-export function FormKenalan({ awal, onSimpan, onBatal }) {
-  // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
-  const [data, setData] = useState(() => ({ nama: '', sekolah: '', ...awal, kelas: '8' }))
-  const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
-  const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
-  return (
-    <section className="kartu sempit kenalan">
-      <Maskot ukuran={70} topi />
-      <h2>Kenalan dulu, yuk!</h2>
-      <p className="ket">Namamu dipakai untuk mencatat perkembangan belajarmu.</p>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (!lengkap) return
-          onSimpan({
-            ...data,
-            nama: data.nama.trim(),
-            sekolah: data.sekolah.trim(),
-            kelompok: data.kelompok || 'Belajar dengan aplikasi',
-          })
-        }}
-      >
-        <label>
-          Nama
-          <input value={data.nama} onChange={ubah('nama')} autoComplete="off" />
-        </label>
-        <label>
-          Kelas
-          <select value={data.kelas} onChange={ubah('kelas')}>
-            <option value="8">Kelas 8</option>
-          </select>
-        </label>
-        <label>
-          Sekolah
-          <input value={data.sekolah} onChange={ubah('sekolah')} autoComplete="off" />
-        </label>
-        <div className="navigasi">
-          {onBatal ? (
-            <button type="button" onClick={onBatal}>
-              Batal
-            </button>
-          ) : (
-            <span />
-          )}
-          <button type="submit" className="hitung" disabled={!lengkap}>
-            Simpan & mulai
-          </button>
-        </div>
-      </form>
-    </section>
-  )
-}
-
 export default function Belajar() {
   const [aktif, setAktif] = useState(null)
   const [selesai, setSelesai] = useState(bacaProgres)
   const [selamat, setSelamat] = useState(null) // sesi yang baru saja diselesaikan
   const [identitas, setIdentitas] = useState(identitasTerakhir)
-  const [kenalan, setKenalan] = useState(null) // sesi yang akan dibuka setelah isi nama ('ganti' = hanya ganti nama)
+  const [kenalan, setKenalan] = useState(null) // sesi yang akan dibuka setelah masuk ('ganti' = hanya ganti kode)
 
   const mulai = (s) => {
     // identitas mungkin baru diisi di menu Latihan
@@ -429,11 +389,10 @@ export default function Belajar() {
 
   if (kenalan) {
     return (
-      <FormKenalan
-        awal={identitas ?? {}}
+      <FormKode
+        tombol={kenalan === 'ganti' ? 'Masuk' : 'Masuk & mulai'}
         onBatal={() => setKenalan(null)}
-        onSimpan={(baru) => {
-          simpanIdentitas(baru)
+        onMasuk={(baru) => {
           setIdentitas(baru)
           if (kenalan !== 'ganti') setAktif(kenalan)
           setKenalan(null)
@@ -472,9 +431,9 @@ export default function Belajar() {
       <p className="ket">Ikuti sesi secara berurutan. Setiap sesi berisi penjelasan singkat, contoh, dan pertanyaan.</p>
       {identitas && (
         <p className="belajar-sebagai">
-          Belajar sebagai <strong>{identitas.nama}</strong> (kelas {identitas.kelas})
+          Masuk sebagai <strong>{identitas.kode}</strong> (kelas {identitas.kelas})
           <button type="button" className="kecil" onClick={() => setKenalan('ganti')}>
-            Ganti nama
+            Ganti kode
           </button>
         </p>
       )}

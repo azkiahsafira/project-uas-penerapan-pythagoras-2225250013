@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { LEPPINK, NAMA_DIMENSI, POSTTEST, PRETEST, nilaiLeppink, nilaiTes } from './tes.js'
-import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, simpanHasil, simpanIdentitas, unduhCsv } from './penyimpanan.js'
-import { supabaseAktif } from './supabase.js'
+import FormKode from './Masuk.jsx'
+import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, serverAktif, simpanHasil, unduhCsv } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
 
 const INSTRUMEN = {
@@ -24,50 +24,42 @@ const INSTRUMEN = {
   },
 }
 
-// semua siswa yang memakai aplikasi ini belajar dengan aplikasi
-const KELOMPOK = 'Belajar dengan aplikasi'
-
+// Sebelum tes: pakai kode siswa yang sudah tersimpan, atau masuk dengan kode siswa
 function FormIdentitas({ jenis, onMulai, onBatal }) {
-  // penelitian ini khusus siswa kelas 8, jadi kelas selalu 8
-  const [data, setData] = useState(() => ({ nama: '', sekolah: '', ...identitasTerakhir(), kelas: '8', kelompok: KELOMPOK }))
-  const lengkap = data.nama.trim() && data.kelas && data.sekolah.trim()
-  const ubah = (k) => (e) => setData({ ...data, [k]: e.target.value })
-
-  return (
-    <section className="kartu sempit">
+  const [ganti, setGanti] = useState(false)
+  const ada = identitasTerakhir()
+  const info = (
+    <>
       <p className="ket">{INSTRUMEN[jenis].waktu}</p>
-      <h2>{INSTRUMEN[jenis].judul}</h2>
       <p>{INSTRUMEN[jenis].ket}</p>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (!lengkap) return
-          const bersih = { ...data, nama: data.nama.trim(), sekolah: data.sekolah.trim() }
-          simpanIdentitas(bersih)
-          onMulai(bersih)
-        }}
-      >
-        <label>
-          Nama siswa
-          <input value={data.nama} onChange={ubah('nama')} autoComplete="off" />
-        </label>
-        <label>
-          Kelas
-          <select value={data.kelas} onChange={ubah('kelas')}>
-            <option value="8">Kelas 8</option>
-          </select>
-        </label>
-        <label>
-          Sekolah
-          <input value={data.sekolah} onChange={ubah('sekolah')} autoComplete="off" />
-        </label>
-        <div className="navigasi">
-          <button type="button" onClick={onBatal}>Batal</button>
-          <button type="submit" className="hitung" disabled={!lengkap}>Mulai</button>
-        </div>
-      </form>
-    </section>
+    </>
   )
+
+  if (ada && !ganti) {
+    return (
+      <section className="kartu sempit">
+        <p className="ket">{INSTRUMEN[jenis].waktu}</p>
+        <h2>{INSTRUMEN[jenis].judul}</h2>
+        <p>{INSTRUMEN[jenis].ket}</p>
+        <p className="belajar-sebagai">
+          Masuk sebagai <strong>{ada.kode}</strong> (kelas {ada.kelas})
+          <button type="button" className="kecil" onClick={() => setGanti(true)}>
+            Bukan kamu? Ganti kode
+          </button>
+        </p>
+        <div className="navigasi">
+          <button type="button" onClick={onBatal}>
+            Batal
+          </button>
+          <button type="button" className="hitung" onClick={() => onMulai(ada)}>
+            Mulai
+          </button>
+        </div>
+      </section>
+    )
+  }
+
+  return <FormKode judul={INSTRUMEN[jenis].judul} atas={info} tombol="Masuk & mulai" onBatal={onBatal} onMasuk={onMulai} />
 }
 
 // Soal ditampilkan satu per satu tanpa umpan balik benar/salah,
@@ -209,9 +201,9 @@ function Hasil({ hasil, tersimpan, statusKirim, onKembali }) {
         </p>
       )}
       {!tersimpan && <p className="error">Hasil tidak bisa disimpan di perangkat ini. Catat atau foto layar ini.</p>}
-      {supabaseAktif && statusKirim === 'mengirim' && <p className="ket">Mengirim hasil ke server...</p>}
-      {supabaseAktif && statusKirim === 'terkirim' && <p className="umpan benar">Hasil sudah terkirim ke server.</p>}
-      {supabaseAktif && statusKirim === 'gagal' && (
+      {serverAktif && statusKirim === 'mengirim' && <p className="ket">Mengirim hasil ke server...</p>}
+      {serverAktif && statusKirim === 'terkirim' && <p className="umpan benar">Hasil sudah terkirim ke server.</p>}
+      {serverAktif && statusKirim === 'gagal' && (
         <p className="umpan">Belum terkirim karena internet bermasalah. Hasil aman di perangkat ini dan akan dikirim otomatis nanti.</p>
       )}
       <button type="button" className="hitung" onClick={onKembali}>Kembali ke menu Tes</button>
@@ -237,7 +229,7 @@ function RiwayatHasil() {
               <th>Instrumen</th>
               <th>Hasil</th>
               <th>Durasi</th>
-              {supabaseAktif && <th>Server</th>}
+              {serverAktif && <th>Server</th>}
               <th aria-label="Aksi" />
             </tr>
           </thead>
@@ -250,7 +242,7 @@ function RiwayatHasil() {
                 <td>{INSTRUMEN[h.jenis].judul}</td>
                 <td>{h.jenis === 'leppink' ? `IL ${h.beban.IL} · EL ${h.beban.EL} · GL ${h.beban.GL}` : `${h.skor} (${h.benar}/${h.total})`}</td>
                 <td>{Math.round(h.durasiDetik / 60)} mnt</td>
-                {supabaseAktif && <td>{h.terkirim ? '✓ terkirim' : 'belum'}</td>}
+                {serverAktif && <td>{h.terkirim ? '✓ terkirim' : 'belum'}</td>}
                 <td>
                   <button
                     type="button"
@@ -272,7 +264,7 @@ function RiwayatHasil() {
       </div>
       <div className="aksi-riwayat">
         <button type="button" onClick={() => unduhCsv(hasil)}>Unduh semua hasil (CSV)</button>
-        {supabaseAktif && belum > 0 && (
+        {serverAktif && belum > 0 && (
           <button
             type="button"
             disabled={mengirim}
@@ -329,7 +321,7 @@ export default function Tes({ onFokus }) {
     setTersimpan(simpanHasil(data))
     setHasil(data)
     keTahap('hasil')
-    if (supabaseAktif) {
+    if (serverAktif) {
       setStatusKirim('mengirim')
       kirimTertunda().then(() => {
         const ini = daftarHasil().find((h) => h.id === data.id)
@@ -384,7 +376,7 @@ export default function Tes({ onFokus }) {
 
       <h2 className="jarak-atas">Hasil Tersimpan</h2>
       <p className="ket">
-        {supabaseAktif
+        {serverAktif
           ? 'Hanya untuk peneliti. Tabel ini berisi hasil dari perangkat ini saja; hasil dari semua perangkat ada di dashboard Supabase (tabel hasil).'
           : 'Hanya untuk peneliti. Data tersimpan di perangkat ini saja, jadi unduh CSV-nya secara berkala.'}
       </p>

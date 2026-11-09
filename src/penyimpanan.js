@@ -6,6 +6,7 @@
 // ke Supabase. Jika internet putus, data tetap aman di perangkat dengan tanda
 // terkirim = false, dan dikirim ulang otomatis (kirimTertunda) nanti.
 
+import { apiAktif, kirimAktivitasApi, kirimHasilApi } from './api.js'
 import { supabase } from './supabase.js'
 
 const KUNCI_HASIL = 'pythagoras-hasil'
@@ -43,7 +44,24 @@ export function hapusHasil(id) {
   )
 }
 
-export const identitasTerakhir = () => baca(KUNCI_IDENTITAS, null)
+// Versi 2: identitas = KODE siswa (tanpa nama asli). Identitas lama berbasis nama diabaikan
+// sehingga siswa diminta masuk dengan kode.
+export function identitasTerakhir() {
+  const i = baca(KUNCI_IDENTITAS, null)
+  return i?.kode ? i : null
+}
+
+// Kolom `nama` diisi kode siswa agar tabel lama tetap terpakai; `sekolah` tidak dikumpulkan.
+export const identitasDariSiswa = (siswa) => ({
+  kode: siswa.kode,
+  nama: siswa.kode,
+  kelas: siswa.kelas || '8',
+  sekolah: '-',
+  kelompok: siswa.kelompok || 'Belajar dengan aplikasi',
+})
+
+// Ada tempat tujuan data (backend FastAPI atau Supabase langsung)?
+export const serverAktif = apiAktif || supabase !== null
 
 export const buatId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 
@@ -105,9 +123,48 @@ let sedangMengirim = null
 // Kirim semua data yang belum terkirim (hasil tes & aktivitas belajar).
 // Mengembalikan jumlah baris yang berhasil dikirim.
 export function kirimTertunda() {
-  if (!supabase) return Promise.resolve(0)
+  if (!serverAktif) return Promise.resolve(0)
   if (sedangMengirim) return sedangMengirim
-  sedangMengirim = (async () => {
+  sedangMengirim = (apiAktif ? kirimLewatApi() : kirimLangsung()).finally(() => {
+    sedangMengirim = null
+  })
+  return sedangMengirim
+}
+
+const tandaiTerkirim = (kunci, ids) =>
+  tulis(
+    kunci,
+    baca(kunci, []).map((x) => (ids.includes(x.id) ? { ...x, terkirim: true } : x)),
+  )
+
+// Versi 2: lewat backend FastAPI (hasil dinilai di server, aktivitas dikirim sekaligus)
+async function kirimLewatApi() {
+  let berhasil = 0
+  try {
+    for (const h of baca(KUNCI_HASIL, []).filter((x) => !x.terkirim)) {
+      await kirimHasilApi(h)
+      tandaiTerkirim(KUNCI_HASIL, [h.id])
+      berhasil += 1
+    }
+    const belum = baca(KUNCI_AKTIVITAS, []).filter((x) => !x.terkirim)
+    for (let i = 0; i < belum.length; i += 100) {
+      const potong = belum.slice(i, i + 100)
+      await kirimAktivitasApi(potong)
+      tandaiTerkirim(
+        KUNCI_AKTIVITAS,
+        potong.map((a) => a.id),
+      )
+      berhasil += potong.length
+    }
+  } catch (e) {
+    console.warn('Gagal mengirim ke server:', e.message) // offline / server tidur: coba lagi nanti
+  }
+  return berhasil
+}
+
+// Versi 1 (cadangan bila backend belum dipasang): langsung ke Supabase
+function kirimLangsung() {
+  return (async () => {
     let berhasil = 0
     for (const { kunci, tabel, keBaris: ubah } of ANTREAN) {
       for (const data of baca(kunci, []).filter((x) => !x.terkirim)) {
@@ -126,10 +183,7 @@ export function kirimTertunda() {
       }
     }
     return berhasil
-  })().finally(() => {
-    sedangMengirim = null
-  })
-  return sedangMengirim
+  })()
 }
 
 const KOLOM = ['waktu_selesai', 'jenis', 'nama', 'kelas', 'sekolah', 'kelompok', 'durasi_detik', 'benar', 'total', 'skor', 'IL', 'EL', 'GL', 'terkirim', 'jawaban']

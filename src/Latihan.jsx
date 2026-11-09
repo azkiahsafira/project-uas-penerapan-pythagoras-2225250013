@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import TombolBacakan from './Bacakan.jsx'
-import { FormKenalan } from './Belajar.jsx'
+import FormKode from './Masuk.jsx'
 import { HewanHidup } from './Hewan.jsx'
 import { Konfeti } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import Segitiga from './Segitiga.jsx'
 import { rayakan, semangati } from './perayaan.js'
 import { NAMA, bulat, hitung, keAngka } from './pythagoras.js'
-import { catatAktivitas, identitasTerakhir, kirimTertunda, simpanIdentitas } from './penyimpanan.js'
+import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
 
 // Pertemuan 4 (implementasi): siswa menerapkan Pythagoras pada soal sehari-hari.
 // Setiap soal yang dijawab dicatat ke tabel `aktivitas` (jenis 'latihan', sesi 4).
@@ -131,10 +131,9 @@ export default function Latihan() {
 
   if (!identitas) {
     return (
-      <FormKenalan
-        awal={{}}
-        onSimpan={(baru) => {
-          simpanIdentitas(baru)
+      <FormKode
+        tombol="Masuk & mulai latihan"
+        onMasuk={() => {
           catatan.current = { mulai: new Date(), dibacakan: 0 } // waktu soal pertama dihitung setelah kenalan
           segarkan((n) => n + 1)
         }}

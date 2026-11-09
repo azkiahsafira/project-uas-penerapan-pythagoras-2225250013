@@ -230,8 +230,10 @@ SELESAI
 
 ## Teknologi
 
-- [React](https://react.dev) 19: antarmuka pengguna
+- **JavaScript + framework [React](https://react.dev) 19**: antarmuka pengguna
 - [Vite](https://vite.dev) 8: server pengembangan dan build
+- [three.js](https://threejs.org) 0.180: ilustrasi 3D tangga–dinding (diunduh hanya saat dibuka)
+- **Python + framework [FastAPI](https://fastapi.tiangolo.com)**: backend API (masuk dengan kode siswa, penilaian tes di server) — folder [backend](backend)
 - [Oxlint](https://oxc.rs): pemeriksa kode (linter)
 - [Supabase](https://supabase.com): database penyimpanan hasil penelitian
 - PWA (manifest + service worker): bisa di-install dan dipakai offline
@@ -279,6 +281,19 @@ Perintah lainnya:
 | `npm run lint` | memeriksa kode |
 
 Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lewat GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)).
+
+### Backend Python (FastAPI)
+
+```bash
+python -m venv backend/.venv
+backend/.venv/Scripts/python -m pip install -r backend/requirements.txt   # Windows
+backend/.venv/Scripts/python -m pytest backend -q                         # 14 pengujian
+backend/.venv/Scripts/python -m uvicorn backend.main:app --reload         # http://127.0.0.1:8000/docs
+```
+
+Tanpa variabel `SUPABASE_URL`/`SUPABASE_SERVICE_KEY`, backend menyimpan data di memori (aman untuk mencoba; kode contoh `8A-01`, `8A-02`).
+Untuk menyambungkan aplikasi ke backend, isi `VITE_API_URL` di `.env` (mis. `http://127.0.0.1:8000`). Bila kosong, aplikasi memakai cara lama
+(langsung ke Supabase). Cara memasang di Render ada di [deploy.md](deploy.md) dan [render.yaml](render.yaml).
 
 ## Analisis Data (Python)
 

@@ -1,6 +1,6 @@
 # Arsitektur Aplikasi
 
-> Status: **rancangan v2** (revisi dosen). Bagian "Kondisi sekarang" menjelaskan yang sudah berjalan; bagian "Arsitektur target" menjelaskan arah pengembangan.
+> Status: **v2 sudah dikoding** (backend FastAPI, login kode siswa, three.js). Backend tinggal dipasang di Render; selama `VITE_API_URL` kosong, aplikasi memakai jalur cadangan langsung ke Supabase.
 
 ## 1. Gambaran besar
 

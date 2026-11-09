@@ -28,10 +28,11 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] Analisis Python (N-gain, Leppink, jejak belajar, data kertas)
 
 ### Revisi (versi 2)
-- [ ] 🔁 Login **kode siswa** (ganti nama + sekolah)
-- [ ] 🔁 Backend **FastAPI** (Python) di Render: `/masuk`, `/aktivitas`, `/hasil`, `/sehat`
-- [ ] 🔁 Penilaian tes pindah ke server; Supabase hanya ditulis backend
-- [ ] **three.js**: adegan tangga–dinding yang bisa diputar (lazy load)
+- [x] Login **kode siswa** (ganti nama + sekolah) — `src/Masuk.jsx`
+- [x] Backend **FastAPI** (Python): `/masuk`, `/saya`, `/aktivitas`, `/hasil`, `/sehat`, `/soal/latihan`, rekap & ekspor peneliti + 14 pengujian pytest — `backend/`
+- [ ] Pasang backend di **Render** & daftarkan kode siswa di tabel `siswa` (butuh akun Render pemilik proyek)
+- [x] Penilaian tes di server (`backend/penilaian.py`) — aktif setelah `VITE_API_URL` diisi
+- [x] **three.js**: adegan tangga–dinding yang bisa diputar (lazy load) — `src/Tangga3D.jsx`, Sesi 3 langkah "Contoh: tangga"
 - [ ] Latihan **identifikasi sisi miring** pada segitiga yang diputar (IL1)
 - [ ] Penanda **Diketahui/Ditanya** pada soal cerita (EL1, EL5)
 - [ ] **Petunjuk bertingkat** 5 tahap + fading (GL3)

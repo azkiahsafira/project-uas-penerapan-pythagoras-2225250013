@@ -204,7 +204,8 @@ export const SESI = [
           'Periksa: 4 m lebih pendek dari tangga 5 m, jadi masuk akal.',
         ],
         rumus: ['b² = 5² − 3² = 25 − 9 = 16', 'b = √16 = 4 m'],
-        visual: { jenis: 'segitiga', sisi: { a: 3, b: 4, c: 5 }, cari: 'b' },
+        // ilustrasi 3D three.js tangga–dinding (soal tangga dari wawancara kebutuhan)
+        visual: { jenis: 'tangga3d', sisi: { a: 3, b: 4, c: 5 }, cari: 'b' },
       },
       {
         judul: 'Mengenali sisi miring dalam cerita',

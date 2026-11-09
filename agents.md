@@ -12,7 +12,7 @@ konsisten dengan rancangan penelitian, teori beban kognitif, dan aturan privasi.
 | Bagian | Teknologi | Perintah |
 | --- | --- | --- |
 | Frontend | React 19 + Vite (JavaScript), three.js | `npm install`, `npm run dev`, `npm run lint`, `npm run build` |
-| Backend | FastAPI (Python 3.11+) | `pip install -r backend/requirements.txt`, `uvicorn backend.main:app --reload` |
+| Backend | FastAPI (Python 3.11+) | `python -m venv backend/.venv`, `pip install -r backend/requirements.txt`, `python -m pytest backend -q`, `uvicorn backend.main:app --reload` |
 | Analisis | Python (pustaka bawaan) | `python analisis/analisis.py analisis/contoh_data.csv` |
 | Lembar tes cetak | Node | `node scripts/buat-lembar-tes.mjs` |
 

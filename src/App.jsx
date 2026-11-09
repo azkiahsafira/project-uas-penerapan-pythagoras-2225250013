@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { bangunkanServer } from './api.js'
 import Belajar from './Belajar.jsx'
 import EfekKlik from './Efek.jsx'
 import { HewanHidup } from './Hewan.jsx'
@@ -85,6 +86,11 @@ function App() {
       // penyimpanan tidak tersedia: pilihan hanya berlaku selama halaman terbuka
     }
   }, [animasi])
+
+  // server backend gratis bisa tertidur: sapa sekali saat aplikasi dibuka
+  useEffect(() => {
+    bangunkanServer()
+  }, [])
 
   // bacaan suara berhenti setiap pindah menu atau saat tes dimulai
   useEffect(() => {

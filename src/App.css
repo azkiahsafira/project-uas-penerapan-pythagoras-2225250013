@@ -5967,3 +5967,80 @@ main > * {
     animation: none !important;
   }
 }
+
+/* =========================================================================
+   Masuk dengan kode siswa (Masuk.jsx)
+   ========================================================================= */
+.isian-kode {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* =========================================================================
+   Ilustrasi 3D tangga-dinding (Tangga3D.jsx, three.js)
+   ========================================================================= */
+.tangga3d {
+  width: 100%;
+}
+
+.t3-panggung {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(#e0f2fe, #f8fbff 70%);
+  touch-action: none; /* geser jari untuk memutar, bukan menggulir halaman */
+}
+
+.t3-panggung canvas {
+  display: block;
+}
+
+.t3-memuat {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #475577;
+  font-weight: 700;
+}
+
+.t3-label {
+  position: absolute;
+  translate: -50% -50%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #2563eb;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(30, 42, 77, 0.15);
+}
+
+.t3-label.rata-kanan {
+  translate: -100% -50%;
+}
+
+.t3-label.rata-kiri {
+  translate: 0 -50%;
+}
+
+.t3-label.dicari {
+  color: #db2777;
+}
+
+.t3-tombol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.t3-petunjuk {
+  margin: 6px 0 0;
+}

@@ -30,3 +30,7 @@ analisis/*.csv
 analisis/hasil_analisis/
 __pycache__/
 !analisis/templat_kertas.csv
+
+# Backend Python
+backend/.venv/
+.pytest_cache/
