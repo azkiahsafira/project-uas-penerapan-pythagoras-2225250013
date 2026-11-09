@@ -1,77 +1,16 @@
-// Service worker: membuat aplikasi bisa di-install (PWA) dan tetap terbuka tanpa internet.
-//
-// Strategi:
-// - Halaman (HTML): ambil dari internet dulu agar selalu versi terbaru;
-//   bila offline, pakai salinan terakhir di cache.
-// - File aplikasi (JS, CSS, gambar, ikon, font): ambil dari cache dulu agar cepat;
-//   bila belum ada, unduh lalu simpan ke cache.
-// - Permintaan ke Supabase (database) TIDAK di-cache. Bila offline, hasil tes
-//   tetap tersimpan di perangkat dan dikirim ulang otomatis oleh aplikasi.
-
-const VERSI = 'pythagoras-v4'
-const INTI = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './favicon.svg']
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(VERSI).then((cache) => cache.addAll(INTI)))
-  self.skipWaiting()
-})
+// Service worker "pemati" untuk alamat lama yang sudah tidak dipakai.
+// Perangkat yang pernah membuka aplikasi di alamat lama menyimpan salinannya (service worker + cache),
+// sehingga aplikasi masih bisa tampil walau server sudah 404. Berkas ini menggantikan service worker lama:
+// semua cache dihapus, service worker dicabut, lalu halaman dimuat ulang sehingga yang tampil hanya 404.
+self.addEventListener('install', () => self.skipWaiting())
 
 self.addEventListener('activate', (event) => {
-  // hapus cache versi lama
   event.waitUntil(
-    caches
-      .keys()
-      .then((nama) => Promise.all(nama.filter((n) => n !== VERSI).map((n) => caches.delete(n))))
-      .then(() => self.clients.claim()),
-  )
-})
-
-self.addEventListener('fetch', (event) => {
-  const req = event.request
-  if (req.method !== 'GET') return
-  const url = new URL(req.url)
-
-  // database & API: selalu langsung ke internet
-  if (url.hostname.endsWith('supabase.co')) return
-
-  // pengecekan versi baru (Install.jsx): selalu langsung ke internet, tidak disimpan
-  if (url.searchParams.has('cek-versi')) return
-
-  // halaman bukti percakapan AI bukan bagian aplikasi: biarkan browser memuatnya biasa
-  if (url.pathname.includes('/bukti-ai/')) return
-
-  // halaman: internet dulu, cache bila offline
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      // cache: 'no-cache' = selalu tanya server apakah ada versi baru
-      // (tanpa ini browser bisa memakai salinan lama sampai 10 menit)
-      fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' })
-        .then((res) => {
-          const salinan = res.clone()
-          caches.open(VERSI).then((cache) => cache.put('./index.html', salinan))
-          return res
-        })
-        .catch(() => caches.match('./index.html', { ignoreVary: true })),
-    )
-    return
-  }
-
-  // file aplikasi & font: cache dulu
-  const fileApp = url.origin === self.location.origin
-  const font = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com'
-  if (!fileApp && !font) return
-
-  event.respondWith(
-    caches.match(req, { ignoreVary: true }).then(
-      (tersimpan) =>
-        tersimpan ||
-        fetch(req).then((res) => {
-          if (res.ok || res.type === 'opaque') {
-            const salinan = res.clone()
-            caches.open(VERSI).then((cache) => cache.put(req, salinan))
-          }
-          return res
-        }),
-    ),
+    (async () => {
+      for (const nama of await caches.keys()) await caches.delete(nama)
+      await self.registration.unregister()
+      const jendela = await self.clients.matchAll({ type: 'window' })
+      jendela.forEach((j) => j.navigate(j.url))
+    })(),
   )
 })
