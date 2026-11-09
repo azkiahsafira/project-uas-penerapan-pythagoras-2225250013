@@ -24,9 +24,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 
-from .basisdata import buat_penyimpanan
-from .penilaian import nilai_leppink, nilai_tes
-from .sesi import buat_token, periksa_token
+try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
+    from .basisdata import buat_penyimpanan
+    from .penilaian import nilai_leppink, nilai_tes
+    from .sesi import buat_token, periksa_token
+except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
+    from basisdata import buat_penyimpanan
+    from penilaian import nilai_leppink, nilai_tes
+    from sesi import buat_token, periksa_token
 
 # Cukup SATU rahasia di server (SUPABASE_SERVICE_KEY). Kunci tanda tangan token diturunkan darinya
 # bila KUNCI_TOKEN tidak diisi, sehingga tetap sama walau server tidur/bangun ulang.

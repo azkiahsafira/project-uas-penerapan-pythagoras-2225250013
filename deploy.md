@@ -21,8 +21,8 @@
 > Render sempat dicoba, tetapi kini meminta kartu pembayaran bahkan untuk paket gratis, jadi backend dipasang di **Vercel**.
 1. Daftar di https://vercel.com/signup dengan **GitHub** (dilakukan sendiri oleh pemilik proyek).
 2. **Add New → Project** → impor repo `project-uas-penerapan-pythagoras-2225250013` (izinkan Vercel membaca repo ini).
-3. Pengaturan proyek dibaca dari [vercel.json](vercel.json): tanpa build frontend, `api/index.py` menjalankan FastAPI, semua `/api/...` diteruskan ke sana.
-   Dependensi Python dari [requirements.txt](requirements.txt).
+   Vercel mendeteksi dua aplikasi; pilih **backend (FastAPI)** → *Import single project* (Root Directory = `backend`).
+3. Vercel menjalankan `backend/main.py` (FastAPI) dengan dependensi dari `backend/requirements.txt`; rute tetap `/api/...`.
 4. **Environment Variables**: `SUPABASE_URL` = `https://hjhltqqwwzbbgkpwzcxx.supabase.co`, dan `SUPABASE_SERVICE_KEY` = kunci `sb_secret_...`
    (**diisi sendiri**, jangan dibagikan). Opsional: `KUNCI_PENELITI` untuk endpoint rekap peneliti.
 5. Deploy → alamat backend, mis. `https://<nama-proyek>.vercel.app`; cek `https://<nama-proyek>.vercel.app/api/sehat`.
