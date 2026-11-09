@@ -12,7 +12,7 @@ flowchart LR
     SW["Service Worker<br/>offline + antrean"]
     LS["localStorage<br/>kode siswa, progres, antrean data"]
   end
-  GP["GitHub Pages<br/>file statis aplikasi"]
+  GP["Vercel<br/>file statis aplikasi"]
   API["FastAPI (Python)<br/>Vercel (serverless, gratis)"]
   DB[("Supabase<br/>PostgreSQL")]
   PY["Python analisis.py<br/>N-gain, Leppink, rekap"]
@@ -33,7 +33,7 @@ flowchart LR
 | Backend | **FastAPI** (Python) di **Vercel** (gratis, tanpa kartu) | Masuk dengan kode siswa, menilai tes di server, menyimpan hasil & aktivitas |
 | Basis data | **Supabase** (PostgreSQL) | Tabel `siswa`, `hasil`, `aktivitas` |
 | Analisis | **Python** (pustaka bawaan) | Rekap pre/post, N-gain, Leppink, jejak belajar |
-| Hosting aplikasi | **GitHub Pages** | File statis hasil `npm run build` |
+| Hosting aplikasi | **Vercel** (https://penerapan-pythagoras.vercel.app) | File statis hasil `npm run build` |
 
 ## 2. Alur utama
 
@@ -102,5 +102,5 @@ aplikasi-pythagoras/
 ## 7. Keamanan & privasi
 - Tidak ada nama asli di basis data; hubungan kode ↔ nama hanya dipegang peneliti (di luar aplikasi).
 - Token sesi bertanda tangan (HMAC) berumur 30 hari; tidak ada password.
-- CORS backend hanya mengizinkan domain GitHub Pages aplikasi dan `localhost`.
+- CORS backend hanya mengizinkan domain aplikasi (`penerapan-pythagoras.vercel.app`) dan `localhost`.
 - Rahasia (`SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`) disimpan sebagai *environment variable* di Vercel, **tidak** di repositori.

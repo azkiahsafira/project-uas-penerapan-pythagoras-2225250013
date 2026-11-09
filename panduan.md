@@ -1,6 +1,6 @@
 # panduan.md — Panduan Penggunaan
 
-Alamat aplikasi: **https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/**
+Alamat aplikasi: **https://penerapan-pythagoras.vercel.app/**
 
 ## A. Untuk siswa
 

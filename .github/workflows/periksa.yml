@@ -1,0 +1,25 @@
+# Memeriksa kode setiap ada push ke main: lint & build harus lolos.
+# Aplikasi dipasang otomatis oleh Vercel (https://penerapan-pythagoras.vercel.app), bukan GitHub Pages.
+name: Periksa kode
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build

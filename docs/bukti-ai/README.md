@@ -3,7 +3,7 @@
 Aplikasi **Penerapan Teorema Pythagoras** dibuat dengan bantuan AI **Claude** (lewat Claude Code).
 Seluruh percakapan, mulai dari perencanaan, pembuatan, revisi tampilan, sampai deploy, didokumentasikan di sini.
 
-## 👉 [Buka percakapan lengkap di browser](https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/bukti-ai/)
+## 👉 [Buka percakapan lengkap di browser](https://penerapan-pythagoras.vercel.app/bukti-ai/)
 
 Halaman di atas menampilkan percakapan seperti tampilan chat: pesan mahasiswa (kanan, biru) dan jawaban AI (kiri, putih),
 berurutan dari awal sampai akhir. Detail teknis kerja AI (menulis file, menjalankan perintah, menguji di browser)

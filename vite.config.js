@@ -4,7 +4,6 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Path relatif agar aplikasi tetap jalan di GitHub Pages
-  // (https://<user>.github.io/<nama-repo>/)
+  // Path relatif agar aplikasi jalan di alamat mana pun (Vercel: https://penerapan-pythagoras.vercel.app)
   base: './',
 })

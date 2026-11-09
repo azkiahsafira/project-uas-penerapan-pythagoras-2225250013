@@ -12,17 +12,17 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 | Dosen Pengampu | Dr. Aan Hendrayana, S.Si., M.Pd. |
 
 <p align="center">
-  <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/"><strong>🚀 Buka aplikasinya di sini</strong></a><br>
-  <sub>https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/</sub>
+  <a href="https://penerapan-pythagoras.vercel.app/"><strong>🚀 Buka aplikasinya di sini</strong></a><br>
+  <sub>https://penerapan-pythagoras.vercel.app/</sub>
 </p>
 
 <p align="center">
-  <a href="https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/">
+  <a href="https://penerapan-pythagoras.vercel.app/">
     <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header dengan halaman sekolah (gedung SMP, Siku, Raka, dan Nisa berdiri di rumput), menu Belajar/Kalkulator/Latihan Soal/Tes, dan latar bawah laut (gurita, paus, rumput laut, bintang laut)" width="820">
   </a>
 </p>
 
-> Halaman repository ini hanya berisi kode. Warna, animasi, dan karakter aplikasinya terlihat di link di atas (GitHub Pages).
+> Halaman repository ini hanya berisi kode. Warna, animasi, dan karakter aplikasinya terlihat di link di atas (dipasang di Vercel).
 
 ## Dokumen Perancangan (revisi dosen)
 
@@ -38,7 +38,7 @@ Dokumen perancangan versi 2, disusun dari hasil wawancara kebutuhan siswa (tahap
 | [agents.md](agents.md) | Aturan untuk AI agent/asisten koding di proyek ini |
 | [konten.md](konten.md) | Spesifikasi isi: bab & subbab, tujuan, indikator literasi matematis, aturan menulis soal |
 | [testing.md](testing.md) | Rencana pengujian: otomatis, fungsional, perangkat Android, validasi ahli, uji coba |
-| [deploy.md](deploy.md) | Pemasangan & pemeliharaan: GitHub Pages, Supabase, Vercel, checklist sebelum penelitian, cadangan data |
+| [deploy.md](deploy.md) | Pemasangan & pemeliharaan: Vercel (aplikasi & backend), Supabase, checklist sebelum penelitian, cadangan data |
 | [privasi.md](privasi.md) | Etika penelitian & perlindungan data siswa (persetujuan, kode siswa, penyimpanan) |
 | [panduan.md](panduan.md) | Panduan penggunaan untuk siswa dan peneliti/guru, plus solusi masalah umum |
 | [changelog.md](changelog.md) | Riwayat perubahan aplikasi per versi |
@@ -296,7 +296,7 @@ Perintah lainnya:
 | `npm run preview` | menjalankan hasil build |
 | `npm run lint` | memeriksa kode |
 
-Setiap push ke branch `main` otomatis di-build dan di-deploy ke GitHub Pages lewat GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)).
+Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https://penerapan-pythagoras.vercel.app). GitHub Actions ([.github/workflows/periksa.yml](.github/workflows/periksa.yml)) memeriksa lint & build.
 
 ### Backend Python (FastAPI)
 
@@ -324,7 +324,7 @@ python analisis.py data.csv --aktivitas aktivitas.csv
 
 Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh percakapan, mulai dari perencanaan sampai deploy, didokumentasikan di folder [docs/bukti-ai](docs/bukti-ai).
 
-👉 **[Buka percakapan lengkap dengan AI di browser](https://azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/bukti-ai/)**
+👉 **[Buka percakapan lengkap dengan AI di browser](https://penerapan-pythagoras.vercel.app/bukti-ai/)**
 
 
 - [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)
