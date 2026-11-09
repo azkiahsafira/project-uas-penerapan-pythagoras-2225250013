@@ -5865,3 +5865,105 @@ main > * {
 .laut-renang.disapa {
   animation-play-state: paused;
 }
+
+/* =========================================================================
+   Tombol musik latar (Musik.jsx)
+   ========================================================================= */
+.tombol-musik {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px 8px 10px;
+  border: 2px solid #bfe3ff;
+  border-radius: 999px;
+  background: #fff;
+  color: #1d2a4d;
+  font-weight: 800;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 22px -12px rgba(30, 42, 77, 0.45);
+}
+
+.tombol-musik.nyala {
+  border-color: #f9a8d4;
+}
+
+.tm-ikon {
+  font-size: 1.15rem;
+}
+
+.tombol-musik.nyala .tm-ikon {
+  animation: tm-goyang 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes tm-goyang {
+  from {
+    transform: rotate(-12deg) scale(1);
+  }
+  to {
+    transform: rotate(12deg) scale(1.12);
+  }
+}
+
+.tm-not {
+  position: absolute;
+  left: 14px;
+  bottom: 100%;
+  pointer-events: none;
+}
+
+.tm-not i {
+  position: absolute;
+  font-style: normal;
+  color: #f472b6;
+  opacity: 0;
+  animation: tm-not 2.4s ease-out infinite;
+}
+
+.tm-not i:nth-child(2) {
+  left: 12px;
+  color: #38bdf8;
+  animation-delay: 0.8s;
+}
+
+.tm-not i:nth-child(3) {
+  left: 4px;
+  color: #a78bfa;
+  animation-delay: 1.6s;
+}
+
+@keyframes tm-not {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(10px, -34px) rotate(18deg);
+  }
+}
+
+/* HP: cukup ikon bulat agar tidak menutupi isi */
+@media (max-width: 640px) {
+  .tombol-musik {
+    right: 12px;
+    bottom: 12px;
+    padding: 10px;
+  }
+
+  .tm-teks {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tombol-musik * {
+    animation: none !important;
+  }
+}

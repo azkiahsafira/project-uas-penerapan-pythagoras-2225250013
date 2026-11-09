@@ -14,6 +14,7 @@ import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
 import { HiasanLucu } from './Sekolah.jsx'
 import LatarLaut from './Laut.jsx'
+import TombolMusik from './Musik.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
 
@@ -119,6 +120,8 @@ function App() {
       {!fokusTes && <LatarHalaman />}
       {!fokusTes && <HiasanLucu />}
       {!fokusTes && <LatarLaut />}
+      {/* musik latar: tombolnya tidak dipasang saat tes, jadi musik berhenti selama tes */}
+      {!fokusTes && <TombolMusik />}
       <EfekKlik aktif={!fokusTes && animasi} />
       {/* Hewan di pinggir layar: panda & beruang mengintip, bebek berjalan melintas */}
       {!fokusTes && (
