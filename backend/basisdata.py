@@ -41,7 +41,11 @@ class Memori:
 class SupabaseREST:
     def __init__(self, url, kunci_layanan):
         self.url = url.rstrip("/") + "/rest/v1"
-        self.kepala = {"apikey": kunci_layanan, "Authorization": f"Bearer {kunci_layanan}"}
+        # Kunci Supabase baru (sb_secret_...) cukup di header apikey; kunci lama (JWT service_role)
+        # juga dikirim sebagai Bearer.
+        self.kepala = {"apikey": kunci_layanan}
+        if not kunci_layanan.startswith("sb_"):
+            self.kepala["Authorization"] = f"Bearer {kunci_layanan}"
         self.klien = httpx.Client(timeout=15)
 
     def cari_siswa(self, kode):
