@@ -11,7 +11,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 
 ## B. Design
 - [x] prd.md, readme.md, agents.md, architecture.md, task.md, design.md, api.md
-- [ ] Materi ajar PDF berdasarkan temuan wawancara (Langkah 2 dosen)
+- [x] Materi ajar PDF berdasarkan temuan wawancara (Langkah 2 dosen) → [docs/materi](docs/materi/Materi-Teorema-Pythagoras.pdf)
 - [ ] Wireframe layar Android (Masuk, Soal cerita, Ilustrasi 3D)
 - [ ] Bank soal latihan berjenjang (tingkat 1–3, ≥ 10 soal per tingkat)
 - [ ] Validasi ahli materi & media (lembar penilaian)

@@ -1,0 +1,319 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<title>Materi Teorema Pythagoras dan Penerapannya</title><style>
+@page { size: A4; margin: 15mm 15mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; color: #1d2a4d; font-size: 11.5pt; line-height: 1.5; margin: 0; }
+h1 { font-size: 24pt; margin: 0 0 6px; }
+h2 { font-size: 16pt; margin: 0 0 8px; color: #1d4ed8; border-bottom: 3px solid #bfdbfe; padding-bottom: 4px; }
+h3 { font-size: 12.5pt; margin: 14px 0 6px; }
+p { margin: 6px 0; }
+.bab { break-before: page; }
+.sampul { text-align: center; padding-top: 30mm; }
+.sampul .pita { display: inline-block; padding: 4px 14px; border-radius: 999px; background: #e0f2fe; font-weight: 700; color: #0369a1; }
+.sampul .sub { font-size: 13pt; color: #475577; }
+.sampul table { width: auto; margin: 22px auto 0; border-collapse: collapse; text-align: left; }
+.sampul td { padding: 3px 12px; border: none; }
+.kotak { border-radius: 12px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+.tujuan { background: #eff6ff; border: 1.5px solid #bfdbfe; }
+.ingat { background: #fff7ed; border: 1.5px solid #fed7aa; }
+.penting { background: #fdf2f8; border: 1.5px solid #fbcfe8; }
+.coba { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+.refleksi { background: #faf5ff; border: 1.5px solid #e9d5ff; }
+.mengapa { background: #f8fafc; border: 1.5px dashed #94a3b8; font-size: 10pt; color: #475577; }
+.label { display: inline-block; font-weight: 800; font-size: 9.5pt; padding: 1px 8px; border-radius: 999px; margin-bottom: 4px; }
+.tujuan .label { background: #dbeafe; color: #1d4ed8; }
+.ingat .label { background: #ffedd5; color: #c2410c; }
+.penting .label { background: #fce7f3; color: #be185d; }
+.coba .label { background: #dcfce7; color: #15803d; }
+.refleksi .label { background: #f3e8ff; color: #7e22ce; }
+.mengapa .label { background: #e2e8f0; color: #334155; }
+.dua { display: flex; gap: 14px; align-items: center; break-inside: avoid; }
+h3 { break-after: avoid; }
+.dua > div { flex: 1; }
+.gbr { display: block; margin: 0 auto; }
+.rumus { font-size: 15pt; font-weight: 800; text-align: center; margin: 8px 0; letter-spacing: .5px; }
+table { border-collapse: collapse; width: 100%; font-size: 10.5pt; }
+th, td { border: 1px solid #cbd5e1; padding: 5px 7px; vertical-align: top; }
+th { background: #eff6ff; text-align: left; }
+.kuadrat td { text-align: center; font-weight: 600; }
+.langkah { counter-reset: no; list-style: none; padding: 0; margin: 6px 0; }
+.langkah li { counter-increment: no; position: relative; padding: 6px 8px 6px 40px; margin: 5px 0; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; }
+.langkah li::before { content: counter(no); position: absolute; left: 8px; top: 6px; width: 24px; height: 24px; border-radius: 50%; background: #2563eb; color: #fff; font-weight: 800; text-align: center; line-height: 24px; font-size: 10.5pt; }
+.dd td:first-child { width: 28%; font-weight: 700; }
+.biru { color: #2563eb; font-weight: 700; }
+.pink { color: #db2777; font-weight: 700; }
+.isian { display: inline-block; min-width: 110px; border-bottom: 1.5px solid #1d2a4d; }
+.garis-tulis { height: 46px; border: 1px dashed #b7c3dc; border-radius: 8px; margin: 4px 0 8px; }
+.kisi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.kisi .sel { border: 1px solid #e2e8f0; border-radius: 10px; padding: 4px; text-align: center; font-size: 9.5pt; }
+.soal { break-inside: avoid; margin: 8px 0; }
+.kecil { font-size: 9.5pt; color: #64748b; }
+.legenda span { display: inline-block; margin-right: 14px; font-weight: 700; }
+</style></head><body>
+
+<section class="sampul">
+  <span class="pita">Matematika SMP · Kelas VIII · Geometri</span>
+  <h1>Teorema Pythagoras<br>dan Penerapannya</h1>
+  <p class="sub">Materi ajar untuk membangun literasi matematis,<br>disusun berdasarkan hasil wawancara kebutuhan siswa</p>
+  <svg viewBox="0 0 260 190" width="260" height="190" class="gbr"><polygon points="52.0,138.0 166.7,138.0 52.0,52.0" fill="#f1f7ff"/><line x1="52.0" y1="138.0" x2="166.7" y2="138.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="109.3" y="161.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="middle">a = 4</text><line x1="52.0" y1="138.0" x2="52.0" y2="52.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="42.0" y="99.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="end">b = 3</text><line x1="166.7" y1="138.0" x2="52.0" y2="52.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="115.3" y="83.0" fill="#db2777" font-size="13" font-weight="700" text-anchor="start">c = ?</text><polyline points="64.0,138.0 64.0,126.0 52.0,126.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg>
+  <p class="legenda"><span class="biru">■ biru = diketahui</span><span class="pink">■ merah muda = dicari</span></p>
+  <table>
+    <tr><td>Penyusun</td><td>: Azkiah Safira (2225250013) · Kelas 3F</td></tr>
+    <tr><td>Dosen Pengampu</td><td>: Dr. Aan Hendrayana, S.Si., M.Pd.</td></tr>
+    <tr><td>Mata kuliah</td><td>: Algoritma Pemrograman (Project UAS)</td></tr>
+    <tr><td>Pendukung</td><td>: Aplikasi Android "Penerapan Teorema Pythagoras"</td></tr>
+  </table>
+</section>
+
+<section class="bab">
+  <h2>Petunjuk Belajar &amp; Tujuan</h2>
+  <div class="kotak tujuan"><span class="label">TUJUAN PEMBELAJARAN</span>
+    <p>Setelah mempelajari materi ini, kamu dapat:</p>
+    <ol>
+      <li>menghitung kuadrat dan akar kuadrat bilangan (prasyarat);</li>
+      <li>menunjukkan <b>sisi miring</b> segitiga siku-siku walaupun gambarnya diputar;</li>
+      <li>menuliskan teorema Pythagoras dan memilih rumus yang tepat;</li>
+      <li>mengubah soal cerita menjadi <b>Diketahui – Ditanya – gambar</b> (merumuskan);</li>
+      <li>menghitung panjang sisi yang belum diketahui (menerapkan);</li>
+      <li>memeriksa apakah jawaban <b>masuk akal</b> dalam situasi nyata (menafsirkan).</li>
+    </ol>
+    <p class="kecil">Nomor 4–6 adalah tiga proses <b>literasi matematis</b>: merumuskan, menerapkan, dan menafsirkan.</p>
+  </div>
+  <h3>Cara memakai materi ini</h3>
+  <ul class="langkah">
+    <li>Belajar <b>berurutan</b>: Bagian 1 → 2 → 3 → 4 → 5. Jangan melompat.</li>
+    <li>Setiap bagian hanya berisi <b>satu ide utama</b>. Baca pelan-pelan, lalu kerjakan kotak <b>Ayo Coba</b>.</li>
+    <li>Perhatikan warna: <span class="biru">biru = yang diketahui</span>, <span class="pink">merah muda = yang dicari</span>.</li>
+    <li>Kalau buntu, pakai <b>Strategi 5 Langkah</b> (Bagian 4) dari langkah pertama.</li>
+    <li>Gunakan aplikasi Android untuk mencoba gambar 3D tangga–dinding dan latihan tambahan.</li>
+  </ul>
+  <div class="kotak mengapa"><span class="label">MENGAPA DISUSUN BEGINI?</span>
+    <p>Wawancara menunjukkan siswa kesulitan menentukan sisi miring (IL1), memproses banyak informasi sekaligus (IL2),
+    belum kuat kuadrat/akar (IL3), bingung dengan soal cerita panjang (EL1, EL5), dan bolak-balik antara teks dan gambar (EL2).
+    Siswa terbantu oleh gambar, langkah bertahap, dan contoh (GL1–GL3). Hubungan lengkapnya ada pada lampiran.</p>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Bagian 1 · Persiapan: Kuadrat dan Akar Kuadrat</h2>
+  <div class="kotak ingat"><span class="label">INGAT</span>
+    <p><b>Kuadrat</b> berarti bilangan dikalikan dengan dirinya sendiri: <b>5² = 5 × 5 = 25</b>.</p>
+    <p><b>Akar kuadrat</b> adalah kebalikannya: bilangan berapa yang dikuadratkan hasilnya 25? <b>√25 = 5</b>, karena 5 × 5 = 25.</p>
+  </div>
+  <h3>Tabel kuadrat 1–20 (pegangan selama belajar)</h3>
+  <table class="kuadrat"><tr><td>1² = 1</td><td>2² = 4</td><td>3² = 9</td><td>4² = 16</td><td>5² = 25</td></tr><tr><td>6² = 36</td><td>7² = 49</td><td>8² = 64</td><td>9² = 81</td><td>10² = 100</td></tr><tr><td>11² = 121</td><td>12² = 144</td><td>13² = 169</td><td>14² = 196</td><td>15² = 225</td></tr><tr><td>16² = 256</td><td>17² = 289</td><td>18² = 324</td><td>19² = 361</td><td>20² = 400</td></tr></table>
+  <p class="kecil">Cara memakai tabel untuk akar: √196 = ? → cari 196 di tabel → 14² = 196, jadi √196 = 14.</p>
+  <div class="kotak coba"><span class="label">AYO COBA 1</span>
+    <p>a) 7² = <span class="isian"></span> &nbsp; b) 13² = <span class="isian"></span> &nbsp; c) √64 = <span class="isian"></span> &nbsp; d) √289 = <span class="isian"></span></p>
+    <p class="kecil">Kalau masih ragu, pelajari ulang bagian ini sebelum lanjut. Teorema Pythagoras selalu memakai kuadrat di awal dan akar di akhir.</p>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Bagian 2 · Mengenal Segitiga Siku-siku dan Sisi Miring</h2>
+  <div class="dua">
+    <div>
+      <p>Segitiga siku-siku punya satu <b>sudut siku-siku (90°)</b>, ditandai kotak kecil ⌐.</p>
+      <p>Dua sisi yang <b>mengapit</b> sudut siku-siku disebut <b>sisi siku-siku</b> (kita beri nama <b>a</b> dan <b>b</b>).</p>
+      <p>Sisi yang <b>berhadapan</b> (di depan) sudut siku-siku disebut <b>sisi miring</b> atau hipotenusa (<b>c</b>).</p>
+    </div>
+    <div><svg viewBox="0 0 300 210" width="300" height="210" class="gbr"><polygon points="52.0,158.0 193.3,158.0 52.0,52.0" fill="#f1f7ff"/><line x1="52.0" y1="158.0" x2="193.3" y2="158.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="122.7" y="181.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="middle">a</text><line x1="52.0" y1="158.0" x2="52.0" y2="52.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="42.0" y="109.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end">b</text><line x1="193.3" y1="158.0" x2="52.0" y2="52.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="128.7" y="93.0" fill="#db2777" font-size="13" font-weight="700" text-anchor="start">c (sisi miring)</text><polyline points="64.0,158.0 64.0,146.0 52.0,146.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg></div>
+  </div>
+  <div class="kotak penting"><span class="label">AWAS KELIRU!</span>
+    <p>Sisi miring <b>bukan</b> selalu sisi paling bawah atau sisi yang tampak "miring". Caranya:
+    <b>temukan dulu kotak sudut siku-siku, lalu lihat sisi di depannya</b>. Sisi miring juga selalu <b>sisi terpanjang</b>.</p>
+  </div>
+  <h3>Segitiga yang sama, posisi berbeda</h3>
+  <p>Segitiga di bawah ini <b>sama</b>, hanya diputar atau dibalik. Sisi miringnya tetap sisi di depan sudut siku-siku.</p>
+  <div class="kotak coba"><span class="label">AYO COBA 2 · tebalkan sisi miring dengan pensil warna</span>
+    <div class="kisi"><div class="sel"><svg viewBox="0 0 150 130" width="150" height="130" class="gbr"><polygon points="26.0,104.0 124.0,104.0 26.0,30.5" fill="#f1f7ff"/><line x1="26.0" y1="104.0" x2="124.0" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="75.0" y="127.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="middle"></text><line x1="26.0" y1="104.0" x2="26.0" y2="30.5" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="16.0" y="71.2" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end"></text><line x1="124.0" y1="104.0" x2="26.0" y2="30.5" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="81.0" y="55.2" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="start"></text><polyline points="38.0,104.0 38.0,92.0 26.0,92.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg><p>Gambar 1: sisi miring = ......</p></div><div class="sel"><svg viewBox="0 0 150 130" width="150" height="130" class="gbr"><polygon points="84.5,104.0 84.5,26.0 26.0,104.0" fill="#f1f7ff"/><line x1="84.5" y1="104.0" x2="84.5" y2="26.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="94.5" y="69.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="start"></text><line x1="84.5" y1="104.0" x2="26.0" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="55.2" y="127.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="middle"></text><line x1="84.5" y1="26.0" x2="26.0" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="47.2" y="55.0" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end"></text><polyline points="84.5,92.0 72.5,92.0 72.5,104.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg><p>Gambar 2: sisi miring = ......</p></div><div class="sel"><svg viewBox="0 0 150 130" width="150" height="130" class="gbr"><polygon points="26.0,51.5 96.0,26.0 45.1,104.0" fill="#f1f7ff"/><line x1="26.0" y1="51.5" x2="96.0" y2="26.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="57.6" y="25.3" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="middle"></text><line x1="26.0" y1="51.5" x2="45.1" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="26.2" y="85.2" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end"></text><line x1="96.0" y1="26.0" x2="45.1" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="78.9" y="83.5" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="start"></text><polyline points="37.3,47.4 41.4,58.7 30.1,62.8" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg><p>Gambar 3: sisi miring = ......</p></div><div class="sel"><svg viewBox="0 0 150 130" width="150" height="130" class="gbr"><polygon points="26.0,49.6 57.4,104.0 66.8,26.0" fill="#f1f7ff"/><line x1="26.0" y1="49.6" x2="57.4" y2="104.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="33.1" y="94.8" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end"></text><line x1="26.0" y1="49.6" x2="66.8" y2="26.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="41.4" y="25.1" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="end"></text><line x1="57.4" y1="104.0" x2="66.8" y2="26.0" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><text x="72.1" y="70.2" fill="#94a3b8" font-size="13" font-weight="700" text-anchor="start"></text><polyline points="32.0,60.0 42.4,54.0 36.4,43.6" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg><p>Gambar 4: sisi miring = ......</p></div></div>
+  </div>
+  <div class="kotak refleksi"><span class="label">REFLEKSI</span>
+    <p>Jelaskan dengan kata-katamu sendiri kepada teman: <i>"Bagaimana cara menemukan sisi miring kalau segitiganya diputar?"</i></p>
+    <div class="garis-tulis"></div>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Bagian 3 · Teorema Pythagoras</h2>
+  <div class="dua">
+    <div><svg viewBox="0 0 250 240" width="250" height="240" class="gbr">
+  <rect x="60" y="120" width="60" height="45" fill="none"/>
+  <polygon points="60,165 120,165 60,120" fill="#f1f7ff" stroke="#1e2a4d" stroke-width="2"/>
+  <rect x="60" y="165" width="60" height="60" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="90" y="200" font-size="13" font-weight="700" fill="#2563eb" text-anchor="middle">4² = 16</text>
+  <rect x="15" y="120" width="45" height="45" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="37" y="147" font-size="12" font-weight="700" fill="#2563eb" text-anchor="middle">3² = 9</text>
+  <polygon points="60,120 120,165 165,105 105,60" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+  <text x="112" y="116" font-size="13" font-weight="700" fill="#db2777" text-anchor="middle">5² = 25</text>
+  <polyline points="60,155 70,155 70,165" fill="none" stroke="#1e2a4d" stroke-width="1.6"/>
+  <text x="125" y="20" font-size="12" fill="#475577" text-anchor="middle">9 + 16 = 25</text>
+</svg></div>
+    <div>
+      <p>Buat persegi pada setiap sisi segitiga siku-siku 3–4–5:</p>
+      <p>Luas persegi sisi 3 = <b>9</b>, sisi 4 = <b>16</b>, sisi miring 5 = <b>25</b>.</p>
+      <p>Ternyata <b>9 + 16 = 25</b>. Luas dua persegi pada sisi siku-siku <b>sama dengan</b> luas persegi pada sisi miring.</p>
+      <p>Pola ini berlaku untuk <b>semua</b> segitiga siku-siku.</p>
+    </div>
+  </div>
+  <div class="kotak penting"><span class="label">TEOREMA PYTHAGORAS</span>
+    <p class="rumus">c² = a² + b²</p>
+    <p style="text-align:center">kuadrat sisi miring = jumlah kuadrat kedua sisi siku-siku</p>
+  </div>
+  <h3>Pilih rumus sesuai yang dicari</h3>
+  <table>
+    <tr><th>Yang dicari</th><th>Rumus</th><th>Cara ingat</th></tr>
+    <tr><td><span class="pink">Sisi miring c</span></td><td><b>c² = a² + b²</b> → c = √(a² + b²)</td><td>Mencari sisi <b>terpanjang</b> → <b>tambah</b></td></tr>
+    <tr><td><span class="pink">Sisi siku-siku a</span></td><td><b>a² = c² − b²</b> → a = √(c² − b²)</td><td>Mencari sisi <b>lebih pendek</b> → <b>kurang</b></td></tr>
+    <tr><td><span class="pink">Sisi siku-siku b</span></td><td><b>b² = c² − a²</b> → b = √(c² − a²)</td><td>Sisi miring <b>selalu</b> dikurangi, bukan mengurangi</td></tr>
+  </table>
+  <div class="kotak coba"><span class="label">AYO COBA 3</span>
+    <p>Segitiga siku-siku dengan sisi siku-siku 15 cm dan 20 cm. Isi titik-titiknya:</p>
+    <p>c² = ...² + ...² = ... + ... = ... &nbsp;→&nbsp; c = √... = ... cm</p>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Bagian 4 · Strategi 5 Langkah Soal Cerita</h2>
+  <p>Soal cerita sering panjang. Jangan langsung menghitung. Ikuti lima langkah ini <b>satu per satu</b>:</p>
+  <ul class="langkah">
+    <li><b>Baca &amp; tandai.</b> Garis bawahi angka penting dan kalimat pertanyaannya.</li>
+    <li><b>Tulis Diketahui – Ditanya.</b> Pindahkan angka ke tabel, lengkap dengan satuannya.</li>
+    <li><b>Gambar segitiga siku-siku.</b> Tandai sudut sikunya, tulis angka <b>tepat di samping sisinya</b>, warnai sisi yang dicari.</li>
+    <li><b>Pilih rumus &amp; hitung.</b> Yang dicari sisi miring → tambah. Yang dicari sisi siku-siku → kurang.</li>
+    <li><b>Cek kewajaran.</b> Sisi miring harus paling panjang. Apakah jawabannya masuk akal untuk situasi itu?</li>
+  </ul>
+
+  <h3>Contoh 1 · Mencari sisi miring (panjang tangga)</h3>
+  <p>Sebuah tangga disandarkan pada dinding. Jarak kaki tangga ke dinding <b>3 m</b>, dan ujung atas tangga menyentuh dinding pada ketinggian <b>4 m</b>. Berapa panjang tangga?</p>
+  <div class="dua">
+    <div>
+      <table class="dd">
+        <tr><td>Diketahui</td><td><span class="biru">kaki tangga ke dinding = 3 m</span><br><span class="biru">tinggi dinding = 4 m</span></td></tr>
+        <tr><td>Ditanya</td><td><span class="pink">panjang tangga = ?</span> → tangga berada di depan sudut siku-siku, jadi <b>sisi miring</b></td></tr>
+        <tr><td>Rumus</td><td>c² = a² + b²</td></tr>
+        <tr><td>Hitung</td><td>c² = 3² + 4² = 9 + 16 = 25<br>c = √25 = <b>5 m</b></td></tr>
+        <tr><td>Cek</td><td>5 m lebih panjang dari 3 m dan 4 m ✓ masuk akal</td></tr>
+      </table>
+    </div>
+    <div><svg viewBox="0 0 330 205" width="330" height="205" class="gbr">
+  <rect x="200" y="10" width="34" height="160" fill="#fde7c3" stroke="#1e2a4d" stroke-width="2"/>
+  <path d="M200 30 h34 M200 60 h34 M200 90 h34 M200 120 h34 M200 150 h34" stroke="#e8c79a" stroke-width="2"/>
+  <line x1="10" y1="170" x2="250" y2="170" stroke="#1e2a4d" stroke-width="2.5"/>
+  <line x1="70" y1="168" x2="198" y2="40" stroke="#b45309" stroke-width="7" stroke-linecap="round"/>
+  <g stroke="#b45309" stroke-width="3">
+    <line x1="88" y1="150" x2="98" y2="160"/><line x1="112" y1="126" x2="122" y2="136"/>
+    <line x1="136" y1="102" x2="146" y2="112"/><line x1="160" y1="78" x2="170" y2="88"/></g>
+  <line x1="70" y1="178" x2="198" y2="178" stroke="#2563eb" stroke-width="3"/>
+  <text x="134" y="198" font-size="12" font-weight="700" fill="#2563eb" text-anchor="middle">kaki tangga ke dinding = 3 m</text>
+  <line x1="240" y1="40" x2="240" y2="168" stroke="#2563eb" stroke-width="3" stroke-dasharray="6 4"/>
+  <text x="246" y="108" font-size="12" font-weight="700" fill="#2563eb">tinggi = 4 m</text>
+  <text x="112" y="86" font-size="12" font-weight="700" fill="#db2777" text-anchor="middle" transform="rotate(-45 112 86)">panjang tangga = ?</text>
+  <polyline points="188,158 178,158 178,168" fill="none" stroke="#1e2a4d" stroke-width="1.8"/>
+</svg></div>
+  </div>
+
+  <h3 style="break-before: page">Contoh 2 · Mencari sisi siku-siku (tinggi layang-layang)</h3>
+  <p>Benang layang-layang yang terulur panjangnya <b>29 m</b>. Jarak mendatar dari Dimas ke titik tepat di bawah layang-layang <b>20 m</b>. Berapa tinggi layang-layang?</p>
+  <div class="dua">
+    <div>
+      <table class="dd">
+        <tr><td>Diketahui</td><td><span class="biru">benang = 29 m (sisi miring)</span><br><span class="biru">jarak mendatar = 20 m</span></td></tr>
+        <tr><td>Ditanya</td><td><span class="pink">tinggi = ?</span> → sisi siku-siku</td></tr>
+        <tr><td>Rumus</td><td>b² = c² − a²</td></tr>
+        <tr><td>Hitung</td><td>b² = 29² − 20² = 841 − 400 = 441<br>b = √441 = <b>21 m</b></td></tr>
+        <tr><td>Cek</td><td>21 m lebih pendek dari benang 29 m ✓</td></tr>
+      </table>
+    </div>
+    <div><svg viewBox="0 0 290 240" width="290" height="240" class="gbr"><polygon points="52.0,188.0 181.5,188.0 52.0,52.0" fill="#f1f7ff"/><line x1="52.0" y1="188.0" x2="181.5" y2="188.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="116.8" y="211.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="middle">jarak 20 m</text><line x1="52.0" y1="188.0" x2="52.0" y2="52.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="42.0" y="124.0" fill="#db2777" font-size="13" font-weight="700" text-anchor="end">tinggi ?</text><line x1="181.5" y1="188.0" x2="52.0" y2="52.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="124.0" y="109.1" fill="#2563eb" font-size="13" font-weight="700" text-anchor="start">benang 29 m</text><polyline points="64.0,188.0 64.0,176.0 52.0,176.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg></div>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Bagian 5 · Penerapan dalam Kehidupan Sehari-hari</h2>
+  <h3>Contoh 3 · Jarak terpendek</h3>
+  <p>Andi berjalan <b>15 m</b> ke timur, lalu <b>20 m</b> ke utara. Berapa jarak terpendek Andi dari titik awal?</p>
+  <div class="dua">
+    <div>
+      <p>Arah timur dan utara membentuk <b>sudut siku-siku</b>. Jarak terpendek adalah garis lurus dari titik awal ke titik akhir, yaitu <b>sisi miring</b>.</p>
+      <p>c² = 15² + 20² = 225 + 400 = 625 → c = √625 = <b>25 m</b>.</p>
+      <p><b>Menafsirkan:</b> berjalan memutar 15 + 20 = 35 m, sedangkan jalan lurus hanya 25 m. Lebih hemat 10 m.</p>
+    </div>
+    <div><svg viewBox="0 0 300 240" width="300" height="240" class="gbr"><polygon points="52.0,188.0 154.0,188.0 52.0,52.0" fill="#f1f7ff"/><line x1="52.0" y1="188.0" x2="154.0" y2="188.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="103.0" y="211.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="middle">15 m (timur)</text><line x1="52.0" y1="188.0" x2="52.0" y2="52.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="42.0" y="124.0" fill="#2563eb" font-size="13" font-weight="700" text-anchor="end">20 m (utara)</text><line x1="154.0" y1="188.0" x2="52.0" y2="52.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="111.0" y="110.0" fill="#db2777" font-size="13" font-weight="700" text-anchor="start">jarak ?</text><polyline points="64.0,188.0 64.0,176.0 52.0,176.0" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg></div>
+  </div>
+  <h3>Tripel Pythagoras</h3>
+  <p>Tiga bilangan bulat yang memenuhi c² = a² + b² disebut <b>tripel Pythagoras</b>. Contoh: <b>3, 4, 5</b> · <b>6, 8, 10</b> · <b>20, 21, 29</b> · <b>9, 40, 41</b>.
+  Kelipatannya juga tripel, misalnya 3–4–5 dikali 5 menjadi 15–20–25.</p>
+  <div class="kotak penting"><span class="label">POLA YANG SAMA, CERITA BERBEDA</span>
+    <p>Tangga–dinding, benang layang-layang, diagonal layar, jarak berjalan, kawat penopang tiang, diagonal taman: semuanya
+    adalah <b>segitiga siku-siku</b>. Cari dulu sudut sikunya, tentukan sisi miring, lalu gunakan rumus yang sama.</p>
+  </div>
+  <div class="kotak refleksi"><span class="label">REFLEKSI</span>
+    <p>1) Mengapa saat mencari sisi siku-siku kita memakai <b>pengurangan</b>, bukan penjumlahan?</p>
+    <div class="garis-tulis"></div>
+    <p>2) Bagaimana kamu tahu jawabanmu masuk akal tanpa menghitung ulang?</p>
+    <div class="garis-tulis"></div>
+  </div>
+</section>
+
+<section class="bab">
+  <h2>Latihan Berjenjang</h2>
+  <p class="kecil">Kerjakan berurutan. Tingkat 1 hanya angka, tingkat 2 dengan gambar, tingkat 3 soal cerita.</p>
+  <h3>Tingkat 1 · Angka langsung</h3>
+  <div class="soal">1. a = 15, b = 20, c = ?</div>
+  <div class="soal">2. c = 26, a = 10, b = ?</div>
+  <div class="soal">3. a = 21, b = 28, c = ?</div>
+  <div class="soal">4. c = 29, b = 21, a = ?</div>
+  <h3>Tingkat 2 · Dengan gambar (perhatikan posisinya!)</h3>
+  <div class="dua">
+    <div class="soal">5. Tentukan dulu sisi miringnya, lalu hitung panjangnya.
+      <svg viewBox="0 0 300 250" width="300" height="250" class="gbr"><polygon points="116.4,86.4 56.9,52.0 52.0,198.0" fill="#f1f7ff"/><line x1="116.4" y1="86.4" x2="56.9" y2="52.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="91.7" y="56.5" fill="#2563eb" font-size="13" font-weight="700" text-anchor="start">16 cm</text><line x1="116.4" y1="86.4" x2="52.0" y2="198.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="92.9" y="160.2" fill="#2563eb" font-size="13" font-weight="700" text-anchor="start">30 cm</text><line x1="56.9" y1="52.0" x2="52.0" y2="198.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="44.5" y="128.7" fill="#db2777" font-size="13" font-weight="700" text-anchor="end">?</text><polyline points="106.1,80.4 100.1,90.8 110.4,96.8" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg></div>
+    <div class="soal">6. Hitung panjang sisi yang ditandai "?".
+      <svg viewBox="0 0 300 250" width="300" height="250" class="gbr"><polygon points="52.0,126.7 72.8,69.5 248.0,198.0" fill="#f1f7ff"/><line x1="52.0" y1="126.7" x2="72.8" y2="69.5" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="53.0" y="98.7" fill="#2563eb" font-size="13" font-weight="700" text-anchor="end">14 cm</text><line x1="52.0" y1="126.7" x2="248.0" y2="198.0" stroke="#db2777" stroke-width="4" stroke-linecap="round"/><text x="146.6" y="184.7" fill="#db2777" font-size="13" font-weight="700" text-anchor="middle">?</text><line x1="72.8" y1="69.5" x2="248.0" y2="198.0" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><text x="166.3" y="121.7" fill="#2563eb" font-size="13" font-weight="700" text-anchor="start">50 cm</text><polyline points="56.1,115.4 67.4,119.5 63.3,130.8" fill="none" stroke="#1e2a4d" stroke-width="1.8"/></svg></div>
+  </div>
+  <h3>Tingkat 3 · Soal cerita (pakai Strategi 5 Langkah)</h3>
+  <div class="soal">7. Sebuah tiang bendera setinggi 24 m ditopang kawat dari puncak tiang ke tanah. Panjang kawat 26 m. Berapa jarak ujung kawat di tanah ke kaki tiang?</div>
+  <div class="soal">8. Layar laptop berukuran lebar 28 cm dan tinggi 21 cm. Berapa panjang diagonal layarnya?</div>
+  <div class="soal">9. Sebuah perahu berlayar 40 km ke utara, lalu 9 km ke barat. Berapa jarak perahu dari titik berangkat?</div>
+  <div class="soal">10. Taman berbentuk persegi panjang 24 m × 18 m. Rina berjalan memotong diagonal taman. Berapa panjang jalannya, dan berapa meter lebih hemat dibanding berjalan menyusuri tepi?</div>
+</section>
+
+<section class="bab">
+  <h2>Rangkuman &amp; Kunci Jawaban</h2>
+  <div class="kotak penting"><span class="label">RANGKUMAN</span>
+    <ul>
+      <li>Sisi miring = sisi <b>di depan sudut siku-siku</b> = sisi <b>terpanjang</b>.</li>
+      <li><b>c² = a² + b²</b>. Mencari sisi miring → tambah; mencari sisi siku-siku → kurang.</li>
+      <li>Soal cerita: tandai → Diketahui–Ditanya → gambar → rumus &amp; hitung → cek kewajaran.</li>
+    </ul>
+  </div>
+  <h3>Kunci Ayo Coba</h3>
+  <p>Ayo Coba 1: a) 49 b) 169 c) 8 d) 17 · Ayo Coba 2: sisi di depan kotak siku-siku pada tiap gambar · Ayo Coba 3: c² = 225 + 400 = 625, c = 25 cm</p>
+  <h3>Kunci Latihan Berjenjang</h3>
+  <table><tr><th style="width:8%">No</th><th>Pembahasan singkat</th></tr>
+  <tr><td>1</td><td>c² = 15² + 20² = 225 + 400 = 625, c = 25</td></tr><tr><td>2</td><td>b² = 26² − 10² = 676 − 100 = 576, b = 24</td></tr><tr><td>3</td><td>c² = 21² + 28² = 441 + 784 = 1.225, c = 35</td></tr><tr><td>4</td><td>a² = 29² − 21² = 841 − 441 = 400, a = 20</td></tr><tr><td>5</td><td>Sisi miring = sisi di depan sudut siku-siku. c² = 16² + 30² = 256 + 900 = 1.156, c = 34</td></tr><tr><td>6</td><td>b² = 50² − 14² = 2.500 − 196 = 2.304, b = 48</td></tr><tr><td>7</td><td>Kawat = sisi miring 26 m, tinggi tiang 24 m. Jarak² = 26² − 24² = 676 − 576 = 100, jarak = 10 m</td></tr><tr><td>8</td><td>Diagonal² = 21² + 28² = 1.225, diagonal = 35 cm</td></tr><tr><td>9</td><td>Jarak² = 40² + 9² = 1.600 + 81 = 1.681, jarak = 41 km</td></tr><tr><td>10</td><td>Diagonal² = 18² + 24² = 324 + 576 = 900, diagonal = 30 m (lebih pendek dari 18 + 24 = 42 m)</td></tr>
+  </table>
+</section>
+
+<section class="bab">
+  <h2>Lampiran · Keterkaitan Materi dengan Hasil Wawancara</h2>
+  <table>
+    <tr><th>Kode</th><th>Temuan wawancara (S01, simulasi)</th><th>Cara materi menjawabnya</th></tr>
+    <tr><td>IL1</td><td>Tertukar menentukan sisi miring, apalagi bila segitiga diputar</td><td>Bagian 2: aturan "di depan sudut siku-siku", 4 orientasi segitiga, latihan tingkat 2 dengan gambar diputar</td></tr>
+    <tr><td>IL2</td><td>Banyak unsur dipikirkan sekaligus; lupa sisi miring yang dikuadratkan</td><td>Bagian 3: tabel "pilih rumus sesuai yang dicari"; Bagian 4: langkah dipisah satu per satu</td></tr>
+    <tr><td>IL3</td><td>Butuh kuadrat & akar kuadrat; macet di akhir bila belum paham akar</td><td>Bagian 1: prasyarat + tabel kuadrat 1–20</td></tr>
+    <tr><td>IL4</td><td>Kesulitan naik pada soal cerita</td><td>Latihan berjenjang: angka → gambar → cerita</td></tr>
+    <tr><td>EL1, EL5</td><td>Kalimat soal panjang; sulit memilih informasi penting</td><td>Strategi 5 langkah: tandai angka, tabel Diketahui–Ditanya</td></tr>
+    <tr><td>EL2</td><td>Bolak-balik melihat teks dan gambar</td><td>Angka ditulis tepat di samping sisi pada gambar; contoh dan gambar bersebelahan</td></tr>
+    <tr><td>EL3</td><td>Terlalu banyak warna mengganggu</td><td>Warna hanya dua makna: biru = diketahui, merah muda = dicari</td></tr>
+    <tr><td>EL4</td><td>Penjelasan substitusi terlalu cepat</td><td>Contoh dikerjakan baris demi baris dalam tabel</td></tr>
+    <tr><td>GL1</td><td>Paham setelah menggambar & memberi nama sisi</td><td>Ayo Coba 2 (menebalkan sisi miring), langkah 3 "gambar segitiga"</td></tr>
+    <tr><td>GL2</td><td>Memeriksa: sisi miring harus terpanjang</td><td>Langkah 5 "cek kewajaran" di setiap contoh</td></tr>
+    <tr><td>GL3</td><td>Petunjuk tahap demi tahap membuat mandiri</td><td>Strategi 5 langkah, contoh terbimbing lalu latihan mandiri</td></tr>
+    <tr><td>GL4</td><td>Menjelaskan ke teman membuat ingat</td><td>Kotak Refleksi "jelaskan dengan kata-katamu"</td></tr>
+    <tr><td>GL5</td><td>Melihat kesamaan pola pada cerita berbeda</td><td>"Pola yang sama, cerita berbeda": 6 konteks berbeda</td></tr>
+  </table>
+  <p class="kecil">Catatan: semua angka soal pada materi ini berbeda dari butir pre-test dan post-test penelitian agar hasil tes tidak bias.</p>
+</section>
+
+</body></html>
