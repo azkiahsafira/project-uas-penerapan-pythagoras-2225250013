@@ -3,8 +3,10 @@
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
 ## [2.4] · 10 November 2026 — Link aplikasi baru
-- Aplikasi pindah ke **https://penerapan-pythagoras.vercel.app** (Vercel). Link lama GitHub Pages dimatikan.
+- Aplikasi pindah ke **https://azkiah-safira-pythagoras.vercel.app** (Vercel). Link lama GitHub Pages dimatikan.
 - CORS backend hanya mengizinkan link baru; workflow GitHub kini hanya memeriksa lint & build.
+- Link memakai nama: **https://azkiah-safira-pythagoras.vercel.app**. Link lama GitHub Pages & `penerapan-pythagoras.vercel.app`
+  membalas 404, dan salinan aplikasi di perangkat yang pernah membukanya dihapus otomatis (`sw-mati.js`).
 
 ## [2.3.1] · 10 November 2026
 - Pemberitahuan **"Versi baru aplikasi sudah tersedia → Perbarui sekarang"** untuk aplikasi yang di-install di HP; cache service worker v4.

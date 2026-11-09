@@ -1,11 +1,17 @@
 # deploy.md — Pemasangan, Pemeliharaan, dan Pencadangan
 
 ## 1. Frontend (aplikasi) — Vercel
-- Alamat aplikasi: **https://penerapan-pythagoras.vercel.app** (proyek Vercel `penerapan-pythagoras`, preset Vite, Root Directory `./`).
+- Alamat aplikasi: **https://azkiah-safira-pythagoras.vercel.app** (proyek Vercel `penerapan-pythagoras`, preset Vite, Root Directory `./`).
 - Setiap `git push` ke branch `main` otomatis di-build Vercel (`npm run build` → `dist/`). Workflow
   [.github/workflows/periksa.yml](.github/workflows/periksa.yml) hanya memeriksa lint & build di GitHub.
-- Bukti percakapan AI: https://penerapan-pythagoras.vercel.app/bukti-ai/
-- Link lama GitHub Pages (`azkiahsafira.github.io/...`) **sudah dimatikan** (10 November 2026) dan tidak dipakai lagi.
+- Bukti percakapan AI: https://azkiah-safira-pythagoras.vercel.app/bukti-ai/
+- Domain diatur di Vercel → proyek `penerapan-pythagoras` → Settings → Domains (`azkiah-safira-pythagoras.vercel.app`, Production).
+- **Link lama yang sudah dimatikan** (semua halaman membalas **404**):
+  - `azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/` — branch `gh-pages` hanya berisi `404.html` dan
+    `sw.js` "pemati";
+  - `penerapan-pythagoras.vercel.app` — diatur di [vercel.json](vercel.json) (`routes` dengan `has` host).
+  - `sw.js` pemati ([public/sw-mati.js](public/sw-mati.js)) menghapus salinan aplikasi (cache + service worker) di HP/laptop
+    yang pernah membuka link lama, sehingga yang tampil benar-benar 404.
 - Variabel build: `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` (publishable key, aman publik) di file `.env`.
 - Service worker (`public/sw.js`) selalu mengecek versi terbaru; naikkan `VERSI` bila strategi cache berubah.
 - Bila tampilan belum berubah setelah push: tunggu 1–3 menit, lalu **Ctrl + Shift + R** (laptop) atau tutup-buka aplikasi (HP).
@@ -31,7 +37,7 @@
    (**diisi sendiri**, jangan dibagikan). Opsional: `KUNCI_PENELITI` untuk endpoint rekap peneliti.
 5. Deploy → alamat backend: **https://pythagoras-api.vercel.app** (proyek Vercel `pythagoras-api`); cek https://pythagoras-api.vercel.app/api/sehat.
 6. Isi `VITE_API_URL` di `.env` dengan alamat itu lalu push, agar aplikasi memakai backend. Alamat aplikasi harus ada di daftar
-   CORS backend (`ASAL` di `backend/main.py`, saat ini `https://penerapan-pythagoras.vercel.app`).
+   CORS backend (`ASAL` di `backend/main.py`, saat ini `https://azkiah-safira-pythagoras.vercel.app`).
 7. Setiap push ke `main` otomatis memperbarui backend di Vercel.
 
 Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap tersedia).

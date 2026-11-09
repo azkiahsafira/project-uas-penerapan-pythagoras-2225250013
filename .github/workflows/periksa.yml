@@ -1,5 +1,5 @@
 # Memeriksa kode setiap ada push ke main: lint & build harus lolos.
-# Aplikasi dipasang otomatis oleh Vercel (https://penerapan-pythagoras.vercel.app), bukan GitHub Pages.
+# Aplikasi dipasang otomatis oleh Vercel (https://azkiah-safira-pythagoras.vercel.app), bukan GitHub Pages.
 name: Periksa kode
 
 on:

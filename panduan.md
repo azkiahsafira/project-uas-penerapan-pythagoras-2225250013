@@ -1,6 +1,6 @@
 # panduan.md — Panduan Penggunaan
 
-Alamat aplikasi: **https://penerapan-pythagoras.vercel.app/**
+Alamat aplikasi: **https://azkiah-safira-pythagoras.vercel.app/**
 
 ## A. Untuk siswa
 

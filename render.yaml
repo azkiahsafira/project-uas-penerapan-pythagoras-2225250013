@@ -17,4 +17,4 @@ services:
       - key: SUPABASE_SERVICE_KEY
         sync: false # rahasia: diisi sendiri di dashboard Render, JANGAN ditulis di sini
       - key: ASAL_DIIZINKAN
-        value: https://penerapan-pythagoras.vercel.app,http://localhost:5173
+        value: https://azkiah-safira-pythagoras.vercel.app,http://localhost:5173

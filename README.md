@@ -12,12 +12,12 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 | Dosen Pengampu | Dr. Aan Hendrayana, S.Si., M.Pd. |
 
 <p align="center">
-  <a href="https://penerapan-pythagoras.vercel.app/"><strong>🚀 Buka aplikasinya di sini</strong></a><br>
-  <sub>https://penerapan-pythagoras.vercel.app/</sub>
+  <a href="https://azkiah-safira-pythagoras.vercel.app/"><strong>🚀 Buka aplikasinya di sini</strong></a><br>
+  <sub>https://azkiah-safira-pythagoras.vercel.app/</sub>
 </p>
 
 <p align="center">
-  <a href="https://penerapan-pythagoras.vercel.app/">
+  <a href="https://azkiah-safira-pythagoras.vercel.app/">
     <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header dengan halaman sekolah (gedung SMP, Siku, Raka, dan Nisa berdiri di rumput), menu Belajar/Kalkulator/Latihan Soal/Tes, dan latar bawah laut (gurita, paus, rumput laut, bintang laut)" width="820">
   </a>
 </p>
@@ -296,7 +296,7 @@ Perintah lainnya:
 | `npm run preview` | menjalankan hasil build |
 | `npm run lint` | memeriksa kode |
 
-Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https://penerapan-pythagoras.vercel.app). GitHub Actions ([.github/workflows/periksa.yml](.github/workflows/periksa.yml)) memeriksa lint & build.
+Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https://azkiah-safira-pythagoras.vercel.app). GitHub Actions ([.github/workflows/periksa.yml](.github/workflows/periksa.yml)) memeriksa lint & build.
 
 ### Backend Python (FastAPI)
 
@@ -324,7 +324,7 @@ python analisis.py data.csv --aktivitas aktivitas.csv
 
 Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh percakapan, mulai dari perencanaan sampai deploy, didokumentasikan di folder [docs/bukti-ai](docs/bukti-ai).
 
-👉 **[Buka percakapan lengkap dengan AI di browser](https://penerapan-pythagoras.vercel.app/bukti-ai/)**
+👉 **[Buka percakapan lengkap dengan AI di browser](https://azkiah-safira-pythagoras.vercel.app/bukti-ai/)**
 
 
 - [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)

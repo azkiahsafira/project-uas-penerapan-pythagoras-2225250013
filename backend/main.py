@@ -43,7 +43,7 @@ KUNCI_TOKEN = os.environ.get("KUNCI_TOKEN") or (
 KUNCI_PENELITI = os.environ.get("KUNCI_PENELITI") or ("" if _KUNCI_LAYANAN else "peneliti-lokal")
 ASAL = os.environ.get(
     "ASAL_DIIZINKAN",
-    "https://penerapan-pythagoras.vercel.app,http://localhost:5173,http://127.0.0.1:5173",
+    "https://azkiah-safira-pythagoras.vercel.app,http://localhost:5173,http://127.0.0.1:5173",
 ).split(",")
 POLA_KODE = re.compile(r"^[0-9]{1,2}[A-Z]?-[0-9]{1,3}$")  # contoh: 8A-07
 
