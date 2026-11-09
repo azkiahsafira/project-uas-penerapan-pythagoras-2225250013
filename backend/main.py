@@ -10,6 +10,7 @@ Di server (Render) isi environment variable:
 Rancangan lengkap: api.md
 """
 import csv
+import hashlib
 import io
 import os
 import random
@@ -27,8 +28,14 @@ from .basisdata import buat_penyimpanan
 from .penilaian import nilai_leppink, nilai_tes
 from .sesi import buat_token, periksa_token
 
-KUNCI_TOKEN = os.environ.get("KUNCI_TOKEN", "kunci-lokal-hanya-untuk-mencoba")
-KUNCI_PENELITI = os.environ.get("KUNCI_PENELITI", "peneliti-lokal")
+# Cukup SATU rahasia di server (SUPABASE_SERVICE_KEY). Kunci tanda tangan token diturunkan darinya
+# bila KUNCI_TOKEN tidak diisi, sehingga tetap sama walau server tidur/bangun ulang.
+_KUNCI_LAYANAN = os.environ.get("SUPABASE_SERVICE_KEY", "")
+KUNCI_TOKEN = os.environ.get("KUNCI_TOKEN") or (
+    hashlib.sha256(f"token-sesi:{_KUNCI_LAYANAN}".encode()).hexdigest() if _KUNCI_LAYANAN else "kunci-lokal-hanya-untuk-mencoba"
+)
+# Endpoint peneliti hanya aktif bila KUNCI_PENELITI diisi (di komputer lokal: "peneliti-lokal")
+KUNCI_PENELITI = os.environ.get("KUNCI_PENELITI") or ("" if _KUNCI_LAYANAN else "peneliti-lokal")
 ASAL = os.environ.get(
     "ASAL_DIIZINKAN",
     "https://azkiahsafira.github.io,http://localhost:5173,http://127.0.0.1:5173",
@@ -89,7 +96,7 @@ def siswa_masuk(authorization: str = Header(default="")):
 
 
 def peneliti(x_kunci_peneliti: str = Header(default="")):
-    if x_kunci_peneliti != KUNCI_PENELITI:
+    if not KUNCI_PENELITI or x_kunci_peneliti != KUNCI_PENELITI:
         raise Galat(403, "bukan_peneliti", "Halaman ini khusus peneliti.")
 
 

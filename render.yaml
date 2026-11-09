@@ -1,4 +1,6 @@
-# Blueprint Render untuk backend FastAPI (Python). Lihat deploy.md bagian 3.
+# Konfigurasi Render untuk backend FastAPI (Python). Lihat deploy.md bagian 3.
+# Catatan: Blueprint Render meminta kartu pembayaran; tanpa kartu, buat "Web Service" Free secara manual
+# dengan perintah build/start di bawah ini. Rahasia yang wajib hanya SUPABASE_SERVICE_KEY.
 services:
   - type: web
     name: pythagoras-api
@@ -14,9 +16,5 @@ services:
         value: https://hjhltqqwwzbbgkpwzcxx.supabase.co
       - key: SUPABASE_SERVICE_KEY
         sync: false # rahasia: diisi sendiri di dashboard Render, JANGAN ditulis di sini
-      - key: KUNCI_TOKEN
-        generateValue: true
-      - key: KUNCI_PENELITI
-        generateValue: true
       - key: ASAL_DIIZINKAN
         value: https://azkiahsafira.github.io,http://localhost:5173
