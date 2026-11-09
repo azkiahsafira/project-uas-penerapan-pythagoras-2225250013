@@ -36,6 +36,12 @@ Dokumen perancangan versi 2, disusun dari hasil wawancara kebutuhan siswa (tahap
 | [api.md](api.md) | Rancangan API backend: masuk dengan kode siswa, hasil, aktivitas, rekap peneliti |
 | [task.md](task.md) | Daftar tugas per tahap ADDIE + wawancara kebutuhan Android |
 | [agents.md](agents.md) | Aturan untuk AI agent/asisten koding di proyek ini |
+| [konten.md](konten.md) | Spesifikasi isi: bab & subbab, tujuan, indikator literasi matematis, aturan menulis soal |
+| [testing.md](testing.md) | Rencana pengujian: otomatis, fungsional, perangkat Android, validasi ahli, uji coba |
+| [deploy.md](deploy.md) | Pemasangan & pemeliharaan: GitHub Pages, Supabase, Render, checklist sebelum penelitian, cadangan data |
+| [privasi.md](privasi.md) | Etika penelitian & perlindungan data siswa (persetujuan, kode siswa, penyimpanan) |
+| [panduan.md](panduan.md) | Panduan penggunaan untuk siswa dan peneliti/guru, plus solusi masalah umum |
+| [changelog.md](changelog.md) | Riwayat perubahan aplikasi per versi |
 | [Materi ajar (PDF)](docs/materi/Materi-Teorema-Pythagoras.pdf) | Bab Teorema Pythagoras, subbab *Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah* (11 halaman), disusun dari temuan wawancara (dibuat dengan `python scripts/buat_materi.py`) |
 
 ## Install sebagai Aplikasi (Android, Windows, iPhone)
