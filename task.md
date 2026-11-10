@@ -32,6 +32,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] Backend **FastAPI** (Python): `/masuk`, `/saya`, `/aktivitas`, `/hasil`, `/sehat`, `/soal/latihan`, rekap & ekspor peneliti + 15 pengujian pytest — `backend/`
 - [x] Pasang backend di **Vercel** (https://pythagoras-api.vercel.app) — Render kini meminta kartu
 - [x] Daftarkan kode siswa `8A-01` s.d. `8F-36` (6 kelas × 36 absen) di tabel `siswa` & sambungkan aplikasi (`VITE_API_URL`)
+- [ ] Aktifkan **satu** kode siswa yang belajar lewat aplikasi (semua kode sedang nonaktif, lihat [deploy.md](deploy.md) §4)
 - [x] Penilaian tes di server (`backend/penilaian.py`) — aktif setelah `VITE_API_URL` diisi
 - [x] **three.js**: adegan tangga–dinding yang bisa diputar (lazy load) — `src/Tangga3D.jsx`, Sesi 3 langkah "Contoh: tangga"
 - [x] Latihan **tunjuk sisi miring** pada segitiga yang diputar/dicerminkan (IL1) — `src/SegitigaPutar.jsx`

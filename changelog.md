@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.4.1] · 10 November 2026
+- Semua kode siswa dinonaktifkan sampai kode siswa penelitian diketahui (hanya 1 siswa memakai aplikasi).
+- Bukti percakapan AI diperbarui sampai sesi pindah link.
+
 ## [2.4] · 10 November 2026 — Link aplikasi baru
 - Aplikasi pindah ke **https://azkiah-safira-pythagoras.vercel.app** (Vercel). Link lama GitHub Pages dimatikan.
 - CORS backend hanya mengizinkan link baru; workflow GitHub kini hanya memeriksa lint & build.
