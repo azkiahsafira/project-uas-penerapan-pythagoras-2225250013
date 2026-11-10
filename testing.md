@@ -59,6 +59,9 @@ pemasangan PWA dari Chrome berhasil.
 - **Ahli materi** (dosen/guru matematika): kesesuaian dengan bab Teorema Pythagoras, subbab penerapan; kebenaran konsep & soal.
 - **Ahli media**: tampilan, navigasi, keterbacaan, penggunaan animasi.
 - Instrumen: skala Likert 1–4 per aspek; kesepakatan dapat dideskripsikan dengan **Aiken's V** (dengan catatan jumlah penilai sedikit).
+- Lembar siap cetak: [docs/validasi](docs/validasi) — ahli materi 20 butir (kelayakan isi, penyajian, literasi matematis,
+  beban kognitif, bahasa & evaluasi) dan ahli media 20 butir (tampilan, navigasi, interaktivitas, kinerja, keamanan & etika);
+  dibuat dengan `node scripts/buat-lembar-validasi.mjs`. Kelayakan = skor total ÷ 80 × 100% (81–100% sangat layak, 61–80% layak).
 - Hasil: daftar revisi + bukti perbaikan.
 
 ## 5. Uji coba terbatas

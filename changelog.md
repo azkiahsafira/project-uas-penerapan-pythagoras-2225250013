@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.7] · 11 November 2026 — Lembar validasi ahli
+- Lembar validasi **ahli materi** & **ahli media** siap cetak (masing-masing 20 butir, skala 1–4, saran, kesimpulan kelayakan)
+  di `docs/validasi`, dibuat oleh `scripts/buat-lembar-validasi.mjs`.
+
 ## [2.6.1] · 11 November 2026
 - Kode siswa `8A-01` s.d. `8F-36` diaktifkan lagi; `8Z-99` (demo) tetap nonaktif. Bukti percakapan AI diperbarui.
 

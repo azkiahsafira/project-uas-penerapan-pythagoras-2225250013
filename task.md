@@ -15,7 +15,8 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] Materi ajar PDF berdasarkan temuan wawancara (Langkah 2 dosen) → [docs/materi](docs/materi/Materi-Teorema-Pythagoras.pdf)
 - [ ] Wireframe layar Android (Masuk, Soal cerita, Ilustrasi 3D)
 - [ ] Bank soal latihan berjenjang (tingkat 1–3, ≥ 10 soal per tingkat)
-- [ ] Validasi ahli materi & media (lembar penilaian)
+- [x] Lembar validasi ahli materi & media (20 butir, skala 1–4) → [docs/validasi](docs/validasi)
+- [ ] Validasi ahli materi & media (isi lembar oleh validator, lalu revisi)
 
 ## C. Development
 ### Sudah ada (versi 1)

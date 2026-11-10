@@ -148,6 +148,9 @@ post-test. Pre-test, post-test, dan kuesioner **hanya sekali** per kode siswa (b
 
 Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis ([docs/instrumen-cetak](docs/instrumen-cetak): pre-test, post-test, kuesioner, dan kunci jawaban, dibuat otomatis dari `src/tes.js` dengan `node scripts/buat-lembar-tes.mjs`); jawabannya dimasukkan ke analisis lewat `analisis/templat_kertas.csv`.
 
+Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai **lembar validasi ahli materi dan ahli media**
+([docs/validasi](docs/validasi), dibuat dengan `node scripts/buat-lembar-validasi.mjs`).
+
 ### Instrumen
 
 - **Pre-test dan post-test** ([src/tes.js](src/tes.js)): 10 soal paralel. Setiap nomor mengukur indikator yang sama dengan angka/konteks berbeda:
