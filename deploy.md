@@ -45,13 +45,12 @@ Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap 
 ## 4. Sebelum penelitian dimulai (checklist)
 - [x] Daftarkan kode siswa: `8A-01` s.d. `8F-36` (216 kode, kelompok "Belajar dengan aplikasi"); kode uji `8Z-99` sudah dinonaktifkan.
   Siswa boleh mengetik `8a-1`; aplikasi & backend merapikannya menjadi `8A-01`.
-- [ ] **Aktifkan kode siswa yang dipakai.** Semua kode sengaja dinonaktifkan (10 November 2026) karena hanya 1 siswa yang
-  belajar lewat aplikasi. Sebelum pertemuan 1, jalankan di Supabase → SQL Editor (ganti kodenya):
+- [x] **Kode siswa aktif:** `8A-01` s.d. `8F-36` (216 kode) diaktifkan lagi pada 11 November 2026 atas keputusan peneliti;
+  `8Z-99` (demo) tetap nonaktif. Bila ingin hanya kode siswa penelitian yang bisa masuk, jalankan di Supabase → SQL Editor:
   ```sql
-  update public.siswa set aktif = true where kode = '8A-01';
+  update public.siswa set aktif = (kode = '8A-01');  -- ganti 8A-01 dengan kode siswa penelitian
   select kode, aktif from public.siswa where aktif;
   ```
-  Kode lain tetap nonaktif sehingga orang lain tidak bisa masuk walau menebak kode.
 - **Demo ke dosen tanpa mengikuti urutan pertemuan:** aktifkan kode `8Z-99` (kelompok `Uji coba peneliti`) dengan
   `update public.siswa set aktif = true where kode = '8Z-99';`. Kode ini tidak dikunci dan datanya tidak ikut dianalisis;
   nonaktifkan lagi sesudah demo.

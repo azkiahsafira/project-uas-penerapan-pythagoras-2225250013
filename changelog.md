@@ -2,6 +2,9 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.6.1] · 11 November 2026
+- Kode siswa `8A-01` s.d. `8F-36` diaktifkan lagi; `8Z-99` (demo) tetap nonaktif. Bukti percakapan AI diperbarui.
+
 ## [2.6] · 11 November 2026 — Urutan pertemuan dikunci
 - Belajar (cek prasyarat & Sesi 1–3) terbuka setelah pre-test; Latihan setelah Sesi 3; post-test setelah Latihan ≥ 10 soal;
   kuesioner setelah post-test (`src/alur.js`). Skor & tingkat Latihan dilanjutkan dari catatan di perangkat.
