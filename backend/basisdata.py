@@ -37,6 +37,10 @@ class Memori:
     def semua(self, tabel):
         return list(self.tabel[tabel].values())
 
+    def ada_hasil_lain(self, kode, jenis, id_baru):
+        """Apakah siswa ini sudah punya hasil `jenis` dengan id lain (tes hanya sekali)?"""
+        return any(b["nama"] == kode and b["jenis"] == jenis and b["id"] != id_baru for b in self.tabel["hasil"].values())
+
 
 class SupabaseREST:
     def __init__(self, url, kunci_layanan):
@@ -68,6 +72,12 @@ class SupabaseREST:
         r = self.klien.get(f"{self.url}/{tabel}", headers=self.kepala, params={"select": "*", "order": "dibuat"})
         r.raise_for_status()
         return r.json()
+
+    def ada_hasil_lain(self, kode, jenis, id_baru):
+        params = {"nama": f"eq.{kode}", "jenis": f"eq.{jenis}", "id": f"neq.{id_baru}", "select": "id", "limit": "1"}
+        r = self.klien.get(f"{self.url}/hasil", headers=self.kepala, params=params)
+        r.raise_for_status()
+        return len(r.json()) > 0
 
 
 def buat_penyimpanan():

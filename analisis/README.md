@@ -70,7 +70,9 @@ Contoh keluarannya ada di folder [contoh_hasil/](contoh_hasil/).
 | Perbandingan kelompok | rata-rata semua ukuran per kelompok (hanya muncul bila data berisi lebih dari satu kelompok; aplikasi kini memakai satu kelompok, "Belajar dengan aplikasi") |
 | Proses belajar per langkah | waktu tiap siswa dijumlah per langkah (bila dibuka lebih dari sekali), lalu dirata-rata; jumlah salah, jawaban dibuka, dan berapa kali tombol Bacakan dipakai; ditampilkan pula 3 langkah terlama dan 3 langkah dengan salah terbanyak |
 
-Jika seorang siswa mengerjakan tes yang sama lebih dari sekali, yang dipakai adalah hasil **terakhir**.
+Setiap tes hanya bisa dikerjakan **satu kali** (aplikasi & backend menolak percobaan kedua). Jika data tetap berisi tes ganda
+(mis. dari lembar kertas), yang dipakai adalah percobaan **pertama**, dan script memberi PERINGATAN. Baris kelompok
+`Uji coba peneliti` (kode demo) tidak ikut dianalisis.
 
 ### Pemetaan soal ke proses literasi matematis
 

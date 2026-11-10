@@ -11,7 +11,7 @@ Pengujian dilakukan berlapis: dari kode (otomatis), fitur, perangkat Android, sa
 | Build produksi | `npm run build` | berhasil, ukuran bundel utama < 600 KB |
 | Analisis Python | `python analisis/analisis.py analisis/contoh_data.csv --aktivitas analisis/contoh_aktivitas.csv --kertas analisis/templat_kertas.csv` | laporan & grafik terbentuk tanpa peringatan kunci |
 | Kunci jawaban sinkron | bandingkan `src/tes.js`, `analisis/analisis.py`, `backend/penilaian.py` | kunci ketiganya sama |
-| Backend FastAPI | `backend/.venv/Scripts/python -m pytest backend -q` | 15 uji lulus |
+| Backend FastAPI | `backend/.venv/Scripts/python -m pytest backend -q` | 16 uji lulus |
 
 Uji unit yang direncanakan:
 - `src/pythagoras.js`: sisi miring, sisi siku-siku, input tidak valid (c ≤ a), tripel Pythagoras, koma desimal.
@@ -38,6 +38,11 @@ Uji unit yang direncanakan:
 | 14 | Jawab sisi miring lebih pendek dari sisi lain | peringatan cek kewajaran, belum dinilai salah |
 | 15 | 3 soal benar tanpa bantuan | langkah 1–2 disembunyikan, petunjuk tinggal 3 tahap; salah sekali → bantuan muncul lagi |
 | 16 | Soal ke-3, 6, 9 | pertanyaan refleksi; "Soal berikutnya" terkunci sampai dijawab |
+| 17 | Kode baru, belum pre-test | Belajar & Latihan terkunci ("Kerjakan pre-test dulu"); post-test & kuesioner "Belum dibuka" |
+| 18 | Pre-test dikumpulkan | pre-test "✓ Sudah dikerjakan"; Belajar terbuka; Latihan masih terkunci sampai Sesi 3 selesai |
+| 19 | Sesi 3 selesai, latihan < 10 soal | post-test "Dibuka setelah Latihan Soal minimal 10 soal (baru n)" |
+| 20 | Kirim pre-test kedua (kode sama) ke backend | ditolak 409 `sudah_dikerjakan` |
+| 21 | Kode kelompok "Uji coba peneliti" | semua bagian terbuka; data tidak ikut analisis |
 
 ## 3. Uji perangkat Android
 

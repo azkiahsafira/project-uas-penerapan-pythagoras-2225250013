@@ -2,6 +2,12 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.6] · 11 November 2026 — Urutan pertemuan dikunci
+- Belajar (cek prasyarat & Sesi 1–3) terbuka setelah pre-test; Latihan setelah Sesi 3; post-test setelah Latihan ≥ 10 soal;
+  kuesioner setelah post-test (`src/alur.js`). Skor & tingkat Latihan dilanjutkan dari catatan di perangkat.
+- Pre-test, post-test, kuesioner **hanya sekali** per kode: tombol "✓ Sudah dikerjakan", backend menolak 409 `sudah_dikerjakan`.
+- Analisis memakai percobaan **pertama** bila ada tes ganda; kelompok `Uji coba peneliti` (kode demo) tidak dianalisis.
+
 ## [2.5] · 10 November 2026 — Analisis literasi matematis
 - `analisis.py`: skor **literasi matematis per proses** (merumuskan no 1, 4, 8, 10 · menerapkan no 2, 3, 5, 6 · menafsirkan no 7, 9),
   pre → post dan N-gain per proses, per siswa & per kelompok; `rekap_literasi.csv` dan `grafik_literasi.svg`. Soal tes tidak diubah.

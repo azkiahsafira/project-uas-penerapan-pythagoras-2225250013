@@ -5,6 +5,7 @@ import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import FormKode from './Masuk.jsx'
 import CekPrasyarat from './Prasyarat.jsx'
+import { kunciBelajar } from './alur.js'
 import Segitiga from './Segitiga.jsx'
 import SegitigaPutar from './SegitigaPutar.jsx'
 import { BATAS_SIAP, JUMLAH_PRASYARAT, bacaPrasyarat } from './bantuan.js'
@@ -379,6 +380,7 @@ export default function Belajar() {
 
   // s = sesi, atau 'prasyarat' untuk membuka cek prasyarat
   const mulai = (s) => {
+    if (kunciBelajar()) return
     // identitas mungkin baru diisi di menu Latihan
     const id = identitas ?? identitasTerakhir()
     if (!id) return setKenalan(s)
@@ -402,7 +404,8 @@ export default function Belajar() {
         onBatal={() => setKenalan(null)}
         onMasuk={(baru) => {
           setIdentitas(baru)
-          if (kenalan === 'prasyarat') setCekPrasyarat(true)
+          if (kunciBelajar()) setKenalan(null)
+          else if (kenalan === 'prasyarat') setCekPrasyarat(true)
           else if (kenalan !== 'ganti') setAktif(kenalan)
           setKenalan(null)
         }}
@@ -431,6 +434,9 @@ export default function Belajar() {
   if (aktif) {
     return <PemutarSesi sesi={aktif} identitas={identitas} onKeluar={() => setAktif(null)} onTamat={() => tamat(aktif.id)} />
   }
+
+  // dibaca ulang setiap render: pre-test bisa baru saja dikumpulkan di menu Tes
+  const kunciUmum = kunciBelajar()
 
   return (
     <section>
@@ -464,6 +470,12 @@ export default function Belajar() {
           </button>
         </p>
       )}
+      {/* Pertemuan 1: Belajar baru dibuka setelah pre-test dikumpulkan (alur.js) */}
+      {kunciUmum && (
+        <p className="info-terkunci" role="status">
+          🔒 {kunciUmum}
+        </p>
+      )}
       {/* F2 Cek prasyarat kuadrat & akar (temuan IL3), dianjurkan sebelum Sesi 1 */}
       <article className={`kartu kartu-prasyarat ${prasyarat ? 'sudah' : 'berikutnya'}`}>
         <div>
@@ -477,7 +489,7 @@ export default function Belajar() {
               : `${JUMLAH_PRASYARAT} soal singkat (±2 menit) sebelum mulai Sesi 1.`}
           </p>
         </div>
-        <button type="button" className="hitung" onClick={() => mulai('prasyarat')}>
+        <button type="button" className="hitung" disabled={!!kunciUmum} onClick={() => mulai('prasyarat')}>
           {prasyarat ? 'Ulangi cek' : 'Mulai cek'}
         </button>
       </article>
@@ -500,7 +512,7 @@ export default function Belajar() {
                 {s.langkah.length} langkah{sudah ? ' · ✓ Selesai' : ''}
                 {terkunci ? ' · Selesaikan sesi sebelumnya dulu' : ''}
               </p>
-              <button type="button" className="hitung" disabled={terkunci} onClick={() => mulai(s)}>
+              <button type="button" className="hitung" disabled={terkunci || !!kunciUmum} onClick={() => mulai(s)}>
                 {sudah ? 'Ulangi sesi' : 'Mulai sesi'}
               </button>
             </article>

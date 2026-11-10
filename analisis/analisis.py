@@ -257,18 +257,25 @@ def rata(nilai):
     return sum(nilai) / len(nilai) if nilai else None
 
 
+KELOMPOK_UJI = "Uji coba peneliti"  # kode demo/uji coba (alur.js); datanya tidak ikut dianalisis
+
+
 def rekap_per_siswa(data):
-    """Gabungkan pre, post, dan leppink per siswa. Jika ada ganda, pakai yang terbaru."""
+    """Gabungkan pre, post, dan leppink per siswa. Bila satu tes dikerjakan lebih dari sekali, yang dipakai
+    adalah percobaan PERTAMA (pre-test ulang sesudah belajar akan membuat N-gain bias)."""
     siswa = {}
+    peringatan = []
     for d in sorted(data, key=lambda x: x["selesai"]):
         kunci = d["nama"].lower()
         s = siswa.setdefault(kunci, {"nama": d["nama"], "kelas": d["kelas"], "kelompok": d["kelompok"]})
-        s[d["jenis"]] = d  # yang lebih baru menimpa yang lama
+        if d["jenis"] in s:
+            peringatan.append(f"{d['nama']} mengerjakan {d['jenis']} lebih dari sekali; yang dipakai percobaan pertama.")
+            continue
+        s[d["jenis"]] = d
         s["kelas"] = d["kelas"] or s["kelas"]
         s["kelompok"] = d["kelompok"] or s["kelompok"]
 
     rekap = []
-    peringatan = []
     for s in siswa.values():
         r = {"nama": s["nama"], "kelas": s["kelas"], "kelompok": s["kelompok"]}
         for jenis in ("pretest", "posttest"):
@@ -745,6 +752,10 @@ def main():
         if not os.path.exists(args.kertas):
             sys.exit(f"File tidak ditemukan: {args.kertas}")
         data += baca_kertas(args.kertas)
+    uji = [d for d in data if d["kelompok"] == KELOMPOK_UJI]
+    data = [d for d in data if d["kelompok"] != KELOMPOK_UJI]
+    if uji:
+        print(f"Catatan: {len(uji)} baris kelompok '{KELOMPOK_UJI}' (demo/uji coba) tidak ikut dianalisis.")
     if not data:
         sys.exit("Tidak ada data pre-test/post-test/kuesioner di file tersebut.")
 
@@ -761,7 +772,7 @@ def main():
     if args.aktivitas:
         if not os.path.exists(args.aktivitas):
             sys.exit(f"File tidak ditemukan: {args.aktivitas}")
-        aktivitas = baca_aktivitas(args.aktivitas)
+        aktivitas = [a for a in baca_aktivitas(args.aktivitas) if a["kelompok"] != KELOMPOK_UJI]
         langkah = rekap_langkah(aktivitas)
         laporan_aktivitas(aktivitas, langkah)
         simpan_aktivitas(langkah, args.keluaran)

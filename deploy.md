@@ -52,6 +52,9 @@ Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap 
   select kode, aktif from public.siswa where aktif;
   ```
   Kode lain tetap nonaktif sehingga orang lain tidak bisa masuk walau menebak kode.
+- **Demo ke dosen tanpa mengikuti urutan pertemuan:** aktifkan kode `8Z-99` (kelompok `Uji coba peneliti`) dengan
+  `update public.siswa set aktif = true where kode = '8Z-99';`. Kode ini tidak dikunci dan datanya tidak ikut dianalisis;
+  nonaktifkan lagi sesudah demo.
 - [ ] Hapus semua data uji di tabel `hasil` dan `aktivitas`; pastikan **0 baris**
 - [ ] Di HP/laptop yang dipakai mencoba: klik "Ganti nama" / keluar dari kode uji
 - [ ] Coba buka aplikasi di 1 HP siswa: bisa di-install, materi terbuka, tidak ada geser ke samping

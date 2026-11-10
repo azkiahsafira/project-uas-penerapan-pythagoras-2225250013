@@ -62,7 +62,9 @@ Balasan 200: `{ "diterima": 1, "duplikat": 0 }` — `id` dari aplikasi membuat p
   "jawaban": { "0": "B", "1": "64", "2": "14" } }
 ```
 Untuk `leppink`: `"jawaban": { "IL1": 4, "IL2": 3, "...": 0, "GL4": 8 }`.
-Balasan 200 (tes): `{ "tersimpan": true }` — **skor tidak dikirim balik** saat tes agar tidak menjadi umpan balik; skor dihitung & disimpan di server.
+Balasan 200 (tes): `{ "tersimpan": true, "baru": true }` — **skor tidak dikirim balik** saat tes agar tidak menjadi umpan balik; skor dihitung & disimpan di server.
+**Tiap instrumen hanya sekali per kode siswa:** kiriman dengan `id` yang sama aman diulang (`"baru": false`), tetapi `id` lain untuk
+jenis yang sama ditolak `409 sudah_dikerjakan`.
 
 ### `GET /soal/latihan?tingkat=1..3`
 ```json

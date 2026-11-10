@@ -3,6 +3,7 @@ import { LEPPINK, NAMA_DIMENSI, POSTTEST, PRETEST, nilaiLeppink, nilaiTes } from
 import FormKode from './Masuk.jsx'
 import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, serverAktif, simpanHasil, unduhCsv } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
+import { kunciTes } from './alur.js'
 
 const INSTRUMEN = {
   pretest: {
@@ -293,6 +294,7 @@ export default function Tes({ onFokus }) {
   const [tersimpan, setTersimpan] = useState(true)
   const [statusKirim, setStatusKirim] = useState(null) // null | 'mengirim' | 'terkirim' | 'gagal'
   const [versiRiwayat, setVersiRiwayat] = useState(0)
+  const [pesanKunci, setPesanKunci] = useState(null) // muncul bila kode yang dipakai tidak boleh mengerjakan tes ini
 
   // Saat aplikasi dibuka, kirim hasil yang tertunda dari sesi sebelumnya
   useEffect(() => {
@@ -336,6 +338,14 @@ export default function Tes({ onFokus }) {
         jenis={jenis}
         onBatal={() => keTahap(null)}
         onMulai={(id) => {
+          // dicek lagi untuk kode yang baru masuk: tiap tes hanya sekali & mengikuti urutan pertemuan
+          const k = kunciTes(jenis)
+          if (k.sudah || k.terkunci) {
+            setPesanKunci(k.sudah ? `${INSTRUMEN[jenis].judul} sudah dikerjakan oleh ${id.kode}. Setiap tes hanya dikerjakan satu kali.` : k.terkunci)
+            keTahap(null)
+            return
+          }
+          setPesanKunci(null)
           setIdentitas(id)
           setMulai(new Date())
           keTahap('kerja')
@@ -353,25 +363,36 @@ export default function Tes({ onFokus }) {
   return (
     <section>
       <h2>Tes dan Kuesioner Penelitian</h2>
-      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini.</p>
+      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini. Setiap tes hanya dikerjakan satu kali, sesuai urutan pertemuan.</p>
+      {pesanKunci && (
+        <p className="info-terkunci" role="alert">
+          🔒 {pesanKunci}
+        </p>
+      )}
       <div className="daftar-sesi">
-        {Object.entries(INSTRUMEN).map(([k, ins], i) => (
-          <article key={k} className={`kartu sesi warna-${i + 1}`}>
-            <p className="ket">{ins.waktu}</p>
-            <h3>{ins.judul}</h3>
-            <p>{ins.ket}</p>
-            <button
-              type="button"
-              className="hitung"
-              onClick={() => {
-                setJenis(k)
-                keTahap('identitas')
-              }}
-            >
-              Mulai
-            </button>
-          </article>
-        ))}
+        {Object.entries(INSTRUMEN).map(([k, ins], i) => {
+          const { terkunci, sudah } = kunciTes(k)
+          return (
+            <article key={k} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''}`}>
+              <p className="ket">{ins.waktu}</p>
+              <h3>{ins.judul}</h3>
+              <p>{ins.ket}</p>
+              {terkunci && <p className="ket">🔒 {terkunci}</p>}
+              <button
+                type="button"
+                className="hitung"
+                disabled={sudah || !!terkunci}
+                onClick={() => {
+                  setPesanKunci(null)
+                  setJenis(k)
+                  keTahap('identitas')
+                }}
+              >
+                {sudah ? '✓ Sudah dikerjakan' : terkunci ? 'Belum dibuka' : 'Mulai'}
+              </button>
+            </article>
+          )
+        })}
       </div>
 
       <h2 className="jarak-atas">Hasil Tersimpan</h2>

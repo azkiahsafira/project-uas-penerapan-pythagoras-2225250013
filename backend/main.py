@@ -193,7 +193,10 @@ class Hasil(BaseModel):
 @app.post("/api/hasil")
 def kirim_hasil(data: Hasil, siswa=Depends(siswa_masuk)):
     """Jawaban dinilai DI SERVER dengan kunci yang sama seperti aplikasi.
-    Skor tidak dikirim balik agar tes tidak menjadi umpan balik bagi siswa."""
+    Skor tidak dikirim balik agar tes tidak menjadi umpan balik bagi siswa.
+    Tiap instrumen hanya SEKALI per kode siswa; kiriman ulang dengan id yang sama tetap aman (idempoten)."""
+    if db.ada_hasil_lain(siswa["kode"], data.jenis, data.id):
+        raise Galat(409, "sudah_dikerjakan", "Tes ini sudah pernah dikumpulkan. Setiap tes hanya dikerjakan satu kali.")
     baris = {**identitas_baris(siswa), "id": data.id, "jenis": data.jenis, "mulai": data.mulai, "selesai": data.selesai,
              "durasi_detik": durasi(data.mulai, data.selesai), "jawaban": data.jawaban,
              "benar": None, "total": None, "skor": None, "il": None, "el": None, "gl": None}

@@ -144,7 +144,17 @@ async function kirimLewatApi() {
   let berhasil = 0
   try {
     for (const h of baca(KUNCI_HASIL, []).filter((x) => !x.terkirim)) {
-      await kirimHasilApi(h)
+      try {
+        await kirimHasilApi(h)
+      } catch (e) {
+        if (e.status !== 409) throw e
+        // 409 = tes ini sudah pernah dikumpulkan siswa yang sama: tidak dikirim ulang terus-menerus
+        tulis(
+          KUNCI_HASIL,
+          baca(KUNCI_HASIL, []).map((x) => (x.id === h.id ? { ...x, terkirim: true, ditolak: true } : x)),
+        )
+        continue
+      }
       tandaiTerkirim(KUNCI_HASIL, [h.id])
       berhasil += 1
     }

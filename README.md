@@ -141,6 +141,11 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 | 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal (label "Pertemuan 4 · Implementasi", minimal 10 soal), Kalkulator untuk memeriksa |
 | 5 | Post-test dan skala beban kognitif | Tes → Post-test, lalu Tes → Kuesioner Beban Kognitif |
 
+**Urutan ini dikunci di aplikasi** ([src/alur.js](src/alur.js)) agar data valid: Belajar (cek prasyarat & Sesi 1–3) baru terbuka
+setelah pre-test dikumpulkan; Latihan Soal setelah Sesi 3 selesai; post-test setelah Latihan minimal 10 soal; kuesioner setelah
+post-test. Pre-test, post-test, dan kuesioner **hanya sekali** per kode siswa (backend juga menolak percobaan kedua). Kode kelompok
+`Uji coba peneliti` (mis. `8Z-99`, untuk demo ke dosen) tidak dikunci dan tidak ikut dianalisis.
+
 Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis ([docs/instrumen-cetak](docs/instrumen-cetak): pre-test, post-test, kuesioner, dan kunci jawaban, dibuat otomatis dari `src/tes.js` dengan `node scripts/buat-lembar-tes.mjs`); jawabannya dimasukkan ke analisis lewat `analisis/templat_kertas.csv`.
 
 ### Instrumen
@@ -303,7 +308,7 @@ Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https
 ```bash
 python -m venv backend/.venv
 backend/.venv/Scripts/python -m pip install -r backend/requirements.txt   # Windows
-backend/.venv/Scripts/python -m pytest backend -q                         # 15 pengujian
+backend/.venv/Scripts/python -m pytest backend -q                         # 16 pengujian
 backend/.venv/Scripts/python -m uvicorn backend.main:app --reload         # http://127.0.0.1:8000/docs
 ```
 

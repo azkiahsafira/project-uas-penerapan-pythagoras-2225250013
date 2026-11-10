@@ -120,6 +120,20 @@ def test_aktivitas_prasyarat_refleksi_dan_petunjuk():
     assert klien.post("/api/aktivitas", headers=kepala, json=isi).status_code == 422
 
 
+def test_tes_hanya_sekali_per_kode():
+    kepala = masuk()
+    isi = {"id": "pre-1", "jenis": "pretest", "mulai": "2026-11-10T01:00:00Z", "selesai": "2026-11-10T01:10:00Z",
+           "jawaban": {str(i): "x" for i in range(10)}}
+    assert klien.post("/api/hasil", headers=kepala, json=isi).status_code == 200
+    # kiriman ulang yang sama (internet putus-sambung) tetap diterima, tidak dobel
+    assert klien.post("/api/hasil", headers=kepala, json=isi).json() == {"tersimpan": True, "baru": False}
+    # percobaan kedua dengan id baru ditolak
+    r = klien.post("/api/hasil", headers=kepala, json={**isi, "id": "pre-2"})
+    assert r.status_code == 409 and r.json()["galat"] == "sudah_dikerjakan"
+    # siswa lain tetap boleh
+    assert klien.post("/api/hasil", headers=masuk("8A-02"), json={**isi, "id": "pre-3"}).status_code == 200
+
+
 def test_soal_latihan_berjenjang():
     soal = klien.get("/api/soal/latihan?tingkat=3&jumlah=4", headers=masuk()).json()["soal"]
     assert len(soal) == 4 and all("cerita" in s and s["dicari"] in ("b", "c") for s in soal)

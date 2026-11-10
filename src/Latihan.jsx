@@ -20,7 +20,9 @@ import {
 } from './bantuan.js'
 import { rayakan, semangati } from './perayaan.js'
 import { INPUT, bulat, hitung, keAngka } from './pythagoras.js'
-import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
+import { catatAktivitas, daftarAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
+import Terkunci from './Terkunci.jsx'
+import { TARGET_LATIHAN, kunciLatihan } from './alur.js'
 
 // Pertemuan 4 (implementasi): siswa menerapkan Pythagoras pada soal sehari-hari.
 // Setiap soal yang dijawab dicatat ke tabel `aktivitas` (jenis 'latihan', sesi 4).
@@ -28,7 +30,7 @@ import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.
 // pada segitiga yang diputar (IL1), 3) hitung dengan petunjuk bertingkat (GL3) dan cek kewajaran (GL2).
 // Langkah 1-2 dipudarkan setelah siswa lancar; refleksi "Mengapa…?" (GL4) setiap soal ke-3.
 export const PERTEMUAN_LATIHAN = 4
-export const TARGET_SOAL = 10
+export const TARGET_SOAL = TARGET_LATIHAN
 
 // Tripel Pythagoras (a, b, c) agar jawaban selalu bilangan bulat. Diambil dari materi PDF dan kelipatannya;
 // sengaja TIDAK memakai tripel butir pre-test/post-test (5-12-13, 6-8-10, 7-24-25, 8-15-17, 9-12-15,
@@ -118,6 +120,13 @@ function buatSoal(sebelumnya, nomor = 1) {
     const cerita = acak(BANK[tingkat][cari])(sisi)
     if (cerita !== sebelumnya?.cerita) return { sisi, cari, cerita, tingkat, orientasi: buatOrientasi() }
   }
+}
+
+// Jumlah soal latihan yang sudah dikerjakan siswa ini (dari catatan aktivitas di perangkat)
+function skorTersimpan() {
+  const kode = identitasTerakhir()?.kode
+  const soal = kode ? daftarAktivitas().filter((a) => a.jenis === 'latihan' && (a.kode === kode || a.nama === kode)) : []
+  return { benar: soal.filter((a) => a.hasil === 'benar').length, total: soal.length }
 }
 
 const NAMA_SISI = { a: 'sisi a', b: 'sisi b', c: 'sisi miring c' }
@@ -267,10 +276,11 @@ export default function Latihan() {
   // identitas dibaca ulang dari perangkat agar ikut berubah bila diisi/diganti di menu Belajar
   const [, segarkan] = useState(0)
   const identitas = identitasTerakhir()
-  const [soal, setSoal] = useState(() => buatSoal())
+  const [soal, setSoal] = useState(() => buatSoal(null, skorTersimpan().total + 1))
   const [jawaban, setJawaban] = useState('')
   const [status, setStatus] = useState(null) // null | 'benar' | 'salah' | 'menyerah'
-  const [skor, setSkor] = useState({ benar: 0, total: 0 })
+  // skor dilanjutkan dari catatan di perangkat agar progres pertemuan 4 tidak hilang saat aplikasi ditutup
+  const [skor, setSkor] = useState(skorTersimpan)
   const [beruntun, setBeruntun] = useState(0) // jumlah benar berturut-turut
   // F6 fading: jumlah soal benar berturut-turut TANPA bantuan apa pun
   const [lancar, setLancar] = useState(0)
@@ -383,11 +393,18 @@ export default function Latihan() {
         tombol="Masuk & mulai latihan"
         onMasuk={() => {
           catatan.current = { mulai: new Date(), dibacakan: 0 } // waktu soal pertama dihitung setelah kenalan
+          const tersimpan = skorTersimpan()
+          setSkor(tersimpan)
+          setSoal(buatSoal(null, tersimpan.total + 1))
           segarkan((n) => n + 1)
         }}
       />
     )
   }
+
+  // Pertemuan 4: dibuka setelah pre-test dan Sesi 1–3 (alur.js)
+  const terkunci = kunciLatihan()
+  if (terkunci) return <Terkunci judul="Latihan Soal belum dibuka" pesan={terkunci} />
 
   const tercapai = skor.total >= TARGET_SOAL
   const tunjuk = k.tahap === 'miring' && !selesai
