@@ -313,7 +313,7 @@ Untuk menyambungkan aplikasi ke backend, isi `VITE_API_URL` di `.env` (mis. `htt
 
 ## Analisis Data (Python)
 
-Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, langkah yang paling lama/paling banyak salah (indikasi intrinsic load), serta rekap latihan pertemuan 4 per siswa (jumlah soal, persentase benar, rata-rata waktu per soal). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
+Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, **literasi matematis per proses (merumuskan, menerapkan, menafsirkan)**, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, langkah yang paling lama/paling banyak salah (indikasi intrinsic load), serta rekap latihan pertemuan 4 per siswa (jumlah soal, persentase benar, rata-rata waktu per soal). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
 
 ```bash
 cd analisis

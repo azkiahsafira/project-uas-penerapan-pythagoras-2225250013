@@ -1,3 +1,4 @@
 ﻿nama,kelas,kelompok,pretest,posttest,selisih,n_gain,kategori_n_gain,pretest_menit,posttest_menit,IL,EL,GL
+Siswa C,8,Diajar langsung,50,90,40,0.8,tinggi,20.0,18.0,4.666666666666667,2.6666666666666665,7.25
 Siswa A,8,Belajar dengan aplikasi,20,90,70,0.875,tinggi,18.0,15.0,4.0,2.0,8.0
-Siswa B,8,Diajar langsung oleh mahasiswa,30,70,40,0.571,sedang,20.0,17.0,5.0,3.0,7.0
+Siswa B,8,Belajar dengan aplikasi,30,70,40,0.571,sedang,20.0,17.0,5.0,3.0,7.0

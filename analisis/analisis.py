@@ -7,6 +7,7 @@ aplikasi), lalu menghitung:
   2. Ketercapaian tiap indikator soal (pre vs post)
   3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
   4. Perbandingan antarkelompok (hanya bila data berisi lebih dari satu kelompok)
+  4b. Literasi matematis per proses (merumuskan, menerapkan, menafsirkan): skor pre, post, N-gain
   5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, total
      waktu tiap sesi, serta hasil latihan pertemuan 4 (implementasi), dari
      tabel `aktivitas`
@@ -17,6 +18,8 @@ Keluaran:
   - grafik_nilai.svg         (pre vs post per siswa)
   - grafik_beban.svg         (IL, EL, GL per siswa)
   - grafik_indikator.svg     (jumlah siswa benar per indikator)
+  - rekap_literasi.csv       (skor tiap proses literasi matematis per siswa)
+  - grafik_literasi.svg      (rata-rata skor proses literasi per kelompok, pre vs post)
 
 Cara pakai:
   python analisis.py data.csv
@@ -69,6 +72,39 @@ KUNCI_HURUF = {
     "pretest": ["B", None, None, "A", None, None, "B", None, "B", None],
     "posttest": ["C", None, None, "B", None, None, "B", None, "A", None],
 }
+
+# Proses literasi matematis (OECD/PISA, dipakai juga di materi PDF): tiap nomor soal dikelompokkan ke proses
+# UTAMA yang diukurnya. Soal tes TIDAK diubah; ini hanya cara membaca hasil. Urutan = nomor soal 1-10.
+#   Merumuskan  : mengubah situasi/gambar menjadi model matematika (mengenali sisi miring, memilih rumus,
+#                 menyadari bahwa jarak terpendek / diagonal = sisi miring)
+#   Menerapkan  : menjalankan prosedur matematika (kuadrat, akar, menghitung sisi)
+#   Menafsirkan : menilai hasil dalam konteks (memilih jawaban yang masuk akal, memeriksa apakah tiga
+#                 ukuran membentuk segitiga siku-siku)
+PROSES_LITERASI = [
+    "Merumuskan",   # 1 mengenali sisi miring
+    "Menerapkan",   # 2 kuadrat
+    "Menerapkan",   # 3 akar kuadrat
+    "Merumuskan",   # 4 bentuk rumus
+    "Menerapkan",   # 5 menghitung sisi miring
+    "Menerapkan",   # 6 menghitung sisi siku-siku
+    "Menafsirkan",  # 7 soal cerita tangga/layang-layang: pilih jawaban yang masuk akal
+    "Merumuskan",   # 8 soal cerita jarak terpendek = sisi miring
+    "Menafsirkan",  # 9 tripel Pythagoras: apakah membentuk segitiga siku-siku?
+    "Merumuskan",   # 10 soal cerita diagonal layar = sisi miring
+]
+URUTAN_PROSES = ["Merumuskan", "Menerapkan", "Menafsirkan"]
+
+
+def skor_proses(benar):
+    """Persentase benar per proses literasi (0-100) dari daftar benar/salah 10 butir."""
+    if not benar:
+        return {p: None for p in URUTAN_PROSES}
+    hasil = {}
+    for p in URUTAN_PROSES:
+        butir = [b for b, q in zip(benar, PROSES_LITERASI) if q == p]
+        hasil[p] = round(100 * sum(butir) / len(butir))
+    return hasil
+
 
 NAMA_BEBAN = {
     "IL": "Intrinsic load",
@@ -254,6 +290,8 @@ def rekap_per_siswa(data):
             r[jenis + "_menit"] = round(d["durasi"] / 60, 1) if d["durasi"] is not None else None
         r["selisih"] = r["posttest"] - r["pretest"] if r["pretest"] is not None and r["posttest"] is not None else None
         r["n_gain"] = n_gain(r["pretest"], r["posttest"])
+        r["literasi_pre"] = skor_proses(r["pretest_benar"])
+        r["literasi_post"] = skor_proses(r["posttest_benar"])
         lp = s.get("leppink")
         for k in ("IL", "EL", "GL"):
             r[k] = lp[k] if lp else None
@@ -309,8 +347,10 @@ def laporan(rekap, peringatan):
     for i, ind in enumerate(INDIKATOR):
         pre = [r["pretest_benar"][i] for r in rekap if r["pretest_benar"]]
         post = [r["posttest_benar"][i] for r in rekap if r["posttest_benar"]]
-        baris_ind.append([i + 1, ind, f"{sum(pre)}/{len(pre)}", f"{sum(post)}/{len(post)}"])
-    cetak_tabel("3. KETERCAPAIAN INDIKATOR (jumlah siswa menjawab benar)", ["No", "Indikator", "Pre", "Post"], baris_ind)
+        baris_ind.append([i + 1, ind, PROSES_LITERASI[i], f"{sum(pre)}/{len(pre)}", f"{sum(post)}/{len(post)}"])
+    cetak_tabel("3. KETERCAPAIAN INDIKATOR (jumlah siswa menjawab benar)", ["No", "Indikator", "Proses literasi", "Pre", "Post"], baris_ind)
+
+    laporan_literasi(rekap)
 
     cetak_tabel(
         "4. BEBAN KOGNITIF LEPPINK (skala 0-10)",
@@ -346,9 +386,53 @@ def laporan(rekap, peringatan):
         print("PERINGATAN: " + p)
 
 
+def laporan_literasi(rekap):
+    """Skor literasi matematis per proses (0-100) tiap siswa, pre -> post, dan N-gain per proses."""
+    def sel(r, p):
+        pre, post = r["literasi_pre"][p], r["literasi_post"][p]
+        g = n_gain(pre, post)
+        return f"{fmt(pre)} -> {fmt(post)}" + (f" (g {fmt(g, 2)})" if g is not None else "")
+
+    cetak_tabel(
+        "3b. LITERASI MATEMATIS PER PROSES (skor 0-100, pre -> post, N-gain)",
+        ["Nama", "Kelompok", *URUTAN_PROSES],
+        [[r["nama"], r["kelompok"], *(sel(r, p) for p in URUTAN_PROSES)] for r in rekap],
+    )
+    jumlah = {p: PROSES_LITERASI.count(p) for p in URUTAN_PROSES}
+    print("   Butir: " + "; ".join(
+        f"{p} = no {', '.join(str(i + 1) for i, q in enumerate(PROSES_LITERASI) if q == p)} ({jumlah[p]} soal)" for p in URUTAN_PROSES))
+    print("   Tiap soal digolongkan ke proses UTAMA yang diukurnya; soal tes tidak diubah.")
+
+    kelompok = sorted({r["kelompok"] for r in rekap if r["kelompok"]})
+    if len(kelompok) > 1:
+        cetak_tabel(
+            "3c. LITERASI MATEMATIS PER KELOMPOK (rata-rata, pre -> post)",
+            ["Kelompok", "Siswa", *URUTAN_PROSES],
+            [
+                [k, len(rs := [r for r in rekap if r["kelompok"] == k]),
+                 *(f"{fmt(rata(r['literasi_pre'][p] for r in rs))} -> {fmt(rata(r['literasi_post'][p] for r in rs))}"
+                   for p in URUTAN_PROSES)]
+                for k in kelompok
+            ],
+        )
+
+
 # ---------------------------------------------------------------------------
 # Keluaran file
 # ---------------------------------------------------------------------------
+def simpan_literasi_csv(rekap, path):
+    with open(path, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["nama", "kelompok", "proses_literasi", "nomor_soal", "pretest", "posttest", "selisih", "n_gain"])
+        for r in rekap:
+            for p in URUTAN_PROSES:
+                pre, post = r["literasi_pre"][p], r["literasi_post"][p]
+                g = n_gain(pre, post)
+                nomor = " ".join(str(i + 1) for i, q in enumerate(PROSES_LITERASI) if q == p)
+                w.writerow([r["nama"], r["kelompok"], p, nomor, pre, post,
+                            None if pre is None or post is None else post - pre, None if g is None else round(g, 3)])
+
+
 def simpan_rekap_csv(rekap, path):
     kolom = ["nama", "kelas", "kelompok", "pretest", "posttest", "selisih", "n_gain", "kategori_n_gain",
              "pretest_menit", "posttest_menit", "IL", "EL", "GL"]
@@ -434,6 +518,17 @@ def simpan_grafik(rekap, folder):
         [("Pre-test", "#9aa6f0", pre), ("Post-test", "#4b5bdc", post)],
         max(1, len(rekap)), os.path.join(folder, "grafik_indikator.svg"),
     )
+    # rata-rata skor proses literasi per kelompok (pre & post)
+    warna = [("#9aa6f0", "#4b5bdc"), ("#f6b3cf", "#db2777"), ("#a7e3c3", "#1e7a3c")]
+    seri = []
+    for k, kel in enumerate(sorted({r["kelompok"] or "-" for r in rekap})):
+        rs = [r for r in rekap if (r["kelompok"] or "-") == kel]
+        w_pre, w_post = warna[k % len(warna)]
+        bulat = lambda v: None if v is None else round(v)
+        seri.append((f"{kel} - pre", w_pre, [bulat(rata(r["literasi_pre"][p] for r in rs)) for p in URUTAN_PROSES]))
+        seri.append((f"{kel} - post", w_post, [bulat(rata(r["literasi_post"][p] for r in rs)) for p in URUTAN_PROSES]))
+    svg_batang("Literasi Matematis per Proses (skor 0-100)", URUTAN_PROSES, seri, 100,
+               os.path.join(folder, "grafik_literasi.svg"))
 
 
 # ---------------------------------------------------------------------------
@@ -658,8 +753,10 @@ def main():
 
     os.makedirs(args.keluaran, exist_ok=True)
     simpan_rekap_csv(rekap, os.path.join(args.keluaran, "rekap_siswa.csv"))
+    simpan_literasi_csv(rekap, os.path.join(args.keluaran, "rekap_literasi.csv"))
     simpan_grafik(rekap, args.keluaran)
-    berkas = ["rekap_siswa.csv", "grafik_nilai.svg", "grafik_beban.svg", "grafik_indikator.svg"]
+    berkas = ["rekap_siswa.csv", "rekap_literasi.csv", "grafik_nilai.svg", "grafik_beban.svg", "grafik_indikator.svg",
+              "grafik_literasi.svg"]
 
     if args.aktivitas:
         if not os.path.exists(args.aktivitas):

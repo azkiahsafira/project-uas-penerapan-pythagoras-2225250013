@@ -50,7 +50,7 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [ ] Post-test + kuesioner Leppink (pertemuan 5)
 
 ## E. Evaluation
-- [ ] Analisis N-gain, Leppink, jumlah petunjuk, identifikasi sisi miring
+- [ ] Analisis N-gain, Leppink, **literasi matematis per proses** (script siap: `analisis.py` bagian 3b–3c), jumlah petunjuk, identifikasi sisi miring
 - [ ] Bandingkan kelompok aplikasi vs diajar langsung
 - [ ] Revisi aplikasi berdasarkan temuan; laporan ADDIE
 

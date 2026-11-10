@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.5] · 10 November 2026 — Analisis literasi matematis
+- `analisis.py`: skor **literasi matematis per proses** (merumuskan no 1, 4, 8, 10 · menerapkan no 2, 3, 5, 6 · menafsirkan no 7, 9),
+  pre → post dan N-gain per proses, per siswa & per kelompok; `rekap_literasi.csv` dan `grafik_literasi.svg`. Soal tes tidak diubah.
+
 ## [2.4.1] · 10 November 2026
 - Semua kode siswa dinonaktifkan sampai kode siswa penelitian diketahui (hanya 1 siswa memakai aplikasi).
 - Bukti percakapan AI diperbarui sampai sesi pindah link.

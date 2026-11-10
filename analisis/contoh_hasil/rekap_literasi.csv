@@ -1,0 +1,10 @@
+﻿nama,kelompok,proses_literasi,nomor_soal,pretest,posttest,selisih,n_gain
+Siswa C,Diajar langsung,Merumuskan,1 4 8 10,50,75,25,0.5
+Siswa C,Diajar langsung,Menerapkan,2 3 5 6,75,100,25,1.0
+Siswa C,Diajar langsung,Menafsirkan,7 9,0,100,100,1.0
+Siswa A,Belajar dengan aplikasi,Merumuskan,1 4 8 10,25,100,75,1.0
+Siswa A,Belajar dengan aplikasi,Menerapkan,2 3 5 6,25,100,75,1.0
+Siswa A,Belajar dengan aplikasi,Menafsirkan,7 9,0,50,50,0.5
+Siswa B,Belajar dengan aplikasi,Merumuskan,1 4 8 10,25,50,25,0.333
+Siswa B,Belajar dengan aplikasi,Menerapkan,2 3 5 6,50,75,25,0.5
+Siswa B,Belajar dengan aplikasi,Menafsirkan,7 9,0,100,100,1.0

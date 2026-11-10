@@ -41,6 +41,8 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
    | `grafik_nilai.svg` | grafik batang pre-test vs post-test per siswa |
    | `grafik_beban.svg` | grafik IL, EL, GL per siswa |
    | `grafik_indikator.svg` | jumlah siswa menjawab benar per nomor soal, pre vs post |
+   | `rekap_literasi.csv` | skor literasi matematis per proses (merumuskan, menerapkan, menafsirkan) tiap siswa: pre, post, selisih, N-gain |
+   | `grafik_literasi.svg` | rata-rata skor tiap proses literasi per kelompok, pre vs post |
    | `rekap_langkah.csv` | rata-rata waktu, total salah, dan jawaban dibuka per langkah materi (dengan `--aktivitas`) |
    | `grafik_waktu_langkah.svg` | rata-rata waktu per langkah (dengan `--aktivitas`) |
    | `grafik_salah_langkah.svg` | jumlah jawaban salah per langkah (dengan `--aktivitas`) |
@@ -64,10 +66,26 @@ Contoh keluarannya ada di folder [contoh_hasil/](contoh_hasil/).
 | N-gain (Hake) | (post − pre) ÷ (100 − pre); ≥ 0,7 tinggi, 0,3–0,7 sedang, < 0,3 rendah |
 | Ketercapaian indikator | jumlah siswa yang menjawab benar tiap nomor, pre vs post |
 | Beban kognitif | rata-rata butir tiap dimensi (skala 0–10); < 3,34 rendah, 3,34–6,66 sedang, ≥ 6,67 tinggi |
+| Literasi matematis per proses | tiap nomor soal digolongkan ke proses utamanya (tabel di bawah); skor proses = benar ÷ jumlah butir proses × 100; N-gain dihitung per proses |
 | Perbandingan kelompok | rata-rata semua ukuran per kelompok (hanya muncul bila data berisi lebih dari satu kelompok; aplikasi kini memakai satu kelompok, "Belajar dengan aplikasi") |
 | Proses belajar per langkah | waktu tiap siswa dijumlah per langkah (bila dibuka lebih dari sekali), lalu dirata-rata; jumlah salah, jawaban dibuka, dan berapa kali tombol Bacakan dipakai; ditampilkan pula 3 langkah terlama dan 3 langkah dengan salah terbanyak |
 
 Jika seorang siswa mengerjakan tes yang sama lebih dari sekali, yang dipakai adalah hasil **terakhir**.
+
+### Pemetaan soal ke proses literasi matematis
+
+Dosen menetapkan kemampuan yang diukur adalah **literasi matematis**. Materi PDF memakai tiga prosesnya (OECD/PISA).
+Soal pre-test/post-test **tidak diubah**; tiap nomor digolongkan ke proses **utama** yang diukurnya
+(`PROSES_LITERASI` di `analisis.py`):
+
+| Proses | Nomor soal | Alasan |
+| --- | --- | --- |
+| **Merumuskan** (mengubah situasi menjadi model matematika) | 1, 4, 8, 10 | mengenali sisi miring, memilih bentuk rumus, menyadari jarak terpendek & diagonal layar = sisi miring |
+| **Menerapkan** (menjalankan prosedur matematika) | 2, 3, 5, 6 | kuadrat, akar kuadrat, menghitung sisi miring & sisi siku-siku |
+| **Menafsirkan** (menilai hasil dalam konteks) | 7, 9 | memilih tinggi yang masuk akal di antara pilihan (tangga/layang-layang), memeriksa apakah tiga ukuran membentuk segitiga siku-siku |
+
+Karena masing-masing kelompok hanya 1 siswa, hasilnya dibaca sebagai perbandingan dua kasus (deskriptif), bukan uji statistik.
+Proses menafsirkan hanya punya 2 butir, jadi satu jawaban mengubah skornya 50 poin.
 
 ## Catatan
 
