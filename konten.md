@@ -40,6 +40,9 @@ Latihan pertemuan 4 berjenjang seperti "Latihan Berjenjang" di PDF: soal 1–3 *
 (segitiga diputar), soal 7 dst. **soal cerita**. Contoh soal di Kalkulator = Contoh 1–3 PDF (panjang tangga 3–4–5,
 tinggi layang-layang 20–21–29, jarak terpendek 15–20–25) + diagonal layar.
 
+Siswa yang diajar langsung mengerjakan [lembar latihan pertemuan 4](docs/latihan-cetak) dengan jenjang & konteks yang sama
+(4 angka langsung, 4 dengan gambar diputar, 4 soal cerita), angka baru yang tidak ada di materi PDF maupun pre/post-test.
+
 ## 5. Aturan menulis soal
 - Angka memakai **tripel Pythagoras** agar hasil bilangan bulat (3–4–5, 5–12–13, 8–15–17, 7–24–25, 20–21–29, 9–40–41 dan kelipatannya).
 - Satuan selalu ditulis (cm, m, km, inci) dan masuk akal untuk konteksnya.

@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.8] · 11 November 2026 — Lembar latihan cetak
+- Lembar **latihan soal pertemuan 4** untuk siswa yang diajar langsung: 12 soal berjenjang (angka → gambar diputar → cerita),
+  Strategi 5 Langkah, angka baru (tidak sama dengan materi PDF & pre/post-test); **kunci terpisah** untuk guru. `docs/latihan-cetak`.
+
 ## [2.7] · 11 November 2026 — Lembar validasi ahli
 - Lembar validasi **ahli materi** & **ahli media** siap cetak (masing-masing 20 butir, skala 1–4, saran, kesimpulan kelayakan)
   di `docs/validasi`, dibuat oleh `scripts/buat-lembar-validasi.mjs`.

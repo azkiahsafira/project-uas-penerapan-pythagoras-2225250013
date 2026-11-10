@@ -147,6 +147,8 @@ post-test. Pre-test, post-test, dan kuesioner **hanya sekali** per kode siswa (b
 `Uji coba peneliti` (mis. `8Z-99`, untuk demo ke dosen) tidak dikunci dan tidak ikut dianalisis.
 
 Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis ([docs/instrumen-cetak](docs/instrumen-cetak): pre-test, post-test, kuesioner, dan kunci jawaban, dibuat otomatis dari `src/tes.js` dengan `node scripts/buat-lembar-tes.mjs`); jawabannya dimasukkan ke analisis lewat `analisis/templat_kertas.csv`.
+Untuk mengajar siswa tersebut dipakai [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf) yang sama, dan di pertemuan 4 ia mengerjakan
+[lembar latihan soal](docs/latihan-cetak) (12 soal berjenjang setara menu Latihan Soal, kunci terpisah; `python scripts/buat_lembar_latihan.py`).
 
 Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai **lembar validasi ahli materi dan ahli media**
 ([docs/validasi](docs/validasi), dibuat dengan `node scripts/buat-lembar-validasi.mjs`).

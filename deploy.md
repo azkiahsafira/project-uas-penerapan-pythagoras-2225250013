@@ -57,7 +57,8 @@ Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap 
 - [ ] Hapus semua data uji di tabel `hasil` dan `aktivitas`; pastikan **0 baris**
 - [ ] Di HP/laptop yang dipakai mencoba: klik "Ganti nama" / keluar dari kode uji
 - [ ] Coba buka aplikasi di 1 HP siswa: bisa di-install, materi terbuka, tidak ada geser ke samping
-- [ ] Cetak lembar tes untuk siswa yang diajar langsung (`docs/instrumen-cetak/`)
+- [ ] Cetak lembar tes untuk siswa yang diajar langsung (`docs/instrumen-cetak/`), materi PDF (`docs/materi/`), dan lembar latihan
+  pertemuan 4 (`docs/latihan-cetak/`, kunci dicetak terpisah untuk guru)
 
 ## 5. Pencadangan data
 - Setelah **setiap pertemuan**: Supabase → Table Editor → `hasil` & `aktivitas` → **Export to CSV**.
