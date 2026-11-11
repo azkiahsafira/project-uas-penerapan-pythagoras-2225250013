@@ -43,6 +43,7 @@ Uji unit yang direncanakan:
 | 19 | Sesi 3 selesai, latihan < 10 soal | post-test "Dibuka setelah Latihan Soal minimal 10 soal (baru n)" |
 | 20 | Kirim pre-test kedua (kode sama) ke backend | ditolak 409 `sudah_dikerjakan` |
 | 21 | Kode kelompok "Uji coba peneliti" | semua bagian terbuka; data tidak ikut analisis |
+| 22 | `VITE_TES_LITERASI=1`, kerjakan pre-test | 4 soal cerita dengan kotak uraian; setelah dikumpulkan "akan dinilai oleh guru", skor kosong |
 
 ## 3. Uji perangkat Android
 

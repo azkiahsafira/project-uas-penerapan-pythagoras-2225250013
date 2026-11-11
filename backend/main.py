@@ -203,6 +203,8 @@ def kirim_hasil(data: Hasil, siswa=Depends(siswa_masuk)):
     if data.jenis == "leppink":
         beban = nilai_leppink(data.jawaban)
         baris.update(il=beban["IL"], el=beban["EL"], gl=beban["GL"])
+    elif data.jawaban.get("_instrumen") == "literasi":
+        pass  # tes Mathematical Literacy (uraian): dinilai manual dengan rubrik, skor dibiarkan kosong
     else:
         baris.update(nilai_tes(data.jenis, data.jawaban))
     diterima, _ = db.tambah("hasil", [baris])

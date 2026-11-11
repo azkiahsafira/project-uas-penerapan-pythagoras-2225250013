@@ -1,0 +1,122 @@
+[
+  {
+    "indikator": "Mathematical Reasoning",
+    "deskripsi": "Siswa mampu mengidentifikasi hubungan matematis, membandingkan alternatif, memberikan alasan, dan menentukan keputusan yang dapat dipertanggungjawabkan.",
+    "judul": "Memilih Tangga",
+    "teks": "Pak Rudi akan membersihkan AC yang terpasang di dinding rumah. Bagian bawah AC berada 240 cm di atas lantai. Agar aman, kaki tangga harus diletakkan 100 cm dari dinding dan ujung atas tangga harus menyentuh bagian bawah AC. Sebuah toko menjual tiga tangga: Tangga A panjangnya 250 cm seharga Rp280.000, Tangga B panjangnya 270 cm seharga Rp320.000, dan Tangga C panjangnya 300 cm seharga Rp390.000. Pak Rudi ingin tangga yang cukup panjang dengan harga semurah mungkin.",
+    "tanya": "Tangga mana yang sebaiknya dibeli Pak Rudi? Jelaskan alasan matematis Anda.",
+    "tahap": [
+      {
+        "isi": "Tangga, dinding, dan lantai membentuk segitiga siku-siku dengan sudut siku-siku di kaki dinding. Tangga adalah sisi miring. Jadi saya harus menghitung dulu panjang tangga minimal yang dibutuhkan, baru membandingkan ketiga tangga dan harganya.",
+        "skor": 1
+      },
+      {
+        "isi": "Panjang tangga minimal: c² = 100² + 240² = 10.000 + 57.600 = 67.600, sehingga c = √67.600 = 260 cm. Tangga A: 250 cm < 260 cm (tidak sampai ke AC). Tangga B: 270 cm ≥ 260 cm (cukup). Tangga C: 300 cm ≥ 260 cm (cukup).",
+        "skor": 2
+      },
+      {
+        "isi": "Tangga yang memenuhi syarat hanya B dan C. Dibandingkan harganya: Rp320.000 < Rp390.000.",
+        "skor": 1
+      },
+      {
+        "isi": "Pak Rudi sebaiknya membeli Tangga B.",
+        "skor": 1
+      },
+      {
+        "isi": "Alasannya, Tangga A memang paling murah tetapi kurang 10 cm sehingga tidak sampai ke AC. Tangga B cukup panjang (270 cm ≥ 260 cm) dan lebih murah daripada Tangga C. Tangga C juga cukup, tetapi lebih mahal dan kelebihan panjangnya tidak dibutuhkan.",
+        "skor": 1
+      }
+    ]
+  },
+  {
+    "indikator": "Formulating Situations Mathematically",
+    "deskripsi": "Siswa mampu mengidentifikasi informasi relevan, menentukan besaran, dan menerjemahkan situasi nyata menjadi model matematika.",
+    "judul": "Tali Penyangga Tenda",
+    "teks": "Dalam kegiatan perkemahan, regu Pramuka mendirikan tenda dengan satu tiang tegak setinggi 160 cm. Dari puncak tiang dipasang tali penyangga ke tanah, dan ujung bawah setiap tali diikat pada pasak yang berjarak 120 cm dari kaki tiang. Regu memasang 4 tali ke empat arah dan hanya memiliki satu gulungan tali sepanjang 7 m. Regu ingin mengetahui apakah tali yang tersedia cukup.",
+    "tanya": "Ubahlah situasi tersebut menjadi model matematika yang dapat digunakan untuk menentukan kecukupan tali, kemudian selesaikan.",
+    "tahap": [
+      {
+        "isi": "Diketahui: tinggi tiang 160 cm, jarak pasak ke kaki tiang 120 cm, ada 4 tali, tali yang tersedia 7 m = 700 cm. Ditanya: apakah tali yang tersedia cukup?",
+        "skor": 1
+      },
+      {
+        "isi": "Tiang (tegak), tanah (mendatar), dan tali membentuk segitiga siku-siku dengan sudut siku-siku di kaki tiang. Tali adalah sisi miring, tinggi tiang dan jarak pasak adalah sisi siku-siku.",
+        "skor": 1
+      },
+      {
+        "isi": "Model untuk panjang satu tali (c): c² = 160² + 120².",
+        "skor": 1
+      },
+      {
+        "isi": "c² = 25.600 + 14.400 = 40.000, sehingga c = √40.000 = 200 cm.",
+        "skor": 1
+      },
+      {
+        "isi": "Kebutuhan tali = banyak tali × panjang satu tali = 4 × 200 cm = 800 cm = 8 m.",
+        "skor": 1
+      },
+      {
+        "isi": "Tali cukup jika persediaan ≥ kebutuhan. Ternyata 7 m < 8 m. Jadi tali yang tersedia tidak cukup, masih kurang 8 − 7 = 1 m.",
+        "skor": 1
+      }
+    ]
+  },
+  {
+    "indikator": "Employing Mathematical Concepts, Facts, and Procedures",
+    "deskripsi": "Siswa mampu memilih serta menggunakan konsep, operasi, prosedur, dan strategi matematika untuk memperoleh solusi.",
+    "judul": "Ukuran Layar Televisi",
+    "teks": "Ukuran televisi dinyatakan dengan panjang diagonal layarnya dalam satuan inci. Sebuah televisi memiliki layar berbentuk persegi panjang dengan lebar 96 cm dan tinggi 72 cm. Diketahui 2 inci ≈ 5 cm.",
+    "tanya": "Berapa inci ukuran televisi tersebut? Tunjukkan langkah perhitungan Anda.",
+    "tahap": [
+      {
+        "isi": "Diagonal layar membagi layar menjadi dua segitiga siku-siku dengan sisi siku-siku 96 cm dan 72 cm. Diagonal (d) adalah sisi miring, sehingga d² = 96² + 72².",
+        "skor": 1
+      },
+      {
+        "isi": "d² = 9.216 + 5.184 = 14.400.",
+        "skor": 2
+      },
+      {
+        "isi": "d = √14.400 = 120 cm. Diubah ke inci: setiap 5 cm ≈ 2 inci, jadi 120 : 5 × 2 = 24 × 2 = 48 inci.",
+        "skor": 2
+      },
+      {
+        "isi": "Jadi, televisi tersebut berukuran 48 inci (panjang diagonal layarnya 120 cm).",
+        "skor": 1
+      }
+    ]
+  },
+  {
+    "indikator": "Interpreting, Applying, and Evaluating Mathematical Outcomes",
+    "deskripsi": "Siswa mampu menafsirkan hasil matematika dalam konteks, menilai kewajaran hasil, dan mengambil keputusan berdasarkan hasil perhitungan.",
+    "judul": "Papan Miring untuk Gerobak",
+    "teks": "Pak Joko akan memasang papan miring agar gerobak bisa didorong naik ke teras rumah. Lantai teras lebih tinggi 80 cm dari halaman, dan ujung bawah papan diletakkan di halaman dengan jarak mendatar 150 cm dari teras. Dua siswa menghitung panjang papan yang dibutuhkan. Andi menulis 80 + 150 = 230 cm. Budi menulis c² = 150² − 80² = 22.500 − 6.400 = 16.100, sehingga c ≈ 127 cm.",
+    "tanya": "Apakah Anda setuju dengan salah satu jawaban tersebut? Tentukan panjang papan yang benar dan jelaskan alasan Anda.",
+    "tahap": [
+      {
+        "isi": "Tinggi teras (tegak), jarak mendatar di halaman, dan papan membentuk segitiga siku-siku. Papan adalah sisi miring, sehingga papan harus menjadi sisi yang paling panjang.",
+        "skor": 1
+      },
+      {
+        "isi": "Panjang papan: c² = 80² + 150² = 6.400 + 22.500 = 28.900.",
+        "skor": 1
+      },
+      {
+        "isi": "c = √28.900 = 170 cm.",
+        "skor": 1
+      },
+      {
+        "isi": "Jawaban Budi (127 cm) tidak wajar karena lebih pendek dari jarak mendatar 150 cm, padahal sisi miring harus paling panjang. Budi keliru mengurangkan kuadrat, padahal yang dicari adalah sisi miring sehingga kuadratnya harus dijumlahkan.",
+        "skor": 1
+      },
+      {
+        "isi": "Jawaban Andi (230 cm) juga tidak tepat karena hanya menjumlahkan panjang dua sisi, bukan memakai teorema Pythagoras. Papan 230 cm terlalu panjang sehingga ujungnya tidak tepat berada di tepi teras.",
+        "skor": 1
+      },
+      {
+        "isi": "Jadi, saya tidak setuju dengan kedua jawaban tersebut. Panjang papan yang dibutuhkan adalah 170 cm.",
+        "skor": 1
+      }
+    ]
+  }
+]

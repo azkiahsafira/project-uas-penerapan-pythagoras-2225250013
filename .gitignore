@@ -30,6 +30,7 @@ analisis/*.csv
 analisis/hasil_analisis/
 __pycache__/
 !analisis/templat_kertas.csv
+!analisis/templat_skor_literasi.csv
 
 # Backend Python
 backend/.venv/

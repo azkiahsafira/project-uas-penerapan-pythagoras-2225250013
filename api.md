@@ -65,6 +65,7 @@ Untuk `leppink`: `"jawaban": { "IL1": 4, "IL2": 3, "...": 0, "GL4": 8 }`.
 Balasan 200 (tes): `{ "tersimpan": true, "baru": true }` — **skor tidak dikirim balik** saat tes agar tidak menjadi umpan balik; skor dihitung & disimpan di server.
 **Tiap instrumen hanya sekali per kode siswa:** kiriman dengan `id` yang sama aman diulang (`"baru": false`), tetapi `id` lain untuk
 jenis yang sama ditolak `409 sudah_dikerjakan`.
+Tes Mathematical Literacy (uraian): `jawaban` berisi `"_instrumen": "literasi"`; skor dibiarkan kosong karena dinilai manual dengan rubrik.
 
 ### `GET /soal/latihan?tingkat=1..3`
 ```json

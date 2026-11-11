@@ -4,19 +4,30 @@ import FormKode from './Masuk.jsx'
 import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, serverAktif, simpanHasil, unduhCsv } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
 import { kunciTes } from './alur.js'
+import SOAL_LITERASI from './data/soal-literasi.json'
+
+// Sakelar tes Mathematical Literacy (4 soal uraian dari kisi-kisi dosen). Bila VITE_TES_LITERASI=1 di .env,
+// pre-test & post-test memakai soal ini dan dinilai manual oleh peneliti dengan rubrik
+// (docs/instrumen-cetak-literasi). Bawaan: mati, sehingga tes 10 soal yang lama tetap dipakai.
+export const TES_LITERASI = import.meta.env.VITE_TES_LITERASI === '1'
+const URAIAN = SOAL_LITERASI.map((s) => ({ ...s, tipe: 'uraian' }))
+const KET_LITERASI =
+  '4 soal cerita. Tuliskan langkah penyelesaianmu selengkap mungkin: apa yang diketahui, rumus, perhitungan, dan kesimpulan. Kerjakan sendiri.'
 
 const INSTRUMEN = {
   pretest: {
     judul: 'Pre-test',
     waktu: 'Pertemuan 1, sebelum Sesi 1',
-    ket: '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain. Tidak apa-apa jika belum bisa, kerjakan semampunya.',
-    soal: PRETEST,
+    ket: TES_LITERASI
+      ? `${KET_LITERASI} Tidak apa-apa jika belum bisa, kerjakan semampunya.`
+      : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain. Tidak apa-apa jika belum bisa, kerjakan semampunya.',
+    soal: TES_LITERASI ? URAIAN : PRETEST,
   },
   posttest: {
     judul: 'Post-test',
     waktu: 'Pertemuan 5',
-    ket: '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain.',
-    soal: POSTTEST,
+    ket: TES_LITERASI ? KET_LITERASI : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain.',
+    soal: TES_LITERASI ? URAIAN : POSTTEST,
   },
   leppink: {
     judul: 'Kuesioner Beban Kognitif',
@@ -94,8 +105,25 @@ function PengerjaanTes({ jenis, onKumpul }) {
         ))}
       </div>
 
-      <p className="soal">{s.tanya}</p>
-      {s.tipe === 'pilihan' ? (
+      {s.tipe === 'uraian' ? (
+        <>
+          <p className="soal">
+            <strong>{s.judul}.</strong> {s.teks} <strong>{s.tanya}</strong>
+          </p>
+          <label>
+            Jawaban dan langkah penyelesaianmu
+            <textarea
+              className="jawaban-uraian"
+              rows={9}
+              value={jawaban[idx] ?? ''}
+              onChange={(e) => setJawaban((j) => ({ ...j, [idx]: e.target.value }))}
+            />
+          </label>
+        </>
+      ) : (
+        <p className="soal">{s.tanya}</p>
+      )}
+      {s.tipe === 'uraian' ? null : s.tipe === 'pilihan' ? (
         <div className="opsi-tes">
           {s.opsi.map((o, k) => (
             <label key={o} className={`radio pilihan ${jawaban[idx] === o ? 'dipilih' : ''}`}>
@@ -196,6 +224,8 @@ function Hasil({ hasil, tersimpan, statusKirim, onKembali }) {
             ))}
           </ul>
         </>
+      ) : hasil.skor === null ? (
+        <p className="jawaban">{INSTRUMEN[hasil.jenis].judul} selesai. Jawabanmu sudah dikumpulkan dan akan dinilai oleh guru.</p>
       ) : (
         <p className="jawaban">
           {INSTRUMEN[hasil.jenis].judul} selesai. Benar {hasil.benar} dari {hasil.total} soal, nilai <strong>{hasil.skor}</strong>.
@@ -241,7 +271,13 @@ function RiwayatHasil() {
                 <td>{h.nama} (kls {h.kelas})</td>
                 <td>{h.kelompok}</td>
                 <td>{INSTRUMEN[h.jenis].judul}</td>
-                <td>{h.jenis === 'leppink' ? `IL ${h.beban.IL} · EL ${h.beban.EL} · GL ${h.beban.GL}` : `${h.skor} (${h.benar}/${h.total})`}</td>
+                <td>
+                  {h.jenis === 'leppink'
+                    ? `IL ${h.beban.IL} · EL ${h.beban.EL} · GL ${h.beban.GL}`
+                    : h.skor === null || h.skor === undefined
+                      ? 'uraian (dinilai manual)'
+                      : `${h.skor} (${h.benar}/${h.total})`}
+                </td>
                 <td>{Math.round(h.durasiDetik / 60)} mnt</td>
                 {serverAktif && <td>{h.terkirim ? '✓ terkirim' : 'belum'}</td>}
                 <td>
@@ -309,7 +345,14 @@ export default function Tes({ onFokus }) {
 
   const kumpul = (jawaban) => {
     const selesai = new Date()
-    const nilai = jenis === 'leppink' ? { beban: nilaiLeppink(jawaban) } : nilaiTes(INSTRUMEN[jenis].soal, jawaban)
+    const uraian = TES_LITERASI && jenis !== 'leppink'
+    // soal uraian Mathematical Literacy dinilai manual dengan rubrik, jadi skor dikosongkan
+    const nilai =
+      jenis === 'leppink'
+        ? { beban: nilaiLeppink(jawaban) }
+        : uraian
+          ? { benar: null, total: null, skor: null }
+          : nilaiTes(INSTRUMEN[jenis].soal, jawaban)
     const data = {
       id: `${selesai.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
       jenis,
@@ -317,7 +360,7 @@ export default function Tes({ onFokus }) {
       mulai: mulai.toISOString(),
       selesai: selesai.toISOString(),
       durasiDetik: Math.round((selesai - mulai) / 1000),
-      jawaban,
+      jawaban: uraian ? { ...jawaban, _instrumen: 'literasi' } : jawaban,
       ...nilai,
     }
     setTersimpan(simpanHasil(data))

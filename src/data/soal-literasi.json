@@ -1,0 +1,26 @@
+[
+  {
+    "indikator": "Mathematical Reasoning",
+    "judul": "Memilih Tangga",
+    "teks": "Pak Rudi akan membersihkan AC yang terpasang di dinding rumah. Bagian bawah AC berada 240 cm di atas lantai. Agar aman, kaki tangga harus diletakkan 100 cm dari dinding dan ujung atas tangga harus menyentuh bagian bawah AC. Sebuah toko menjual tiga tangga: Tangga A panjangnya 250 cm seharga Rp280.000, Tangga B panjangnya 270 cm seharga Rp320.000, dan Tangga C panjangnya 300 cm seharga Rp390.000. Pak Rudi ingin tangga yang cukup panjang dengan harga semurah mungkin.",
+    "tanya": "Tangga mana yang sebaiknya dibeli Pak Rudi? Jelaskan alasan matematis Anda."
+  },
+  {
+    "indikator": "Formulating Situations Mathematically",
+    "judul": "Tali Penyangga Tenda",
+    "teks": "Dalam kegiatan perkemahan, regu Pramuka mendirikan tenda dengan satu tiang tegak setinggi 160 cm. Dari puncak tiang dipasang tali penyangga ke tanah, dan ujung bawah setiap tali diikat pada pasak yang berjarak 120 cm dari kaki tiang. Regu memasang 4 tali ke empat arah dan hanya memiliki satu gulungan tali sepanjang 7 m. Regu ingin mengetahui apakah tali yang tersedia cukup.",
+    "tanya": "Ubahlah situasi tersebut menjadi model matematika yang dapat digunakan untuk menentukan kecukupan tali, kemudian selesaikan."
+  },
+  {
+    "indikator": "Employing Mathematical Concepts, Facts, and Procedures",
+    "judul": "Ukuran Layar Televisi",
+    "teks": "Ukuran televisi dinyatakan dengan panjang diagonal layarnya dalam satuan inci. Sebuah televisi memiliki layar berbentuk persegi panjang dengan lebar 96 cm dan tinggi 72 cm. Diketahui 2 inci ≈ 5 cm.",
+    "tanya": "Berapa inci ukuran televisi tersebut? Tunjukkan langkah perhitungan Anda."
+  },
+  {
+    "indikator": "Interpreting, Applying, and Evaluating Mathematical Outcomes",
+    "judul": "Papan Miring untuk Gerobak",
+    "teks": "Pak Joko akan memasang papan miring agar gerobak bisa didorong naik ke teras rumah. Lantai teras lebih tinggi 80 cm dari halaman, dan ujung bawah papan diletakkan di halaman dengan jarak mendatar 150 cm dari teras. Dua siswa menghitung panjang papan yang dibutuhkan. Andi menulis 80 + 150 = 230 cm. Budi menulis c² = 150² − 80² = 22.500 − 6.400 = 16.100, sehingga c ≈ 127 cm.",
+    "tanya": "Apakah Anda setuju dengan salah satu jawaban tersebut? Tentukan panjang papan yang benar dan jelaskan alasan Anda."
+  }
+]

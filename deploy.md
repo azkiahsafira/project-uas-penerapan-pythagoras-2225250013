@@ -51,6 +51,10 @@ Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap 
   update public.siswa set aktif = (kode = '8A-01');  -- ganti 8A-01 dengan kode siswa penelitian
   select kode, aktif from public.siswa where aktif;
   ```
+- **Tes Mathematical Literacy (bila dosen setuju):** isi `VITE_TES_LITERASI=1` di `.env`, commit & push (Vercel memasang ulang).
+  Pre-test & post-test di aplikasi berganti menjadi 4 soal uraian; siswa manual memakai `docs/instrumen-cetak-literasi/`.
+  Jawaban dinilai dengan rubrik, skornya diketik ke `analisis/skor_literasi.csv`, lalu `python analisis/analisis_literasi.py`.
+  Nyalakan **sebelum** pre-test pertama agar pre & post memakai tes yang sama.
 - **Demo ke dosen tanpa mengikuti urutan pertemuan:** aktifkan kode `8Z-99` (kelompok `Uji coba peneliti`) dengan
   `update public.siswa set aktif = true where kode = '8Z-99';`. Kode ini tidak dikunci dan datanya tidak ikut dianalisis;
   nonaktifkan lagi sesudah demo.

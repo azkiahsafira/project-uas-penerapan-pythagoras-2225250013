@@ -6414,3 +6414,17 @@ main > * {
 .terkunci-info p {
   margin: 0;
 }
+
+/* Tes Mathematical Literacy: jawaban uraian (langkah penyelesaian) */
+.jawaban-uraian {
+  font: inherit;
+  width: 100%;
+  min-height: 180px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 60%, var(--card));
+  color: var(--text);
+  resize: vertical;
+}

@@ -2,6 +2,12 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.9] · 11 November 2026 — Tes Mathematical Literacy (disiapkan)
+- 4 soal Mathematical Literacy dari tugas kisi-kisi dosen (Reasoning, Formulating, Employing, Interpreting & Evaluating; total 24)
+  disiapkan sebagai pre-test & post-test: menu Tes mode uraian (sakelar `VITE_TES_LITERASI`, **belum dinyalakan**), backend
+  menyimpan tanpa skor otomatis, `analisis/analisis_literasi.py` + `templat_skor_literasi.csv`, lembar tes & rubrik cetak
+  (`docs/instrumen-cetak-literasi`).
+
 ## [2.8] · 11 November 2026 — Lembar latihan cetak
 - Lembar **latihan soal pertemuan 4** untuk siswa yang diajar langsung: 12 soal berjenjang (angka → gambar diputar → cerita),
   Strategi 5 Langkah, angka baru (tidak sama dengan materi PDF & pre/post-test); **kunci terpisah** untuk guru. `docs/latihan-cetak`.

@@ -50,6 +50,12 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
 
    File SVG bisa dibuka di browser, atau dimasukkan ke Word lewat **Insert → Pictures**.
 
+**Tes Mathematical Literacy (bila dipakai):** nilai jawaban uraian dengan rubrik
+([docs/instrumen-cetak-literasi](../docs/instrumen-cetak-literasi)), ketik skor tiap soal (0–6) ke `skor_literasi.csv`
+(format [templat_skor_literasi.csv](templat_skor_literasi.csv): `nama,kelompok,jenis,s1,s2,s3,s4`), lalu jalankan
+`python analisis_literasi.py skor_literasi.csv`. Hasil: skor total /24, N-gain, skor per indikator, perbandingan kelompok,
+`rekap_mathematical_literacy.csv`, dan `grafik_mathematical_literacy.svg`.
+
 Mau mencoba dulu? Jalankan dengan data contoh (fiktif):
 
 ```bash

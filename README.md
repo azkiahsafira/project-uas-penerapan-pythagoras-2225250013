@@ -172,6 +172,13 @@ Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai
 
   Nilai = jumlah benar ÷ 10 × 100.
 
+- **Tes Mathematical Literacy (disiapkan, menunggu persetujuan dosen)**: 4 soal uraian penerapan teorema Pythagoras sesuai
+  kisi-kisi dosen ([src/data/soal-literasi.json](src/data/soal-literasi.json)), satu per indikator: Mathematical Reasoning,
+  Formulating, Employing, Interpreting & Evaluating; skor per tahap 0–6, total 24. Bila `VITE_TES_LITERASI=1`, pre-test dan
+  post-test di aplikasi memakai soal ini (jawaban uraian, dinilai manual dengan rubrik). Lembar cetak & rubrik:
+  [docs/instrumen-cetak-literasi](docs/instrumen-cetak-literasi) (`python scripts/buat_tes_literasi.py`); analisis:
+  `python analisis/analisis_literasi.py skor_literasi.csv`.
+
 - **Kuesioner beban kognitif**: diadaptasi dari Leppink dkk. (2013), 10 butir skala 0 (sama sekali tidak setuju) sampai 10 (sangat setuju). Skor tiap jenis beban adalah rata-rata butirnya:
 
   | Jenis beban | Butir | Harapan |

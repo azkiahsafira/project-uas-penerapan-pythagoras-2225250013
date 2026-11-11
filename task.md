@@ -44,6 +44,9 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] Jalankan perubahan kolom `aktivitas` (`petunjuk`, `catatan`, jenis `prasyarat`/`refleksi`) di Supabase SQL Editor
 - [x] Animasi & hiasan **dipertahankan apa adanya** (keputusan pengembang); tetap disembunyikan saat tes
 
+- [x] Tes Mathematical Literacy (4 soal uraian, kisi-kisi dosen) disiapkan di aplikasi, cetak, & analisis
+- [ ] Konfirmasi dosen: pakai tes Mathematical Literacy sebagai pre/post-test? → bila ya, `VITE_TES_LITERASI=1`
+
 ## D. Implementation
 - [ ] Uji coba di 2–3 HP Android (murah & menengah)
 - [ ] Bagikan kode siswa, pre-test (pertemuan 1)

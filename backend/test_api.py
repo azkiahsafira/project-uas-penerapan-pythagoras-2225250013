@@ -134,6 +134,15 @@ def test_tes_hanya_sekali_per_kode():
     assert klien.post("/api/hasil", headers=masuk("8A-02"), json={**isi, "id": "pre-3"}).status_code == 200
 
 
+def test_tes_literasi_uraian_tanpa_skor_otomatis():
+    kepala = masuk()
+    isi = {"id": "ml-1", "jenis": "pretest", "mulai": "2026-11-10T01:00:00Z", "selesai": "2026-11-10T01:30:00Z",
+           "jawaban": {"0": "c² = 100² + 240² = 67.600, c = 260 cm, beli tangga B", "1": "...", "_instrumen": "literasi"}}
+    assert klien.post("/api/hasil", headers=kepala, json=isi).status_code == 200
+    baris = main.db.semua("hasil")[0]
+    assert baris["skor"] is None and baris["benar"] is None and baris["jawaban"]["_instrumen"] == "literasi"
+
+
 def test_soal_latihan_berjenjang():
     soal = klien.get("/api/soal/latihan?tingkat=3&jumlah=4", headers=masuk()).json()["soal"]
     assert len(soal) == 4 and all("cerita" in s and s["dicari"] in ("b", "c") for s in soal)
