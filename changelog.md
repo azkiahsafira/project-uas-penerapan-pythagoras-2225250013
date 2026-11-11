@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.9.1] · 11 November 2026
+- Tes Mathematical Literacy **dinyalakan** (`VITE_TES_LITERASI=1`): pre-test & post-test kini 4 soal uraian. Siswa manual memakai
+  `docs/instrumen-cetak-literasi`; lembar tes 10 soal lama tidak dipakai lagi.
+
 ## [2.9] · 11 November 2026 — Tes Mathematical Literacy (disiapkan)
 - 4 soal Mathematical Literacy dari tugas kisi-kisi dosen (Reasoning, Formulating, Employing, Interpreting & Evaluating; total 24)
   disiapkan sebagai pre-test & post-test: menu Tes mode uraian (sakelar `VITE_TES_LITERASI`, **belum dinyalakan**), backend
