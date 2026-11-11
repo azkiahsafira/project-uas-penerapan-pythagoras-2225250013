@@ -13,7 +13,8 @@ konsisten dengan rancangan penelitian, teori beban kognitif, dan aturan privasi.
 | --- | --- | --- |
 | Frontend | React 19 + Vite (JavaScript), three.js | `npm install`, `npm run dev`, `npm run lint`, `npm run build` |
 | Backend | FastAPI (Python 3.11+) | `python -m venv backend/.venv`, `pip install -r backend/requirements.txt`, `python -m pytest backend -q`, `uvicorn backend.main:app --reload` |
-| Analisis | Python (pustaka bawaan) | `python analisis/analisis.py analisis/contoh_data.csv` |
+| Analisis | Python (pustaka bawaan) | `python analisis/analisis.py analisis/contoh_data.csv`, `python analisis/analisis_literasi.py`, `python -m pytest analisis -q` |
+| Uji JavaScript | Node (`node:test`, tanpa library tambahan) | `npm test` |
 | Lembar tes cetak | Node | `node scripts/buat-lembar-tes.mjs` |
 
 Sebelum menyelesaikan pekerjaan: **`npm run lint` dan `npm run build` harus lolos**, dan perubahan tampilan dicek di ukuran HP (375×812) dan laptop.

@@ -2,6 +2,14 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.10] · 11 November 2026 — Lebih banyak Python & JavaScript (saran dosen)
+- **Python:** `analisis/ekspor_jawaban_literasi.py` (lembar penilaian jawaban uraian dari data Supabase + `skor_literasi.csv`),
+  `analisis/test_analisis.py` (17 pengujian pytest), analisis utama melewati tes uraian.
+- **JavaScript:** `tests/*.test.mjs` (16 pengujian `node:test`) + `npm test`.
+- GitHub Actions menjalankan lint, build, `npm test`, dan pytest backend + analisis setiap push.
+- `.gitattributes`: dokumen yang dibuat otomatis (bukti AI, materi & lembar cetak HTML) ditandai dokumentasi, sehingga
+  statistik bahasa GitHub menampilkan kode program yang sebenarnya (Python & JavaScript).
+
 ## [2.9.1] · 11 November 2026
 - Tes Mathematical Literacy **dinyalakan** (`VITE_TES_LITERASI=1`): pre-test & post-test kini 4 soal uraian. Siswa manual memakai
   `docs/instrumen-cetak-literasi`; lembar tes 10 soal lama tidak dipakai lagi.

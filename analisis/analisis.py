@@ -756,6 +756,13 @@ def main():
     data = [d for d in data if d["kelompok"] != KELOMPOK_UJI]
     if uji:
         print(f"Catatan: {len(uji)} baris kelompok '{KELOMPOK_UJI}' (demo/uji coba) tidak ikut dianalisis.")
+    # Jawaban uraian tes Mathematical Literacy tidak bisa dikoreksi dengan kunci pilihan/angka:
+    # dinilai dengan rubrik (ekspor_jawaban_literasi.py -> analisis_literasi.py)
+    uraian = [d for d in data if d["jawaban"].get("_instrumen") == "literasi"]
+    data = [d for d in data if d["jawaban"].get("_instrumen") != "literasi"]
+    if uraian:
+        print(f"Catatan: {len(uraian)} tes Mathematical Literacy (uraian) dilewati di sini; nilai dengan rubrik lewat "
+              "ekspor_jawaban_literasi.py, lalu analisis dengan analisis_literasi.py.")
     if not data:
         sys.exit("Tidak ada data pre-test/post-test/kuesioner di file tersebut.")
 

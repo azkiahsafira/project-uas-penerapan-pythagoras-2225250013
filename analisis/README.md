@@ -50,7 +50,9 @@ Hanya memakai library bawaan Python 3, jadi tidak perlu install apa pun.
 
    File SVG bisa dibuka di browser, atau dimasukkan ke Word lewat **Insert → Pictures**.
 
-**Tes Mathematical Literacy (bila dipakai):** nilai jawaban uraian dengan rubrik
+**Tes Mathematical Literacy:** jalankan `python ekspor_jawaban_literasi.py hasil.csv` (CSV ekspor tabel `hasil`) untuk
+membuat `lembar_penilaian_literasi.html` (soal + jawaban uraian tiap siswa + rubrik per tahap) dan `skor_literasi.csv`
+(baris siswa sudah terisi, kolom skor kosong). Nilai jawaban uraian dengan rubrik
 ([docs/instrumen-cetak-literasi](../docs/instrumen-cetak-literasi)), ketik skor tiap soal (0–6) ke `skor_literasi.csv`
 (format [templat_skor_literasi.csv](templat_skor_literasi.csv): `nama,kelompok,jenis,s1,s2,s3,s4`), lalu jalankan
 `python analisis_literasi.py skor_literasi.csv`. Hasil: skor total /24, N-gain, skor per indikator, perbandingan kelompok,

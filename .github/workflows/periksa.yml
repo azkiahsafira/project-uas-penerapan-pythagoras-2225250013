@@ -1,4 +1,4 @@
-# Memeriksa kode setiap ada push ke main: lint & build harus lolos.
+# Memeriksa kode setiap ada push ke main: lint, build, dan semua pengujian otomatis (JavaScript & Python) harus lolos.
 # Aplikasi dipasang otomatis oleh Vercel (https://azkiah-safira-pythagoras.vercel.app), bukan GitHub Pages.
 name: Periksa kode
 
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  periksa:
+  javascript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,4 +22,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm test
       - run: npm run build
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - run: python -m pytest backend analisis -q

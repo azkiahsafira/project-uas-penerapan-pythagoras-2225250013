@@ -312,6 +312,7 @@ Perintah lainnya:
 | `npm run build` | membuat versi siap pakai di folder `dist` |
 | `npm run preview` | menjalankan hasil build |
 | `npm run lint` | memeriksa kode |
+| `npm test` | 16 pengujian otomatis JavaScript (`tests/`): rumus Pythagoras, fitur bantuan, kunci tes, Leppink, materi, tes literasi |
 
 Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https://azkiah-safira-pythagoras.vercel.app). GitHub Actions ([.github/workflows/periksa.yml](.github/workflows/periksa.yml)) memeriksa lint & build.
 
@@ -320,7 +321,7 @@ Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https
 ```bash
 python -m venv backend/.venv
 backend/.venv/Scripts/python -m pip install -r backend/requirements.txt   # Windows
-backend/.venv/Scripts/python -m pytest backend -q                         # 16 pengujian
+backend/.venv/Scripts/python -m pytest backend analisis -q                # 34 pengujian (backend 17 + analisis 17)
 backend/.venv/Scripts/python -m uvicorn backend.main:app --reload         # http://127.0.0.1:8000/docs
 ```
 

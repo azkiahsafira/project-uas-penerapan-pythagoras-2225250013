@@ -8,10 +8,13 @@ Pengujian dilakukan berlapis: dari kode (otomatis), fitur, perangkat Android, sa
 | Uji | Perintah | Lulus bila |
 | --- | --- | --- |
 | Lint JavaScript | `npm run lint` | tanpa error/peringatan |
+| Uji JavaScript | `npm test` (`node --test tests/`) | 16 uji lulus: rumus, bantuan (prasyarat, Diketahui/Ditanya, petunjuk, kewajaran, refleksi), kunci tes, Leppink, materi, latihan tidak membocorkan tes, tes literasi |
 | Build produksi | `npm run build` | berhasil, ukuran bundel utama < 600 KB |
 | Analisis Python | `python analisis/analisis.py analisis/contoh_data.csv --aktivitas analisis/contoh_aktivitas.csv --kertas analisis/templat_kertas.csv` | laporan & grafik terbentuk tanpa peringatan kunci |
 | Kunci jawaban sinkron | bandingkan `src/tes.js`, `analisis/analisis.py`, `backend/penilaian.py` | kunci ketiganya sama |
-| Backend FastAPI | `backend/.venv/Scripts/python -m pytest backend -q` | 16 uji lulus |
+| Backend FastAPI | `backend/.venv/Scripts/python -m pytest backend -q` | 17 uji lulus |
+| Analisis Python | `backend/.venv/Scripts/python -m pytest analisis -q` | 17 uji lulus: N-gain, koreksi, kunci sama dengan backend, literasi, skor rubrik, ekspor jawaban uraian |
+| Otomatis di GitHub | workflow [periksa.yml](.github/workflows/periksa.yml) | setiap push: lint, `npm test`, build, dan pytest backend + analisis |
 
 Uji unit yang direncanakan:
 - `src/pythagoras.js`: sisi miring, sisi siku-siku, input tidak valid (c ≤ a), tripel Pythagoras, koma desimal.
