@@ -2,6 +2,13 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.13] · 16 November 2026 — Latar 3D "Pulau Melayang"
+- Tema latar diganti menjadi **diorama pulau melayang** (tidak flat lagi): bayangan nyata dari matahari, pantulan cahaya
+  lembut, permukaan mengkilap, kabut kedalaman, dan paralaks; warna tetap biru soft + pink soft.
+- Setiap pulau = contoh materi: rumah & tangga bersandar 3 : 4 : 5 dengan kelinci, layang-layang (benang = sisi miring)
+  dengan kolam & air terjun, kebun petak 3² + 4² = 5² mengelilingi kolam segitiga siku-siku, tiang bendera dengan tali
+  penyangga + tanda sudut siku-siku. Ditambah pulau kecil, balon udara bergaris, burung, awan empuk, dan kilauan.
+
 ## [2.12] · 16 November 2026 — Latar 3D lebih imut & ramai
 - Karakter bergaya **chibi**: mata besar berkilau yang berkedip, pipi merona, mulut terbuka saat diklik, Siku punya tangan
   yang melambai dan memantul lembut; kubus 3² + 4² = 5² membulat dan ikut berwajah.
