@@ -2,6 +2,14 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.12] · 16 November 2026 — Latar 3D lebih imut & ramai
+- Karakter bergaya **chibi**: mata besar berkilau yang berkedip, pipi merona, mulut terbuka saat diklik, Siku punya tangan
+  yang melambai dan memantul lembut; kubus 3² + 4² = 5² membulat dan ikut berwajah.
+- **Lebih terasa 3D:** cahaya lembut dari beberapa arah (putih, pink, biru), kabut pastel, dan sudut pandang yang ikut
+  bergeser saat tetikus digerakkan/halaman digulir (paralaks).
+- **Lebih ramai:** pelangi pastel, 3 balon segitiga siku-siku, 3 awan & 2 bintang berwajah, hati, dan kilauan bercahaya.
+- Warna langit biru soft + pink soft yang lebih cerah; di HP objek lebih kecil dan "mengintip" dari tepi agar tulisan tetap jelas.
+
 ## [2.11] · 16 November 2026 — Latar 3D "Langit Pythagoras"
 - Latar Bawah Laut diganti latar **3D (three.js)** bertema materi, warna **biru soft + pink soft**: Siku segitiga siku-siku berwajah,
   menara kotak 3² + 4² = 5², layang-layang dengan benang (sisi miring), tangga bersandar dengan kelinci; awan, hati, bintang.

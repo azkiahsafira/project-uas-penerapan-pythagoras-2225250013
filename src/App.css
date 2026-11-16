@@ -6434,10 +6434,12 @@ main > * {
    ========================================================================= */
 .latar-3d {
   background:
-    radial-gradient(70% 55% at 12% 8%, #d6ecff 0%, transparent 70%),
-    radial-gradient(60% 50% at 92% 22%, #ffe0ee 0%, transparent 70%),
-    radial-gradient(70% 60% at 30% 100%, #ffe7f1 0%, transparent 70%),
-    linear-gradient(170deg, #e8f4ff 0%, #f6efff 48%, #ffeaf3 100%);
+    radial-gradient(45% 35% at 50% 42%, rgba(255, 255, 255, 0.85) 0%, transparent 75%),
+    radial-gradient(65% 55% at 8% 6%, #bfe2ff 0%, transparent 70%),
+    radial-gradient(55% 50% at 95% 15%, #ffd0e6 0%, transparent 70%),
+    radial-gradient(60% 55% at 85% 95%, #cfe8ff 0%, transparent 70%),
+    radial-gradient(70% 60% at 15% 100%, #ffd9ec 0%, transparent 70%),
+    linear-gradient(170deg, #dff0ff 0%, #f3ecff 50%, #ffe6f2 100%);
 }
 
 .latar-3d-kanvas {
@@ -6453,8 +6455,9 @@ main > * {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .latar-3d {
     background:
-      radial-gradient(70% 55% at 12% 8%, #1d3557 0%, transparent 70%),
-      radial-gradient(60% 50% at 92% 22%, #4a2342 0%, transparent 70%),
-      linear-gradient(170deg, #142240 0%, #241a3d 50%, #3a1f3c 100%);
+      radial-gradient(65% 55% at 8% 6%, #24477a 0%, transparent 70%),
+      radial-gradient(55% 50% at 95% 15%, #5a2a55 0%, transparent 70%),
+      radial-gradient(70% 60% at 15% 100%, #4a2450 0%, transparent 70%),
+      linear-gradient(170deg, #16274a 0%, #261c45 50%, #3b1f42 100%);
   }
 }
