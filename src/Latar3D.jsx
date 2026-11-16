@@ -1,14 +1,12 @@
-// Latar belakang 3D "Pulau Melayang Pythagoras" (three.js) untuk semua menu, di belakang kotak-kotak yang tembus pandang.
-// Gaya diorama: pulau-pulau kecil melayang di langit pastel biru soft + pink soft, dengan bayangan nyata, pantulan cahaya
-// lembut (environment map), kabut kedalaman, dan sudut pandang yang ikut bergeser (paralaks). Setiap pulau adalah contoh
-// dari materi teorema Pythagoras:
-//   - Pulau rumah: tangga bersandar ke dinding (kaki 3, tinggi 4, tangga 5) dengan kelinci yang naik-turun (Contoh 1 materi)
-//   - Pulau layang-layang: benang dari patok ke layang-layang = sisi miring (Contoh 2 materi), dengan kolam & air terjun
-//   - Pulau kebun: petak 3×3, 4×4, 5×5 mengelilingi kolam segitiga siku-siku (bukti luas 3² + 4² = 5²)
-//   - Pulau tiang bendera: tali penyangga dari puncak tiang ke patok = sisi miring, tanda sudut siku-siku di kaki tiang
-//   - pulau-pulau kecil, balon udara, burung, awan, dan kilauan
-// Objek bisa diklik/diketuk: bereaksi dan berbicara tentang materi. Hemat: three.js diunduh setelah halaman tampil,
-// ±30 fps, berhenti saat tab tidak dilihat, saat "Animasi: mati", dan saat prefers-reduced-motion. Disembunyikan saat tes.
+// Latar belakang 3D "Akuarium Pythagoras" (three.js) untuk semua menu, di belakang kotak-kotak yang tembus pandang.
+// Dunia bawah air bernuansa biru soft + pink soft: ikan, ubur-ubur bercahaya, ikan buntal, dan kerang bermata besar
+// berkilau yang MELIRIK ke arah kursor/jari dan berkedip. Kesan 3D: dasar laut berpasir yang menjauh sampai hilang di
+// kabut, sinar matahari menembus air, pola cahaya (kaustik) di pasir, efek bersinar (bloom), dan sudut pandang yang
+// ikut bergeser (paralaks). Kaitan materi: sirip punggung ikan berbentuk segitiga siku-siku, batu karang segitiga
+// bersisi 3-4-5, mutiara "3² + 4² = 5²", dan setiap karakter berbicara tentang teorema Pythagoras saat diklik.
+// Interaksi: klik karakter → bereaksi (berputar, mengembang, bersinar, membuka); klik air kosong → gelembung muncul dan
+// ikan-ikan berenang mendekat. Hemat: three.js diunduh setelah halaman tampil, ±30 fps, efek bersinar hanya di layar
+// besar, berhenti saat tab tidak dilihat, saat "Animasi: mati", dan prefers-reduced-motion. Disembunyikan saat tes.
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -18,23 +16,20 @@ const W = {
   pink: 0xffc4de,
   pinkTua: 0xf58bbd,
   putih: 0xffffff,
-  krem: 0xfff4ea,
   lila: 0xdccbf5,
   lilaTua: 0xb9a3ea,
-  kayu: 0xe9bd94,
-  air: 0x8fcdff,
   mata: 0x1b2447,
+  iris: 0x4d6fd6,
+  pasir: 0xf1c6d3,
 }
 
 const SAPAAN = {
-  tangga: ['Tangga 5, kaki 3, tinggi 4! 🪜', 'Tangga bersandar = segitiga siku-siku 🐰', 'Tangga itu sisi miringnya 💙'],
-  layang: ['Benangku sisi miring! 🪁', 'Tinggi² + jarak² = benang² 💨', 'Wuusss, terbang tinggi! ☁️'],
-  taman: ['3² + 4² = 5² 🌷', '9 + 16 = 25 petak, pas! ✨', 'Luas dua kebun kecil = luas kebun besar 💖'],
-  tiang: ['Tali penyangga = sisi miring 🚩', 'Tiang tegak lurus tanah: sudut 90° 📐', 'tinggi² + jarak patok² = tali² 💪'],
-  balon: ['Balon udara terbang tinggi 🎈', 'Dari atas, semua terlihat jelas ✨', 'Hore, kamu hebat! 🎉'],
-  burung: ['Cuit! Semangat belajar 🐦', 'Terbang lurus = jarak terpendek 💨', 'Cuit cuit! 💗'],
-  pulau: ['Pulau kecil melayang ☁️', 'Belajar pelan-pelan saja ya 🌸', 'Kamu pasti bisa! 💙'],
-  kupu: ['Kupu-kupu menyapa! 🦋', 'Sayapku kiri-kanan sama besar ✨', 'Terus semangat ya! 💗'],
+  ikan: ['Blub! Aku ikan segitiga 🐟', 'Sirip punggungku segitiga siku-siku 📐', 'Ayo lanjut ke soal berikutnya! 💙'],
+  ubur: ['Aku bersinar seperti idemu ✨', 'c² = a² + b², ingat ya! 💡', 'Pelan-pelan, pasti bisa 💗'],
+  buntal: ['Puff! Aku mengembang 🐡', 'Kaget ya? Hehe 💕', 'Sisi miring selalu paling panjang! 📏'],
+  kerang: ['Mutiaraku: 3² + 4² = 5² 🦪', '9 + 16 = 25, berkilau! ✨', 'Kamu hebat! 💎'],
+  batu: ['Sisiku 3, 4, dan 5 📐', 'Sisi terpanjangku = 5, itu sisi miring 💙', '3² + 4² = 5² ✅'],
+  bintang: ['Kamu bintangnya! ⭐', 'Semangat belajar ya 🌟', 'Jawaban benar bikin berkilau ✨'],
 }
 
 export default function Latar3D() {
@@ -54,11 +49,15 @@ export default function Latar3D() {
     const tunda = setTimeout(() => {
       Promise.all([
         import('three'),
-        import('three/examples/jsm/geometries/RoundedBoxGeometry.js'),
         import('three/examples/jsm/environments/RoomEnvironment.js'),
-      ]).then(([THREE, rb, ruang]) => {
+        import('three/examples/jsm/postprocessing/EffectComposer.js'),
+        import('three/examples/jsm/postprocessing/RenderPass.js'),
+        import('three/examples/jsm/postprocessing/UnrealBloomPass.js'),
+        import('three/examples/jsm/postprocessing/OutputPass.js'),
+      ]).then(([THREE, a, b, c, d, e]) => {
         if (batal || !kanvas.current) return
-        bersihkan = bangunAdegan(THREE, rb.RoundedBoxGeometry, ruang.RoomEnvironment, kanvas.current, setUcap)
+        const modul = { ...a, ...b, ...c, ...d, ...e }
+        bersihkan = bangunAdegan(THREE, modul, kanvas.current, setUcap)
       })
     }, 600)
     return () => {
@@ -84,10 +83,10 @@ export default function Latar3D() {
   )
 }
 
-function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUcap) {
+function bangunAdegan(THREE, M, kanvas, setUcap) {
   let renderer
   try {
-    renderer = new THREE.WebGLRenderer({ canvas: kanvas, antialias: true, alpha: true })
+    renderer = new THREE.WebGLRenderer({ canvas: kanvas, antialias: true, powerPreference: 'high-performance' })
   } catch {
     return () => {}
   }
@@ -96,46 +95,119 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.05
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
   const gelap = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-  const adegan = new THREE.Scene()
-  // kabut pastel: pulau yang jauh memudar, memberi kesan kedalaman
-  adegan.fog = new THREE.Fog(gelap ? 0x2a2148 : 0xf3ecff, 30, 62)
-  const KAMERA_Z = 24
-  const kamera = new THREE.PerspectiveCamera(36, 1, 0.1, 140)
-  kamera.position.set(0, 2, KAMERA_Z)
+  const acak = (a, b) => a + Math.random() * (b - a)
 
-  // pantulan cahaya lembut seperti di dalam studio foto (permukaan mengkilap tampak bervolume)
+  const adegan = new THREE.Scene()
+  const warnaAir = gelap ? 0x22305c : 0xbfe0fb
+  adegan.fog = new THREE.Fog(warnaAir, 30, 72)
+  const KAMERA_Z = 24
+  const kamera = new THREE.PerspectiveCamera(36, 1, 0.1, 160)
+  kamera.position.set(0, 0.5, KAMERA_Z)
+
+  // ---- tekstur buatan sendiri (tanpa berkas gambar) ----
+  const teksturKanvas = (lebar, tinggi, lukis, srgb = true) => {
+    const c = document.createElement('canvas')
+    c.width = lebar
+    c.height = tinggi
+    lukis(c.getContext('2d'), lebar, tinggi)
+    const t = new THREE.CanvasTexture(c)
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace
+    return t
+  }
+  // langit bawah air: terang di atas (dekat permukaan), menyatu dengan warna kabut di tengah
+  const teksturAir = teksturKanvas(4, 512, (g, w, h) => {
+    const grad = g.createLinearGradient(0, 0, 0, h)
+    const [atas, tengah, bawah] = gelap ? ['#34588f', '#22305c', '#3a2552'] : ['#e2f4ff', '#bfe0fb', '#f6d3e6']
+    grad.addColorStop(0, atas)
+    grad.addColorStop(0.5, tengah)
+    grad.addColorStop(1, bawah)
+    g.fillStyle = grad
+    g.fillRect(0, 0, w, h)
+  })
+  adegan.background = teksturAir
+  const teksturBulat = teksturKanvas(64, 64, (g) => {
+    const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32)
+    grad.addColorStop(0, 'rgba(255,255,255,1)')
+    grad.addColorStop(0.35, 'rgba(255,255,255,0.6)')
+    grad.addColorStop(1, 'rgba(255,255,255,0)')
+    g.fillStyle = grad
+    g.fillRect(0, 0, 64, 64)
+  })
+  // sinar matahari yang menembus air: terang di atas, memudar ke bawah, lembut di kedua tepi
+  const teksturSinar = teksturKanvas(64, 256, (g, w, h) => {
+    const datar = g.createLinearGradient(0, 0, w, 0)
+    datar.addColorStop(0, 'rgba(255,255,255,0)')
+    datar.addColorStop(0.5, 'rgba(255,255,255,1)')
+    datar.addColorStop(1, 'rgba(255,255,255,0)')
+    g.fillStyle = datar
+    g.fillRect(0, 0, w, h)
+    g.globalCompositeOperation = 'destination-in'
+    const tegak = g.createLinearGradient(0, 0, 0, h)
+    tegak.addColorStop(0, 'rgba(255,255,255,1)')
+    tegak.addColorStop(1, 'rgba(255,255,255,0)')
+    g.fillStyle = tegak
+    g.fillRect(0, 0, w, h)
+  })
+  // pola cahaya air di pasir (kaustik): garis terang di batas sel-sel acak, bisa diulang tanpa sambungan
+  const teksturKaustik = teksturKanvas(
+    256,
+    256,
+    (g, N) => {
+      const titik = Array.from({ length: 22 }, () => [Math.random() * N, Math.random() * N])
+      const gambar = g.createImageData(N, N)
+      for (let y = 0; y < N; y++)
+        for (let x = 0; x < N; x++) {
+          let d1 = 1e9
+          let d2 = 1e9
+          for (const [px, py] of titik) {
+            const dx = Math.min(Math.abs(x - px), N - Math.abs(x - px))
+            const dy = Math.min(Math.abs(y - py), N - Math.abs(y - py))
+            const d = dx * dx + dy * dy
+            if (d < d1) {
+              d2 = d1
+              d1 = d
+            } else if (d < d2) d2 = d
+          }
+          const v = Math.max(0, 1 - (Math.sqrt(d2) - Math.sqrt(d1)) / 9) ** 3
+          const i = (y * N + x) * 4
+          gambar.data[i] = gambar.data[i + 1] = gambar.data[i + 2] = 255 * v
+          gambar.data[i + 3] = 255
+        }
+      g.putImageData(gambar, 0, 0)
+    },
+    false,
+  )
+  teksturKaustik.wrapS = teksturKaustik.wrapT = THREE.RepeatWrapping
+
+  // ---- cahaya: pantulan lembut ala studio + matahari dari atas + cahaya pink & biru ----
   const pmrem = new THREE.PMREMGenerator(renderer)
-  const ruang = new RoomEnvironment()
+  const ruang = new M.RoomEnvironment()
   const lingkungan = pmrem.fromScene(ruang, 0.04).texture
   ruang.dispose?.()
   pmrem.dispose()
   adegan.environment = lingkungan
-  adegan.environmentIntensity = 0.45
-
-  // matahari (berbayang) + cahaya pink dari belakang + cahaya biru dari samping
-  adegan.add(new THREE.HemisphereLight(0xe3f2ff, 0xffd9ea, 0.9))
-  const matahari = new THREE.DirectionalLight(0xfff6fa, 2.3)
-  matahari.position.set(6, 12, 10)
-  matahari.target.position.set(0, 0, -3)
-  matahari.castShadow = true
-  matahari.shadow.mapSize.set(hp ? 1024 : 2048, hp ? 1024 : 2048)
-  matahari.shadow.bias = -0.0004
-  matahari.shadow.normalBias = 0.03
+  adegan.environmentIntensity = 0.5
+  adegan.add(new THREE.HemisphereLight(0xeaf6ff, 0xffd6ea, 1.0))
+  const matahari = new THREE.DirectionalLight(0xffffff, 1.7)
+  matahari.position.set(3, 12, 6)
   const tepi = new THREE.DirectionalLight(0xffa8d2, 0.9)
-  tepi.position.set(-8, 3, -6)
-  const samping = new THREE.DirectionalLight(0xa8d8ff, 0.6)
-  samping.position.set(9, -2, 6)
-  adegan.add(matahari, matahari.target, tepi, samping)
+  tepi.position.set(-6, 2, -8)
+  const pengisi = new THREE.DirectionalLight(0xa8d8ff, 0.5)
+  pengisi.position.set(8, -2, 6)
+  adegan.add(matahari, tepi, pengisi)
 
   // ---- bahan & bentuk dasar ----
   const bahan = {}
-  const std = (warna, kasar = 0.6, kilap = 0) =>
-    (bahan[`s${warna}-${kasar}-${kilap}`] ??= kilap
-      ? new THREE.MeshPhysicalMaterial({ color: warna, roughness: kasar, clearcoat: kilap, clearcoatRoughness: 0.15 })
-      : new THREE.MeshStandardMaterial({ color: warna, roughness: kasar }))
+  const std = (warna, kasar = 0.6) =>
+    (bahan[`s${warna}-${kasar}`] ??= new THREE.MeshStandardMaterial({ color: warna, roughness: kasar }))
+  const kilap = (warna, kasar = 0.3) =>
+    (bahan[`k${warna}-${kasar}`] ??= new THREE.MeshPhysicalMaterial({
+      color: warna,
+      roughness: kasar,
+      clearcoat: 1,
+      clearcoatRoughness: 0.1,
+    }))
   const datar = (warna) => (bahan[`d${warna}`] ??= new THREE.MeshBasicMaterial({ color: warna }))
   const tembus = (warna, op) =>
     (bahan[`t${warna}-${op}`] ??= new THREE.MeshBasicMaterial({
@@ -144,973 +216,822 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
       opacity: op,
       depthWrite: false,
     }))
-  const warnaVerteks = (kasar, duaSisi = false) =>
-    (bahan[`v${kasar}-${duaSisi}`] ??= new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      vertexColors: true,
-      roughness: kasar,
-      side: duaSisi ? THREE.DoubleSide : THREE.FrontSide,
-    }))
-  const bola = new THREE.SphereGeometry(1, 28, 20)
-  const v2 = (x, y) => new THREE.Vector2(x, y)
+  const cahaya = (warna, op) =>
+    new THREE.SpriteMaterial({
+      map: teksturBulat,
+      color: warna,
+      transparent: true,
+      opacity: op,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    })
+  const bola = new THREE.SphereGeometry(1, 32, 24)
   const SUMBU_Y = new THREE.Vector3(0, 1, 0)
-  // batang silinder dari titik a ke titik b (untuk tali, benang, tali balon)
-  function batangAntara(m, a, b) {
-    const arah = b.clone().sub(a)
-    m.position.copy(a).addScaledVector(arah, 0.5)
-    m.scale.set(1, arah.length(), 1)
-    m.quaternion.setFromUnitVectors(SUMBU_Y, arah.normalize())
-  }
-  const tali = (r, warna) => new THREE.Mesh(new THREE.CylinderGeometry(r, r, 1, 8), std(warna, 0.5))
-
-  // tekstur bulat lembut (kilauan, cahaya matahari)
-  const teksturBulat = (() => {
-    const c = document.createElement('canvas')
-    c.width = c.height = 64
-    const g = c.getContext('2d')
-    const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32)
-    grad.addColorStop(0, 'rgba(255,255,255,1)')
-    grad.addColorStop(0.35, 'rgba(255,255,255,0.65)')
-    grad.addColorStop(1, 'rgba(255,255,255,0)')
-    g.fillStyle = grad
-    g.fillRect(0, 0, 64, 64)
-    return new THREE.CanvasTexture(c)
-  })()
-  // tekstur garis-garis air terjun (digeser terus agar tampak mengalir)
-  const teksturAir = (() => {
-    const c = document.createElement('canvas')
-    c.width = 64
-    c.height = 256
-    const g = c.getContext('2d')
-    g.fillStyle = 'rgba(255,255,255,0.55)'
-    g.fillRect(0, 0, 64, 256)
-    for (let i = 0; i < 26; i++) {
-      g.fillStyle = `rgba(255,255,255,${0.5 + (i % 3) * 0.15})`
-      g.fillRect((i * 23) % 60, (i * 53) % 256, 3 + (i % 3), 30 + (i % 5) * 14)
-    }
-    const t = new THREE.CanvasTexture(c)
-    t.wrapS = t.wrapT = THREE.RepeatWrapping
-    t.colorSpace = THREE.SRGBColorSpace
-    return t
-  })()
-
-  // ---- wajah kecil untuk kelinci (mata berkilau, berkedip, pipi merona) ----
-  const semuaMata = []
-  function wajah(lebar, r) {
-    const g = new THREE.Group()
-    for (const s of [-1, 1]) {
-      const mata = new THREE.Group()
-      const bolaMata = new THREE.Mesh(bola, datar(W.mata))
-      bolaMata.scale.set(r, r * 1.18, r * 0.45)
-      const kilau = new THREE.Mesh(bola, datar(W.putih))
-      kilau.scale.setScalar(r * 0.36)
-      kilau.position.set(r * 0.32, r * 0.38, r * 0.4)
-      mata.add(bolaMata, kilau)
-      mata.position.x = (s * lebar) / 2
-      g.add(mata)
-      semuaMata.push(mata)
-      const pipi = new THREE.Mesh(bola, tembus(W.pinkTua, 0.55))
-      pipi.scale.set(r * 0.9, r * 0.55, r * 0.2)
-      pipi.position.set(s * (lebar / 2 + r * 1.1), -r * 1.1, -r * 0.1)
-      g.add(pipi)
-    }
-    const senyum = new THREE.Mesh(new THREE.TorusGeometry(r * 0.6, r * 0.15, 8, 16, Math.PI), datar(W.mata))
-    senyum.rotation.z = Math.PI
-    senyum.position.y = -r * 0.7
-    g.add(senyum)
-    return g
-  }
-
-  function kelinci() {
-    const g = new THREE.Group()
-    const bulu = std(W.putih, 0.7)
-    const badan = new THREE.Mesh(bola, bulu)
-    badan.scale.set(0.36, 0.33, 0.34)
-    const kepala = new THREE.Mesh(bola, bulu)
-    kepala.scale.setScalar(0.33)
-    kepala.position.set(0, 0.48, 0.06)
-    const ekor = new THREE.Mesh(bola, bulu)
-    ekor.scale.setScalar(0.12)
-    ekor.position.set(0, 0.02, -0.34)
-    g.add(badan, kepala, ekor)
-    for (const s of [-1, 1]) {
-      const telinga = new THREE.Mesh(new THREE.CapsuleGeometry(0.08, 0.34, 4, 10), bulu)
-      telinga.position.set(s * 0.13, 0.9, 0)
-      telinga.rotation.z = -s * 0.18
-      const dalam = new THREE.Mesh(new THREE.CapsuleGeometry(0.04, 0.24, 4, 8), std(W.pink, 0.6))
-      dalam.position.z = 0.05
-      telinga.add(dalam)
-      g.add(telinga)
-    }
-    const muka = wajah(0.24, 0.065)
-    muka.position.set(0, 0.5, 0.37)
-    g.add(muka)
-    return g
-  }
-
-  function pohon(warna, s = 1) {
-    const g = new THREE.Group()
-    const batang = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.11, 0.7, 10), std(W.kayu, 0.75))
-    batang.position.y = 0.35
-    g.add(batang)
-    for (const [x, y, z, r] of [
-      [0, 0.95, 0, 0.42],
-      [0.3, 0.78, 0.1, 0.3],
-      [-0.28, 0.8, -0.05, 0.32],
-      [0.05, 1.25, 0.04, 0.3],
-    ]) {
-      const daun = new THREE.Mesh(bola, std(warna, 0.55))
-      daun.scale.setScalar(r)
-      daun.position.set(x, y, z)
-      g.add(daun)
-    }
-    g.scale.setScalar(s)
-    return g
-  }
-
-  function jamur() {
-    const g = new THREE.Group()
-    const batang = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.4, 14), std(W.krem, 0.7))
-    batang.position.y = 0.2
-    const tudung = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), std(W.pinkTua, 0.35, 1))
-    tudung.scale.set(0.4, 0.32, 0.4)
-    tudung.position.y = 0.36
-    g.add(batang, tudung)
-    for (const [a, h] of [
-      [0.4, 0.5],
-      [2.2, 0.4],
-      [4, 0.55],
-      [5.3, 0.75],
-    ]) {
-      const bintik = new THREE.Mesh(bola, std(W.putih, 0.5))
-      bintik.scale.setScalar(0.05)
-      bintik.position.set(Math.cos(a) * 0.36 * Math.cos(h), 0.36 + 0.3 * Math.sin(h), Math.sin(a) * 0.36 * Math.cos(h))
-      g.add(bintik)
-    }
-    return g
-  }
-
-  function kincir() {
-    const g = new THREE.Group()
-    const menara = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.24, 1.1, 16), std(W.krem, 0.6))
-    menara.position.y = 0.55
-    const atap = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.32, 16), std(W.pinkTua, 0.3, 1))
-    atap.position.y = 1.26
-    const baling = new THREE.Group()
-    for (let i = 0; i < 4; i++) {
-      const daun = new THREE.Mesh(new RoundedBoxGeometry(0.12, 0.62, 0.03, 2, 0.02), std(i % 2 ? W.pink : W.putih, 0.4, 1))
-      daun.position.y = 0.33
-      const lengan = new THREE.Group()
-      lengan.rotation.z = (i * Math.PI) / 2
-      lengan.add(daun)
-      baling.add(lengan)
-    }
-    const poros = new THREE.Mesh(bola, std(W.biruTua, 0.3, 1))
-    poros.scale.setScalar(0.06)
-    baling.add(poros)
-    baling.position.set(0, 1.0, 0.2)
-    g.add(menara, atap, baling)
-    g.userData.baling = baling
-    return g
-  }
-
-  // ---- pulau melayang: tanah bergelombang (lila → biru), rumput "meleleh" di tepinya, dan bunga ----
-  const ATAS = 0.44 // tinggi permukaan rumput
-  const riak = (a, y, s) => {
-    const bawah = Math.min(Math.max((-y - 0.05) / 0.5, 0), 1)
-    return 1 + 0.06 * Math.sin(a * 5 + s) + 0.035 * Math.sin(a * 9 + s * 1.7) + bawah * 0.09 * Math.sin(a * 3 + y * 2.5 + s)
-  }
-  function pulau(r, warnaRumput, s, cincin = [0.55, 0.3]) {
-    const g = new THREE.Group()
-    const tinggi = r * 1.15
-    const c = new THREE.Color()
-    // tanah
-    const profil = new THREE.SplineCurve([
-      v2(0.001, -tinggi),
-      v2(r * 0.22, -tinggi * 0.84),
-      v2(r * 0.45, -tinggi * 0.6),
-      v2(r * 0.7, -tinggi * 0.34),
-      v2(r * 0.9, -tinggi * 0.1),
-      v2(r, 0.1),
-    ]).getPoints(28)
-    profil.push(v2(0.001, 0.12))
-    const tanah = new THREE.LatheGeometry(profil, 56)
-    tanah.rotateY(Math.PI) // sambungan bentuk diputar ke belakang agar tidak terlihat
-    const cAtas = new THREE.Color(W.lila)
-    const cBawah = new THREE.Color(W.biruTua)
-    let p = tanah.attributes.position
-    let warna = new Float32Array(p.count * 3)
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i)
-      const y = p.getY(i)
-      const z = p.getZ(i)
-      const f = riak(Math.atan2(z, x), y, s)
-      p.setX(i, x * f)
-      p.setZ(i, z * f)
-      c.copy(cAtas).lerp(cBawah, Math.min(Math.max(-y / tinggi, 0), 1))
-      c.offsetHSL(0, 0, Math.sin(y * 9 + s) * 0.03) // lapisan-lapisan tanah
-      c.toArray(warna, i * 3)
-    }
-    tanah.setAttribute('color', new THREE.BufferAttribute(warna, 3))
-    tanah.computeVertexNormals()
-    g.add(new THREE.Mesh(tanah, warnaVerteks(0.85)))
-    // rumput
-    const profilRumput = new THREE.SplineCurve([
-      v2(0.001, ATAS),
-      v2(r * 0.55, ATAS + 0.01),
-      v2(r * 0.92, ATAS - 0.05),
-      v2(r * 1.06, 0.27),
-      v2(r * 1.08, 0.1),
-      v2(r * 1.03, 0),
-    ]).getPoints(20)
-    const rumput = new THREE.LatheGeometry(profilRumput, 72)
-    rumput.rotateY(Math.PI)
-    const cRumput = new THREE.Color(warnaRumput)
-    const cTerang = cRumput.clone().lerp(new THREE.Color(W.putih), 0.35)
-    p = rumput.attributes.position
-    warna = new Float32Array(p.count * 3)
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i)
-      const y = p.getY(i)
-      const z = p.getZ(i)
-      const a = Math.atan2(z, x)
-      const f = riak(a, 0, s)
-      p.setX(i, x * f)
-      p.setZ(i, z * f)
-      if (y < 0.3) p.setY(i, y - Math.max(0, Math.sin(a * 7 + s * 3)) ** 3 * 0.3 * Math.min((0.3 - y) / 0.3, 1))
-      c.copy(cTerang).lerp(cRumput, Math.min(Math.hypot(x, z) / r, 1))
-      c.toArray(warna, i * 3)
-    }
-    rumput.setAttribute('color', new THREE.BufferAttribute(warna, 3))
-    rumput.computeVertexNormals()
-    g.add(new THREE.Mesh(rumput, warnaVerteks(0.7, true)))
-    // bunga kecil di sekeliling tepi
-    const n = Math.round(r * 14)
-    const bunga = new THREE.InstancedMesh(bola, std(W.putih, 0.45), n)
-    const m4 = new THREE.Matrix4()
-    const warnaBunga = [W.pinkTua, W.putih, W.biruTua, W.pink, W.lilaTua]
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2 + Math.sin(i * 12.9 + s) * 0.3
-      const rr = r * (cincin[0] + ((i * 37) % 10) * 0.1 * cincin[1]) * riak(a, 0, s)
-      m4.makeScale(0.07, 0.07, 0.07).setPosition(Math.cos(a) * rr, ATAS - 0.01, Math.sin(a) * rr)
-      bunga.setMatrixAt(i, m4)
-      bunga.setColorAt(i, c.set(warnaBunga[i % warnaBunga.length]))
-    }
-    g.add(bunga)
-    return g
-  }
-
-  const objek = [] // { nama, grup, putar, miring, perbarui(t, dt), reaksi(t) }
-
-  // gerak umum pulau: mengambang naik-turun, berayun pelan, melompat saat diklik
-  function pulauHidup(o, fase) {
-    let mulai = -1
-    o.reaksi = (t) => {
-      mulai = t
-      o.saatReaksi?.(t)
-    }
-    o.gerak = (t) => {
-      let lompat = 0
-      if (mulai >= 0) {
-        const r = (t - mulai) / 0.9
-        if (r >= 1) mulai = -1
-        else lompat = Math.sin(r * Math.PI) * 0.7
-      }
-      const d = o.grup.userData
-      o.grup.position.y = d.y + (Math.sin(t * 1.1 + fase) * 0.38 + lompat) * d.k
-      o.grup.rotation.set(
-        (o.miring ?? 0.26) + Math.sin(t * 0.7 + fase) * 0.05,
-        (o.putar ?? 0) + Math.sin(t * 0.45 + fase) * 0.35,
-        Math.sin(t * 0.9 + fase) * 0.04,
-      )
-    }
-    o.perbarui ??= (t) => o.gerak(t)
-    return o
-  }
-
-  // ---- 1. Pulau rumah & tangga bersandar (3 : 4 : 5) ----
-  {
-    const grup = pulau(2.3, W.pink, 1)
-    const rumah = new THREE.Group()
-    const dinding = new THREE.Mesh(new RoundedBoxGeometry(1.3, 1.15, 1.1, 3, 0.08), std(W.krem, 0.7))
-    dinding.position.y = 0.575
-    const bentukAtap = new THREE.Shape([v2(-0.72, 0), v2(0.72, 0), v2(0, 0.62)])
-    const geoAtap = new THREE.ExtrudeGeometry(bentukAtap, {
-      depth: 1.4,
+  const bentuk = (titik) => new THREE.Shape(titik.map(([x, y]) => new THREE.Vector2(x, y)))
+  const ekstrusi = (b, tebal, bevel) => {
+    const geo = new THREE.ExtrudeGeometry(b, {
+      depth: tebal,
       bevelEnabled: true,
-      bevelSize: 0.06,
-      bevelThickness: 0.06,
+      bevelSize: bevel,
+      bevelThickness: bevel,
       bevelSegments: 4,
+      curveSegments: 16,
     })
-    geoAtap.translate(0, 0, -0.7)
-    geoAtap.rotateY(Math.PI / 2)
-    const atap = new THREE.Mesh(geoAtap, std(W.pinkTua, 0.35, 1))
-    atap.position.y = 1.15
-    const jendela = new THREE.Mesh(new RoundedBoxGeometry(0.36, 0.36, 0.08, 2, 0.04), std(W.biruTua, 0.15, 1))
-    jendela.position.set(-0.28, 0.72, 0.55)
-    const pintu = new THREE.Mesh(new RoundedBoxGeometry(0.34, 0.56, 0.08, 2, 0.05), std(W.pinkTua, 0.4, 1))
-    pintu.position.set(0.3, 0.28, 0.55)
-    rumah.add(dinding, atap, jendela, pintu)
-    rumah.position.set(-0.7, ATAS, -0.15)
-    grup.add(rumah)
-    // tangga: kaki 0,9 dari dinding, tinggi 1,2, panjang 1,5 (perbandingan 3 : 4 : 5)
-    const kaki = new THREE.Vector3(0.85, ATAS, 0.2)
-    const puncak = new THREE.Vector3(-0.05, ATAS + 1.2, 0.2)
-    const arah = puncak.clone().sub(kaki)
-    const panjang = arah.length()
-    const tangga = new THREE.Group()
-    for (const z of [-0.2, 0.2]) {
-      const rel = new THREE.Mesh(new RoundedBoxGeometry(0.09, panjang, 0.09, 2, 0.03), std(W.biruTua, 0.3, 1))
-      rel.position.set(0, panjang / 2, z)
-      tangga.add(rel)
-    }
-    for (let i = 1; i <= 4; i++) {
-      const anak = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.4, 10), std(W.kayu, 0.6))
-      anak.rotation.x = Math.PI / 2
-      anak.position.y = (panjang * i) / 5
-      tangga.add(anak)
-    }
-    tangga.position.copy(kaki)
-    tangga.quaternion.setFromUnitVectors(SUMBU_Y, arah.clone().normalize())
-    grup.add(tangga)
-    // tanda sudut siku-siku di pertemuan dinding & tanah
-    const tanda = new THREE.Group()
-    for (const [x, y, w, h] of [
-      [0.1, 0.2, 0.2, 0.025],
-      [0.2, 0.1, 0.025, 0.2],
-    ]) {
-      const garis = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.025), std(W.putih, 0.4))
-      garis.position.set(x, y, 0)
-      tanda.add(garis)
-    }
-    tanda.position.set(-0.05, ATAS, 0.45)
-    grup.add(tanda)
-    const kel = kelinci()
-    kel.scale.setScalar(0.62)
-    grup.add(kel)
-    const p1 = pohon(W.pink, 0.9)
-    p1.position.set(1.25, ATAS - 0.02, -0.95)
-    const p2 = pohon(W.biru, 0.6)
-    p2.position.set(-1.65, ATAS - 0.02, 0.55)
-    grup.add(p1, p2)
-    let lompatKelinci = -1
-    const o = pulauHidup({ nama: 'tangga', grup, putar: -0.25 }, 0)
-    o.saatReaksi = (t) => (lompatKelinci = t)
-    o.perbarui = (t) => {
-      o.gerak(t)
-      const p = 0.12 + (Math.sin(t * 0.5) * 0.5 + 0.5) * 0.7 // kelinci naik-turun di sepanjang tangga
-      let y = Math.abs(Math.sin(t * 4)) * 0.08
-      if (lompatKelinci >= 0) {
-        const r = (t - lompatKelinci) / 0.7
-        if (r >= 1) lompatKelinci = -1
-        else y += Math.sin(r * Math.PI) * 0.5
-      }
-      kel.position.copy(kaki).addScaledVector(arah, p)
-      kel.position.x += 0.16
-      kel.position.y += 0.18 + y
-      kel.position.z += 0.05
-      kel.rotation.y = Math.sin(t * 0.5) > 0 ? -0.6 : 0.6
-    }
-    objek.push(o)
+    geo.translate(0, 0, -tebal / 2)
+    return geo
   }
-
-  // ---- 2. Pulau layang-layang (benang = sisi miring) dengan kolam & air terjun ----
-  {
-    const grup = pulau(1.8, W.biru, 2)
-    const patok = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.045, 0.4, 10), std(W.kayu, 0.7))
-    patok.position.set(-0.4, ATAS + 0.18, 0.3)
-    grup.add(patok)
-    const layang = new THREE.Group()
-    const ekst = { depth: 0.05, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 3 }
-    const kiri = new THREE.Mesh(
-      new THREE.ExtrudeGeometry(new THREE.Shape([v2(0, 0.9), v2(-0.62, 0.2), v2(0, -1)]), ekst),
-      std(W.pink, 0.4, 1),
-    )
-    const kanan = new THREE.Mesh(
-      new THREE.ExtrudeGeometry(new THREE.Shape([v2(0, 0.9), v2(0, -1), v2(0.62, 0.2)]), ekst),
-      std(W.biruTua, 0.4, 1),
-    )
-    const tegak = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.9, 8), std(W.kayu, 0.6))
-    tegak.position.set(0, -0.05, 0.1)
-    const lintang = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.24, 8), std(W.kayu, 0.6))
-    lintang.rotation.z = Math.PI / 2
-    lintang.position.set(0, 0.2, 0.1)
-    layang.add(kiri, kanan, tegak, lintang)
-    const pita = []
-    for (let i = 0; i < 4; i++) {
-      const p = new THREE.Group()
-      for (const s of [-1, 1]) {
-        const c = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.24, 10), std(i % 2 ? W.biruTua : W.pinkTua, 0.4))
-        c.rotation.z = (s * Math.PI) / 2
-        c.position.x = s * 0.11
-        p.add(c)
-      }
-      layang.add(p)
-      pita.push(p)
-    }
-    grup.add(layang)
-    const benang = tali(0.014, W.pinkTua)
-    grup.add(benang)
-    // kolam kecil di tepi, airnya jatuh menjadi air terjun
-    const d = new THREE.Vector2(-0.62, 0.78).normalize()
-    const kolam = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.42, 0.42, 0.04, 36),
-      (bahan.kolam = new THREE.MeshPhysicalMaterial({ color: W.air, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.05 })),
-    )
-    kolam.position.set(d.x * 1.15, ATAS - 0.02, d.y * 1.15)
-    grup.add(kolam)
-    const geoAir = new THREE.PlaneGeometry(0.42, 2.6, 1, 14)
-    geoAir.translate(0, -1.3, 0)
-    const pa = geoAir.attributes.position
-    for (let i = 0; i < pa.count; i++) pa.setZ(i, (-pa.getY(i) / 2.6) ** 1.6 * 0.45 + 0.04)
-    geoAir.computeVertexNormals()
-    const air = new THREE.Mesh(
-      geoAir,
-      (bahan.airTerjun = new THREE.MeshStandardMaterial({
-        color: W.biru,
-        map: teksturAir,
-        transparent: true,
-        opacity: 0.88,
-        roughness: 0.2,
-        emissive: W.biru,
-        emissiveIntensity: 0.25,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      })),
-    )
-    air.position.set(d.x * 1.8 * 1.02, ATAS - 0.04, d.y * 1.8 * 1.02)
-    air.rotation.y = Math.atan2(d.x, d.y)
-    grup.add(air)
-    const kabutAir = []
-    for (let i = 0; i < 3; i++) {
-      const k = new THREE.Mesh(bola, tembus(W.putih, 0.7))
-      k.position.set(air.position.x + d.x * 0.5 + (i - 1) * 0.18, -2.1, air.position.z + d.y * 0.5)
-      grup.add(k)
-      kabutAir.push(k)
-    }
-    const p1 = pohon(W.biru, 0.75)
-    p1.position.set(0.75, ATAS - 0.02, -0.55)
-    grup.add(p1)
-    const ujung = new THREE.Vector3()
-    const pangkal = new THREE.Vector3(-0.4, ATAS + 0.38, 0.3)
-    let putaran = -1
-    const o = pulauHidup({ nama: 'layang', grup, putar: 0.25 }, 1.7)
-    o.saatReaksi = (t) => (putaran = t)
-    o.perbarui = (t) => {
-      o.gerak(t)
-      let putar = 0
-      if (putaran >= 0) {
-        const r = (t - putaran) / 1.1
-        if (r >= 1) putaran = -1
-        else putar = r * Math.PI * 2
-      }
-      layang.position.set(1.0 + Math.sin(t * 0.8) * 0.3, 3.5 + Math.sin(t * 1.3) * 0.2, 0.3)
-      layang.rotation.set(0, Math.sin(t * 0.9) * 0.3, Math.sin(t * 1.1) * 0.15 + putar)
-      layang.updateMatrix()
-      pita.forEach((p, i) => p.position.set(Math.sin(t * 3 + i) * 0.1 * (i + 1), -1.3 - i * 0.38, 0))
-      ujung.set(0, -1, 0.05).applyMatrix4(layang.matrix)
-      batangAntara(benang, pangkal, ujung)
-      teksturAir.offset.y = (t * 0.9) % 1
-      kabutAir.forEach((k, i) => k.scale.setScalar(0.16 + Math.sin(t * 3 + i * 2) * 0.04))
-    }
-    objek.push(o)
-  }
-
-  // ---- 3. Pulau kebun 3² + 4² = 5² (petak mengelilingi kolam segitiga siku-siku) ----
-  {
-    const grup = pulau(2.4, W.pink, 3, [0.9, 0.06])
-    const s = 0.3
-    const petak = new RoundedBoxGeometry(s * 0.86, 0.14, s * 0.86, 2, 0.04)
-    const O = v2(0, 0)
-    const A = v2(3 * s, 0)
-    const B = v2(0, 4 * s)
-    const cx = 1.5 * s
-    const cy = 2 * s
-    const sisi = [
-      { p: O, q: A, n: v2(0, -1), jumlah: 3, warna: W.biruTua },
-      { p: B, q: O, n: v2(-1, 0), jumlah: 4, warna: W.pinkTua },
-      { p: A, q: B, n: v2(4, 3).normalize(), jumlah: 5, warna: W.putih },
-    ]
-    const semuaPetak = []
-    for (const { p, q, n, jumlah, warna } of sisi) {
-      const u = q.clone().sub(p).normalize()
-      for (let i = 0; i < jumlah; i++)
-        for (let j = 0; j < jumlah; j++) {
-          const m = new THREE.Mesh(petak, std(jumlah === 5 && (i + j) % 2 ? W.pink : warna, 0.35, 1))
-          const pos = p
-            .clone()
-            .addScaledVector(u, (i + 0.5) * s)
-            .addScaledVector(n, (j + 0.5) * s)
-          m.position.set(pos.x - cx, ATAS + 0.07, -(pos.y - cy))
-          m.rotation.y = Math.atan2(u.y, u.x)
-          m.userData.jarak = i + j
-          grup.add(m)
-          semuaPetak.push(m)
-        }
-    }
-    const geoKolam = new THREE.ExtrudeGeometry(new THREE.Shape([O, A, B]), {
-      depth: 0.06,
-      bevelEnabled: true,
-      bevelSize: 0.02,
-      bevelThickness: 0.02,
-      bevelSegments: 2,
-    })
-    geoKolam.rotateX(-Math.PI / 2)
-    geoKolam.translate(-cx, ATAS, cy)
-    const kolam = new THREE.Mesh(
-      geoKolam,
-      (bahan.kolamKebun = new THREE.MeshPhysicalMaterial({
-        color: 0x5aa8f0,
-        roughness: 0.06,
-        clearcoat: 1,
-        clearcoatRoughness: 0.05,
-      })),
-    )
-    grup.add(kolam)
-    const p1 = pohon(W.pink, 0.7)
-    p1.position.set(-1.55, ATAS - 0.02, -1.25)
-    grup.add(p1)
-    // ikan kecil yang sesekali melompat dari kolam
-    const ikan = new THREE.Group()
-    const badanIkan = new THREE.Mesh(bola, std(W.pinkTua, 0.3, 1))
-    badanIkan.scale.set(0.16, 0.09, 0.07)
-    const ekorIkan = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.14, 8), std(W.pinkTua, 0.3, 1))
-    ekorIkan.rotation.z = Math.PI / 2
-    ekorIkan.position.x = -0.19
-    ikan.add(badanIkan, ekorIkan)
-    grup.add(ikan)
-    let gelombang = -1
-    const o = pulauHidup({ nama: 'taman', grup, putar: 0.35, miring: 0.5 }, 3.1)
-    o.saatReaksi = (t) => (gelombang = t)
-    o.perbarui = (t) => {
-      o.gerak(t)
-      for (const m of semuaPetak) {
-        const f = gelombang >= 0 ? t - gelombang - m.userData.jarak * 0.06 : -1
-        const naik = f > 0 && f < 0.5 ? Math.sin((f / 0.5) * Math.PI) : 0
-        m.position.y = ATAS + 0.07 + naik * 0.3
-      }
-      if (gelombang >= 0 && t - gelombang > 1.6) gelombang = -1
-      const p = (t % 2.6) / 2.6
-      ikan.visible = p < 0.4
-      if (ikan.visible) {
-        const r = p / 0.4
-        ikan.position.set(-0.4 + r * 0.5, ATAS + Math.sin(r * Math.PI) * 0.75, 0.2)
-        ikan.rotation.z = (0.5 - r) * 2.4
-        ekorIkan.rotation.y = Math.sin(t * 25) * 0.5
-      }
-    }
-    objek.push(o)
-  }
-
-  // ---- 4. Pulau tiang bendera dengan tali penyangga (sisi miring) ----
-  {
-    const grup = pulau(1.9, W.biru, 4)
-    const xTiang = -0.6
-    const zTiang = 0.1
-    const tiang = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 2.5, 14), std(W.putih, 0.3, 1))
-    tiang.position.set(xTiang, ATAS + 1.25, zTiang)
-    const pucuk = new THREE.Mesh(bola, std(W.pinkTua, 0.3, 1))
-    pucuk.scale.setScalar(0.09)
-    pucuk.position.set(xTiang, ATAS + 2.54, zTiang)
-    const geoBendera = new THREE.PlaneGeometry(0.85, 0.5, 12, 6)
-    geoBendera.translate(0.425, 0, 0)
-    const asal = geoBendera.attributes.position.array.slice()
-    const bendera = new THREE.Mesh(
-      geoBendera,
-      (bahan.bendera = new THREE.MeshStandardMaterial({ color: W.pinkTua, roughness: 0.6, side: THREE.DoubleSide })),
-    )
-    bendera.position.set(xTiang + 0.04, ATAS + 2.2, zTiang)
-    const kawat = tali(0.016, W.biruTua)
-    batangAntara(kawat, new THREE.Vector3(xTiang, ATAS + 1.6, zTiang), new THREE.Vector3(0.75, ATAS + 0.03, zTiang))
-    const patok = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.22, 10), std(W.kayu, 0.7))
-    patok.position.set(0.75, ATAS + 0.08, zTiang)
-    const tanda = new THREE.Group()
-    for (const [x, y, w, h] of [
-      [0.1, 0.2, 0.2, 0.025],
-      [0.2, 0.1, 0.025, 0.2],
-    ]) {
-      const garis = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.025), std(W.putih, 0.4))
-      garis.position.set(x, y, 0)
-      tanda.add(garis)
-    }
-    tanda.position.set(xTiang + 0.05, ATAS, zTiang + 0.06)
-    grup.add(tiang, pucuk, bendera, kawat, patok, tanda)
-    const p1 = pohon(W.biru, 0.7)
-    p1.position.set(-1.25, ATAS - 0.02, -0.85)
-    grup.add(p1)
-    const kel = kelinci()
-    kel.scale.setScalar(0.5)
-    grup.add(kel)
-    const o = pulauHidup({ nama: 'tiang', grup, putar: -0.2 }, 4.4)
-    const pb = geoBendera.attributes.position
-    o.perbarui = (t) => {
-      o.gerak(t)
-      const a = t * 0.9
-      kel.position.set(0.35 + Math.cos(a) * 0.45, ATAS + 0.17 + Math.abs(Math.sin(t * 5)) * 0.18, 0.85 + Math.sin(a) * 0.3)
-      kel.rotation.y = -a
-      for (let i = 0; i < pb.count; i++) {
-        const x = asal[i * 3]
-        pb.setZ(i, Math.sin(x * 6 - t * 6) * 0.08 * (x / 0.85))
-      }
-      pb.needsUpdate = true
-      geoBendera.computeVertexNormals()
-    }
-    objek.push(o)
-  }
-
-  // ---- 5. Pulau-pulau kecil di kejauhan ----
-  ;[
-    [1.0, W.biru, () => kincir()],
-    [1.15, W.pink, () => jamur()],
-    [0.85, W.biru, () => pohon(W.biru, 0.65)],
-  ].forEach(([r, warna, isi], i) => {
-    const grup = pulau(r, warna, 5 + i * 1.3)
-    const benda = isi()
-    benda.position.y = ATAS - 0.02
-    grup.add(benda)
-    const o = pulauHidup({ nama: 'pulau', grup, urutan: i, putar: i * 0.6, skala: 0.8 }, 2 + i * 1.9)
-    const baling = benda.userData.baling
-    o.perbarui = (t) => {
-      o.gerak(t)
-      if (baling) baling.rotation.z = -t * 2.5
-    }
-    objek.push(o)
-  })
-
-  // ---- 6. Tiga balon udara bergaris ----
-  for (let b = 0; b < 3; b++) {
-    const grup = new THREE.Group()
-    let geo = new THREE.LatheGeometry(
-      new THREE.SplineCurve([
-        v2(0.001, -1),
-        v2(0.3, -0.9),
-        v2(0.75, -0.35),
-        v2(0.95, 0.25),
-        v2(0.8, 0.85),
-        v2(0.42, 1.15),
-        v2(0.001, 1.22),
-      ]).getPoints(24),
-      36,
-    )
-    geo = geo.toNonIndexed()
-    const pg = geo.attributes.position
-    const warna = new Float32Array(pg.count * 3)
+  // warna gradasi per titik (perut lebih terang dari punggung) agar bentuk terasa membulat
+  function gradasi(geo, bawah, atas, dari = -0.7, sampai = 0.5) {
+    const p = geo.attributes.position
+    const warna = new Float32Array(p.count * 3)
     const c = new THREE.Color()
-    const garis = [
-      [W.pink, W.putih, W.biruTua],
-      [W.biru, W.putih, W.pinkTua],
-      [W.lila, W.pink, W.putih],
-    ][b]
-    for (let i = 0; i < pg.count; i += 3) {
-      const x = (pg.getX(i) + pg.getX(i + 1) + pg.getX(i + 2)) / 3
-      const z = (pg.getZ(i) + pg.getZ(i + 1) + pg.getZ(i + 2)) / 3
-      c.set(garis[Math.floor(((Math.atan2(z, x) + Math.PI) / (Math.PI * 2)) * 12) % 3])
-      for (let j = 0; j < 3; j++) c.toArray(warna, (i + j) * 3)
+    const cb = new THREE.Color(bawah)
+    const ca = new THREE.Color(atas)
+    for (let i = 0; i < p.count; i++) {
+      const t = Math.min(Math.max((p.getY(i) - dari) / (sampai - dari), 0), 1)
+      c.copy(cb).lerp(ca, t * t * (3 - 2 * t))
+      c.toArray(warna, i * 3)
     }
     geo.setAttribute('color', new THREE.BufferAttribute(warna, 3))
-    const balon = new THREE.Mesh(
-      geo,
-      (bahan[`balonUdara${b}`] = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        vertexColors: true,
-        roughness: 0.35,
-        clearcoat: 0.8,
+    return geo
+  }
+  const kilapGradasi = (kunci) =>
+    (bahan[kunci] ??= new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      vertexColors: true,
+      roughness: 0.32,
+      clearcoat: 0.8,
+      clearcoatRoughness: 0.15,
+      sheen: 0.6,
+      sheenColor: new THREE.Color(0xffffff),
+    }))
+
+  // ---- mata besar berkilau yang melirik ke kursor & berkedip ----
+  const semuaMata = []
+  const semuaIris = []
+  function mataBesar(r) {
+    const mata = new THREE.Group()
+    const putih = new THREE.Mesh(bola, kilap(W.putih, 0.12))
+    putih.scale.setScalar(r)
+    const iris = new THREE.Group()
+    const cincin = new THREE.Mesh(bola, kilap(W.iris, 0.1))
+    cincin.scale.set(r * 0.7, r * 0.7, r * 0.3)
+    cincin.position.z = r * 0.76
+    const pupil = new THREE.Mesh(bola, kilap(W.mata, 0.1))
+    pupil.scale.set(r * 0.48, r * 0.48, r * 0.26)
+    pupil.position.z = r * 0.86
+    const kilau1 = new THREE.Mesh(bola, datar(W.putih))
+    kilau1.scale.setScalar(r * 0.2)
+    kilau1.position.set(r * 0.22, r * 0.26, r * 0.98)
+    const kilau2 = new THREE.Mesh(bola, datar(W.putih))
+    kilau2.scale.setScalar(r * 0.1)
+    kilau2.position.set(-r * 0.2, -r * 0.18, r * 0.98)
+    iris.add(cincin, pupil, kilau1, kilau2)
+    mata.add(putih, iris)
+    semuaMata.push(mata)
+    semuaIris.push(iris)
+    return mata
+  }
+  function pipiSenyum(induk, lebar, r, z = 0) {
+    for (const s of [-1, 1]) {
+      const pipi = new THREE.Mesh(bola, tembus(W.pinkTua, 0.5))
+      pipi.scale.set(r * 0.85, r * 0.5, r * 0.2)
+      pipi.position.set(s * (lebar / 2 + r * 0.9), -r * 1.05, z)
+      induk.add(pipi)
+    }
+    const senyum = new THREE.Mesh(new THREE.TorusGeometry(r * 0.5, r * 0.13, 8, 16, Math.PI), datar(W.mata))
+    senyum.rotation.z = Math.PI
+    senyum.position.set(0, -r * 0.95, z + r * 0.05)
+    const mulut = new THREE.Mesh(bola, datar(0xe0568f))
+    mulut.scale.set(r * 0.42, r * 0.5, r * 0.2)
+    mulut.position.set(0, -r * 1.05, z + r * 0.05)
+    mulut.visible = false
+    induk.add(senyum, mulut)
+    return { senyum, mulut }
+  }
+  const girang = (m, aktif) => {
+    m.senyum.visible = !aktif
+    m.mulut.visible = aktif
+  }
+
+  const objek = [] // karakter yang bisa diklik: { nama, grup, perbarui(t, dt), reaksi(t) }
+
+  // ---- 1. Ikan gemuk bermata besar (sirip punggung segitiga siku-siku) ----
+  const PALET_IKAN = [
+    [W.pinkTua, 0xffe6f1, W.pink],
+    [W.biruTua, 0xe6f4ff, W.biru],
+    [W.lilaTua, 0xf3ecff, W.pink],
+    [0xff9fb0, 0xfff1e8, W.biruTua],
+    [0x7fc8f2, 0xfff0f7, W.pinkTua],
+  ]
+  const geoEkor = (() => {
+    const b = new THREE.Shape()
+    b.moveTo(0, 0)
+    b.quadraticCurveTo(-0.45, 0.55, -0.95, 0.8)
+    b.quadraticCurveTo(-0.7, 0, -0.95, -0.8)
+    b.quadraticCurveTo(-0.45, -0.55, 0, 0)
+    return ekstrusi(b, 0.08, 0.05)
+  })()
+  const geoSiripPunggung = ekstrusi(
+    bentuk([
+      [-0.45, 0],
+      [0.4, 0],
+      [-0.45, 0.62],
+    ]),
+    0.06,
+    0.04,
+  )
+  const jumlahIkan = hp ? 5 : 8
+  const ikanSemua = []
+  for (let i = 0; i < jumlahIkan; i++) {
+    const [warna, perut, sirip] = PALET_IKAN[i % PALET_IKAN.length]
+    const grup = new THREE.Group()
+    const badan = new THREE.Group()
+    grup.add(badan)
+    const tubuh = new THREE.Mesh(gradasi(new THREE.SphereGeometry(1, 40, 28), perut, warna), kilapGradasi(`ikan${i % 5}`))
+    tubuh.scale.set(1.15, 0.95, 0.85)
+    const ekor = new THREE.Group()
+    ekor.position.x = -1.0
+    ekor.add(new THREE.Mesh(geoEkor, kilap(sirip, 0.3)))
+    const punggung = new THREE.Mesh(geoSiripPunggung, kilap(sirip, 0.3))
+    punggung.position.set(-0.1, 0.8, 0)
+    const siripSamping = [-1, 1].map((s) => {
+      const m = new THREE.Mesh(bola, kilap(sirip, 0.3))
+      m.scale.set(0.3, 0.08, 0.2)
+      const g = new THREE.Group()
+      g.position.set(0.15, -0.35, s * 0.78)
+      m.position.x = -0.2
+      g.add(m)
+      g.userData.s = s
+      badan.add(g)
+      return g
+    })
+    badan.add(tubuh, ekor, punggung)
+    // wajah di bagian depan-samping yang menghadap kamera
+    for (const s of [-1, 1]) {
+      const n = new THREE.Vector3(0.62, 0.3, s * 0.6).normalize()
+      const mata = mataBesar(0.42)
+      mata.position.set(n.x * 1.15 * 0.93, n.y * 0.95 * 0.93, n.z * 0.85 * 0.93)
+      badan.add(mata)
+      const pipi = new THREE.Mesh(bola, tembus(W.pinkTua, 0.5))
+      const np = new THREE.Vector3(0.72, -0.2, s * 0.68).normalize()
+      pipi.position.set(np.x * 1.15, np.y * 0.95, np.z * 0.85)
+      pipi.scale.set(0.15, 0.09, 0.04)
+      pipi.lookAt(pipi.position.clone().multiplyScalar(2))
+      badan.add(pipi)
+    }
+    const muka = new THREE.Group()
+    muka.position.set(1.12, -0.12, 0)
+    muka.rotation.y = Math.PI / 2
+    const senyum = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.035, 8, 16, Math.PI), datar(W.mata))
+    senyum.rotation.z = Math.PI
+    const mulut = new THREE.Mesh(bola, datar(0xe0568f))
+    mulut.scale.set(0.1, 0.13, 0.05)
+    mulut.position.y = -0.06
+    mulut.visible = false
+    muka.add(senyum, mulut)
+    badan.add(muka)
+    const d = {
+      fx: acak(-1, 1),
+      fy: acak(-0.75, 0.75),
+      z: [2, -1, -4, -7, -10, 0, -5, -12][i],
+      arah: i % 2 ? -1 : 1,
+      kec: acak(1, 1.8),
+      ukuran: [0.85, 0.7, 0.95, 0.75, 1.05, 0.65, 0.9, 1.15][i],
+      fase: acak(0, 6.3),
+      tujuan: null,
+      sampai: 0,
+      hadap: 0,
+      putar: -1,
+    }
+    const o = { nama: 'ikan', grup, d }
+    o.reaksi = (t) => {
+      d.putar = t
+      semburGelembung(grup.position, 8)
+    }
+    o.perbarui = (t, dt) => {
+      const k = grup.userData.k ?? 1
+      const lebar = (lebarDunia / 2) * ((KAMERA_Z - d.z) / KAMERA_Z) + 3
+      const tinggi = (tinggiDunia / 2) * ((KAMERA_Z - d.z) / KAMERA_Z)
+      d.x ??= d.fx * lebar
+      d.yDasar ??= d.fy * tinggi
+      if (d.tujuan && t < d.sampai) {
+        // berenang mendekati gelembung yang diklik
+        const dx = d.tujuan.x - d.x
+        const dy = d.tujuan.y - d.yDasar
+        const jarak = Math.hypot(dx, dy)
+        if (jarak > 0.6) {
+          const langkah = Math.min(jarak, 4 * dt)
+          d.x += (dx / jarak) * langkah
+          d.yDasar += (dy / jarak) * langkah
+        }
+        if (Math.abs(dx) > 0.3) d.arah = Math.sign(dx)
+      } else {
+        d.tujuan = null
+        d.x += d.arah * d.kec * dt
+        if (d.x > lebar) d.x = -lebar
+        if (d.x < -lebar) d.x = lebar
+      }
+      const yTarget = d.arah > 0 ? -0.85 : Math.PI + 0.85
+      d.hadap += (yTarget - d.hadap) * Math.min(dt * 4, 1)
+      let guling = 0
+      if (d.putar >= 0) {
+        const r = (t - d.putar) / 0.9
+        if (r >= 1) d.putar = -1
+        else guling = r * Math.PI * 2
+        senyum.visible = r >= 1
+        mulut.visible = r < 1
+      }
+      grup.position.set(d.x, d.yDasar + Math.sin(t * 1.3 + d.fase) * 0.3, d.z)
+      grup.rotation.set(guling, d.hadap, Math.sin(t * 1.3 + d.fase + 1) * 0.12)
+      grup.scale.setScalar(d.ukuran * k)
+      const kibas = t * 9 + d.fase
+      ekor.rotation.y = Math.sin(kibas) * 0.5
+      badan.rotation.y = Math.sin(kibas + 1) * 0.06
+      siripSamping.forEach((g) => (g.rotation.x = g.userData.s * (0.3 + Math.sin(kibas * 0.8) * 0.4)))
+    }
+    objek.push(o)
+    ikanSemua.push(o)
+  }
+
+  // ---- 2. Ubur-ubur bercahaya ----
+  const uburSemua = []
+  const jumlahUbur = hp ? 3 : 4
+  for (let i = 0; i < jumlahUbur; i++) {
+    const warna = [W.pink, W.biru, W.lila, W.pinkTua][i]
+    const grup = new THREE.Group()
+    const lonceng = new THREE.Group()
+    lonceng.add(
+      new THREE.Mesh(
+        new THREE.SphereGeometry(1, 40, 20, 0, Math.PI * 2, 0, Math.PI * 0.55),
+        (bahan[`ubur${i}`] = new THREE.MeshPhysicalMaterial({
+          color: warna,
+          emissive: warna,
+          emissiveIntensity: 0.45,
+          roughness: 0.15,
+          clearcoat: 1,
+          transparent: true,
+          opacity: 0.8,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        })),
+      ),
+    )
+    const inti = new THREE.Mesh(
+      new THREE.SphereGeometry(0.6, 24, 12, 0, Math.PI * 2, 0, Math.PI * 0.5),
+      (bahan[`inti${i}`] = new THREE.MeshStandardMaterial({
+        color: warna,
+        emissive: warna,
+        emissiveIntensity: 2.2,
+        roughness: 0.4,
       })),
     )
-    const keranjang = new THREE.Mesh(new RoundedBoxGeometry(0.45, 0.32, 0.45, 2, 0.06), std(W.kayu, 0.7))
-    keranjang.position.y = -1.6
-    grup.add(balon, keranjang)
-    for (const [x, z] of [
-      [-1, -1],
-      [-1, 1],
-      [1, -1],
-      [1, 1],
-    ]) {
-      const t = tali(0.012, W.kayu)
-      batangAntara(t, new THREE.Vector3(x * 0.2, -1.45, z * 0.2), new THREE.Vector3(x * 0.24, -0.92, z * 0.24))
-      grup.add(t)
+    inti.position.y = -0.05
+    const tepiLonceng = new THREE.Mesh(new THREE.TorusGeometry(0.98, 0.07, 8, 48), kilap(warna, 0.2))
+    tepiLonceng.rotation.x = Math.PI / 2
+    tepiLonceng.position.y = -0.15
+    lonceng.add(inti, tepiLonceng)
+    grup.add(lonceng)
+    for (const s of [-1, 1]) {
+      const mata = mataBesar(0.27)
+      mata.position.set(s * 0.36, 0.24, 0.88)
+      grup.add(mata)
     }
-    const api = new THREE.Mesh(bola, datar(0xffe3a3))
-    api.scale.setScalar(0.07)
-    api.position.y = -1.08
-    grup.add(api)
+    const muka = pipiSenyum(grup, 0.66, 0.2, 0.93)
+    muka.senyum.position.y = 0.04
+    muka.mulut.position.y = 0.02
+    // tentakel bergelombang (titik-titiknya digeser setiap bingkai)
+    const tentakel = []
+    const matTentakel = (bahan[`tentakel${i}`] = new THREE.MeshStandardMaterial({
+      color: warna,
+      emissive: warna,
+      emissiveIntensity: 0.7,
+      transparent: true,
+      opacity: 0.85,
+      roughness: 0.4,
+    }))
+    for (let j = 0; j < 9; j++) {
+      const tebal = j < 3 ? 0.07 : 0.028
+      const panjang = j < 3 ? 1.6 : acak(2, 2.8)
+      const geo = new THREE.CylinderGeometry(tebal, tebal * 0.4, panjang, 6, 24, true)
+      geo.translate(0, -panjang / 2, 0)
+      const a = (j / 9) * Math.PI * 2
+      const m = new THREE.Mesh(geo, matTentakel)
+      const r = j < 3 ? 0.25 : 0.75
+      m.position.set(Math.cos(a) * r, -0.12, Math.sin(a) * r)
+      m.userData = { asal: geo.attributes.position.array.slice(), panjang, fase: j * 0.8 }
+      grup.add(m)
+      tentakel.push(m)
+    }
+    const halo = new THREE.Sprite(cahaya(warna, gelap ? 0.6 : 0.45))
+    halo.scale.setScalar(4.2)
+    halo.position.y = -0.3
+    grup.add(halo)
+    let kilatan = -1
+    const d = { fase: i * 1.7 }
+    const o = { nama: 'ubur', grup, urutan: i, d }
+    o.reaksi = (t) => {
+      kilatan = t
+      semburGelembung(grup.position, 6)
+    }
+    o.perbarui = (t) => {
+      const u = grup.userData
+      const denyut = Math.sin(t * 2.4 + d.fase)
+      lonceng.scale.set(1 + denyut * 0.07, 0.85 * (1 - denyut * 0.09), 1 + denyut * 0.07)
+      let terang = 0
+      let putar = 0
+      if (kilatan >= 0) {
+        const r = (t - kilatan) / 1.2
+        if (r >= 1) kilatan = -1
+        else {
+          terang = Math.sin(r * Math.PI)
+          putar = r * Math.PI * 2
+        }
+        girang(muka, r < 1)
+      }
+      inti.material.emissiveIntensity = 2.2 + terang * 5
+      halo.material.opacity = (gelap ? 0.6 : 0.45) + terang * 0.5
+      grup.position.set(
+        u.x + Math.sin(t * 0.3 + d.fase) * 0.9,
+        u.y + Math.sin(t * 0.45 + d.fase) * 1.3 + Math.max(0, -denyut) * 0.15,
+        u.z,
+      )
+      grup.rotation.set(
+        Math.sin(t * 0.6 + d.fase) * 0.08,
+        Math.sin(t * 0.4 + d.fase) * 0.4 + putar,
+        Math.sin(t * 0.5 + d.fase) * 0.1,
+      )
+      grup.scale.setScalar(u.k * (0.75 + (i % 2) * 0.2))
+      for (const m of tentakel) {
+        const { asal, panjang, fase } = m.userData
+        const p = m.geometry.attributes.position
+        for (let v = 0; v < p.count; v++) {
+          const y = asal[v * 3 + 1]
+          const f = -y / panjang
+          p.setX(v, asal[v * 3] + Math.sin(y * 2.4 + t * 3 + fase) * 0.22 * f)
+          p.setZ(v, asal[v * 3 + 2] + Math.cos(y * 2 + t * 2.6 + fase) * 0.18 * f)
+        }
+        p.needsUpdate = true
+      }
+    }
+    objek.push(o)
+    uburSemua.push(o)
+  }
+
+  // ---- 3. Ikan buntal: mengembang berduri saat diklik ----
+  {
+    const grup = new THREE.Group()
+    const tubuhGrup = new THREE.Group()
+    grup.add(tubuhGrup)
+    const tubuh = new THREE.Mesh(gradasi(new THREE.SphereGeometry(1, 40, 28), 0xfff6fb, 0xffb8d6), kilapGradasi('buntal'))
+    tubuhGrup.add(tubuh)
+    const duri = new THREE.Group()
+    const geoDuri = new THREE.ConeGeometry(0.07, 0.3, 8)
+    geoDuri.translate(0, 0.15, 0)
+    for (let i = 0; i < 46; i++) {
+      // sebaran merata di permukaan bola (spiral Fibonacci), bagian wajah dikosongkan
+      const y = 1 - (i / 45) * 2
+      const r = Math.sqrt(1 - y * y)
+      const a = i * 2.39996
+      const n = new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r)
+      if (n.z > 0.55 && Math.abs(n.y) < 0.6) continue
+      const m = new THREE.Mesh(geoDuri, kilap(W.pinkTua, 0.3))
+      m.position.copy(n).multiplyScalar(0.96)
+      m.quaternion.setFromUnitVectors(SUMBU_Y, n)
+      duri.add(m)
+    }
+    tubuhGrup.add(duri)
+    for (const s of [-1, 1]) {
+      const mata = mataBesar(0.38)
+      mata.position.set(s * 0.4, 0.25, 0.82)
+      tubuhGrup.add(mata)
+    }
+    const muka = pipiSenyum(tubuhGrup, 0.76, 0.24, 0.94)
+    muka.senyum.position.y = -0.12
+    muka.mulut.position.y = -0.15
+    const sirip = [-1, 1].map((s) => {
+      const g = new THREE.Group()
+      const m = new THREE.Mesh(bola, kilap(W.biruTua, 0.3))
+      m.scale.set(0.28, 0.2, 0.07)
+      m.position.x = s * 0.25
+      g.add(m)
+      g.position.set(s * 0.95, -0.1, 0.1)
+      g.userData.s = s
+      grup.add(g)
+      return g
+    })
+    const ekor = new THREE.Mesh(geoEkor, kilap(W.biruTua, 0.3))
+    ekor.scale.setScalar(0.55)
+    ekor.rotation.y = Math.PI / 2
+    ekor.position.z = -1.05
+    grup.add(ekor)
+    let kembung = 0
+    let sampai = 0
+    const o = { nama: 'buntal', grup }
+    o.reaksi = (t) => {
+      sampai = t + 2.6
+      semburGelembung(grup.position, 10)
+    }
+    o.perbarui = (t, dt) => {
+      const u = grup.userData
+      const tujuan = t < sampai ? 1 : 0
+      kembung += (tujuan - kembung) * Math.min(dt * (tujuan ? 9 : 2.5), 1)
+      tubuhGrup.scale.setScalar(1 + kembung * 0.55)
+      duri.children.forEach((m) => m.scale.set(1, 0.35 + kembung * 1.1, 1))
+      girang(muka, kembung > 0.3)
+      grup.position.set(u.x + Math.sin(t * 0.5) * 0.8, u.y + Math.sin(t * 1.1) * 0.35, u.z)
+      grup.rotation.set(Math.sin(t * 0.9) * 0.08, Math.sin(t * 0.5) * 0.45, Math.sin(t * 1.2) * 0.06)
+      grup.scale.setScalar(u.k * 0.75)
+      sirip.forEach((g) => (g.rotation.y = g.userData.s * Math.sin(t * 10) * 0.6))
+      ekor.rotation.y = Math.PI / 2 + Math.sin(t * 7) * 0.4
+    }
+    objek.push(o)
+  }
+
+  // ---- 4. Kerang dengan mutiara bercahaya ----
+  {
+    const grup = new THREE.Group()
+    const cangkang = (bawah) => {
+      const geo = new THREE.SphereGeometry(1, 48, 16, 0, Math.PI * 2, bawah ? Math.PI / 2 : 0, Math.PI / 2)
+      const p = geo.attributes.position
+      for (let i = 0; i < p.count; i++) {
+        const a = Math.atan2(p.getZ(i), p.getX(i))
+        const f = 1 + Math.abs(Math.sin(a * 7)) * 0.07
+        p.setX(i, p.getX(i) * f)
+        p.setZ(i, p.getZ(i) * f)
+      }
+      geo.computeVertexNormals()
+      gradasi(geo, bawah ? W.pinkTua : W.pink, bawah ? W.pink : 0xfff0f7, bawah ? -1 : 0, bawah ? 0 : 1)
+      return new THREE.Mesh(geo, kilapGradasi('kerang'))
+    }
+    const bawah = cangkang(true)
+    bawah.scale.set(1.25, 0.4, 1)
+    const engsel = new THREE.Group()
+    engsel.position.z = -1
+    const atas = cangkang(false)
+    atas.scale.set(1.25, 0.45, 1)
+    atas.position.z = 1
+    engsel.add(atas)
+    for (const s of [-1, 1]) {
+      const n = new THREE.Vector3(s * 0.32, 0.6, 0.73).normalize()
+      const mata = mataBesar(0.22)
+      mata.position.set(n.x * 1.25, n.y * 0.45 + 0.08, n.z + 1)
+      engsel.add(mata)
+    }
+    const mutiara = new THREE.Mesh(
+      bola,
+      (bahan.mutiara = new THREE.MeshPhysicalMaterial({
+        color: 0xfff6fb,
+        emissive: 0xffe6f4,
+        emissiveIntensity: 1.2,
+        roughness: 0.05,
+        clearcoat: 1,
+        iridescence: 1,
+      })),
+    )
+    mutiara.scale.setScalar(0.32)
+    mutiara.position.set(0, 0.12, 0.15)
+    const halo = new THREE.Sprite(cahaya(0xffd6ec, 0.6))
+    halo.scale.setScalar(2.2)
+    halo.position.copy(mutiara.position)
+    grup.add(bawah, engsel, mutiara, halo)
+    let sampai = 0
+    let buka = 0.2
+    const o = { nama: 'kerang', grup }
+    o.reaksi = (t) => {
+      sampai = t + 2.8
+      semburGelembung(grup.position, 12)
+    }
+    o.perbarui = (t, dt) => {
+      const u = grup.userData
+      const tujuan = t < sampai ? 0.95 : 0.2 + Math.sin(t * 0.8) * 0.07
+      buka += (tujuan - buka) * Math.min(dt * 4, 1)
+      engsel.rotation.x = -buka
+      mutiara.material.emissiveIntensity = 1.2 + (buka - 0.2) * 4
+      halo.material.opacity = 0.35 + buka * 0.6
+      grup.position.set(u.x, u.y + 0.4 * u.k, u.z)
+      grup.rotation.y = 0.35 + Math.sin(t * 0.3) * 0.1
+      grup.scale.setScalar(u.k * 0.9)
+      if (Math.random() < dt * 1.2) semburGelembung(grup.position, 1)
+    }
+    objek.push(o)
+  }
+
+  // ---- 5. Batu karang segitiga siku-siku bersisi 3-4-5 ----
+  {
+    const grup = new THREE.Group()
+    const geo = ekstrusi(
+      bentuk([
+        [0, 0],
+        [1.5, 0],
+        [0, 2],
+      ]),
+      0.8,
+      0.15,
+    )
+    geo.translate(-0.5, 0, 0)
+    const batu = new THREE.Mesh(gradasi(geo, W.lilaTua, W.lila, 0, 2), kilapGradasi('batu'))
+    grup.add(batu)
+    const tanda = new THREE.Group()
+    for (const [x, y, w, h] of [
+      [0.12, 0.25, 0.25, 0.04],
+      [0.25, 0.12, 0.04, 0.25],
+    ]) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.04), std(W.putih, 0.4))
+      m.position.set(x, y, 0)
+      tanda.add(m)
+    }
+    tanda.position.set(-0.5, 0.02, 0.58)
+    grup.add(tanda)
+    for (const s of [-1, 1]) {
+      const mata = mataBesar(0.13)
+      mata.position.set(-0.05 + s * 0.17, 0.75, 0.52)
+      grup.add(mata)
+    }
+    pipiSenyum(grup, 0.34, 0.12, 0.55).senyum.position.y = 0.6
+    // label panjang sisi
+    const label = (teks, x, y, warna) => {
+      const t = teksturKanvas(128, 128, (g) => {
+        g.fillStyle = warna
+        g.beginPath()
+        g.arc(64, 64, 56, 0, Math.PI * 2)
+        g.fill()
+        g.fillStyle = '#ffffff'
+        g.font = 'bold 76px sans-serif'
+        g.textAlign = 'center'
+        g.textBaseline = 'middle'
+        g.fillText(teks, 64, 68)
+      })
+      const s = new THREE.Sprite((bahan[`label${teks}`] = new THREE.SpriteMaterial({ map: t, depthWrite: false })))
+      bahan[`teksturLabel${teks}`] = t
+      s.scale.setScalar(0.45)
+      s.position.set(x, y, 0.6)
+      grup.add(s)
+    }
+    label('3', 0.25, -0.32, '#6fb3f0')
+    label('4', -0.85, 1, '#f58bbd')
+    label('5', 0.75, 1.25, '#9b83e0')
     let mulai = -1
-    const o = { nama: 'balon', grup, urutan: b, skala: [1, 0.75, 0.6][b] }
+    const o = { nama: 'batu', grup }
     o.reaksi = (t) => (mulai = t)
     o.perbarui = (t) => {
-      const d = grup.userData
+      const u = grup.userData
       let lompat = 0
       if (mulai >= 0) {
-        const r = (t - mulai) / 1
+        const r = (t - mulai) / 0.8
         if (r >= 1) mulai = -1
         else lompat = Math.sin(r * Math.PI) * 0.8
       }
-      const x = (((t * (0.55 + b * 0.15) + d.lebar * (0.3 + b * 0.33)) % d.lebar) - d.lebar / 2) * (b === 1 ? -1 : 1)
-      grup.position.set(x, d.y + (Math.sin(t * 0.9 + b * 2) * 0.6 + lompat) * d.k, d.z)
-      grup.rotation.y = t * 0.4 + b
-      api.scale.setScalar(0.06 + Math.sin(t * 9) * 0.015)
+      grup.position.set(u.x, u.y + lompat * u.k, u.z)
+      grup.rotation.y = -0.3 + Math.sin(t * 0.4) * 0.15
+      grup.scale.setScalar(u.k)
     }
     objek.push(o)
   }
 
-  // ---- 7. Burung-burung kecil yang terbang melintas ----
-  for (let i = 0; i < 5; i++) {
+  // ---- 6. Bintang laut di pasir ----
+  {
+    const b = new THREE.Shape()
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 ? 0.42 : 1
+      const a = (i / 10) * Math.PI * 2 + Math.PI / 2
+      if (i === 0) b.moveTo(Math.cos(a) * r, Math.sin(a) * r)
+      else b.lineTo(Math.cos(a) * r, Math.sin(a) * r)
+    }
     const grup = new THREE.Group()
-    const tubuh = new THREE.Mesh(bola, std(i % 2 ? W.pink : W.putih, 0.5))
-    tubuh.scale.set(0.32, 0.24, 0.24)
-    const kepala = new THREE.Mesh(bola, std(i % 2 ? W.pink : W.putih, 0.5))
-    kepala.scale.setScalar(0.17)
-    kepala.position.set(0.3, 0.14, 0)
-    const paruh = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.14, 10), std(0xffb07c, 0.5))
-    paruh.rotation.z = -Math.PI / 2
-    paruh.position.set(0.5, 0.12, 0)
-    grup.add(tubuh, kepala, paruh)
+    grup.add(new THREE.Mesh(gradasi(ekstrusi(b, 0.25, 0.14), 0xffb38a, 0xffd2b8, -1, 1), kilapGradasi('bintang')))
     for (const s of [-1, 1]) {
-      const mata = new THREE.Mesh(bola, datar(W.mata))
-      mata.scale.setScalar(0.035)
-      mata.position.set(0.4, 0.2, s * 0.1)
+      const mata = mataBesar(0.14)
+      mata.position.set(s * 0.17, 0.08, 0.27)
       grup.add(mata)
     }
-    const sayap = [-1, 1].map((s) => {
-      const geo = new RoundedBoxGeometry(0.28, 0.03, 0.34, 2, 0.012)
-      geo.translate(0, 0, s * 0.17)
-      const m = new THREE.Mesh(geo, std(i % 2 ? W.pinkTua : W.biru, 0.5))
-      m.position.y = 0.06
-      m.userData.s = s
-      grup.add(m)
-      return m
-    })
-    const arahTerbang = i % 2 ? -1 : 1
+    const muka = pipiSenyum(grup, 0.34, 0.12, 0.3)
+    muka.senyum.position.y = -0.1
+    muka.mulut.position.y = -0.12
     let mulai = -1
-    const o = { nama: 'burung', grup, urutan: i, skala: 1.2 }
+    const o = { nama: 'bintang', grup }
     o.reaksi = (t) => (mulai = t)
     o.perbarui = (t) => {
-      const d = grup.userData
+      const u = grup.userData
       let lompat = 0
+      let putar = 0
       if (mulai >= 0) {
-        const r = (t - mulai) / 0.8
+        const r = (t - mulai) / 1
         if (r >= 1) mulai = -1
-        else lompat = Math.sin(r * Math.PI) * 0.9
+        else {
+          lompat = Math.sin(r * Math.PI) * 1.2
+          putar = r * Math.PI * 2
+        }
+        girang(muka, r < 1)
       }
-      const jalan = ((t * (1.6 + (i % 3) * 0.35) + i * 9) % d.lebar) - d.lebar / 2
-      grup.position.set(jalan * arahTerbang, d.y + Math.sin(t * 2 + i) * 0.3 + lompat, d.z)
-      grup.rotation.y = arahTerbang > 0 ? -0.35 : Math.PI + 0.35
-      const kepak = Math.sin(t * 12 + i) * 0.7
-      sayap.forEach((m) => (m.rotation.x = -m.userData.s * kepak))
+      grup.position.set(u.x, u.y + (0.35 + lompat) * u.k, u.z)
+      grup.rotation.set(-0.5, 0, Math.sin(t * 1.5) * 0.12 + putar)
+      grup.scale.setScalar(u.k * 0.6)
     }
     objek.push(o)
   }
 
-  // ---- 8. Kupu-kupu yang terbang berkeliling ----
-  for (let i = 0; i < 5; i++) {
-    const grup = new THREE.Group()
-    const badan = new THREE.Mesh(new THREE.CapsuleGeometry(0.035, 0.3, 4, 8), std(W.mata, 0.5))
-    grup.add(badan)
-    const warnaSayap = [W.pink, W.biru, W.pinkTua, W.lilaTua, W.biruTua][i]
-    const matSayap = (bahan[`sayapKupu${i}`] = new THREE.MeshStandardMaterial({
-      color: warnaSayap,
-      roughness: 0.4,
-      side: THREE.DoubleSide,
-      emissive: warnaSayap,
-      emissiveIntensity: 0.15,
-    }))
-    const sisiSayap = [-1, 1].map((s) => {
-      const sisi = new THREE.Group()
-      for (const [x, y, r, sy] of [
-        [0.24, 0.1, 0.26, 1.2],
-        [0.18, -0.16, 0.18, 1],
-      ]) {
-        const sayap = new THREE.Mesh(new THREE.CircleGeometry(r, 18), matSayap)
-        sayap.scale.y = sy
-        sayap.position.set(s * x, y, 0)
-        sisi.add(sayap)
-      }
-      sisi.userData.s = s
-      grup.add(sisi)
-      return sisi
-    })
-    let mulai = -1
-    const o = { nama: 'kupu', grup, urutan: i, skala: 0.9 }
-    o.reaksi = (t) => (mulai = t)
-    o.perbarui = (t) => {
-      const d = grup.userData
-      let lompat = 0
-      if (mulai >= 0) {
-        const r = (t - mulai) / 0.8
-        if (r >= 1) mulai = -1
-        else lompat = Math.sin(r * Math.PI) * 1.2
-      }
-      grup.position.set(
-        d.x + Math.sin(t * 0.6 + i * 1.7) * 2.2 * d.k,
-        d.y + (Math.sin(t * 1.1 + i * 2.3) * 1.3 + Math.abs(Math.sin(t * 4 + i)) * 0.25 + lompat) * d.k,
-        d.z + Math.sin(t * 0.4 + i) * 1.2,
-      )
-      grup.rotation.set(0.3, Math.sin(t * 0.6 + i) * 0.6, Math.cos(t * 0.6 + i * 1.7) * 0.3)
-      const kepak = Math.sin(t * 16 + i) * 0.9 + 0.3
-      sisiSayap.forEach((m) => (m.rotation.y = m.userData.s * kepak))
+  // ---- dasar laut: pasir bergelombang + pola cahaya kaustik ----
+  const geoLantai = new THREE.PlaneGeometry(110, 70, 70, 40)
+  {
+    const p = geoLantai.attributes.position
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i)
+      const y = p.getY(i)
+      p.setZ(i, Math.sin(x * 0.45) * 0.22 + Math.sin(y * 0.6 + 1) * 0.18 + Math.sin((x + y) * 0.25) * 0.3)
     }
-    objek.push(o)
+    geoLantai.computeVertexNormals()
   }
-
-  // ---- kelopak bunga berjatuhan & gelembung yang naik (gerak di seluruh layar) ----
-  const jumlahKelopak = hp ? 40 : 80
-  const kelopak = new THREE.InstancedMesh(
-    bola,
-    (bahan.kelopak = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 })),
-    jumlahKelopak,
+  const lantai = new THREE.Mesh(geoLantai, std(gelap ? 0x8e7fb5 : W.pasir, 0.9))
+  lantai.rotation.x = -Math.PI / 2
+  // kaustik hanya terlihat di pasir bagian dekat lalu memudar ke kejauhan (tanpa kabut: cahaya tambahan + kabut = pita putih)
+  const teksturPudar = teksturKanvas(
+    4,
+    256,
+    (g, w, h) => {
+      for (let y = 0; y < h; y++) {
+        const v = 1 - y / h
+        const a = v < 0.12 ? v / 0.12 : v < 0.3 ? 1 : Math.max(0, 1 - (v - 0.3) / 0.22)
+        g.fillStyle = `rgb(${a * 255},${a * 255},${a * 255})`
+        g.fillRect(0, y, w, 1)
+      }
+    },
+    false,
   )
-  const dataKelopak = Array.from({ length: jumlahKelopak }, (_, i) => ({
-    fx: Math.random() * 2 - 1,
-    fy: Math.random() * 2 - 1,
-    z: -8 + Math.random() * 10,
-    jatuh: 0.5 + Math.random() * 0.7,
-    fase: Math.random() * 6.3,
-    putar: 1 + Math.random() * 2,
-    warna: [W.pink, W.pinkTua, W.putih, W.biru, W.pink][i % 5],
-  }))
-  dataKelopak.forEach((d, i) => kelopak.setColorAt(i, new THREE.Color(d.warna)))
-  adegan.add(kelopak)
-  const gelembung = []
+  const kaustik = [0, 1].map((i) => {
+    const t = teksturKaustik.clone()
+    t.needsUpdate = true
+    t.repeat.set(26, 16)
+    bahan[`teksturKaustik${i}`] = t
+    const m = new THREE.Mesh(
+      geoLantai,
+      (bahan[`kaustik${i}`] = new THREE.MeshBasicMaterial({
+        map: t,
+        color: gelap ? 0x8fb4ff : 0xffffff,
+        transparent: true,
+        alphaMap: teksturPudar,
+        opacity: gelap ? 0.3 : 0.26,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        fog: false,
+      })),
+    )
+    m.rotation.x = -Math.PI / 2
+    adegan.add(m)
+    return m
+  })
+  adegan.add(lantai)
+
+  // ---- rumput laut bergoyang ----
+  const rumputLaut = []
+  for (let i = 0; i < (hp ? 8 : 14); i++) {
+    const tinggi = acak(2.2, 4.5)
+    const geo = new THREE.PlaneGeometry(0.42, tinggi, 1, 16)
+    geo.translate(0, tinggi / 2, 0)
+    const m = new THREE.Mesh(
+      geo,
+      (bahan[`rumputLaut${i % 3}`] ??= new THREE.MeshStandardMaterial({
+        color: [0x9ed9f0, 0xf5a9cf, 0xc6b3f2][i % 3],
+        roughness: 0.55,
+        side: THREE.DoubleSide,
+      })),
+    )
+    m.userData = { asal: geo.attributes.position.array.slice(), tinggi, fase: acak(0, 6.3), f: acak(0.55, 1) }
+    adegan.add(m)
+    rumputLaut.push(m)
+  }
+  // karang bulat & bercabang
+  const karang = []
+  for (let i = 0; i < (hp ? 4 : 7); i++) {
+    const g = new THREE.Group()
+    if (i % 2) {
+      const geo = new THREE.SphereGeometry(1, 32, 20)
+      const p = geo.attributes.position
+      for (let v = 0; v < p.count; v++) {
+        const f = 1 + Math.sin(p.getX(v) * 9) * Math.sin(p.getY(v) * 9) * Math.sin(p.getZ(v) * 9) * 0.06
+        p.setXYZ(v, p.getX(v) * f, p.getY(v) * f * 0.75, p.getZ(v) * f)
+      }
+      geo.computeVertexNormals()
+      g.add(new THREE.Mesh(geo, kilap([W.pink, W.lila][(i >> 1) % 2], 0.45)))
+    } else {
+      for (let c = 0; c < 6; c++) {
+        const tinggi = acak(0.7, 1.4)
+        const m = new THREE.Mesh(
+          new THREE.CapsuleGeometry(0.12, tinggi, 4, 10),
+          kilap([W.pinkTua, W.biruTua][(i >> 1) % 2], 0.35),
+        )
+        const a = (c / 6) * Math.PI * 2
+        m.position.set(Math.cos(a) * 0.25, tinggi / 2, Math.sin(a) * 0.25)
+        m.rotation.set(Math.sin(a) * 0.5, 0, -Math.cos(a) * 0.5)
+        g.add(m)
+      }
+    }
+    adegan.add(g)
+    karang.push(g)
+  }
+
+  // ---- sinar matahari menembus air ----
+  const sinar = []
+  for (let i = 0; i < 6; i++) {
+    const geo = new THREE.PlaneGeometry(acak(2, 4), 36)
+    geo.translate(0, -18, 0)
+    const m = new THREE.Mesh(
+      geo,
+      (bahan[`sinar${i}`] = new THREE.MeshBasicMaterial({
+        map: teksturSinar,
+        color: gelap ? 0x9fb8ff : 0xffffff,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        fog: false,
+        side: THREE.DoubleSide,
+      })),
+    )
+    m.userData = { fx: -0.9 + i * 0.36, z: -4 - (i % 3) * 4, fase: i * 1.3, kuat: acak(0.16, 0.3) * (gelap ? 0.6 : 1) }
+    adegan.add(m)
+    sinar.push(m)
+  }
+
+  // ---- gelembung (naik terus + semburan saat klik) ----
   const matGelembung = (bahan.gelembung = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
-    roughness: 0.05,
+    roughness: 0.03,
     transparent: true,
-    opacity: 0.5,
-    emissive: 0xeaf4ff,
-    emissiveIntensity: 0.35,
+    opacity: 0.45,
+    emissive: 0xeaf6ff,
+    emissiveIntensity: 0.3,
     clearcoat: 1,
     iridescence: 1,
     iridescenceIOR: 1.3,
     depthWrite: false,
   }))
-  for (let i = 0; i < (hp ? 8 : 14); i++) {
+  const gelembung = Array.from({ length: hp ? 36 : 70 }, () => {
     const m = new THREE.Mesh(bola, matGelembung)
-    m.userData = {
-      fx: Math.random() * 2 - 1,
-      fy: Math.random() * 2 - 1,
-      z: -6 + Math.random() * 7,
-      naik: 0.5 + Math.random() * 0.8,
-      besar: 0.12 + Math.random() * 0.22,
-      fase: Math.random() * 6.3,
-    }
+    m.visible = false
+    m.userData = { hidup: 0, kec: new THREE.Vector3(), besar: 0.1, fase: 0 }
     adegan.add(m)
-    gelembung.push(m)
-  }
-  const matriks = new THREE.Matrix4()
-  const posisiSementara = new THREE.Vector3()
-  const putaranSementara = new THREE.Quaternion()
-  const sudutSementara = new THREE.Euler()
-  const ukuranKelopak = new THREE.Vector3(0.13, 0.035, 0.09)
-  // posisi disimpan sebagai pecahan layar (-1..1) agar tetap memenuhi layar berukuran apa pun
-  function gerakkanPartikel(t, dt) {
-    const tx = lebarDunia / 2
-    const ty = tinggiDunia / 2
-    dataKelopak.forEach((d, i) => {
-      const jauh = (KAMERA_Z - d.z) / KAMERA_Z
-      d.fy -= (d.jatuh * dt) / (ty * jauh)
-      d.fx += ((0.35 + Math.sin(t * 0.8 + d.fase) * 0.5) * dt) / (tx * jauh)
-      if (d.fy < -1.15) {
-        d.fy = 1.15
-        d.fx = Math.random() * 2 - 1
-      }
-      if (d.fx > 1.15) d.fx = -1.15
-      posisiSementara.set(d.fx * tx * jauh, d.fy * ty * jauh, d.z)
-      putaranSementara.setFromEuler(sudutSementara.set(t * d.putar + d.fase, t * d.putar * 0.7, d.fase))
-      kelopak.setMatrixAt(i, matriks.compose(posisiSementara, putaranSementara, ukuranKelopak))
-    })
-    kelopak.instanceMatrix.needsUpdate = true
-    for (const m of gelembung) {
-      const d = m.userData
-      const jauh = (KAMERA_Z - d.z) / KAMERA_Z
-      d.fy += (d.naik * dt) / (ty * jauh)
-      if (d.fy > 1.2) {
-        d.fy = -1.2
-        d.fx = Math.random() * 2 - 1
-      }
-      m.position.set(d.fx * tx * jauh + Math.sin(t * 1.5 + d.fase) * 0.4, d.fy * ty * jauh, d.z)
-      m.scale.setScalar(d.besar * (1 + Math.sin(t * 4 + d.fase) * 0.06))
-    }
-  }
-
-  // ---- awan empuk (tanpa bayangan) ----
-  const awan = []
-  for (let i = 0; i < 7; i++) {
-    const g = new THREE.Group()
-    for (const [x, y, r] of [
-      [0, 0, 1.05],
-      [1.05, -0.15, 0.78],
-      [-1.05, -0.18, 0.75],
-      [0.45, 0.55, 0.72],
-      [-0.4, 0.45, 0.62],
-    ]) {
-      const b = new THREE.Mesh(bola, std(W.putih, 1))
-      b.scale.set(r, r * 0.85, r)
-      b.position.set(x, y, 0)
-      g.add(b)
-    }
-    g.userData = {
-      fx: ((i * 0.618) % 1) * 2 - 1,
-      fy: ((i * 0.383 + 0.2) % 1) * 2 - 1,
-      z: -5 - (i % 4) * 2.5,
-      kec: 0.4 + (i % 3) * 0.18,
-    }
-    g.userData.besar = 0.7 + (i % 3) * 0.25
-    adegan.add(g)
-    awan.push(g)
-  }
-
-  // ---- kilauan & cahaya matahari ----
-  const kilau = []
-  for (const [warna, jumlah] of [
-    [0xffffff, 60],
-    [0xffb3d6, 40],
-    [0xa8d8ff, 40],
-  ]) {
-    const posisi = new Float32Array(jumlah * 3)
+    return m
+  })
+  let giliran = 0
+  function semburGelembung(asal, jumlah, sebar = 0.5) {
     for (let i = 0; i < jumlah; i++) {
-      posisi[i * 3] = (Math.random() - 0.5) * 36
-      posisi[i * 3 + 1] = (Math.random() - 0.5) * 22
-      posisi[i * 3 + 2] = -3 - Math.random() * 10
+      const m = gelembung[giliran++ % gelembung.length]
+      m.visible = true
+      m.position.set(asal.x + acak(-sebar, sebar), asal.y + acak(-sebar, sebar), asal.z + acak(-0.3, 0.3))
+      m.userData.hidup = acak(4, 7)
+      m.userData.kec.set(acak(-0.4, 0.4), acak(1.2, 2.4), 0)
+      m.userData.besar = acak(0.06, 0.2)
+      m.userData.fase = acak(0, 6.3)
     }
+  }
+  // butiran putih yang melayang pelan + kilauan bercahaya
+  const titikAcak = (n, x, y, z) => {
+    const posisi = new Float32Array(n * 3)
+    for (let i = 0; i < n; i++) posisi.set([acak(-x, x), acak(y[0], y[1]), acak(z[0], z[1])], i * 3)
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(posisi, 3))
-    const mat = new THREE.PointsMaterial({
-      color: warna,
-      size: 0.4,
-      map: teksturBulat,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    })
-    bahan[`kilau-${warna}`] = mat
-    const p = new THREE.Points(geo, mat)
-    adegan.add(p)
-    kilau.push(p)
+    return geo
   }
-  const sinarMatahari = new THREE.Sprite(
-    (bahan.matahari = new THREE.SpriteMaterial({
+  const butiran = new THREE.Points(
+    titikAcak(hp ? 90 : 180, 22, [-10, 12], [-16, 6]),
+    (bahan.butiran = new THREE.PointsMaterial({
+      size: 0.14,
       map: teksturBulat,
-      color: gelap ? 0xc9b8ff : 0xfff3f8,
+      color: 0xffffff,
       transparent: true,
-      opacity: gelap ? 0.35 : 0.9,
-      fog: false,
+      opacity: 0.7,
       depthWrite: false,
     })),
   )
-  sinarMatahari.scale.set(18, 18, 1)
-  adegan.add(sinarMatahari)
+  const kilau = new THREE.Points(
+    titikAcak(hp ? 30 : 60, 20, [-8, 11], [-12, 4]),
+    (bahan.kilau = new THREE.PointsMaterial({
+      size: 0.3,
+      map: teksturBulat,
+      color: new THREE.Color(2.2, 2, 2.3),
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    })),
+  )
+  adegan.add(butiran, kilau)
 
-  // bayangan untuk pulau, rumah, pohon, balon & burung (bagian tembus pandang tidak berbayang)
   for (const o of objek) {
-    o.grup.traverse((m) => {
-      m.userData.pemilik = o
-      if (m.isMesh) {
-        const tembusPandang = m.material.transparent
-        m.castShadow = !tembusPandang
-        m.receiveShadow = !tembusPandang
-      }
-    })
+    o.grup.traverse((m) => (m.userData.pemilik = o))
     adegan.add(o.grup)
+  }
+
+  // ---- efek bersinar (bloom): hanya bagian yang sangat terang (ubur-ubur, mutiara, kilauan) yang berpendar ----
+  let komposer = null
+  let bloom = null
+  if (!hp) {
+    const target = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: 4 })
+    komposer = new M.EffectComposer(renderer, target)
+    komposer.addPass(new M.RenderPass(adegan, kamera))
+    bloom = new M.UnrealBloomPass(new THREE.Vector2(256, 256), 0.6, 0.55, 1.0)
+    komposer.addPass(bloom)
+    komposer.addPass(new M.OutputPass())
   }
 
   // ---- tata letak menyesuaikan ukuran layar ----
@@ -1120,117 +1041,86 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
     const w = window.innerWidth
     const h = window.innerHeight
     renderer.setSize(w, h, false)
+    komposer?.setSize(w, h)
     kamera.aspect = w / h
     kamera.updateProjectionMatrix()
     tinggiDunia = 2 * KAMERA_Z * Math.tan((kamera.fov * Math.PI) / 360)
     lebarDunia = tinggiDunia * kamera.aspect
     const tegak = kamera.aspect < 1
-    const k = tegak ? 0.46 : w >= 1280 ? 1 : w >= 960 ? 0.85 : 0.72
+    const k = tegak ? 0.55 : w >= 1280 ? 1 : w >= 960 ? 0.88 : 0.75
     const tx = lebarDunia / 2
     const ty = tinggiDunia / 2
-    // pulau ditaruh di tepi layar agar tidak menutupi kotak materi di tengah;
-    // di HP layar sempit, jadi pulau lebih kecil & sebagian "mengintip" dari tepi
-    const letak = tegak
-      ? {
-          tangga: [[-tx + 0.5, ty - 2.2, 0]],
-          layang: [[tx - 0.45, ty - 4.6, -1]],
-          taman: [[-tx + 0.15, -ty + 1.1, 1]],
-          tiang: [[tx - 0.5, -ty + 1.3, 0]],
-          pulau: [
-            [-tx + 0.2, 0.6, -6],
-            [tx - 0.2, -1.4, -7],
-            [0.4, ty - 0.6, -10],
+    const yLantai = -ty + 0.3
+    const jauh = (z) => (KAMERA_Z - z) / KAMERA_Z
+    lantai.position.set(0, yLantai, -20)
+    kaustik.forEach((m, i) => m.position.set(0, yLantai + 0.03 + i * 0.01, -20))
+    // karakter yang diam di tempat ditaruh di tepi layar agar tidak menutupi kotak materi di tengah
+    const letak = {
+      ubur: tegak
+        ? [
+            [-tx + 0.6, ty - 3, -1],
+            [tx - 0.6, 0.5, -3],
+            [-tx + 1, -2.5, -7],
+          ]
+        : [
+            [-tx + 2.4 * k, ty - 3.2, -1],
+            [tx - 2.6 * k, ty - 4.6, -3],
+            [-tx + 3.2 * k, -1.2, -7],
+            [tx * 0.35, ty - 2.2, -11],
           ],
-          balon: [
-            [0, ty - 2.4, -7],
-            [0, 0.5, -11],
-            [0, -ty + 4, -9],
-          ],
-          burung: [
-            [0, ty - 5.2, -2],
-            [0, -ty + 4.6, -3],
-            [0, 1.5, -4],
-            [0, ty - 3.2, -6],
-            [0, -1.8, -2],
-          ],
-          kupu: [
-            [-tx + 0.8, ty - 6, 1],
-            [tx - 0.8, -0.5, 1],
-            [-tx + 0.8, -ty + 5, 0],
-            [tx - 0.8, ty - 7.5, 0],
-            [0, -ty + 2.5, 1],
-          ],
-        }
-      : {
-          tangga: [[-tx + 2.6 * k + 0.2, ty - 2.6 * k - 1, 0]],
-          layang: [[tx - 2.1 * k - 0.3, ty - 5 * k - 0.7, -1]],
-          taman: [[-tx + 2.7 * k + 0.3, -ty + 2.6 * k + 0.1, 1]],
-          tiang: [[tx - 2.1 * k - 0.4, -ty + 2.2 * k + 0.2, 0]],
-          pulau: [
-            [-tx + 1.2, 0.2, -6],
-            [tx - 1.1, 0.4, -7],
-            [0, ty - 1.8, -10],
-          ],
-          balon: [
-            [0, ty - 2.4, -7],
-            [0, 1.5, -11],
-            [0, -ty + 3.5, -9],
-          ],
-          burung: [
-            [0, ty - 4.5, -2],
-            [0, -ty + 4.2, -3],
-            [0, 1.2, -4],
-            [0, ty - 3.4, -6],
-            [0, -1.5, -2],
-          ],
-          kupu: [
-            [-tx + 4.5 * k, 0.5, 1],
-            [tx - 4.5 * k, -1, 1],
-            [-tx + 6 * k, -ty + 4, 0],
-            [tx - 6 * k, ty - 4.5, 0],
-            [-tx + 2, ty - 6.5, 2],
-          ],
-        }
-    for (const o of objek) {
-      const [x, y, z] = letak[o.nama][o.urutan ?? 0]
-      const jauh = (KAMERA_Z - z) / KAMERA_Z // makin jauh, layar "makin lebar"
-      const kk = k * (o.skala ?? 1)
-      o.grup.userData = { ...o.grup.userData, x: x * jauh, y: y * jauh, z, k: kk, lebar: (tx * jauh + 4) * 2 }
-      o.grup.position.set(x * jauh, y * jauh, z)
-      o.grup.scale.setScalar(kk)
+      buntal: tegak ? [tx - 0.7, -ty + 5.2, 0] : [tx - 2.4 * k, -0.6, 0],
+      kerang: tegak ? [-tx + 1.2, yLantai, -3] : [-tx + 3.4 * k, yLantai, -3],
+      batu: tegak ? [tx - 1.3, yLantai, -5] : [tx - 4.2 * k, yLantai, -4],
+      bintang: tegak ? [0.6, yLantai, -1] : [-tx * 0.3, yLantai, -1],
     }
-    for (const g of awan) {
-      const { fx, fy, z } = g.userData
-      const jauh = (KAMERA_Z - z) / KAMERA_Z
-      g.userData.lebar = (tx * jauh + 4) * 2
-      g.userData.x0 = fx * tx * jauh
-      g.scale.setScalar(g.userData.besar * (tegak ? 0.5 : 1))
-      g.position.set(g.userData.x0, fy * ty * jauh, z)
+    const tempatkan = (o, [x, y, z]) => {
+      const j = jauh(z)
+      o.grup.userData = { ...o.grup.userData, x: x * j, y: y === yLantai ? yLantai : y * j, z, k }
     }
-    sinarMatahari.position.set(tx * 0.55 * 2.2, ty * 0.75 * 2.2, -30)
-    const cakupan = Math.max(tx, ty) * 1.3 + 3
-    Object.assign(matahari.shadow.camera, { left: -cakupan, right: cakupan, top: cakupan, bottom: -cakupan, near: 1, far: 70 })
-    matahari.shadow.camera.updateProjectionMatrix()
+    uburSemua.forEach((o, i) => tempatkan(o, letak.ubur[i]))
+    for (const o of objek) if (letak[o.nama] && o.nama !== 'ubur') tempatkan(o, letak[o.nama])
+    for (const o of ikanSemua) o.grup.userData.k = k
+    rumputLaut.forEach((m, i) => {
+      const z = -2 - (i % 4) * 2.5
+      const kiri = i % 2 === 0
+      const x = (kiri ? -1 : 1) * (tx * jauh(z) - 0.6 - ((i >> 1) % 3) * 1.1 * k)
+      m.position.set(x, yLantai, z)
+      m.scale.setScalar(tegak ? 0.6 : 1)
+    })
+    karang.forEach((g, i) => {
+      const z = -3 - (i % 3) * 3
+      const x = (i % 2 ? 1 : -1) * (tx * jauh(z) * (0.55 + (i % 4) * 0.12))
+      g.position.set(x, yLantai, z)
+      g.scale.setScalar((tegak ? 0.45 : 0.75) * (0.8 + (i % 3) * 0.25))
+    })
+    sinar.forEach((m) => {
+      const { fx, z } = m.userData
+      m.position.set(fx * tx * jauh(z), ty * jauh(z) + 3, z)
+    })
   }
   susun()
   window.addEventListener('resize', susun)
 
-  // ---- sudut pandang ikut bergerak (kesan 3D): tetikus & guliran halaman ----
-  const arahPandang = { x: 0, y: 0 }
+  // ---- arah pandang mata & kamera mengikuti tetikus/jari ----
+  const arahPandang = { x: 0, y: 0, ada: false }
   const tetikus = (e) => {
     arahPandang.x = (e.clientX / window.innerWidth) * 2 - 1
     arahPandang.y = (e.clientY / window.innerHeight) * 2 - 1
+    arahPandang.ada = true
   }
   window.addEventListener('pointermove', tetikus, { passive: true })
+  window.addEventListener('pointerdown', tetikus, { passive: true })
+  const titikPandang = new THREE.Vector3()
+  const sinarPandang = new THREE.Raycaster()
+  const ndc = new THREE.Vector2()
 
-  // ---- klik / ketuk objek ----
-  const sinar = new THREE.Raycaster()
-  const titik = new THREE.Vector2()
+  // ---- klik / ketuk ----
+  const pemilih = new THREE.Raycaster()
   const kenai = (e) => {
     const r = kanvas.getBoundingClientRect()
-    titik.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1)
-    sinar.setFromCamera(titik, kamera)
-    const hasil = sinar.intersectObjects(
+    ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1)
+    pemilih.setFromCamera(ndc, kamera)
+    const hasil = pemilih.intersectObjects(
       objek.map((o) => o.grup),
       true,
     )
@@ -1239,12 +1129,24 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
   let waktu = 0
   const diklik = (e) => {
     const o = kenai(e)
-    if (!o) return
+    if (!o) {
+      // klik air kosong: gelembung muncul di situ dan ikan-ikan berenang mendekat
+      const titik = pemilih.ray.at((kamera.position.z - 0) / Math.max(-pemilih.ray.direction.z, 0.01), new THREE.Vector3())
+      titik.z = 0
+      semburGelembung(titik, 14, 0.35)
+      for (const ikan of ikanSemua) {
+        const j = (KAMERA_Z - ikan.d.z) / KAMERA_Z
+        ikan.d.tujuan = { x: titik.x * j + acak(-0.8, 0.8), y: titik.y * j + acak(-0.6, 0.6) }
+        ikan.d.sampai = waktu + 3.5
+      }
+      gambar(true)
+      return
+    }
     o.reaksi(waktu)
     const daftar = SAPAAN[o.nama]
     const n = (o.hitung = (o.hitung ?? -1) + 1)
-    // balon kata di atas objek, digambar di lapisan depan agar tidak tertutup kotak
-    const atas = new THREE.Vector3(0, o.nama === 'burung' ? 0.6 : 2.4, 0)
+    // balon kata di atas karakter, digambar di lapisan depan agar tidak tertutup kotak
+    const atas = new THREE.Vector3(0, 1.8, 0)
     o.grup.localToWorld(atas)
     atas.project(kamera)
     const x = Math.min(Math.max(((atas.x + 1) / 2) * window.innerWidth, 130), window.innerWidth - 130)
@@ -1265,30 +1167,67 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
   let terakhir = performance.now()
   let waktuBerhenti = 0
   let kedip = 3
+  const asalGelembung = new THREE.Vector3()
   function perbaruiSemua(dt) {
     waktu += dt
-    for (const o of objek) o.perbarui(waktu, dt)
+    const t = waktu
+    for (const o of objek) o.perbarui(t, dt)
+    // mata melirik ke kursor/jari (tanpa kursor: melihat ke depan sambil sesekali melirik)
+    if (arahPandang.ada) {
+      ndc.set(arahPandang.x, -arahPandang.y)
+      sinarPandang.setFromCamera(ndc, kamera)
+      sinarPandang.ray.at((kamera.position.z - 8) / Math.max(-sinarPandang.ray.direction.z, 0.01), titikPandang)
+    } else titikPandang.set(Math.sin(t * 0.7) * 6, Math.sin(t * 0.5) * 3, 10)
+    for (const iris of semuaIris) iris.lookAt(titikPandang)
     kedip -= dt
     const tutup = kedip < 0.12 && kedip > 0
-    for (const m of semuaMata) m.scale.y = tutup ? 0.12 : 1
-    if (kedip <= 0) kedip = 2.5 + Math.random() * 2.5
-    for (const g of awan) {
-      const d = g.userData
-      d.geser = ((d.geser ?? 0) + d.kec * dt) % d.lebar
-      let x = d.x0 + d.geser
-      if (x > d.lebar / 2) x -= d.lebar
-      g.position.x = x
+    for (const m of semuaMata) m.scale.y = tutup ? 0.1 : 1
+    if (kedip <= 0) kedip = acak(2.2, 4.5)
+    for (const m of rumputLaut) {
+      const { asal, tinggi, fase, f } = m.userData
+      const p = m.geometry.attributes.position
+      for (let v = 0; v < p.count; v++) {
+        const y = asal[v * 3 + 1]
+        const h = y / tinggi
+        p.setX(v, asal[v * 3] + Math.sin(y * 0.9 - t * 1.6 + fase) * 0.35 * Math.max(h, 0) ** 1.2 * f)
+        p.setZ(v, asal[v * 3 + 2] + Math.cos(y * 0.7 - t * 1.2 + fase) * 0.15 * h)
+      }
+      p.needsUpdate = true
     }
-    kilau.forEach((p, i) => (p.material.opacity = 0.5 + Math.sin(waktu * 3.5 + i * 2) * 0.45))
-    gerakkanPartikel(waktu, dt)
-    // kamera bergeser pelan mengikuti tetikus & guliran: pulau dekat & jauh bergerak berbeda (paralaks 3D)
+    kaustik[0].material.map.offset.set(t * 0.02, t * 0.015)
+    kaustik[1].material.map.offset.set(-t * 0.017, t * 0.022)
+    sinar.forEach((m) => {
+      const d = m.userData
+      m.rotation.z = 0.3 + Math.sin(t * 0.25 + d.fase) * 0.06
+      m.material.opacity = d.kuat * (0.65 + Math.sin(t * 0.6 + d.fase) * 0.35)
+    })
+    const tyAtas = tinggiDunia / 2 + 4
+    for (const m of gelembung) {
+      const d = m.userData
+      if (!m.visible) continue
+      d.hidup -= dt
+      m.position.addScaledVector(d.kec, dt)
+      m.position.x += Math.sin(t * 3 + d.fase) * 0.01
+      m.scale.setScalar(d.besar * (1 + Math.sin(t * 5 + d.fase) * 0.08))
+      if (d.hidup <= 0 || m.position.y > tyAtas) m.visible = false
+    }
+    // gelembung kecil muncul sendiri dari dasar laut
+    if (Math.random() < dt * 2.5) {
+      asalGelembung.set(acak(-lebarDunia / 2, lebarDunia / 2), -tinggiDunia / 2, acak(-8, 2))
+      semburGelembung(asalGelembung, 1, 0.1)
+    }
+    butiran.rotation.y = Math.sin(t * 0.05) * 0.2
+    butiran.position.y = Math.sin(t * 0.2) * 0.4
+    kilau.material.opacity = 0.55 + Math.sin(t * 3) * 0.35
+    // kamera bergeser pelan mengikuti tetikus & guliran: benda dekat & jauh bergerak berbeda (paralaks 3D)
     const gulir = Math.min(window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1), 1)
-    const tujuanX = arahPandang.x * 1.4 + Math.sin(waktu * 0.15) * 0.6
-    const tujuanY = 2 - arahPandang.y * 0.9 - (gulir - 0.5) * 2.4
+    const tujuanX = arahPandang.x * 1.6 + Math.sin(t * 0.15) * 0.7
+    const tujuanY = 0.5 - arahPandang.y * 1 - (gulir - 0.5) * 2.4
     kamera.position.x += (tujuanX - kamera.position.x) * Math.min(dt * 2, 1)
     kamera.position.y += (tujuanY - kamera.position.y) * Math.min(dt * 2, 1)
-    kamera.lookAt(0, 0, -4)
+    kamera.lookAt(0, -0.5, -4)
   }
+  const render = () => (komposer ? komposer.render() : renderer.render(adegan, kamera))
   function gambar(sekali = false) {
     cancelAnimationFrame(bingkai)
     const langkah = (sekarang) => {
@@ -1296,19 +1235,19 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
       if (dt >= 1 / 32) {
         terakhir = sekarang
         perbaruiSemua(dt)
-        renderer.render(adegan, kamera)
+        render()
       }
       if (document.hidden) return
-      // saat animasi mati, reaksi klik tetap digerakkan ±1,5 detik lalu berhenti
+      // saat animasi mati, reaksi klik tetap digerakkan ±2 detik lalu berhenti
       if (animasiMati() && !(sekali && sekarang < waktuBerhenti)) return
       bingkai = requestAnimationFrame(langkah)
     }
-    waktuBerhenti = sekali ? performance.now() + 1500 : 0
+    waktuBerhenti = sekali ? performance.now() + 2000 : 0
     terakhir = performance.now() - 40
     bingkai = requestAnimationFrame(langkah)
   }
   perbaruiSemua(0.016)
-  renderer.render(adegan, kamera)
+  render()
   if (!animasiMati()) gambar()
 
   const ubahTampil = () => {
@@ -1322,15 +1261,19 @@ function bangunAdegan(THREE, RoundedBoxGeometry, RoomEnvironment, kanvas, setUca
     cancelAnimationFrame(bingkai)
     window.removeEventListener('resize', susun)
     window.removeEventListener('pointermove', tetikus)
+    window.removeEventListener('pointerdown', tetikus)
     document.removeEventListener('visibilitychange', ubahTampil)
     kanvas.removeEventListener('click', diklik)
     kanvas.removeEventListener('pointermove', melayang)
     pengamat.disconnect()
-    adegan.traverse((m) => m.geometry?.dispose())
+    adegan.traverse((m) => {
+      m.geometry?.dispose()
+      if (m.isSprite) m.material.dispose()
+    })
     Object.values(bahan).forEach((b) => b.dispose())
-    teksturBulat.dispose()
-    teksturAir.dispose()
-    lingkungan.dispose()
+    for (const t of [teksturAir, teksturBulat, teksturSinar, teksturKaustik, teksturPudar, lingkungan]) t.dispose()
+    bloom?.dispose()
+    komposer?.dispose()
     renderer.dispose()
   }
 }

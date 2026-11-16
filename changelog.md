@@ -2,6 +2,15 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.14] · 16 November 2026 — Latar "Akuarium 3D" & menu Tes lebih ringkas
+- Latar diganti menjadi **akuarium 3D**: ikan gemuk, ubur-ubur bercahaya, ikan buntal, kerang bermutiara, bintang laut, dan
+  batu segitiga 3-4-5 bermata besar berkilau yang **melirik ke arah kursor/jari** dan berkedip. Sinar matahari menembus air,
+  pola cahaya di pasir, dasar laut yang menjauh ke kabut, efek bersinar (bloom, khusus layar besar), rumput laut & gelembung.
+- Bisa diklik: ikan berputar, ubur-ubur berkilat, buntal mengembang berduri, kerang membuka mutiara, batu & bintang melompat;
+  klik air kosong memunculkan gelembung dan ikan-ikan berenang mendekat. Sirip punggung ikan berbentuk segitiga siku-siku.
+- Menu Tes: label "Pertemuan 1" dan "Pertemuan 5" dihapus; cukup Pre-test, Post-test, dan Kuesioner Beban Kognitif
+  ("Setelah post-test"). Pesan kunci juga tidak lagi menyebut nomor pertemuan.
+
 ## [2.13.1] · 16 November 2026 — Latar pulau melayang lebih ramai
 - Gerak di seluruh layar: kelopak bunga berjatuhan, gelembung sabun pelangi yang naik, 5 kupu-kupu, 5 burung, 3 balon udara.
 - Kincir angin berputar di pulau kecil, ikan melompat dari kolam kebun, kelinci kedua melompat-lompat di pulau tiang bendera.

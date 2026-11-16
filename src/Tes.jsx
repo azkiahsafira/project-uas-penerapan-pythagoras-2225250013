@@ -17,7 +17,6 @@ const KET_LITERASI =
 const INSTRUMEN = {
   pretest: {
     judul: 'Pre-test',
-    waktu: 'Pertemuan 1, sebelum Sesi 1',
     ket: TES_LITERASI
       ? `${KET_LITERASI} Tidak apa-apa jika belum bisa, kerjakan semampunya.`
       : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain. Tidak apa-apa jika belum bisa, kerjakan semampunya.',
@@ -25,13 +24,12 @@ const INSTRUMEN = {
   },
   posttest: {
     judul: 'Post-test',
-    waktu: 'Pertemuan 5',
     ket: TES_LITERASI ? KET_LITERASI : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain.',
     soal: TES_LITERASI ? URAIAN : POSTTEST,
   },
   leppink: {
     judul: 'Kuesioner Beban Kognitif',
-    waktu: 'Pertemuan 5, setelah post-test',
+    waktu: 'Setelah post-test',
     ket: '10 pernyataan tentang pengalaman belajarmu. Tidak ada jawaban benar atau salah, jawab sejujurnya.',
   },
 }
@@ -42,7 +40,7 @@ function FormIdentitas({ jenis, onMulai, onBatal }) {
   const ada = identitasTerakhir()
   const info = (
     <>
-      <p className="ket">{INSTRUMEN[jenis].waktu}</p>
+      {INSTRUMEN[jenis].waktu && <p className="ket">{INSTRUMEN[jenis].waktu}</p>}
       <p>{INSTRUMEN[jenis].ket}</p>
     </>
   )
@@ -50,7 +48,7 @@ function FormIdentitas({ jenis, onMulai, onBatal }) {
   if (ada && !ganti) {
     return (
       <section className="kartu sempit">
-        <p className="ket">{INSTRUMEN[jenis].waktu}</p>
+        {INSTRUMEN[jenis].waktu && <p className="ket">{INSTRUMEN[jenis].waktu}</p>}
         <h2>{INSTRUMEN[jenis].judul}</h2>
         <p>{INSTRUMEN[jenis].ket}</p>
         <p className="belajar-sebagai">
@@ -406,7 +404,7 @@ export default function Tes({ onFokus }) {
   return (
     <section>
       <h2>Tes dan Kuesioner Penelitian</h2>
-      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini. Setiap tes hanya dikerjakan satu kali, sesuai urutan pertemuan.</p>
+      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini. Setiap tes hanya dikerjakan satu kali: pre-test, post-test, lalu kuesioner.</p>
       {pesanKunci && (
         <p className="info-terkunci" role="alert">
           🔒 {pesanKunci}
@@ -417,7 +415,7 @@ export default function Tes({ onFokus }) {
           const { terkunci, sudah } = kunciTes(k)
           return (
             <article key={k} className={`kartu sesi warna-${i + 1} ${sudah ? 'sudah' : ''}`}>
-              <p className="ket">{ins.waktu}</p>
+              {ins.waktu && <p className="ket">{ins.waktu}</p>}
               <h3>{ins.judul}</h3>
               <p>{ins.ket}</p>
               {terkunci && <p className="ket">🔒 {terkunci}</p>}

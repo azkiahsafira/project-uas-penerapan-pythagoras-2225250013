@@ -39,7 +39,7 @@ export function statusAlur() {
   }
 }
 
-const PESAN_PRETEST = 'Kerjakan pre-test dulu di menu Tes (pertemuan 1), lalu kembali ke sini.'
+const PESAN_PRETEST = 'Kerjakan pre-test dulu di menu Tes, lalu kembali ke sini.'
 
 // Pesan bila Belajar (cek prasyarat & Sesi 1–3) masih terkunci, atau null bila boleh dibuka
 export function kunciBelajar(st = statusAlur()) {
@@ -61,7 +61,7 @@ export function kunciTes(jenis, st = statusAlur()) {
   if (sudah) return { terkunci: null, sudah }
   if (jenis === 'posttest') {
     if (!st.pretest) return { terkunci: 'Kerjakan pre-test dulu.', sudah }
-    if (!st.sesi.includes(3)) return { terkunci: 'Dibuka di pertemuan 5, setelah Sesi 1–3 selesai.', sudah }
+    if (!st.sesi.includes(3)) return { terkunci: 'Dibuka setelah Sesi 1–3 selesai.', sudah }
     if (st.latihan < TARGET_LATIHAN)
       return { terkunci: `Dibuka setelah Latihan Soal minimal ${TARGET_LATIHAN} soal (baru ${st.latihan}).`, sudah }
   }
