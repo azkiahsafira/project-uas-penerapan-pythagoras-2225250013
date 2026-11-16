@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.11] · 16 November 2026 — Latar 3D "Langit Pythagoras"
+- Latar Bawah Laut diganti latar **3D (three.js)** bertema materi, warna **biru soft + pink soft**: Siku segitiga siku-siku berwajah,
+  menara kotak 3² + 4² = 5², layang-layang dengan benang (sisi miring), tangga bersandar dengan kelinci; awan, hati, bintang.
+  Objek bisa diklik (bereaksi + balon kata). Hemat baterai/kuota; mati saat tes, saat "Animasi: mati", dan prefers-reduced-motion.
+
 ## [2.10] · 11 November 2026 — Lebih banyak Python & JavaScript (saran dosen)
 - **Python:** `analisis/ekspor_jawaban_literasi.py` (lembar penilaian jawaban uraian dari data Supabase + `skor_literasi.csv`),
   `analisis/test_analisis.py` (17 pengujian pytest), analisis utama melewati tes uraian.

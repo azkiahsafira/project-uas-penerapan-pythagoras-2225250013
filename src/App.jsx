@@ -14,7 +14,7 @@ import LayarBenar, { LayarSemangat } from './Tepuk.jsx'
 import { aturSuaraTepuk, suaraTepukNyala } from './perayaan.js'
 import Segitiga from './Segitiga.jsx'
 import { HiasanLucu } from './Sekolah.jsx'
-import LatarLaut from './Laut.jsx'
+import Latar3D from './Latar3D.jsx'
 import TombolMusik from './Musik.jsx'
 import { NAMA, bulat, hitung, isTripel } from './pythagoras.js'
 import './App.css'
@@ -128,7 +128,7 @@ function App() {
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
       {!fokusTes && <HiasanLucu />}
-      {!fokusTes && <LatarLaut />}
+      {!fokusTes && <Latar3D />}
       {/* musik latar: tombolnya tidak dipasang saat tes, jadi musik berhenti selama tes */}
       {!fokusTes && <TombolMusik />}
       <EfekKlik aktif={!fokusTes && animasi} />

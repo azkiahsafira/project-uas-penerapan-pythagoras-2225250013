@@ -5058,7 +5058,7 @@ tbody tr:last-child td {
 }
 
 /* =========================================================================
-   Latar belakang "Bawah Laut" (Laut.jsx) di belakang semua kotak
+   Lapisan latar di belakang semua kotak (dipakai Latar3D.jsx; sisa gaya latar laut lama tidak dipakai lagi)
    ========================================================================= */
 .latar-adegan {
   position: fixed;
@@ -5650,7 +5650,7 @@ tbody tr:last-child td {
 }
 
 /* =========================================================================
-   Hewan laut bisa diklik (Laut.jsx)
+   Klik di area kosong tembus ke latar (Latar3D.jsx) & balon kata .laut-ucap
    ========================================================================= */
 /* klik di area kosong tembus ke latar laut; kotak, tombol, & isian tetap bisa dipakai */
 body,
@@ -6427,4 +6427,34 @@ main > * {
   background: color-mix(in srgb, var(--bg) 60%, var(--card));
   color: var(--text);
   resize: vertical;
+}
+
+/* =========================================================================
+   Latar 3D "Langit Pythagoras" (Latar3D.jsx): biru soft + pink soft
+   ========================================================================= */
+.latar-3d {
+  background:
+    radial-gradient(70% 55% at 12% 8%, #d6ecff 0%, transparent 70%),
+    radial-gradient(60% 50% at 92% 22%, #ffe0ee 0%, transparent 70%),
+    radial-gradient(70% 60% at 30% 100%, #ffe7f1 0%, transparent 70%),
+    linear-gradient(170deg, #e8f4ff 0%, #f6efff 48%, #ffeaf3 100%);
+}
+
+.latar-3d-kanvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .latar-3d {
+    background:
+      radial-gradient(70% 55% at 12% 8%, #1d3557 0%, transparent 70%),
+      radial-gradient(60% 50% at 92% 22%, #4a2342 0%, transparent 70%),
+      linear-gradient(170deg, #142240 0%, #241a3d 50%, #3a1f3c 100%);
+  }
 }

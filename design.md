@@ -15,7 +15,7 @@
 | "Paham setelah menggambar & memberi nama sisi" (GL01) | **Aktif**: siswa mengetuk sisi untuk memberi label a, b, c sebelum rumus muncul |
 | "Petunjuk tahap demi tahap" (GL03, DS02) | **Petunjuk bertingkat** (lihat §5) |
 
-> ⚠️ **Keputusan pengembang (wawancara AI → Azkiah):** animasi & hiasan yang sudah ada (halaman sekolah, latar bawah laut, konfeti, layar perayaan)
+> ⚠️ **Keputusan pengembang (wawancara AI → Azkiah):** animasi & hiasan yang sudah ada (halaman sekolah, latar 3D Langit Pythagoras — sebelumnya bawah laut, diganti atas permintaan pengembang 16 November 2026 —, konfeti, layar perayaan)
 > **dipertahankan apa adanya**, walaupun informan S01 menyebut animasi berlebihan dapat mengganggu (EL03). Pengendalian yang tetap berlaku:
 > semua hiasan & musik **disembunyikan saat tes**, ada tombol **"Animasi: mati"**, `prefers-reduced-motion` dihormati, dan warna pada segitiga
 > tetap hanya untuk membedakan sisi diketahui vs dicari. Dampaknya diukur lewat skor **EL Leppink** dan dibahas di laporan.
@@ -37,7 +37,7 @@
 ## 3. Daftar layar (Android, satu kolom)
 
 1. **Masuk** — kolom kode siswa (huruf besar otomatis), tombol "Masuk". Pesan jelas bila kode salah.
-2. **Beranda** — halaman sekolah dengan Siku, Raka, Nisa; menu Belajar · Kalkulator · Latihan · Tes; latar bawah laut.
+2. **Beranda** — halaman sekolah dengan Siku, Raka, Nisa; menu Belajar · Kalkulator · Latihan · Tes; latar 3D Langit Pythagoras (biru soft + pink soft).
 3. **Cek prasyarat** — 4 soal kuadrat/akar, satu per layar.
 4. **Materi (Sesi 1–3)** — judul, ≤ 3 kalimat, gambar terintegrasi, satu pertanyaan cek; Bacakan; progres langkah.
 5. **Ilustrasi 3D** — kartu three.js **tangga–dinding** yang bisa diputar dengan jari; tombol "Lihat segitiganya" menampilkan garis segitiga siku-siku di atas benda.
