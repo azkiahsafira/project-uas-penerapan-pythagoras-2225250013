@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.13.1] · 16 November 2026 — Latar pulau melayang lebih ramai
+- Gerak di seluruh layar: kelopak bunga berjatuhan, gelembung sabun pelangi yang naik, 5 kupu-kupu, 5 burung, 3 balon udara.
+- Kincir angin berputar di pulau kecil, ikan melompat dari kolam kebun, kelinci kedua melompat-lompat di pulau tiang bendera.
+- Pulau mengambang & berayun lebih jelas, awan bergerak lebih cepat, kilauan berkedip lebih sering.
+
 ## [2.13] · 16 November 2026 — Latar 3D "Pulau Melayang"
 - Tema latar diganti menjadi **diorama pulau melayang** (tidak flat lagi): bayangan nyata dari matahari, pantulan cahaya
   lembut, permukaan mengkilap, kabut kedalaman, dan paralaks; warna tetap biru soft + pink soft.
