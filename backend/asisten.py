@@ -15,7 +15,9 @@ import re
 import httpx
 
 URL_DEEPSEEK = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com").rstrip("/") + "/chat/completions"
-MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
+# deepseek-flash (DeepSeek V4.1 Flash): model DeepSeek terbaru yang paling hemat; nama lama "deepseek-chat" sudah dipensiunkan.
+# Bisa diganti lewat DEEPSEEK_MODEL (mis. deepseek-v4-pro) tanpa mengubah kode.
+MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
 
 TAHAP = ("pahami", "rencana", "kerjakan", "periksa")
 
@@ -136,14 +138,14 @@ class AsistenGagal(Exception):
 
 def panggil_deepseek(pesan: list[dict], kunci: str) -> str:
     """Panggil DeepSeek Chat Completions (format kompatibel OpenAI). Mengembalikan isi teks balasan."""
+    isi = {"model": MODEL, "messages": pesan, "temperature": 0.4, "max_tokens": 350, "response_format": {"type": "json_object"}}
+    kepala = {"Authorization": f"Bearer {kunci}", "Content-Type": "application/json"}
     try:
-        r = httpx.post(
-            URL_DEEPSEEK,
-            headers={"Authorization": f"Bearer {kunci}", "Content-Type": "application/json"},
-            json={"model": MODEL, "messages": pesan, "temperature": 0.4, "max_tokens": 350,
-                  "response_format": {"type": "json_object"}},
-            timeout=25,
-        )
+        r = httpx.post(URL_DEEPSEEK, headers=kepala, json=isi, timeout=25)
+        if r.status_code == 400:
+            # model/layanan yang tidak mendukung mode JSON: ulangi tanpa response_format (baca_balasan tetap bisa membaca teks biasa)
+            isi.pop("response_format")
+            r = httpx.post(URL_DEEPSEEK, headers=kepala, json=isi, timeout=25)
     except httpx.HTTPError as e:
         raise AsistenGagal(str(e)) from e
     if r.status_code != 200:

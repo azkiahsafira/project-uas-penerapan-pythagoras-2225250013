@@ -152,3 +152,29 @@ def test_sehat_melaporkan_asisten_tanpa_membocorkan_kunci(monkeypatch):
     assert isi["asisten"] is True and "kunci-uji-palsu" not in str(isi)
     monkeypatch.delenv("DEEPSEEK_API_KEY")
     assert klien.get("/api/sehat").json()["asisten"] is False
+
+
+class _Jawaban:
+    def __init__(self, status, isi=None):
+        self.status_code, self._isi = status, isi or {}
+
+    def json(self):
+        return self._isi
+
+
+def test_panggil_deepseek_format_permintaan_dan_ulang_tanpa_mode_json(monkeypatch):
+    """Permintaan ke DeepSeek asli: model deepseek-flash, kunci di header; bila mode JSON ditolak (400), diulang tanpa itu."""
+    terkirim = []
+
+    def post(url, headers, json, timeout):
+        terkirim.append((url, headers["Authorization"], dict(json)))
+        if "response_format" in json:
+            return _Jawaban(400)
+        return _Jawaban(200, {"choices": [{"message": {"content": "Apa yang diketahui?"}}]})
+
+    monkeypatch.setattr(asisten.httpx, "post", post)
+    assert asisten.panggil_deepseek([{"role": "user", "content": "halo"}], "kunci-x") == "Apa yang diketahui?"
+    url, otorisasi, isi = terkirim[0]
+    assert url == "https://api.deepseek.com/chat/completions" and otorisasi == "Bearer kunci-x"
+    assert isi["model"] == "deepseek-flash" and isi["response_format"] == {"type": "json_object"}
+    assert len(terkirim) == 2 and "response_format" not in terkirim[1][2]

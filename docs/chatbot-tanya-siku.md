@@ -20,7 +20,7 @@ Siswa (panel Tanya Siku)
 Backend FastAPI  POST /api/asisten   (token kode siswa wajib; maks. 12 pertanyaan / 5 menit / siswa)
    │  prompt sistem RMT + DEEPSEEK_API_KEY (environment variable server)
    ▼
-DeepSeek Chat API (deepseek-chat, balasan JSON {tahap, balasan})
+API resmi DeepSeek https://api.deepseek.com (model deepseek-flash = DeepSeek V4.1 Flash, balasan JSON {tahap, balasan})
    │
    ▼
 Penjaga jawaban akhir → bila bocor: minta ulang 1x → bila masih bocor: petunjuk aman bawaan
@@ -76,6 +76,8 @@ Jalankan bagian **Versi 3** di [`supabase/schema.sql`](../supabase/schema.sql) s
 ## 7. Mengaktifkan (oleh pemilik proyek)
 
 1. Buat API key di https://platform.deepseek.com (menu **API Keys**). Kuncinya **jangan dibagikan** ke siapa pun.
+   Cek saldo di menu **Usage/Billing**: bila akun baru belum mendapat saldo gratis, isi saldo kecil (top up) —
+   satu pertanyaan siswa memakai ±1.500 token, sehingga 1 juta token cukup untuk ±600 pertanyaan.
 2. Vercel → proyek **pythagoras-api** → Settings → Environment Variables → tambah `DEEPSEEK_API_KEY` = kunci tadi → Save.
 3. Deployments → **Redeploy** backend. Cek https://pythagoras-api.vercel.app/api/sehat → harus berisi `"asisten": true`.
 4. Supabase → SQL Editor → jalankan bagian **Versi 3** dari `supabase/schema.sql`.
@@ -83,6 +85,14 @@ Jalankan bagian **Versi 3** di [`supabase/schema.sql`](../supabase/schema.sql) s
 
 ## 8. Pengujian
 
-`python -m pytest backend -q` menjalankan 16 uji Tanya Siku tanpa memanggil DeepSeek asli: penjaga jawaban akhir,
+`python -m pytest backend -q` menjalankan 17 uji Tanya Siku. Uji otomatis **sengaja tidak memanggil DeepSeek asli**
+(fungsi pemanggilnya diganti sementara) agar bisa dijalankan siapa saja tanpa API key dan tanpa memakai saldo; aplikasi
+yang dipasang tetap memanggil API DeepSeek asli. Yang diuji: format permintaan ke api.deepseek.com, penjaga jawaban akhir,
 format angka Indonesia, prompt RMT & tingkat bantuan, wajib masuk, mati saat tes, pembatas pertanyaan, balasan yang
 diminta ulang/diganti bila bocor, dan `GET /api/sehat` yang tidak membocorkan kunci.
+
+### Mencoba dengan DeepSeek asli di komputer (tanpa menulis ke Supabase)
+1. Salin `backend/.env.contoh` menjadi `backend/.env`, lalu tempel API key sendiri pada `DEEPSEEK_API_KEY=` (berkas ini di-ignore git).
+2. `uvicorn backend.main:app --reload --env-file backend/.env` (tanpa SUPABASE_URL → data hanya di memori, kode uji `8A-01`).
+3. Jalankan aplikasi dengan `VITE_API_URL=http://127.0.0.1:8000` dan `VITE_SUPABASE_URL=` kosong, masuk dengan `8A-01`,
+   lalu buka Tanya Siku.
