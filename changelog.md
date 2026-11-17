@@ -2,6 +2,15 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.15] · 17 November 2026 — Header bawah laut & menu yang bergeser
+- Header diganti bertema **bawah laut**, selaras dengan latar akuarium 3D: air biru soft → pink soft, ombak di permukaan,
+  sinar matahari, gelembung berisi simbol Pythagoras (a², b², c², √, 90°), rumput laut, pasir, penyu & ikan kecil.
+- Gedung sekolah diganti **kapal selam Pythagoras** bermata besar: menaranya segitiga siku-siku bersisi 3-4-5, jendelanya
+  9 + 16 = 25 (makin besar sesuai luas persegi). Bisa diklik: melaju, baling-baling berputar kencang, dan berbicara.
+- **Menu berjalan:** penanda gelembung meluncur ke menu terpilih sambil ditunggangi ikan kecil; halaman baru bergeser masuk
+  (menu berikutnya dari kanan, sebelumnya dari kiri); di HP layar bisa digeser kiri/kanan untuk pindah menu; di bawah setiap
+  halaman ada jalur Belajar → Kalkulator → Latihan Soal → Tes dengan tombol sebelumnya/berikutnya.
+
 ## [2.14] · 16 November 2026 — Latar "Akuarium 3D" & menu Tes lebih ringkas
 - Latar diganti menjadi **akuarium 3D**: ikan gemuk, ubur-ubur bercahaya, ikan buntal, kerang bermutiara, bintang laut, dan
   batu segitiga 3-4-5 bermata besar berkilau yang **melirik ke arah kursor/jari** dan berkedip. Sinar matahari menembus air,
