@@ -98,3 +98,25 @@ export const kirimAktivitasApi = (daftar) =>
       })),
     },
   })
+
+// Apakah chatbot Tanya Siku sudah diaktifkan peneliti (API key DeepSeek terpasang di server)?
+export async function asistenTersedia() {
+  if (!apiAktif) return false
+  try {
+    const r = await fetch(`${API}/api/sehat`)
+    return (await r.json()).asisten === true
+  } catch {
+    return false
+  }
+}
+
+// Chatbot "Tanya Siku": pertanyaan dikirim ke backend, backend yang memanggil DeepSeek
+// (API key hanya ada di server, tidak pernah di aplikasi/browser)
+export async function tanyaAsisten({ pertanyaan, riwayat, halaman, tingkat, tahap }) {
+  try {
+    return await minta('/asisten', { method: 'POST', token: tokenSaya(), body: { pertanyaan, riwayat, halaman, tingkat, tahap } })
+  } catch (e) {
+    if (e.status) throw e
+    throw new Error('Tidak bisa terhubung ke Siku. Pastikan ada internet, lalu coba lagi ya.')
+  }
+}
