@@ -2,6 +2,17 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.16] · 17 November 2026 — Chatbot "Tanya Siku" (DeepSeek + RMT)
+- Tombol **Tanya Siku** di kanan bawah membuka panel chat: Siku membimbing langkah demi langkah mengikuti tahap RMT
+  **Pahami → Rencanakan → Kerjakan → Periksa**, dengan **petunjuk bertingkat 1–4** yang dinaikkan siswa sendiri.
+- Tidak memberi jawaban akhir: dilarang di prompt dan diperiksa di server (balasan yang memuat hasil akhir diminta ulang
+  atau diganti petunjuk aman). Panel tidak tersedia saat tes.
+- Beban kognitif: satu langkah per balasan (IL), balasan ≤ 3 kalimat & tombol cepat (EL), setiap balasan diakhiri
+  pertanyaan agar siswa menjelaskan alasannya (GL).
+- API key DeepSeek hanya di environment variable backend (`DEEPSEEK_API_KEY`), tidak di frontend/GitHub; tombol baru muncul
+  setelah kunci terpasang. Setiap giliran dicatat ke `aktivitas` (jenis `asisten`). Rincian: docs/chatbot-tanya-siku.md.
+- Lembar uji coba tes Mathematical Literacy (kelas 9) dengan kotak jawaban & skor per tahap rubrik.
+
 ## [2.15] · 17 November 2026 — Header bawah laut & menu yang bergeser
 - Header diganti bertema **bawah laut**, selaras dengan latar akuarium 3D: air biru soft → pink soft, ombak di permukaan,
   sinar matahari, gelembung berisi simbol Pythagoras (a², b², c², √, 90°), rumput laut, pasir, penyu & ikan kecil.

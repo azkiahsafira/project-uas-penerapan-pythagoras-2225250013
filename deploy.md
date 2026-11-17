@@ -35,6 +35,8 @@
 3. Vercel menjalankan `backend/main.py` (FastAPI) dengan dependensi dari `backend/requirements.txt`; rute tetap `/api/...`.
 4. **Environment Variables**: `SUPABASE_URL` = `https://hjhltqqwwzbbgkpwzcxx.supabase.co`, dan `SUPABASE_SERVICE_KEY` = kunci `sb_secret_...`
    (**diisi sendiri**, jangan dibagikan). Opsional: `KUNCI_PENELITI` untuk endpoint rekap peneliti.
+   Chatbot Tanya Siku: `DEEPSEEK_API_KEY` = API key dari platform.deepseek.com (**diisi sendiri**, tidak pernah di kode/GitHub),
+   lalu Redeploy; cek `/api/sehat` berisi `"asisten": true`. Rincian: [docs/chatbot-tanya-siku.md](docs/chatbot-tanya-siku.md).
 5. Deploy → alamat backend: **https://pythagoras-api.vercel.app** (proyek Vercel `pythagoras-api`); cek https://pythagoras-api.vercel.app/api/sehat.
 6. Isi `VITE_API_URL` di `.env` dengan alamat itu lalu push, agar aplikasi memakai backend. Alamat aplikasi harus ada di daftar
    CORS backend (`ASAL` di `backend/main.py`, saat ini `https://azkiah-safira-pythagoras.vercel.app`).

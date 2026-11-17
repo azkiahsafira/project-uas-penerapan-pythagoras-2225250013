@@ -18,6 +18,7 @@
 | POST | `/aktivitas` | siswa | Kirim catatan belajar (batch) |
 | POST | `/hasil` | siswa | Kirim jawaban pre-test/post-test/kuesioner; **dinilai di server** |
 | GET | `/soal/latihan` | siswa | Ambil soal latihan berjenjang |
+| POST | `/asisten` | siswa | Chatbot Tanya Siku (DeepSeek + RMT): petunjuk bertingkat, **tanpa jawaban akhir** |
 | GET | `/peneliti/rekap` | peneliti | Rekap nilai & beban kognitif per siswa |
 | GET | `/peneliti/ekspor/{tabel}` | peneliti | Unduh CSV `hasil` atau `aktivitas` |
 
@@ -25,8 +26,9 @@
 
 ### `GET /sehat`
 ```json
-{ "status": "ok", "waktu": "2026-11-10T01:00:00Z" }
+{ "status": "ok", "waktu": "2026-11-10T01:00:00Z", "asisten": true }
 ```
+`asisten` = API key DeepSeek sudah terpasang di server (nilai kuncinya tidak pernah dikirim).
 
 ### `POST /masuk`
 Permintaan:
@@ -66,6 +68,16 @@ Balasan 200 (tes): `{ "tersimpan": true, "baru": true }` — **skor tidak dikiri
 **Tiap instrumen hanya sekali per kode siswa:** kiriman dengan `id` yang sama aman diulang (`"baru": false`), tetapi `id` lain untuk
 jenis yang sama ditolak `409 sudah_dikerjakan`.
 Tes Mathematical Literacy (uraian): `jawaban` berisi `"_instrumen": "literasi"`; skor dibiarkan kosong karena dinilai manual dengan rubrik.
+
+### `POST /asisten`
+Chatbot pedagogis Tanya Siku; rincian di [docs/chatbot-tanya-siku.md](docs/chatbot-tanya-siku.md).
+```json
+{ "pertanyaan": "Tangga 6 m dari dinding, dinding 8 m. Bingung", "halaman": "latihan", "tingkat": 1, "tahap": "pahami",
+  "riwayat": [{ "peran": "user", "isi": "..." }, { "peran": "assistant", "isi": "..." }] }
+```
+→ `{ "balasan": "Apa saja yang diketahui...?", "tahap": "pahami", "tingkat": 1 }`.
+Galat: `503 asisten_belum_aktif` (DEEPSEEK_API_KEY kosong), `403 sedang_tes`, `429 terlalu_banyak` (12 / 5 menit),
+`502 asisten_gagal`. Riwayat paling banyak 12 giliran, pertanyaan ≤ 400 karakter.
 
 ### `GET /soal/latihan?tingkat=1..3`
 ```json
