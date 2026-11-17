@@ -35,3 +35,6 @@ __pycache__/
 # Backend Python
 backend/.venv/
 .pytest_cache/
+
+# Rahasia backend lokal (API key DeepSeek, dsb.) tidak boleh ikut ke GitHub
+backend/.env

@@ -7,6 +7,7 @@ lalu buka http://127.0.0.1:8000/docs untuk mencoba semua endpoint.
 
 Di server (Render) isi environment variable:
     SUPABASE_URL, SUPABASE_SERVICE_KEY, KUNCI_TOKEN, KUNCI_PENELITI, ASAL_DIIZINKAN
+    DEEPSEEK_API_KEY (chatbot Tanya Siku; JANGAN ditulis di kode/GitHub, hanya di environment variable server)
 Rancangan lengkap: api.md
 """
 import csv
@@ -25,10 +26,12 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 
 try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
+    from .asisten import AsistenGagal, tanya_siku
     from .basisdata import buat_penyimpanan
     from .penilaian import nilai_leppink, nilai_tes
     from .sesi import buat_token, periksa_token
 except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
+    from asisten import AsistenGagal, tanya_siku
     from basisdata import buat_penyimpanan
     from penilaian import nilai_leppink, nilai_tes
     from sesi import buat_token, periksa_token
@@ -129,7 +132,9 @@ def identitas_baris(siswa):
 @app.get("/api/sehat")
 def sehat():
     """Cek server hidup; dipanggil aplikasi saat dibuka untuk membangunkan server gratis."""
-    return {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    # `asisten`: apakah chatbot Tanya Siku siap (API key DeepSeek terpasang); nilai kuncinya tidak pernah dikirim
+    return {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "asisten": bool(os.environ.get("DEEPSEEK_API_KEY", "").strip())}
 
 
 class Masuk(BaseModel):
@@ -209,6 +214,64 @@ def kirim_hasil(data: Hasil, siswa=Depends(siswa_masuk)):
         baris.update(nilai_tes(data.jenis, data.jawaban))
     diterima, _ = db.tambah("hasil", [baris])
     return {"tersimpan": True, "baru": diterima == 1}
+
+
+# ---------------------------------------------------------------------------
+# Chatbot pedagogis "Tanya Siku" (DeepSeek + RMT), lihat backend/asisten.py
+# ---------------------------------------------------------------------------
+_tanya = defaultdict(deque)
+
+
+def batasi_tanya(kode: str, batas=12, jendela=300):
+    """Maksimal 12 pertanyaan per 5 menit per siswa: menjaga biaya API dan mendorong siswa mencoba sendiri dulu."""
+    sekarang = time.time()
+    antre = _tanya[kode]
+    while antre and sekarang - antre[0] > jendela:
+        antre.popleft()
+    if len(antre) >= batas:
+        raise Galat(429, "terlalu_banyak", "Siku perlu istirahat sebentar. Coba kerjakan sendiri dulu, lalu tanya lagi beberapa menit lagi ya. 😊")
+    antre.append(sekarang)
+
+
+class GiliranAsisten(BaseModel):
+    peran: str = Field(pattern="^(user|assistant)$")
+    isi: str = Field(max_length=900)
+
+
+class TanyaAsisten(BaseModel):
+    pertanyaan: str = Field(min_length=1, max_length=400)
+    riwayat: list[GiliranAsisten] = Field(default_factory=list, max_length=12)
+    halaman: str = Field("belajar", pattern="^(belajar|kalkulator|latihan|tes)$")
+    tingkat: int = Field(1, ge=1, le=4)  # tingkat petunjuk bertingkat (dinaikkan siswa lewat tombol "petunjuk lebih jelas")
+    tahap: str = Field("pahami", pattern="^(pahami|rencana|kerjakan|periksa)$")  # tahap RMT terakhir
+
+
+@app.post("/api/asisten")
+def asisten(data: TanyaAsisten, siswa=Depends(siswa_masuk)):
+    """Siku membimbing langkah demi langkah tanpa memberi jawaban akhir. API key hanya ada di server."""
+    if data.halaman == "tes":
+        raise Galat(403, "sedang_tes", "Saat tes, Siku istirahat dulu ya. Kerjakan sendiri, kamu pasti bisa! 💪")
+    kunci = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+    if not kunci:
+        raise Galat(503, "asisten_belum_aktif", "Tanya Siku belum diaktifkan oleh peneliti. Coba lagi nanti ya.")
+    batasi_tanya(siswa["kode"])
+    pertanyaan = data.pertanyaan.strip()
+    try:
+        hasil = tanya_siku(pertanyaan, [g.model_dump() for g in data.riwayat], data.halaman, data.tingkat, data.tahap, kunci)
+    except AsistenGagal:
+        raise Galat(502, "asisten_gagal", "Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya.") from None
+
+    # catat untuk analisis penelitian (tahap RMT & tingkat bantuan); kegagalan mencatat tidak mengganggu siswa
+    sekarang = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    baris = {**identitas_baris(siswa), "id": f"asisten-{siswa['kode']}-{time.time_ns()}", "jenis": "asisten", "sesi": 0,
+             "langkah": None, "judul": "Tanya Siku", "mulai": sekarang, "selesai": sekarang, "durasi_detik": 0, "salah": 0,
+             "hasil": hasil["tahap"], "dibacakan": 0, "petunjuk": data.tingkat,
+             "catatan": f"{data.halaman} | disaring={'ya' if hasil['disaring'] else 'tidak'} | tanya: {pertanyaan[:300]}"}
+    try:
+        db.tambah("aktivitas", [baris])
+    except Exception:  # noqa: BLE001 - mis. tabel belum diperbarui (jenis 'asisten'); balasan tetap dikirim
+        pass
+    return {"balasan": hasil["balasan"], "tahap": hasil["tahap"], "tingkat": data.tingkat}
 
 
 # Soal latihan berjenjang (konten.md §6); tripel agar hasil bilangan bulat

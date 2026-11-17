@@ -104,3 +104,11 @@ alter table public.siswa enable row level security;
 -- insert into public.siswa (kode) values ('8A-01'), ('8A-02'), ('8A-03');
 -- Menonaktifkan kode setelah penelitian:
 -- update public.siswa set aktif = false;
+
+-- ===========================================================================
+-- Versi 3: chatbot "Tanya Siku" (DeepSeek + RMT). Backend mencatat setiap pertanyaan sebagai jenis 'asisten'
+-- (hasil = tahap RMT, petunjuk = tingkat bantuan 1–4, catatan = menu, disaring, dan pertanyaan siswa).
+-- ===========================================================================
+alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
+alter table public.aktivitas add constraint aktivitas_jenis_check
+  check (jenis in ('langkah', 'sesi', 'latihan', 'prasyarat', 'refleksi', 'asisten'));
