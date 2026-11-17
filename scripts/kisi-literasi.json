@@ -7,22 +7,27 @@
     "tanya": "Tangga mana yang sebaiknya dibeli Pak Rudi? Jelaskan alasan matematis Anda.",
     "tahap": [
       {
+        "label": "Memahami masalah (gambar/sketsa & rencana)",
         "isi": "Tangga, dinding, dan lantai membentuk segitiga siku-siku dengan sudut siku-siku di kaki dinding. Tangga adalah sisi miring. Jadi saya harus menghitung dulu panjang tangga minimal yang dibutuhkan, baru membandingkan ketiga tangga dan harganya.",
         "skor": 1
       },
       {
+        "label": "Perhitungan & perbandingan panjang",
         "isi": "Panjang tangga minimal: c² = 100² + 240² = 10.000 + 57.600 = 67.600, sehingga c = √67.600 = 260 cm. Tangga A: 250 cm < 260 cm (tidak sampai ke AC). Tangga B: 270 cm ≥ 260 cm (cukup). Tangga C: 300 cm ≥ 260 cm (cukup).",
         "skor": 2
       },
       {
+        "label": "Membandingkan pilihan",
         "isi": "Tangga yang memenuhi syarat hanya B dan C. Dibandingkan harganya: Rp320.000 < Rp390.000.",
         "skor": 1
       },
       {
+        "label": "Keputusan",
         "isi": "Pak Rudi sebaiknya membeli Tangga B.",
         "skor": 1
       },
       {
+        "label": "Alasan",
         "isi": "Alasannya, Tangga A memang paling murah tetapi kurang 10 cm sehingga tidak sampai ke AC. Tangga B cukup panjang (270 cm ≥ 260 cm) dan lebih murah daripada Tangga C. Tangga C juga cukup, tetapi lebih mahal dan kelebihan panjangnya tidak dibutuhkan.",
         "skor": 1
       }
@@ -36,26 +41,32 @@
     "tanya": "Ubahlah situasi tersebut menjadi model matematika yang dapat digunakan untuk menentukan kecukupan tali, kemudian selesaikan.",
     "tahap": [
       {
+        "label": "Diketahui & ditanya",
         "isi": "Diketahui: tinggi tiang 160 cm, jarak pasak ke kaki tiang 120 cm, ada 4 tali, tali yang tersedia 7 m = 700 cm. Ditanya: apakah tali yang tersedia cukup?",
         "skor": 1
       },
       {
+        "label": "Gambar/sketsa situasi",
         "isi": "Tiang (tegak), tanah (mendatar), dan tali membentuk segitiga siku-siku dengan sudut siku-siku di kaki tiang. Tali adalah sisi miring, tinggi tiang dan jarak pasak adalah sisi siku-siku.",
         "skor": 1
       },
       {
+        "label": "Model matematika",
         "isi": "Model untuk panjang satu tali (c): c² = 160² + 120².",
         "skor": 1
       },
       {
+        "label": "Perhitungan",
         "isi": "c² = 25.600 + 14.400 = 40.000, sehingga c = √40.000 = 200 cm.",
         "skor": 1
       },
       {
+        "label": "Menghitung kebutuhan tali",
         "isi": "Kebutuhan tali = banyak tali × panjang satu tali = 4 × 200 cm = 800 cm = 8 m.",
         "skor": 1
       },
       {
+        "label": "Kesimpulan",
         "isi": "Tali cukup jika persediaan ≥ kebutuhan. Ternyata 7 m < 8 m. Jadi tali yang tersedia tidak cukup, masih kurang 8 − 7 = 1 m.",
         "skor": 1
       }
@@ -69,18 +80,22 @@
     "tanya": "Berapa inci ukuran televisi tersebut? Tunjukkan langkah perhitungan Anda.",
     "tahap": [
       {
+        "label": "Gambar/sketsa & rumus",
         "isi": "Diagonal layar membagi layar menjadi dua segitiga siku-siku dengan sisi siku-siku 96 cm dan 72 cm. Diagonal (d) adalah sisi miring, sehingga d² = 96² + 72².",
         "skor": 1
       },
       {
+        "label": "Perhitungan",
         "isi": "d² = 9.216 + 5.184 = 14.400.",
         "skor": 2
       },
       {
+        "label": "Hasil & mengubah satuan",
         "isi": "d = √14.400 = 120 cm. Diubah ke inci: setiap 5 cm ≈ 2 inci, jadi 120 : 5 × 2 = 24 × 2 = 48 inci.",
         "skor": 2
       },
       {
+        "label": "Kesimpulan",
         "isi": "Jadi, televisi tersebut berukuran 48 inci (panjang diagonal layarnya 120 cm).",
         "skor": 1
       }
@@ -94,26 +109,32 @@
     "tanya": "Apakah Anda setuju dengan salah satu jawaban tersebut? Tentukan panjang papan yang benar dan jelaskan alasan Anda.",
     "tahap": [
       {
+        "label": "Gambar/sketsa situasi",
         "isi": "Tinggi teras (tegak), jarak mendatar di halaman, dan papan membentuk segitiga siku-siku. Papan adalah sisi miring, sehingga papan harus menjadi sisi yang paling panjang.",
         "skor": 1
       },
       {
+        "label": "Perhitungan",
         "isi": "Panjang papan: c² = 80² + 150² = 6.400 + 22.500 = 28.900.",
         "skor": 1
       },
       {
+        "label": "Hasil",
         "isi": "c = √28.900 = 170 cm.",
         "skor": 1
       },
       {
+        "label": "Menilai jawaban Budi",
         "isi": "Jawaban Budi (127 cm) tidak wajar karena lebih pendek dari jarak mendatar 150 cm, padahal sisi miring harus paling panjang. Budi keliru mengurangkan kuadrat, padahal yang dicari adalah sisi miring sehingga kuadratnya harus dijumlahkan.",
         "skor": 1
       },
       {
+        "label": "Menilai jawaban Andi",
         "isi": "Jawaban Andi (230 cm) juga tidak tepat karena hanya menjumlahkan panjang dua sisi, bukan memakai teorema Pythagoras. Papan 230 cm terlalu panjang sehingga ujungnya tidak tepat berada di tepi teras.",
         "skor": 1
       },
       {
+        "label": "Kesimpulan",
         "isi": "Jadi, saya tidak setuju dengan kedua jawaban tersebut. Panjang papan yang dibutuhkan adalah 170 cm.",
         "skor": 1
       }
