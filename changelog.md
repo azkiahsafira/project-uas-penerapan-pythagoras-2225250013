@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.17] · 18 November 2026 — Tanya Siku: kode alasan & model cadangan gratis
+- Bila DeepSeek gagal, pesan menampilkan kode alasan (mis. `deepseek:saldo_habis`) dan galatnya tercatat di log Vercel.
+- Model cadangan gratis (OpenRouter, `CADANGAN_API_KEY`) dipakai hanya bila DeepSeek gagal; panel menampilkan dengan jujur
+  model mana yang menjawab ("Dijawab oleh: …"). DeepSeek tetap integrasi utama dan otomatis dipakai lagi bila saldo diisi.
+
 ## [2.16] · 17 November 2026 — Chatbot "Tanya Siku" (DeepSeek + RMT)
 - Tombol **Tanya Siku** di kanan bawah membuka panel chat: Siku membimbing langkah demi langkah mengikuti tahap RMT
   **Pahami → Rencanakan → Kerjakan → Periksa**, dengan **petunjuk bertingkat 1–4** yang dinaikkan siswa sendiri.

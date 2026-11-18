@@ -75,7 +75,8 @@ Chatbot pedagogis Tanya Siku; rincian di [docs/chatbot-tanya-siku.md](docs/chatb
 { "pertanyaan": "Tangga 6 m dari dinding, dinding 8 m. Bingung", "halaman": "latihan", "tingkat": 1, "tahap": "pahami",
   "riwayat": [{ "peran": "user", "isi": "..." }, { "peran": "assistant", "isi": "..." }] }
 ```
-→ `{ "balasan": "Apa saja yang diketahui...?", "tahap": "pahami", "tingkat": 1 }`.
+→ `{ "balasan": "Apa saja yang diketahui...?", "tahap": "pahami", "tingkat": 1, "penyedia": "deepseek", "model": "deepseek-flash" }`
+(`penyedia` = `deepseek` atau `cadangan`; `model` = model yang sebenarnya menjawab).
 Galat: `503 asisten_belum_aktif` (DEEPSEEK_API_KEY kosong), `403 sedang_tes`, `429 terlalu_banyak` (12 / 5 menit),
 `502 asisten_gagal`. Riwayat paling banyak 12 giliran, pertanyaan ≤ 400 karakter.
 
