@@ -5,11 +5,12 @@
 - Setiap `git push` ke branch `main` otomatis di-build Vercel (`npm run build` → `dist/`). Workflow
   [.github/workflows/periksa.yml](.github/workflows/periksa.yml) hanya memeriksa lint & build di GitHub.
 - Bukti percakapan AI: https://pelita-azkiah-safira-pythagoras.vercel.app/bukti-ai/
-- Domain diatur di Vercel → proyek `penerapan-pythagoras` → Settings → Domains (`pelita-azkiah-safira-pythagoras.vercel.app` = link utama; `azkiah-safira-pythagoras.vercel.app` tetap aktif agar link lama & aplikasi yang sudah ter-install tidak putus; semua Production).
+- Domain diatur di Vercel → proyek `penerapan-pythagoras` → Settings → Domains (`pelita-azkiah-safira-pythagoras.vercel.app`, Production).
 - **Link lama yang sudah dimatikan** (semua halaman membalas **404**):
   - `azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/` — branch `gh-pages` hanya berisi `404.html` dan
     `sw.js` "pemati";
-  - `penerapan-pythagoras.vercel.app` — diatur di [vercel.json](vercel.json) (`routes` dengan `has` host).
+  - `penerapan-pythagoras.vercel.app` dan `azkiah-safira-pythagoras.vercel.app` — diatur di [vercel.json](vercel.json)
+    (`routes` dengan `has` host): semua halaman 404, dan `sw.js` diganti `sw-mati.js` agar salinan ter-install ikut terhapus.
   - `sw.js` pemati ([public/sw-mati.js](public/sw-mati.js)) menghapus salinan aplikasi (cache + service worker) di HP/laptop
     yang pernah membuka link lama, sehingga yang tampil benar-benar 404.
 - Variabel build: `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` (publishable key, aman publik) di file `.env`.

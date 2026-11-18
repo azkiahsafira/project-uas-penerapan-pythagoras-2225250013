@@ -102,5 +102,5 @@ aplikasi-pythagoras/
 ## 7. Keamanan & privasi
 - Tidak ada nama asli di basis data; hubungan kode ↔ nama hanya dipegang peneliti (di luar aplikasi).
 - Token sesi bertanda tangan (HMAC) berumur 30 hari; tidak ada password.
-- CORS backend hanya mengizinkan domain aplikasi (`pelita-azkiah-safira-pythagoras.vercel.app` dan link lama `azkiah-safira-pythagoras.vercel.app`) dan `localhost`.
+- CORS backend hanya mengizinkan domain aplikasi (`pelita-azkiah-safira-pythagoras.vercel.app`) dan `localhost`.
 - Rahasia (`SUPABASE_SERVICE_KEY`, `KUNCI_TOKEN`) disimpan sebagai *environment variable* di Vercel, **tidak** di repositori.

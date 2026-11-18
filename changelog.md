@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.22] · 19 November 2026 — Link lama dimatikan
+- `azkiah-safira-pythagoras.vercel.app` kini menampilkan 404 (sama seperti `penerapan-pythagoras.vercel.app`); salinan
+  aplikasi yang ter-install dari link lama ikut dihapus otomatis saat dibuka dengan internet (`sw-mati.js`).
+  Satu-satunya link aplikasi: **https://pelita-azkiah-safira-pythagoras.vercel.app**. CORS backend hanya menerima link ini.
+
 ## [2.21] · 18 November 2026 — Link PELITA & rubrik khusus uji coba
 - Link utama aplikasi menjadi **https://pelita-azkiah-safira-pythagoras.vercel.app**. Link lama
   `azkiah-safira-pythagoras.vercel.app` tetap aktif agar aplikasi yang sudah ter-install tidak putus; backend (CORS)

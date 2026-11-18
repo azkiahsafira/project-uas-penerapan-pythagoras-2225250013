@@ -2,13 +2,49 @@
   "routes": [
     {
       "src": "/sw[.]js",
-      "has": [{ "type": "host", "value": "penerapan-pythagoras.vercel.app" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "penerapan-pythagoras.vercel.app"
+        }
+      ],
       "dest": "/sw-mati.js",
-      "headers": { "Cache-Control": "no-cache" }
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "src": "/sw[.]js",
+      "has": [
+        {
+          "type": "host",
+          "value": "azkiah-safira-pythagoras.vercel.app"
+        }
+      ],
+      "dest": "/sw-mati.js",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
     },
     {
       "src": "/(.*)",
-      "has": [{ "type": "host", "value": "penerapan-pythagoras.vercel.app" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "penerapan-pythagoras.vercel.app"
+        }
+      ],
+      "status": 404,
+      "dest": "/link-mati.html"
+    },
+    {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "azkiah-safira-pythagoras.vercel.app"
+        }
+      ],
       "status": 404,
       "dest": "/link-mati.html"
     }
