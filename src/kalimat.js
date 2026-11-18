@@ -21,7 +21,7 @@ export const SAPAAN = {
     'Setiap langkah ada pertanyaan kecil, santai saja!',
     'Selesaikan satu sesi untuk melihat aku menari! 💃',
     'Klik aku, Raka, atau Nisa kalau mau ngobrol!',
-    'Hewan-hewan di bawah halaman juga bisa diajak main, lho! 🐰',
+    'Hewan-hewan di bawah halaman juga bisa diajak main, lho! 🐧',
   ],
   kalkulator: [
     'Masukkan dua sisi, nanti aku bantu hitung sisi ketiga!',

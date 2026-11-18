@@ -1,4 +1,4 @@
-# Penerapan Teorema Pythagoras
+# PELITA · Penerapan Teorema Pythagoras
 
 Media pembelajaran berbasis web untuk **membangun literasi matematis** siswa SMP pada materi teorema Pythagoras. Berisi materi belajar 3 sesi, kalkulator dengan langkah penyelesaian, dan latihan soal kontekstual.
 

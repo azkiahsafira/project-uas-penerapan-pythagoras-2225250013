@@ -34,7 +34,12 @@
   --bayangan: 0 14px 34px -14px rgba(90, 150, 220, 0.4);
   --bayangan-kecil: 0 4px 14px -6px rgba(90, 150, 220, 0.3);
   color-scheme: light dark;
-  font-family: 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  /* tulisan lucu: Sniglet (bulat & empuk) untuk teks, Mochiy Pop One (gaya kawaii) untuk judul & tombol */
+  --font-lucu: 'Sniglet', 'Fredoka', 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-judul: 'Mochiy Pop One', 'Sniglet', 'Fredoka', system-ui, sans-serif;
+  font-family: var(--font-lucu);
+  /* jangan menebalkan palsu huruf yang hanya punya satu ketebalan (Mochiy Pop One) */
+  font-synthesis: none;
   line-height: 1.55;
 }
 
@@ -91,4 +96,31 @@ h1,
 h2,
 h3 {
   letter-spacing: -0.01em;
+}
+
+/* judul, menu, tombol, label kecil, dan angka penting memakai huruf kawaii */
+h1,
+h2,
+h3,
+h4,
+button,
+.lencana,
+.menu,
+.teman-nama,
+.lb-kata,
+.lb-sub,
+.ls-teks,
+.laut-ucap,
+.gelembung,
+.teman-ucap,
+.ts-kepala h2 {
+  font-family: var(--font-judul);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-lucu);
 }

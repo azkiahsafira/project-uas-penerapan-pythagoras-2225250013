@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Konfeti, Pelangi } from './Hiasan.jsx'
-import { DasarLaut, KapalSelam, PenyuLewat } from './Lautan.jsx'
+import { LantaiAwan, TemanKawaii } from './Kawaii.jsx'
 import { SAPA, SAPAAN, SORAK, salamWaktu } from './kalimat.js'
 import Maskot from './Maskot.jsx'
 import Prisma3D from './Prisma3D.jsx'
@@ -18,8 +18,8 @@ const GANTI_SAPAAN = 7000 // ms sebelum balon kata berganti ke kalimat berikutny
 // - Siku, Raka, dan Nisa bisa diklik, dan bola mata mereka mengikuti kursor/jari.
 // - Bila halaman lama tidak disentuh, Siku tertidur (Zzz) sampai ada gerakan.
 // - Saat `diam` (tes berlangsung) semua animasi berhenti dan karakter tidak bisa diklik.
-// - `sekolah`: karakter berdiri di dasar laut (kapal selam Pythagoras, rumput laut, penyu & ikan lewat),
-//   selaras dengan latar akuarium 3D. Tanpa `sekolah` (saat tes) hanya pelangi & prisma.
+// - `sekolah`: karakter berdiri di lantai awan bersama empat sahabat kawaii (a², b², c², √) yang bisa diklik,
+//   selaras dengan latar 3D sahabat kawaii. Tanpa `sekolah` (saat tes) hanya pelangi & prisma.
 export default function Panggung({ halaman, diam, sekolah = false }) {
   const [pesan, setPesan] = useState(null) // { teks, siapa, n }
   const [hitungan, setHitungan] = useState({ total: 0 }) // jumlah klik per karakter (+ total untuk key animasi)
@@ -120,7 +120,7 @@ export default function Panggung({ halaman, diam, sekolah = false }) {
   const suasanaSiku = pesan?.siapa === 'siku' ? 'senang' : sedangTidur ? 'tidur' : 'halo'
 
   return (
-    <div className={`panggung ${diam ? 'diam' : ''} ${sekolah ? 'sekolah laut' : ''}`}>
+    <div className={`panggung ${diam ? 'diam' : ''} ${sekolah ? 'sekolah kawaii' : ''}`}>
       {/* key: balon kata dianimasikan ulang setiap isinya berganti */}
       {/* balon kata muncul di atas karakter yang sedang bicara (sapaan menu & tidur = Siku) */}
       <p
@@ -135,9 +135,8 @@ export default function Panggung({ halaman, diam, sekolah = false }) {
         <Prisma3D />
         {sekolah && (
           <>
-            <DasarLaut />
-            <KapalSelam diam={diam} />
-            <PenyuLewat />
+            <LantaiAwan />
+            <TemanKawaii diam={diam} />
           </>
         )}
         <button
@@ -174,7 +173,7 @@ export default function Panggung({ halaman, diam, sekolah = false }) {
           <Maskot ukuran={100} diam={diam} suasana={suasanaSiku} lirik={diam ? null : lirik} topi />
         </button>
       </div>
-      {!diam && <p className="petunjuk-klik">Klik Siku, Raka, Nisa, atau kapal selam!</p>}
+      {!diam && <p className="petunjuk-klik">Klik Siku, Raka, Nisa, atau sahabat kawaii!</p>}
     </div>
   )
 }

@@ -494,9 +494,9 @@ export default function Belajar() {
         </button>
       </article>
       <div className="daftar-sesi ada-hewan">
-        {/* anak ayam & kelinci hinggap di atas kartu sesi */}
+        {/* anak ayam & kucing hinggap di atas kartu sesi */}
         <HewanHidup jenis="ayam" className="hinggap kiri" />
-        <HewanHidup jenis="kelinci" className="hinggap kanan" />
+        <HewanHidup jenis="kucing" className="hinggap kanan" />
         {SESI.map((s, i) => {
           const sudah = selesai.includes(s.id)
           const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)

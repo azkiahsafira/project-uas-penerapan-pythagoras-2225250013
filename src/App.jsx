@@ -6,7 +6,7 @@ import { HewanHidup } from './Hewan.jsx'
 import { PemberitahuanOffline, PemberitahuanVersiBaru, TombolInstall } from './Install.jsx'
 import { hentikan } from './suara.js'
 import { LatarHalaman } from './Hiasan.jsx'
-import { LatarHeaderLaut } from './Lautan.jsx'
+import { LatarHeaderKawaii } from './Kawaii.jsx'
 import Ikon from './Ikon.jsx'
 import Latihan from './Latihan.jsx'
 import Panggung from './Panggung.jsx'
@@ -200,7 +200,7 @@ function App() {
       {/* Latar animasi untuk seluruh halaman, disembunyikan saat tes */}
       {!fokusTes && <LatarHalaman />}
       {!fokusTes && <HiasanLucu />}
-      {!fokusTes && <Latar3D />}
+      {!fokusTes && <Latar3D halaman={halaman} arah={arah} />}
       {/* musik latar: tombolnya tidak dipasang saat tes, jadi musik berhenti selama tes */}
       {!fokusTes && <TombolMusik />}
       {/* chatbot Tanya Siku (DeepSeek + RMT): tidak dipasang saat tes agar tidak bisa dipakai mencontek */}
@@ -219,13 +219,32 @@ function App() {
       {/* layar perayaan penuh saat jawaban benar (tidak pernah dipicu di menu Tes) */}
       <LayarBenar />
       <LayarSemangat />
-      <header className={`hero ${fokusTes ? '' : 'laut'}`}>
-        {!fokusTes && <LatarHeaderLaut />}
+      <header className={`hero ${fokusTes ? '' : 'kawaii'}`}>
+        {!fokusTes && <LatarHeaderKawaii />}
         <div className="hero-teks">
-          <span className="lencana">🐠 Media Belajar · SMP Kelas 8</span>
+          <span className="lencana">🎀 Media Belajar · SMP Kelas 8</span>
           {!fokusTes && <span className="lencana rumus-lencana">a² + b² = c²</span>}
-          <h1>Penerapan Teorema Pythagoras</h1>
-          <p>Menyelam sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
+          {/* judul aplikasi: singkatan PELITA (PE-nerapan, L-earning, pI-tagoras, T-eorema, A-zkiah Safira);
+              "pelita" = lampu penerang belajar. Kepanjangan & artinya ditulis di bawahnya */}
+          <h1
+            className="judul-petepi"
+            aria-label="PELITA: Penerapan, Learning, Pitagoras, Teorema, Azkiah Safira. Pelita, penerang belajar Teorema Pythagoras"
+          >
+            <span className="petepi" aria-hidden="true">
+              {['P', 'E', 'L', 'I', 'T', 'A'].map((huruf, i) => (
+                <span key={huruf} className={`suku s${i % 3}`} style={{ animationDelay: `${i * 0.12}s` }}>
+                  {huruf}
+                </span>
+              ))}
+            </span>
+            <span className="petepi-arti" aria-hidden="true">
+              <b>PE</b>nerapan · <b>L</b>earning · p<b>I</b>tagoras · <b>T</b>eorema · <b>A</b>zkiah Safira
+            </span>
+            <span className="petepi-makna" aria-hidden="true">
+              💡 Pelita = penerang belajar Teorema Pythagoras
+            </span>
+          </h1>
+          <p>Belajar bareng sahabat kawaii, sedikit demi sedikit, dari mengenal segitiga sampai soal sehari-hari.</p>
           {!fokusTes && <TombolInstall />}
         </div>
         <Panggung halaman={halaman} diam={fokusTes} sekolah={!fokusTes} />
@@ -234,15 +253,22 @@ function App() {
       {/* Selama tes berlangsung menu disembunyikan agar siswa tidak membuka materi/kalkulator */}
       {!fokusTes && (
         <>
-          {/* penanda aktif berupa gelembung yang meluncur ke menu yang dipilih, ditunggangi ikan kecil */}
+          {/* penanda aktif berupa permata yang meluncur ke menu yang dipilih, dengan mahkota kecil di atasnya */}
           <nav className="menu" aria-label="Menu utama" ref={menuRef} style={{ '--i': URUTAN.indexOf(halaman) }}>
             <span className={`menu-penanda ke-${arah}`} aria-hidden="true">
-              <svg className="menu-ikan" key={halaman} viewBox="0 0 48 30">
-                <path d="M14 15 L2 5 L4 15 L2 25 Z" fill="#f58bbd" stroke="#1e2a4d" strokeWidth="1.8" strokeLinejoin="round" />
-                <ellipse cx="26" cy="15" rx="16" ry="11" fill="#ffc4de" stroke="#1e2a4d" strokeWidth="2" />
-                <circle cx="33" cy="12" r="4.2" fill="#ffffff" />
-                <circle cx="34" cy="12.5" r="2.5" fill="#1e2a4d" />
-                <ellipse cx="31" cy="19" rx="3" ry="1.6" fill="#ff6fa8" opacity="0.6" />
+              <svg className="menu-mahkota" key={halaman} viewBox="0 0 48 32">
+                <path
+                  d="M6 26 L4 8 L15 17 L24 4 L33 17 L44 8 L42 26 Z"
+                  fill="#f6c85f"
+                  stroke="#1e2a4d"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+                <rect x="6" y="24" width="36" height="5" rx="2.5" fill="#e3a93a" stroke="#1e2a4d" strokeWidth="2" />
+                <circle cx="24" cy="18" r="3.4" fill="#f58bbd" stroke="#1e2a4d" strokeWidth="1.4" />
+                <circle cx="14" cy="21" r="2.2" fill="#7cc3ff" />
+                <circle cx="34" cy="21" r="2.2" fill="#7cc3ff" />
+                <circle cx="22.8" cy="16.8" r="1" fill="#ffffff" />
               </svg>
             </span>
             {MENU.map(([id, label]) => (

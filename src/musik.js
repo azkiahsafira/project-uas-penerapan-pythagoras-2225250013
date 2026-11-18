@@ -1,6 +1,8 @@
-// Musik latar ceria yang dimainkan langsung dengan Web Audio (tanpa file lagu).
-// Lagu ciptaan sendiri (bebas hak cipta): melodi bernada marimba, bass lembut,
-// akor tipis, dan "shaker" pelan; 8 birama diulang terus.
+// Musik latar "Lagu 3-4-5" yang lucu, dimainkan langsung dengan Web Audio (tanpa file lagu).
+// Lagu ciptaan sendiri (bebas hak cipta) yang berkaitan dengan materi:
+// - setiap frase terdiri atas motif 3 not (a), lalu 4 not (b), lalu 5 not (c), lalu "jawaban" panjang:
+//   seperti 3² + 4² = 5², dua motif pendek "dijumlah" menjadi motif terpanjang
+// - bunyi kotak musik & xilofon yang imut, bass "boing" yang memantul, tepuk kecil, dan lonceng di akhir frase
 //
 // Aturan agar tidak mengganggu belajar (extraneous load):
 // - volume pelan dan bisa dimatikan kapan saja (tombol 🎵)
@@ -8,21 +10,21 @@
 // - dijeda saat tes berlangsung dan saat tab/aplikasi tidak terlihat
 
 const KUNCI = 'pythagoras-musik'
-const TEMPO = 96 // ketukan per menit
+const TEMPO = 112 // ketukan per menit (riang)
 const LANGKAH = 60 / TEMPO / 2 // durasi satu not seperdelapan (detik)
 const VOLUME = 0.16
 const VOLUME_REDAM = 0.04
 
 // Melodi (nomor MIDI, null = diam); 8 birama × 8 not seperdelapan
 const MELODI = [
-  [72, null, 76, null, 79, 76, 79, null], // C
-  [81, null, 79, 76, null, 72, 74, null], // Am
-  [76, null, 77, 76, 74, null, 72, null], // F
-  [74, null, 79, null, 74, 72, 74, null], // G
-  [72, 76, 79, 84, null, 81, 79, null], // C
-  [76, null, 81, 79, 76, null, 72, null], // Am
-  [69, 72, 77, 76, null, 74, 72, null], // F
-  [74, null, 71, 74, 79, null, 72, null], // G -> C
+  [76, null, 79, null, 84, null, null, null], // a: 3 not
+  [81, null, 79, null, 76, null, 79, null], // b: 4 not
+  [72, 74, 76, 79, 81, null, null, null], // c: 5 not
+  [79, null, 76, null, 72, null, null, null], // jawaban: a² + b² = c²
+  [77, null, 81, null, 84, null, null, null], // a: 3 not
+  [86, null, 84, null, 81, null, 77, null], // b: 4 not
+  [74, 76, 79, 83, 86, null, null, null], // c: 5 not
+  [84, null, 79, 76, 72, null, null, null], // jawaban, kembali ke awal
 ].flat()
 
 // Akar akor tiap birama (bass) dan nada akornya
@@ -30,11 +32,11 @@ const AKOR = [
   [48, [60, 64, 67]],
   [45, [57, 60, 64]],
   [41, [57, 60, 65]],
+  [48, [60, 64, 67]],
+  [41, [57, 60, 65]],
+  [50, [62, 65, 69]],
   [43, [55, 59, 62]],
   [48, [60, 64, 67]],
-  [45, [57, 60, 64]],
-  [41, [57, 60, 65]],
-  [43, [55, 59, 62]],
 ]
 
 const frek = (midi) => 440 * 2 ** ((midi - 69) / 12)
@@ -107,18 +109,39 @@ function shaker(mulai, keras) {
   s.start(mulai)
 }
 
+// bass "boing": nada yang sedikit melengkung naik seperti benda empuk memantul
+function boing(midi, mulai) {
+  const o = ac.createOscillator()
+  const g = ac.createGain()
+  o.type = 'sine'
+  o.frequency.setValueAtTime(frek(midi) * 0.85, mulai)
+  o.frequency.exponentialRampToValueAtTime(frek(midi), mulai + 0.06)
+  g.gain.setValueAtTime(0, mulai)
+  g.gain.linearRampToValueAtTime(0.4, mulai + 0.015)
+  g.gain.exponentialRampToValueAtTime(0.001, mulai + LANGKAH * 1.6)
+  o.connect(g).connect(utama)
+  o.start(mulai)
+  o.stop(mulai + LANGKAH * 1.7)
+}
+
 function jadwalkan(i, t) {
   const birama = Math.floor(i / 8) % AKOR.length
   const posisi = i % 8
   const m = MELODI[i % MELODI.length]
   if (m != null) {
-    nada(m, t, LANGKAH * 1.8, { keras: 0.32 }) // marimba
-    nada(m + 12, t, LANGKAH * 0.9, { tipe: 'sine', keras: 0.08 }) // kilau oktaf
+    nada(m, t, LANGKAH * 1.6, { keras: 0.28 }) // xilofon
+    nada(m + 12, t, LANGKAH * 2.4, { tipe: 'sine', keras: 0.1, serang: 0.005 }) // kotak musik berdenting
   }
   const [bass, akor] = AKOR[birama]
-  if (posisi === 0 || posisi === 4) nada(bass, t, LANGKAH * 3.5, { tipe: 'sine', keras: 0.42, serang: 0.02 })
-  if (posisi === 0) akor.forEach((n) => nada(n, t, LANGKAH * 7.5, { tipe: 'sine', keras: 0.05, serang: 0.25 }))
-  shaker(t, posisi % 2 === 1 ? 0.05 : 0.02)
+  if (posisi === 0 || posisi === 3 || posisi === 6) boing(posisi === 3 ? bass + 7 : bass, t)
+  if (posisi === 0) akor.forEach((n) => nada(n, t, LANGKAH * 7.5, { tipe: 'sine', keras: 0.04, serang: 0.25 }))
+  // tepuk kecil di ketukan 2 & 4, kocokan pelan di sela-selanya
+  shaker(t, posisi === 2 || posisi === 6 ? 0.09 : posisi % 2 ? 0.03 : 0.015)
+  // lonceng "ting-ting" di akhir setiap frase jawaban
+  if ((birama === 3 || birama === 7) && posisi === 5) {
+    nada(96, t, LANGKAH * 3, { tipe: 'sine', keras: 0.07, serang: 0.003 })
+    nada(100, t + LANGKAH * 0.5, LANGKAH * 3, { tipe: 'sine', keras: 0.06, serang: 0.003 })
+  }
 }
 
 function putaran() {

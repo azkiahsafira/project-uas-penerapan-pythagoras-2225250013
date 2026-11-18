@@ -2,6 +2,16 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.18] · 18 November 2026 — Tema kawaii "PELITA" (biru muda & pink muda)
+- Judul aplikasi menjadi **PELITA** (PEnerapan · Learning · pItagoras · Teorema · Azkiah Safira), artinya ditulis di bawahnya:
+  "Pelita = penerang belajar Teorema Pythagoras". Judul tab & nama aplikasi di HP ikut berganti.
+- Tema baru bergaya kawaii orisinal: header berpelangi & awan, latar 3D toon "Dunia Sahabat Kawaii" yang ikut bergerak saat
+  pindah menu, dan empat sahabat: **Kuadra si penguin (a²)**, Lila si domba (b²), Hipo si beruang (c²), Akar si kucing (√).
+- Font lucu di seluruh aplikasi (Mochiy Pop One & Sniglet); kursor kartun (penguin Kuadra, sarung tangan di atas tombol)
+  dengan cincin & letupan hati saat klik.
+- Enam animasi perayaan berbeda setiap jawaban benar (tidak pernah sama dua kali berturut-turut) dan lagu latar "Lagu 3-4-5".
+- Versi cache PWA dinaikkan (`pythagoras-v5`) agar HP otomatis memuat tampilan baru; `Lautan.jsx` (tema lama) dihapus.
+
 ## [2.17] · 18 November 2026 — Tanya Siku: kode alasan & model cadangan gratis
 - Bila DeepSeek gagal, pesan menampilkan kode alasan (mis. `deepseek:saldo_habis`) dan galatnya tercatat di log Vercel.
 - Model cadangan gratis (OpenRouter, `CADANGAN_API_KEY`) dipakai hanya bila DeepSeek gagal; panel menampilkan dengan jujur
