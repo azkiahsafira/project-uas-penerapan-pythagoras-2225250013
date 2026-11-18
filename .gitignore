@@ -31,7 +31,6 @@ analisis/hasil_analisis/
 __pycache__/
 !analisis/templat_kertas.csv
 !analisis/templat_skor_literasi.csv
-!analisis/templat_skor_uji_coba.csv
 
 # Backend Python
 backend/.venv/
@@ -39,6 +38,3 @@ backend/.venv/
 
 # Rahasia backend lokal (API key DeepSeek, dsb.) tidak boleh ikut ke GitHub
 backend/.env
-# catatan uji coba asli (templatnya boleh di-commit)
-analisis/*.json
-!analisis/templat_catatan_uji_coba.json
