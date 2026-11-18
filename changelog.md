@@ -2,6 +2,9 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.25.1] · 19 November 2026 — Gambar README diperbarui
+- `docs/tampilan-laptop.png` diganti tangkapan layar tema PELITA terbaru dan ditambah `docs/tampilan-hp.png` (tampilan HP).
+
 ## [2.25] · 19 November 2026 — Selalu terang, latar terlihat
 - Aplikasi tidak lagi berubah gelap/hitam saat HP atau laptop memakai mode gelap: `<html data-theme="light">`, semua
   aturan gelap dijaga `:root:not([data-theme='light'])`, dan latar 3D tidak memakai adegan malam.

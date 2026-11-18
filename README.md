@@ -18,7 +18,9 @@ Dibuat untuk memenuhi **Project UAS** mata kuliah **Algoritma Pemrograman**.
 
 <p align="center">
   <a href="https://pelita-azkiah-safira-pythagoras.vercel.app/">
-    <img src="docs/tampilan-laptop.png" alt="Tampilan aplikasi Penerapan Teorema Pythagoras: header dengan halaman sekolah (gedung SMP, Siku, Raka, dan Nisa berdiri di rumput), menu Belajar/Kalkulator/Latihan Soal/Tes, dan latar 3D Langit Pythagoras (Siku, layang-layang, menara kotak 3² + 4² = 5², tangga dengan kelinci)" width="820">
+    <img src="docs/tampilan-laptop.png" alt="Tampilan PELITA di laptop: judul PELITA berwarna dengan kepanjangan dan artinya, bendera warna-warni, pelangi berujung awan berwajah, Kuadra si penguin, Lila, Hipo, dan Akar di panggung awan, Siku, Raka berhoodie dino, Nisa berhoodie kucing, papan Ayo belajar bareng, dan latar 3D sahabat kawaii biru muda-pink muda" width="640">
+    &nbsp;
+    <img src="docs/tampilan-hp.png" alt="Tampilan PELITA di HP: judul PELITA, tombol Install aplikasi, para sahabat di panggung awan melayang di atas pelangi, Siku, Raka, Nisa, tombol Tanya Siku, dan menu bawah" width="190">
   </a>
 </p>
 
