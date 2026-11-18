@@ -9,8 +9,10 @@
 - **Link lama yang sudah dimatikan** (semua halaman membalas **404**):
   - `azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/` — branch `gh-pages` hanya berisi `404.html` dan
     `sw.js` "pemati";
-  - `penerapan-pythagoras.vercel.app` dan `azkiah-safira-pythagoras.vercel.app` — diatur di [vercel.json](vercel.json)
-    (`routes` dengan `has` host): semua halaman 404, dan `sw.js` diganti `sw-mati.js` agar salinan ter-install ikut terhapus.
+  - **Semua alamat Vercel yang tidak memuat kata "pelita"** (`penerapan-pythagoras.vercel.app`,
+    `azkiah-safira-pythagoras.vercel.app`, dan alamat otomatis per-deploy `penerapan-pythagoras-…-azkiahsafira.vercel.app`) —
+    diatur di [vercel.json](vercel.json) (`routes` dengan `missing` host = link pelita): semua halaman 404, dan `sw.js` diganti
+    `sw-mati.js` agar salinan ter-install ikut terhapus. Akibatnya pratinjau per-deploy juga 404; periksa lewat link pelita.
   - `sw.js` pemati ([public/sw-mati.js](public/sw-mati.js)) menghapus salinan aplikasi (cache + service worker) di HP/laptop
     yang pernah membuka link lama, sehingga yang tampil benar-benar 404.
 - Variabel build: `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` (publishable key, aman publik) di file `.env`.
