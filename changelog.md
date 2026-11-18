@@ -2,6 +2,14 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.24] · 19 November 2026 — Kartu isi gaya "Permen"
+- Bagian di bawah menu tidak lagi tembus pandang: isi halaman berada di panel kaca buram, kartu padat berbingkai putih
+  tebal dengan garis pelangi di atasnya dan stiker sahabat di pojok (Siku; Kuadra si penguin di kartu sesi & tes).
+- Judul bagian berupa pita pelangi pink-ungu-biru; tombol aksi gaya permen yang bergoyang pelan; tombol terkunci jelas
+  (🔒 dan garis putus-putus). Tombol Animasi & Suara di bawah halaman ikut di panel kaca.
+- Hanya di halaman biasa; saat tes tampilan tetap polos & tenang. Mode gelap ikut menyesuaikan.
+- Versi cache PWA dinaikkan (`pythagoras-v9`).
+
 ## [2.23.2] · 19 November 2026 — Bukti percakapan AI diperbarui
 - Bukti vibe coding (HTML, halaman `/bukti-ai/`, dan PDF) mencakup percakapan sampai sesi ini: 305 pesan mahasiswa,
   868 jawaban AI (tema PELITA, karakter, PDF tes cute, link baru, pengosongan Supabase). Email tetap disamarkan.
