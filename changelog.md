@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.23.1] · 19 November 2026 — Pertanyaan Tanya Siku tercatat
+- Supabase: bagian **Versi 3** `supabase/schema.sql` dijalankan; tabel `aktivitas` kini menerima jenis `asisten`, sehingga
+  setiap pertanyaan siswa ke Tanya Siku (tahap RMT, tingkat petunjuk, menu) tersimpan untuk data penelitian.
+- Data uji di Supabase dikosongkan (tabel `hasil` & `aktivitas` = 0 baris); 216 kode siswa tetap terdaftar.
+
 ## [2.23] · 19 November 2026 — Balon kata sahabat tidak tertutup lagi
 - Perbaikan: balon kata Kuadra, Lila, Hipo, dan Akar dulu tidak pernah hilang (kunci React kembar dengan gambarnya),
   menumpuk, dan tertutup Siku/Raka/Nisa. Kini balon hilang sendiri setelah 2,4 detik dan tampil di lapisan teratas.

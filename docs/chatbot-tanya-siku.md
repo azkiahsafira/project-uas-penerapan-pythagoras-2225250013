@@ -101,7 +101,8 @@ kedua penyedia.
 Setiap giliran dicatat di tabel `aktivitas` (Supabase) dengan `jenis = 'asisten'`:
 `hasil` = tahap RMT, `petunjuk` = tingkat bantuan (1–4), `catatan` = menu, apakah balasan disaring, dan pertanyaan siswa.
 Jalankan bagian **Versi 3** di [`supabase/schema.sql`](../supabase/schema.sql) sekali di SQL Editor Supabase agar jenis
-`asisten` diterima (sebelum itu chatbot tetap berjalan, hanya belum tercatat).
+`asisten` diterima (sebelum itu chatbot tetap berjalan, hanya belum tercatat). **Sudah dijalankan 19 November 2026**
+(aturan `aktivitas_jenis_check` kini memuat `asisten`).
 
 ## 7. Mengaktifkan (oleh pemilik proyek)
 
