@@ -2,6 +2,12 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.25] · 19 November 2026 — Selalu terang, latar terlihat
+- Aplikasi tidak lagi berubah gelap/hitam saat HP atau laptop memakai mode gelap: `<html data-theme="light">`, semua
+  aturan gelap dijaga `:root:not([data-theme='light'])`, dan latar 3D tidak memakai adegan malam.
+- Panel kaca di bawah menu dibuat lebih bening (28%, blur tipis) sehingga latar 3D terlihat di sela kartu; kartu tetap padat.
+- Versi cache PWA dinaikkan (`pythagoras-v10`).
+
 ## [2.24] · 19 November 2026 — Kartu isi gaya "Permen"
 - Bagian di bawah menu tidak lagi tembus pandang: isi halaman berada di panel kaca buram, kartu padat berbingkai putih
   tebal dengan garis pelangi di atasnya dan stiker sahabat di pojok (Siku; Kuadra si penguin di kartu sesi & tes).

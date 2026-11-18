@@ -107,7 +107,9 @@ function bangunAdegan(THREE, M, kanvas, setUcap) {
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.06
-  const gelap = window.matchMedia?.('(prefers-color-scheme: dark)').matches
+  // adegan malam hanya bila tema gelap diizinkan (index.html memakai data-theme="light" sehingga selalu cerah)
+  const gelap =
+    document.documentElement.dataset.theme !== 'light' && window.matchMedia?.('(prefers-color-scheme: dark)').matches
   const acak = (a, b) => a + Math.random() * (b - a)
   const pilih = (daftar) => daftar[Math.floor(Math.random() * daftar.length)]
 

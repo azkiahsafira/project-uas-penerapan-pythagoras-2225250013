@@ -4135,7 +4135,7 @@ tbody tr:last-child td {
 }
 
 @media (prefers-color-scheme: dark) {
-  .layar-benar {
+  :root:not([data-theme='light']) .layar-benar {
     background: radial-gradient(circle at 50% 45%, rgba(40, 55, 105, 0.88), rgba(20, 26, 58, 0.9) 55%, rgba(60, 25, 60, 0.88));
   }
 }
@@ -8166,9 +8166,10 @@ main {
    saat tes tampilan tetap polos & tenang. Warna dasar memakai --card sehingga ikut mode gelap.
    ========================================================================= */
 .hero.kawaii ~ .halaman {
-  background: color-mix(in srgb, var(--card) 50%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
+  /* panel bening tipis: latar 3D tetap terlihat di sela kartu, kartunya sendiri padat agar tulisan jelas */
+  background: color-mix(in srgb, var(--card) 28%, transparent);
+  -webkit-backdrop-filter: blur(4px) saturate(1.15);
+  backdrop-filter: blur(4px) saturate(1.15);
   border: 3px solid color-mix(in srgb, var(--card) 90%, transparent);
   border-radius: 32px;
   padding: 18px;
