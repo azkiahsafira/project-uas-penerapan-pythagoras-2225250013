@@ -223,3 +223,14 @@ def test_hanya_cadangan_tetap_aktif(monkeypatch):
     monkeypatch.delenv("DEEPSEEK_API_KEY")
     monkeypatch.setenv("CADANGAN_API_KEY", "kunci-cadangan-palsu")
     assert klien.get("/api/sehat").json()["asisten"] is True
+
+
+def test_balasan_kosong_dicoba_ulang_lalu_petunjuk_aman(monkeypatch):
+    """Model gratis kadang membalas kosong: dicoba sekali lagi; bila tetap kosong, siswa mendapat petunjuk aman (bukan galat)."""
+    monkeypatch.setattr(asisten, "panggil_deepseek", tiruan("", jawab("pahami", "Apa yang diketahui?")))
+    r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "halo"})
+    assert r.status_code == 200 and r.json()["balasan"] == "Apa yang diketahui?" and len(tiruan.terkirim) == 2
+
+    monkeypatch.setattr(asisten, "panggil_deepseek", tiruan("", "   "))
+    r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "kasih jawabannya saja", "tahap": "kerjakan"})
+    assert r.status_code == 200 and r.json()["balasan"] == asisten.PETUNJUK_AMAN["kerjakan"]

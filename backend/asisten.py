@@ -159,9 +159,9 @@ class AsistenGagal(Exception):
 ALASAN_STATUS = {401: "kunci_salah", 402: "saldo_habis", 429: "sibuk", 400: "permintaan", 422: "permintaan", 404: "model"}
 
 
-def _panggil(url: str, model: str, kunci: str, pesan: list[dict], nama: str) -> tuple[str, str]:
+def _panggil(url: str, model: str, kunci: str, pesan: list[dict], nama: str, maks_token: int = 350) -> tuple[str, str]:
     """Panggil layanan Chat Completions berformat OpenAI. Mengembalikan (teks balasan, nama model yang menjawab)."""
-    isi = {"model": model, "messages": pesan, "temperature": 0.4, "max_tokens": 350, "response_format": {"type": "json_object"}}
+    isi = {"model": model, "messages": pesan, "temperature": 0.4, "max_tokens": maks_token, "response_format": {"type": "json_object"}}
     kepala = {"Authorization": f"Bearer {kunci}", "Content-Type": "application/json", "X-Title": "Tanya Siku"}
     try:
         r = httpx.post(url, headers=kepala, json=isi, timeout=25)
@@ -195,7 +195,8 @@ def panggil_deepseek(pesan: list[dict], kunci: str) -> tuple[str, str]:
 
 def panggil_cadangan(pesan: list[dict], kunci: str) -> tuple[str, str]:
     """Model cadangan gratis lewat OpenRouter."""
-    return _panggil(URL_CADANGAN, MODEL_CADANGAN, kunci, pesan, "Cadangan")
+    # model gratis sering model "berpikir" yang memakai token untuk penalaran: beri ruang lebih agar balasan tidak kosong
+    return _panggil(URL_CADANGAN, MODEL_CADANGAN, kunci, pesan, "Cadangan", maks_token=900)
 
 
 def baca_balasan(mentah: str, tahap_lalu: str) -> tuple[str, str]:
@@ -209,7 +210,7 @@ def baca_balasan(mentah: str, tahap_lalu: str) -> tuple[str, str]:
     except (ValueError, AttributeError):
         balasan, tahap = mentah.strip(), tahap_lalu
     if not balasan:
-        raise AsistenGagal("balasan kosong")
+        raise AsistenGagal("balasan_kosong")
     return tahap, balasan[:900]
 
 
@@ -229,8 +230,18 @@ def tanya_siku(pertanyaan: str, riwayat: list[dict], halaman: str, tingkat: int,
     pesan.append({"role": "user", "content": pertanyaan})
     teks_siswa = " ".join([r["isi"] for r in riwayat if r["peran"] == "user"] + [pertanyaan])
 
-    mentah, model = _jalankan(panggil, pesan, kunci, model_bawaan)
-    tahap, balasan = baca_balasan(mentah, tahap_lalu)
+    # balasan kosong (sesekali terjadi pada model gratis): coba sekali lagi, lalu petunjuk aman agar siswa tidak melihat galat
+    model = model_bawaan
+    for _ in range(2):
+        mentah, model = _jalankan(panggil, pesan, kunci, model_bawaan)
+        try:
+            tahap, balasan = baca_balasan(mentah, tahap_lalu)
+            break
+        except AsistenGagal as e:
+            if e.alasan != "balasan_kosong":
+                raise
+    else:
+        return {"balasan": PETUNJUK_AMAN[tahap_lalu], "tahap": tahap_lalu, "disaring": True, "model": model}
     if not bocorkan_jawaban(balasan, teks_siswa):
         return {"balasan": balasan, "tahap": tahap, "disaring": False, "model": model}
 
