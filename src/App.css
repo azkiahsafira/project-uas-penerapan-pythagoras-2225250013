@@ -8166,11 +8166,11 @@ main {
    saat tes tampilan tetap polos & tenang. Warna dasar memakai --card sehingga ikut mode gelap.
    ========================================================================= */
 .hero.kawaii ~ .halaman {
-  /* panel bening tipis: latar 3D tetap terlihat di sela kartu, kartunya sendiri padat agar tulisan jelas */
-  background: color-mix(in srgb, var(--card) 28%, transparent);
-  -webkit-backdrop-filter: blur(4px) saturate(1.15);
-  backdrop-filter: blur(4px) saturate(1.15);
-  border: 3px solid color-mix(in srgb, var(--card) 90%, transparent);
+  /* tanpa panel: latar 3D terlihat penuh; hanya header yang padat */
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: 3px solid transparent;
   border-radius: 32px;
   padding: 18px;
 }
@@ -8187,6 +8187,11 @@ main {
 }
 
 .hero.kawaii ~ .halaman > section > h2 + p {
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card) 60%, transparent);
   font-weight: 600;
   text-shadow: none;
 }
@@ -8195,15 +8200,16 @@ main {
   position: relative;
   overflow: visible;
   padding-top: 22px;
-  border: 5px solid var(--card);
+  border: 5px solid color-mix(in srgb, var(--card) 85%, transparent);
   border-radius: 28px;
-  background: linear-gradient(180deg, var(--card) 0%, color-mix(in srgb, var(--card) 93%, #ff8fc4) 100%);
+  /* kartu bening seperti kaca: latar 3D terlihat di baliknya, sedikit diburamkan agar tulisan tetap terbaca */
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 52%, transparent) 0%, color-mix(in srgb, #fff0f7 46%, transparent) 100%);
   box-shadow:
     0 0 0 3px #ffc6e0,
-    0 9px 0 3px #ffd6ea,
-    0 18px 30px -16px rgba(107, 90, 142, 0.4);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+    0 9px 0 3px color-mix(in srgb, #ffd6ea 80%, transparent),
+    0 18px 30px -16px rgba(107, 90, 142, 0.35);
+  -webkit-backdrop-filter: blur(3px) saturate(1.1);
+  backdrop-filter: blur(3px) saturate(1.1);
 }
 
 .hero.kawaii ~ .halaman .kartu h2,
@@ -8211,7 +8217,10 @@ main {
 .hero.kawaii ~ .halaman .kartu p,
 .hero.kawaii ~ .halaman .kartu label,
 .hero.kawaii ~ .halaman .kartu li {
-  text-shadow: none;
+  /* bayangan putih tipis di sekeliling huruf agar tetap terbaca di atas kartu bening */
+  text-shadow:
+    0 0 2px var(--card),
+    0 0 4px var(--card);
 }
 
 /* garis pelangi di tepi atas kartu */

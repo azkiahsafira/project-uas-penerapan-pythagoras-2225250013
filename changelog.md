@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.26] · 19 November 2026 — Kartu isi bening
+- Kartu sesi, prasyarat, kalkulator, latihan, dan tes kini bening seperti kaca (± 50%, blur tipis) sehingga latar 3D
+  terlihat di baliknya; panel di bawah menu dihapus. Tulisan diberi bayangan putih tipis agar tetap terbaca.
+- Header tetap padat (tidak bening). Versi cache PWA dinaikkan (`pythagoras-v11`).
+
 ## [2.25.1] · 19 November 2026 — Gambar README diperbarui
 - `docs/tampilan-laptop.png` diganti tangkapan layar tema PELITA terbaru dan ditambah `docs/tampilan-hp.png` (tampilan HP).
 
