@@ -178,3 +178,10 @@ def test_panggil_deepseek_format_permintaan_dan_ulang_tanpa_mode_json(monkeypatc
     assert url == "https://api.deepseek.com/chat/completions" and otorisasi == "Bearer kunci-x"
     assert isi["model"] == "deepseek-flash" and isi["response_format"] == {"type": "json_object"}
     assert len(terkirim) == 2 and "response_format" not in terkirim[1][2]
+
+
+def test_saldo_habis_terbaca_sebagai_kode_alasan(monkeypatch):
+    """DeepSeek membalas 402 (saldo habis): siswa melihat pesan ramah + kode alasan untuk peneliti."""
+    monkeypatch.setattr(asisten.httpx, "post", lambda url, headers, json, timeout: _Jawaban(402, {"error": {"message": "Insufficient Balance"}}))
+    r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "halo"})
+    assert r.status_code == 502 and "kode: saldo_habis" in r.json()["pesan"]

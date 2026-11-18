@@ -258,8 +258,9 @@ def asisten(data: TanyaAsisten, siswa=Depends(siswa_masuk)):
     pertanyaan = data.pertanyaan.strip()
     try:
         hasil = tanya_siku(pertanyaan, [g.model_dump() for g in data.riwayat], data.halaman, data.tingkat, data.tahap, kunci)
-    except AsistenGagal:
-        raise Galat(502, "asisten_gagal", "Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya.") from None
+    except AsistenGagal as e:
+        # kode alasan ditampilkan singkat agar peneliti tahu penyebabnya (mis. saldo_habis, kunci_salah)
+        raise Galat(502, "asisten_gagal", f"Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya. (kode: {e.alasan})") from None
 
     # catat untuk analisis penelitian (tahap RMT & tingkat bantuan); kegagalan mencatat tidak mengganggu siswa
     sekarang = datetime.now(timezone.utc).isoformat(timespec="seconds")

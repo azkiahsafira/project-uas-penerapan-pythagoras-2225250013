@@ -133,7 +133,16 @@ PETUNJUK_AMAN = {
 # Pemanggilan DeepSeek
 # ---------------------------------------------------------------------------
 class AsistenGagal(Exception):
-    """DeepSeek tidak bisa dihubungi atau balasannya tidak bisa dipakai."""
+    """DeepSeek tidak bisa dihubungi atau balasannya tidak bisa dipakai.
+    `alasan` = kode singkat untuk peneliti (tampil di pesan & log Vercel), tanpa isi API key."""
+
+    def __init__(self, alasan: str, rincian: str = ""):
+        super().__init__(f"{alasan}: {rincian}")
+        self.alasan = alasan
+
+
+# status HTTP DeepSeek -> kode alasan (lihat api-docs.deepseek.com, "Error Codes")
+ALASAN_STATUS = {401: "kunci_salah", 402: "saldo_habis", 429: "sibuk", 400: "permintaan", 422: "permintaan", 404: "model"}
 
 
 def panggil_deepseek(pesan: list[dict], kunci: str) -> str:
@@ -146,14 +155,22 @@ def panggil_deepseek(pesan: list[dict], kunci: str) -> str:
             # model/layanan yang tidak mendukung mode JSON: ulangi tanpa response_format (baca_balasan tetap bisa membaca teks biasa)
             isi.pop("response_format")
             r = httpx.post(URL_DEEPSEEK, headers=kepala, json=isi, timeout=25)
+    except httpx.TimeoutException as e:
+        raise AsistenGagal("waktu_habis", str(e)) from e
     except httpx.HTTPError as e:
-        raise AsistenGagal(str(e)) from e
+        raise AsistenGagal("jaringan", str(e)) from e
     if r.status_code != 200:
-        raise AsistenGagal(f"status {r.status_code}")
+        try:
+            rincian = str(r.json().get("error", {}).get("message", ""))[:200]
+        except (ValueError, AttributeError):
+            rincian = ""
+        alasan = ALASAN_STATUS.get(r.status_code, "server_deepseek")
+        print(f"[asisten] DeepSeek gagal: status={r.status_code} alasan={alasan} pesan={rincian}")  # muncul di log Vercel
+        raise AsistenGagal(alasan, rincian)
     try:
         return r.json()["choices"][0]["message"]["content"] or ""
     except (KeyError, IndexError, ValueError) as e:
-        raise AsistenGagal("format balasan") from e
+        raise AsistenGagal("format_balasan") from e
 
 
 def baca_balasan(mentah: str, tahap_lalu: str) -> tuple[str, str]:
@@ -188,7 +205,7 @@ def tanya_siku(pertanyaan: str, riwayat: list[dict], halaman: str, tingkat: int,
                                             "TANPA angka hasil akhir, akhiri dengan satu pertanyaan untuk siswa. Format JSON yang sama."}]
     try:
         tahap, balasan = baca_balasan(panggil(pesan, kunci), tahap)
-    except AsistenGagal:
+    except AsistenGagal:  # permintaan ulang gagal: tetap beri petunjuk aman di bawah
         balasan = ""
     if balasan and not bocorkan_jawaban(balasan, teks_siswa):
         return {"balasan": balasan, "tahap": tahap, "disaring": True}
