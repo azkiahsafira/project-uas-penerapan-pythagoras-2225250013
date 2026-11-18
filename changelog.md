@@ -2,6 +2,11 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.27.1] · 19 November 2026 — Balon sahabat tidak tertutup judul (HP)
+- HP: panggung sedikit lebih tinggi (324 px) & panggung awan sahabat diturunkan, balon kata sahabat lebih lebar (2 baris)
+  dan tidak terpotong saat sahabat memantul, sehingga tidak lagi menyentuh/tertutup judul PELITA.
+- Versi cache PWA dinaikkan (`pythagoras-v13`).
+
 ## [2.27] · 19 November 2026 — Tata letak HP: header ringkas & menu bawah
 - HP: header lebih ringkas (681 → 526 px; kalimat pembuka disembunyikan, judul & panggung lebih rapat) dan menu menjadi
   **bilah bawah** seperti aplikasi HP yang selalu terlihat. Tombol Musik & Tanya Siku berupa ikon bulat di atas bilah menu,
