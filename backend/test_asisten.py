@@ -234,3 +234,15 @@ def test_balasan_kosong_dicoba_ulang_lalu_petunjuk_aman(monkeypatch):
     monkeypatch.setattr(asisten, "panggil_deepseek", tiruan("", "   "))
     r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "kasih jawabannya saja", "tahap": "kerjakan"})
     assert r.status_code == 200 and r.json()["balasan"] == asisten.PETUNJUK_AMAN["kerjakan"]
+
+
+def test_sehat_lengkap_memeriksa_key_ai_gratis(monkeypatch):
+    """Pemeriksaan harian: key OpenRouter sah → cadangan True; ditolak → False; tidak dipasang → None."""
+    monkeypatch.setenv("CADANGAN_API_KEY", "kunci-cadangan-palsu")
+    monkeypatch.setattr(asisten.httpx, "get", lambda url, headers, timeout: _Jawaban(200 if url.endswith("/api/v1/key") else 404))
+    assert klien.get("/api/sehat?lengkap=1").json()["cadangan"] is True
+    monkeypatch.setattr(asisten.httpx, "get", lambda url, headers, timeout: _Jawaban(401))
+    assert klien.get("/api/sehat?lengkap=1").json()["cadangan"] is False
+    monkeypatch.delenv("CADANGAN_API_KEY")
+    assert klien.get("/api/sehat?lengkap=1").json()["cadangan"] is None
+    assert "cadangan" not in klien.get("/api/sehat").json()

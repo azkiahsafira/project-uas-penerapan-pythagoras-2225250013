@@ -26,12 +26,12 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 
 try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
-    from .asisten import AsistenGagal, daftar_penyedia, tanya_siku
+    from .asisten import AsistenGagal, cek_cadangan, daftar_penyedia, tanya_siku
     from .basisdata import buat_penyimpanan
     from .penilaian import nilai_leppink, nilai_tes
     from .sesi import buat_token, periksa_token
 except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
-    from asisten import AsistenGagal, daftar_penyedia, tanya_siku
+    from asisten import AsistenGagal, cek_cadangan, daftar_penyedia, tanya_siku
     from basisdata import buat_penyimpanan
     from penilaian import nilai_leppink, nilai_tes
     from sesi import buat_token, periksa_token
@@ -130,11 +130,15 @@ def identitas_baris(siswa):
 # Endpoint
 # ---------------------------------------------------------------------------
 @app.get("/api/sehat")
-def sehat():
-    """Cek server hidup; dipanggil aplikasi saat dibuka untuk membangunkan server gratis."""
-    # `asisten`: apakah chatbot Tanya Siku siap (API key DeepSeek terpasang); nilai kuncinya tidak pernah dikirim
-    return {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "asisten": bool(daftar_penyedia())}
+def sehat(lengkap: bool = False):
+    """Cek server hidup; dipanggil aplikasi saat dibuka untuk membangunkan server gratis.
+    `?lengkap=1` (dipakai pemeriksaan harian GitHub Actions) juga memeriksa key AI gratis OpenRouter masih sah."""
+    # `asisten`: apakah chatbot Tanya Siku siap (API key terpasang); nilai kuncinya tidak pernah dikirim
+    isi = {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+           "asisten": bool(daftar_penyedia())}
+    if lengkap:
+        isi["cadangan"] = cek_cadangan()
+    return isi
 
 
 class Masuk(BaseModel):

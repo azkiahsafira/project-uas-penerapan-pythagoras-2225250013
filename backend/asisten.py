@@ -159,6 +159,20 @@ class AsistenGagal(Exception):
 ALASAN_STATUS = {401: "kunci_salah", 402: "saldo_habis", 429: "sibuk", 400: "permintaan", 422: "permintaan", 404: "model"}
 
 
+def cek_cadangan() -> bool | None:
+    """Apakah key model cadangan gratis (OpenRouter) masih sah? Memakai endpoint info key (tidak memakai kuota).
+    None bila key tidak dipasang. Dipakai pemeriksaan harian GitHub Actions agar AI gratis selalu aktif."""
+    kunci = os.environ.get("CADANGAN_API_KEY", "").strip()
+    if not kunci:
+        return None
+    try:
+        r = httpx.get(URL_CADANGAN.removesuffix("/chat/completions") + "/key",
+                      headers={"Authorization": f"Bearer {kunci}"}, timeout=8)
+    except httpx.HTTPError:
+        return False
+    return r.status_code == 200
+
+
 def _panggil(url: str, model: str, kunci: str, pesan: list[dict], nama: str, maks_token: int = 350) -> tuple[str, str]:
     """Panggil layanan Chat Completions berformat OpenAI. Mengembalikan (teks balasan, nama model yang menjawab)."""
     isi = {"model": model, "messages": pesan, "temperature": 0.4, "max_tokens": maks_token, "response_format": {"type": "json_object"}}

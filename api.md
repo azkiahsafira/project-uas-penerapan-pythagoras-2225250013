@@ -29,6 +29,7 @@
 { "status": "ok", "waktu": "2026-11-10T01:00:00Z", "asisten": true }
 ```
 `asisten` = API key DeepSeek atau model cadangan sudah terpasang di server (nilai kuncinya tidak pernah dikirim).
+`GET /sehat?lengkap=1` menambahkan `cadangan`: key AI gratis OpenRouter masih sah (`true`/`false`, `null` bila tidak dipasang).
 
 ### `POST /masuk`
 Permintaan:

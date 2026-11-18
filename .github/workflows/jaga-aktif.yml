@@ -1,0 +1,38 @@
+# Menjaga aplikasi, backend, dan chatbot Tanya Siku (AI gratis) tetap aktif & terpantau setiap hari.
+#
+# - Membuka aplikasi & backend Vercel (memastikan keduanya hidup).
+# - Memeriksa GET /api/sehat?lengkap=1: chatbot siap (asisten) dan key AI gratis OpenRouter masih sah (cadangan).
+#   Pemeriksaan key memakai endpoint info key OpenRouter, TIDAK memakai kuota pertanyaan siswa.
+#
+# Bila ada yang mati (mis. key OpenRouter kedaluwarsa/dihapus, atau Vercel bermasalah), langkahnya GAGAL dan
+# GitHub mengirim email pemberitahuan ke pemilik repository. Cara memperbaiki ada di docs/chatbot-tanya-siku.md.
+# Catatan: GitHub menonaktifkan jadwal otomatis bila repository tidak ada aktivitas 60 hari; aktifkan lagi lewat
+# tab Actions → "Jaga aplikasi & AI gratis tetap aktif" → Enable workflow.
+name: Jaga aplikasi & AI gratis tetap aktif
+
+on:
+  schedule:
+    - cron: '30 0 * * *' # setiap hari, pukul 07.30 WIB (00.30 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aplikasi bisa dibuka
+        run: |
+          kode=$(curl -sS -o /dev/null -w "%{http_code}" https://azkiah-safira-pythagoras.vercel.app/)
+          echo "Aplikasi: HTTP $kode"
+          [ "$kode" = "200" ] || { echo "::error::Aplikasi tidak bisa dibuka (HTTP $kode)."; exit 1; }
+
+      - name: Backend hidup, chatbot siap, & key AI gratis masih sah
+        run: |
+          jawaban=$(curl -sS --max-time 30 "https://pythagoras-api.vercel.app/api/sehat?lengkap=1")
+          echo "Backend: $jawaban"
+          echo "$jawaban" | grep -q '"status":"ok"' || { echo "::error::Backend tidak menjawab."; exit 1; }
+          echo "$jawaban" | grep -q '"asisten":true' || { echo "::error::Tanya Siku tidak aktif: API key di Vercel hilang."; exit 1; }
+          echo "$jawaban" | grep -q '"cadangan":true' || { echo "::error::Key AI gratis OpenRouter (CADANGAN_API_KEY) tidak sah lagi: buat key baru & ganti di Vercel."; exit 1; }
+          echo "Semua aktif ✅"

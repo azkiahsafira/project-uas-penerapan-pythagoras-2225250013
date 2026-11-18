@@ -84,6 +84,18 @@ uji coba saldo akun peneliti masih kosong (DeepSeek membalas *402 Insufficient B
 Rancangan pedagogis (prompt RMT, petunjuk bertingkat, penjaga jawaban akhir, pembatas, pencatatan) **sama persis** untuk
 kedua penyedia.
 
+### Persetujuan dosen & menjaga AI gratis tetap aktif
+- Dosen pengampu menyetujui pemakaian model AI gratis (November 2026), jadi model cadangan OpenRouter **dipertahankan**
+  sebagai penjawab Tanya Siku selama saldo DeepSeek kosong.
+- Workflow [`.github/workflows/jaga-aktif.yml`](../.github/workflows/jaga-aktif.yml) memeriksa **setiap hari**: aplikasi
+  bisa dibuka, backend hidup, chatbot siap, dan key OpenRouter masih sah (`GET /api/sehat?lengkap=1`, tanpa memakai kuota).
+  Bila gagal, GitHub mengirim email ke pemilik repository.
+- Workflow [`supabase-aktif.yml`](../.github/workflows/supabase-aktif.yml) menyapa Supabase setiap 3 hari agar proyek
+  gratis tidak dijeda.
+- Key OpenRouter yang dipakai berlaku sampai **Mei 2027**; sebelum itu buat key baru dan ganti `CADANGAN_API_KEY` di Vercel.
+- Batas paket gratis OpenRouter ±50 pertanyaan per hari per akun (tidak bisa diakali); bila sering habis, isi saldo
+  DeepSeek agar DeepSeek kembali menjadi penjawab utama.
+
 ## 6. Data untuk penelitian
 
 Setiap giliran dicatat di tabel `aktivitas` (Supabase) dengan `jenis = 'asisten'`:
