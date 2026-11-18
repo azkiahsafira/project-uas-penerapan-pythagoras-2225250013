@@ -2,6 +2,15 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.27] · 19 November 2026 — Tata letak HP: header ringkas & menu bawah
+- HP: header lebih ringkas (681 → 526 px; kalimat pembuka disembunyikan, judul & panggung lebih rapat) dan menu menjadi
+  **bilah bawah** seperti aplikasi HP yang selalu terlihat. Tombol Musik & Tanya Siku berupa ikon bulat di atas bilah menu,
+  sehingga tidak lagi menutupi menu.
+- Bebek berjalan di belakang isi halaman, tidak lagi menutupi tombol.
+- Area kerja (langkah hitung, gambar segitiga, soal, tes, cek prasyarat) agak padat (± 84%) agar mudah dibaca; kartu
+  ringkasan seperti Sesi 1–3 tetap bening. Tablet & laptop tidak berubah selain itu.
+- Versi cache PWA dinaikkan (`pythagoras-v12`).
+
 ## [2.26] · 19 November 2026 — Kartu isi bening
 - Kartu sesi, prasyarat, kalkulator, latihan, dan tes kini bening seperti kaca (± 50%, blur tipis) sehingga latar 3D
   terlihat di baliknya; panel di bawah menu dihapus. Tulisan diberi bayangan putih tipis agar tetap terbaca.

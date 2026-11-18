@@ -8352,3 +8352,100 @@ main {
     animation: none;
   }
 }
+
+/* =========================================================================
+   Tata letak pilihan pengguna: header ringkas di HP ("A"), menu jadi bilah bawah di HP ("B"),
+   bebek berjalan di belakang kartu, dan area kerja agak padat agar langkah hitung & gambar segitiga mudah dibaca.
+   ========================================================================= */
+
+/* bebek berjalan di BELAKANG isi halaman sehingga tidak pernah menutupi tombol */
+.pejalan {
+  z-index: 0;
+}
+
+main > .halaman {
+  position: relative;
+}
+
+/* area kerja (langkah hitung, gambar segitiga, soal, tes, cek prasyarat) agak padat; kartu ringkasan tetap bening */
+.hero.kawaii ~ .halaman .kartu:not(.sesi):not(.kartu-prasyarat):not(article) {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 84%, transparent), color-mix(in srgb, #fff0f7 80%, transparent));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+@media (max-width: 640px) {
+  /* A · header ringkas: judul sedikit lebih kecil, kalimat pembuka disembunyikan, panggung lebih rapat */
+  .hero.kawaii {
+    padding-top: 34px;
+  }
+
+  .hero.kawaii .hero-teks > p {
+    display: none;
+  }
+
+  .hero.kawaii .petepi {
+    font-size: 3.2rem;
+  }
+
+  .hero.kawaii .petepi-arti {
+    font-size: 0.98rem;
+  }
+
+  .hero.kawaii .petepi-makna {
+    font-size: 0.86rem;
+  }
+
+  .panggung.kawaii .panggung-isi {
+    height: 300px;
+  }
+
+  .panggung.kawaii .gelembung.oleh-siku,
+  .panggung.kawaii .gelembung.oleh-raka,
+  .panggung.kawaii .gelembung.oleh-nisa {
+    bottom: 254px;
+  }
+
+  /* B · menu menjadi bilah bawah seperti aplikasi HP, selalu terlihat */
+  .hero.kawaii ~ .menu {
+    position: fixed;
+    top: auto;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    z-index: 44;
+    margin: 0;
+    border: 2px solid #ffc6e0;
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    box-shadow: 0 -4px 18px rgba(107, 90, 142, 0.2);
+  }
+
+  .hero.kawaii ~ .petunjuk-geser {
+    display: none;
+  }
+
+  /* ruang kosong di bawah halaman agar isi terakhir tidak tertutup bilah menu */
+  main:has(.hero.kawaii) {
+    padding-bottom: 96px;
+  }
+
+  /* tombol musik & Tanya Siku berupa ikon bulat di atas bilah menu */
+  .tombol-musik {
+    bottom: 96px;
+  }
+
+  .tanya-siku-tombol {
+    right: 12px;
+    bottom: 152px;
+    padding: 4px;
+  }
+
+  .tanya-siku-tombol span {
+    display: none;
+  }
+
+  /* bebek berjalan tepat di atas bilah menu */
+  .pejalan {
+    bottom: 92px;
+  }
+}
