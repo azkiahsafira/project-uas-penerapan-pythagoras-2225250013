@@ -34,12 +34,12 @@
   --bayangan: 0 14px 34px -14px rgba(90, 150, 220, 0.4);
   --bayangan-kecil: 0 4px 14px -6px rgba(90, 150, 220, 0.3);
   color-scheme: light dark;
-  /* tulisan lucu: Sniglet (bulat & empuk) untuk teks, Mochiy Pop One (gaya kawaii) untuk judul & tombol */
-  --font-lucu: 'Sniglet', 'Fredoka', 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
-  --font-judul: 'Mochiy Pop One', 'Sniglet', 'Fredoka', system-ui, sans-serif;
+  /* tulisan lucu gaya permen karet: Itim untuk teks, Bubblegum Sans untuk judul & tombol */
+  --font-lucu: 'Itim', 'Fredoka', 'Plus Jakarta Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-judul: 'Bubblegum Sans', 'Itim', 'Fredoka', system-ui, sans-serif;
   font-family: var(--font-lucu);
-  /* jangan menebalkan palsu huruf yang hanya punya satu ketebalan (Mochiy Pop One) */
-  font-synthesis: none;
+  /* Itim hanya punya satu ketebalan: teks tebal boleh ditebalkan browser, tetapi tidak dimiringkan palsu */
+  font-synthesis: weight;
   line-height: 1.55;
 }
 

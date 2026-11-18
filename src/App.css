@@ -6476,17 +6476,27 @@ main > * {
 }
 
 /* judul PeTePi: suku kata berwarna-warni bertepi putih yang memantul bergantian, kepanjangan di bawahnya */
+/* di header kawaii semua teks judul berada di tengah */
+.hero.kawaii .hero-teks {
+  align-self: center;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .judul-petepi {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 4px;
 }
 
 .petepi {
   display: flex;
-  gap: 2px;
+  justify-content: center;
+  gap: 4px;
   font-family: var(--font-judul);
-  font-size: clamp(2.6rem, 9vw, 4rem);
+  font-size: clamp(4rem, 17vw, 7rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -6527,13 +6537,13 @@ main > * {
 }
 
 .petepi-arti {
-  font-size: clamp(1rem, 2.8vw, 1.35rem);
+  font-size: clamp(1.1rem, 3.4vw, 1.6rem);
   font-weight: 600;
   color: #6b4fa0;
 }
 
 .petepi-makna {
-  font-size: clamp(0.85rem, 2.2vw, 1.02rem);
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
   color: #8a5aa8;
 }
 
@@ -6821,7 +6831,7 @@ main > * {
 }
 
 .kw-teks {
-  font: 800 13px 'Sniglet', 'Fredoka', system-ui, sans-serif;
+  font: 400 14px 'Bubblegum Sans', 'Itim', 'Fredoka', system-ui, sans-serif;
   text-anchor: middle;
 }
 

@@ -2,6 +2,13 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.19] · 18 November 2026 — Font permen karet, Raka & Nisa berhoodie hewan
+- Font diganti: **Bubblegum Sans** untuk judul & tombol, **Itim** untuk teks.
+- Judul PELITA dipindah ke tengah header dan diperbesar, beserta kepanjangan & artinya.
+- Raka kini memakai hoodie dinosaurus biru muda (duri pink & ekor kecil); Nisa memakai hoodie kucing pink muda
+  bertelinga dengan kerudung putih di dalam tudungnya. Animasi melambai, berkedip, dan melirik tetap sama.
+- Versi cache PWA dinaikkan (`pythagoras-v6`) agar HP memuat tampilan baru.
+
 ## [2.18] · 18 November 2026 — Tema kawaii "PELITA" (biru muda & pink muda)
 - Judul aplikasi menjadi **PELITA** (PEnerapan · Learning · pItagoras · Teorema · Azkiah Safira), artinya ditulis di bawahnya:
   "Pelita = penerang belajar Teorema Pythagoras". Judul tab & nama aplikasi di HP ikut berganti.

@@ -62,6 +62,7 @@ export const SORAK = [
 export const SAPA = {
   siswa: [
     'Halo! Aku Raka, kita belajar bareng ya!',
+    'Hoodie dino-ku keren, kan? Raaawr! 🦖',
     'Aku juga lagi belajar Pythagoras, lho!',
     'Ayo kita jadi juara kelas! 🏆',
     'Tadi aku sarapan dulu biar semangat! 🍳',
@@ -74,6 +75,7 @@ export const SAPA = {
   ],
   siswi: [
     'Hai! Aku Nisa. Semangat belajarnya ya! 💪',
+    'Lihat, hoodie kucingku ada telinganya! 🐱',
     'Aku suka soal cerita, seru banget!',
     'Yuk kerjakan bareng-bareng! 📝',
     'Baca soalnya pelan-pelan ya 📖',

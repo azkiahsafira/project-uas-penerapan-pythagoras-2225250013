@@ -185,7 +185,7 @@ function bangunAdegan(THREE, M, kanvas, setUcap) {
       g.strokeStyle = '#6b5a8e'
       g.stroke()
       g.fillStyle = warnaTeks
-      g.font = '44px "Mochiy Pop One", "Sniglet", system-ui, sans-serif'
+      g.font = '50px "Bubblegum Sans", "Itim", system-ui, sans-serif'
       g.textAlign = 'center'
       g.textBaseline = 'middle'
       g.fillText(teks, 64, 40)
