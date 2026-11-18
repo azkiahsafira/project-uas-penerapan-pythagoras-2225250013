@@ -4,6 +4,8 @@
 // - LatarHeaderKawaii: langit biru muda bertabur titik pink, hati, bintang, & pita yang melayang
 // - TemanKawaii: keempat sahabat berdiri di awan; bisa diklik → melompat & berbicara tentang Pythagoras
 // - LantaiAwan: hamparan awan empuk dengan bunga & bintang kecil
+// - BenderaPesta, PelangiAwan, PanggungAwan: adegan "panggung pesta" (bendera warna-warni, pelangi yang ujungnya
+//   awan berwajah lucu, panggung awan tempat keempat sahabat berdiri, dan papan "Ayo belajar bareng!")
 // Semuanya hiasan (kecuali tombol karakter) dan ikut berhenti saat animasi dimatikan / saat tes.
 import { useEffect, useState } from 'react'
 
@@ -61,7 +63,7 @@ export function LatarHeaderKawaii() {
   return (
     <div className="latar latar-kawaii" aria-hidden="true">
       <div className="kawaii-titik" />
-      <div className="kawaii-pelangi" />
+      <BenderaPesta />
       {[1, 2, 3].map((n) => (
         <span key={n} className={`kawaii-awan-arak a${n}`} />
       ))}
@@ -341,6 +343,97 @@ export function LantaiAwan() {
         <circle cx="107.5" cy="22" r="1.8" fill={GARIS} />
         <path d="M101 27 Q104 30 107 27" fill="none" stroke={GARIS} strokeWidth="1.4" strokeLinecap="round" />
       </svg>
+    </>
+  )
+}
+
+const WARNA_BENDERA = ['#ff8fc4', '#7cc3ff', '#ffe27a', '#c4b5fd', '#b8f0d0']
+
+// untaian bendera segitiga di tepi atas header, melengkung ke bawah di tengah & bergoyang pelan
+function BenderaPesta() {
+  return (
+    <svg className="kawaii-bendera" viewBox="0 0 900 56" preserveAspectRatio="none">
+      <path d="M0 6 Q450 46 900 6" fill="none" stroke={GARIS} strokeWidth="2.2" />
+      {Array.from({ length: 17 }, (_, i) => {
+        const x = 25 + i * 53
+        const y = 6 + 20 * (1 - ((x - 450) / 450) ** 2)
+        return (
+          <path
+            key={x}
+            className="bendera-satu"
+            style={{ animationDelay: `${(i % 5) * -0.4}s` }}
+            d={`M${x - 15} ${y} L${x + 15} ${y} L${x} ${y + 26} Z`}
+            fill={WARNA_BENDERA[i % WARNA_BENDERA.length]}
+            stroke={GARIS}
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
+const WARNA_PELANGI = ['#ff9fcb', '#ffd59a', '#fff1a8', '#b8f0d0', '#9fd6ff', '#cdb8ff']
+
+// awan berwajah di ujung pelangi (mata berkedip, pipi merona)
+function AwanWajah({ x, y }) {
+  return (
+    <g className="awan-wajah" style={{ transformOrigin: `${x}px ${y}px` }}>
+      {[
+        [-34, 0, 26],
+        [0, -14, 34],
+        [34, 0, 26],
+      ].map(([dx, dy, r]) => (
+        <circle key={dx} cx={x + dx} cy={y + dy} r={r} fill="#fff" stroke={GARIS} strokeWidth="3" />
+      ))}
+      {[
+        [-34, 0, 24],
+        [0, -14, 32],
+        [34, 0, 24],
+      ].map(([dx, dy, r]) => (
+        <circle key={`i${dx}`} cx={x + dx} cy={y + dy} r={r} className="awan-isi" />
+      ))}
+      <g className="awan-mata">
+        <ellipse cx={x - 9} cy={y - 14} rx="3.4" ry="4.4" fill="#3b2f55" />
+        <ellipse cx={x + 9} cy={y - 14} rx="3.4" ry="4.4" fill="#3b2f55" />
+      </g>
+      <ellipse cx={x - 19} cy={y - 5} rx="5" ry="3" fill={PIPI} />
+      <ellipse cx={x + 19} cy={y - 5} rx="5" ry="3" fill={PIPI} />
+      <path d={`M${x - 5} ${y - 6} q5 5 10 0`} fill="none" stroke="#3b2f55" strokeWidth="2.4" strokeLinecap="round" />
+    </g>
+  )
+}
+
+// pelangi pastel enam warna yang kedua ujungnya awan berwajah lucu, di belakang panggung para sahabat
+export function PelangiAwan() {
+  const lebar = 600
+  const tebal = 20
+  const r0 = lebar / 2 - 30
+  const tinggi = r0 + 30
+  const busur = (r) => `M${lebar / 2 - r} ${tinggi} A${r} ${r} 0 0 1 ${lebar / 2 + r} ${tinggi}`
+  return (
+    <svg className="pelangi-awan" viewBox={`0 0 ${lebar} ${tinggi}`} aria-hidden="true">
+      <g className="pelangi-busur">
+        {WARNA_PELANGI.map((w, i) => (
+          <path key={w} d={busur(r0 - i * tebal)} fill="none" stroke={w} strokeWidth={tebal + 0.5} />
+        ))}
+        <path d={busur(r0 + tebal / 2)} fill="none" stroke={GARIS} strokeWidth="3" />
+      </g>
+      <AwanWajah x={tebal * 2.6} y={tinggi - 18} />
+      <AwanWajah x={lebar - tebal * 2.6} y={tinggi - 18} />
+    </svg>
+  )
+}
+
+// panggung awan untuk keempat sahabat & papan ajakan di depannya
+export function PanggungAwan() {
+  return (
+    <>
+      <div className="panggung-awan" aria-hidden="true" />
+      <p className="papan-ajak" aria-hidden="true">
+        Ayo belajar bareng! 💖
+      </p>
     </>
   )
 }

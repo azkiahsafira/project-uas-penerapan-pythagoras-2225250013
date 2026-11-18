@@ -2,6 +2,15 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.20] · 18 November 2026 — Adegan "panggung pesta" & PDF bertema PELITA
+- Header: untaian bendera warna-warni yang berkibar, pelangi pastel yang kedua ujungnya awan berwajah lucu, keempat
+  sahabat (Kuadra, Lila, Hipo, Akar) berdiri di panggung awan, dan papan "Ayo belajar bareng! 💖".
+- Siku diperbesar menjadi tokoh utama; di HP panggung awan para sahabat melayang di atas pelangi agar tidak tertutup
+  Raka & Nisa.
+- Lembar tes & rubrik Mathematical Literacy (PDF) memakai tema PELITA: font Bubblegum Sans & Itim, warna biru muda &
+  pink muda, Siku & Kuadra di kepala lembar. Isi soal, tahap, dan skor tidak berubah.
+- Versi cache PWA dinaikkan (`pythagoras-v7`).
+
 ## [2.19] · 18 November 2026 — Font permen karet, Raka & Nisa berhoodie hewan
 - Font diganti: **Bubblegum Sans** untuk judul & tombol, **Itim** untuk teks.
 - Judul PELITA dipindah ke tengah header dan diperbesar, beserta kepanjangan & artinya.

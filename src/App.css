@@ -4777,7 +4777,7 @@ tbody tr:last-child td {
 }
 
 .panggung.sekolah .tombol-siswa {
-  left: max(118px, calc(50% - 350px));
+  left: max(160px, calc(50% - 305px));
 }
 
 .panggung.sekolah .tombol-siswi {
@@ -4787,7 +4787,8 @@ tbody tr:last-child td {
 
 .panggung.sekolah .tombol-siku .maskot {
   position: static;
-  width: 130px;
+  /* Siku dibuat lebih besar agar menjadi tokoh utama di header */
+  width: 170px;
   height: auto;
 }
 
@@ -4839,11 +4840,11 @@ tbody tr:last-child td {
   }
 
   .panggung.sekolah .tombol-siku .maskot {
-    width: 110px;
+    width: 144px;
   }
 
   .panggung.sekolah .tombol-siswa {
-    left: 104px;
+    left: 136px;
   }
 
   .panggung.sekolah .petunjuk-klik {
@@ -4886,7 +4887,7 @@ tbody tr:last-child td {
   }
 
   .panggung.sekolah .tombol-siku .maskot {
-    width: 86px;
+    width: 112px;
   }
 
   .panggung.sekolah .tombol-siku {
@@ -4894,7 +4895,7 @@ tbody tr:last-child td {
   }
 
   .panggung.sekolah .tombol-siswa {
-    left: 38px;
+    left: 62px;
   }
 
   .panggung.sekolah .tombol-siswi {
@@ -4932,7 +4933,7 @@ tbody tr:last-child td {
 
 .panggung.sekolah .gelembung.oleh-siku {
   left: max(6px, calc(50% - 470px));
-  bottom: 150px; /* tinggi Siku + jarak */
+  bottom: 190px; /* tinggi Siku (diperbesar) + jarak */
   max-width: 175px;
 }
 
@@ -5008,6 +5009,13 @@ tbody tr:last-child td {
   .panggung.sekolah .gelembung.oleh-nisa {
     top: auto;
     bottom: 184px; /* tepat di atas kepala Raka & Nisa */
+  }
+
+  /* tema kawaii: para sahabat berdiri di panggung awan melayang, balon kata di atasnya */
+  .panggung.kawaii .gelembung.oleh-siku,
+  .panggung.kawaii .gelembung.oleh-raka,
+  .panggung.kawaii .gelembung.oleh-nisa {
+    bottom: 262px;
     max-width: min(250px, calc(100% - 24px));
   }
 
@@ -6598,7 +6606,134 @@ main > * {
   }
 }
 
-/* pelangi cerah di belakang para sahabat */
+/* untaian bendera pesta di tepi atas header (adegan "panggung pesta") */
+.hero.kawaii {
+  padding-top: 46px;
+}
+
+.kawaii-bendera {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  overflow: visible;
+}
+
+.bendera-satu {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: bendera-kibar 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes bendera-kibar {
+  from {
+    rotate: -7deg;
+  }
+  to {
+    rotate: 7deg;
+  }
+}
+
+/* pelangi berujung awan berwajah, di belakang panggung para sahabat */
+.panggung.kawaii .pelangi-awan {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  z-index: 0;
+  width: min(640px, 70%);
+  height: auto;
+  translate: -50% 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.pelangi-busur {
+  animation: kawaii-pelangi 4s ease-in-out infinite alternate;
+}
+
+.awan-isi {
+  fill: #ffffff;
+}
+
+.awan-wajah {
+  animation: awan-angguk 3s ease-in-out infinite alternate;
+}
+
+.awan-wajah + .awan-wajah {
+  animation-delay: -1.5s;
+}
+
+@keyframes awan-angguk {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-5px) scale(1.04, 0.97);
+  }
+}
+
+.awan-mata {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: maskot-kedip 4.5s infinite;
+}
+
+/* panggung awan tempat keempat sahabat berdiri */
+.panggung.kawaii .panggung-awan {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  z-index: 1;
+  width: 420px;
+  height: 58px;
+  translate: -50% 0;
+  border: 3px solid #ffc6e0;
+  border-radius: 50px 50px 18px 18px;
+  background:
+    radial-gradient(circle at 20% 30%, #fff 0 10px, transparent 11px),
+    radial-gradient(circle at 80% 30%, #fff 0 10px, transparent 11px),
+    linear-gradient(#ffffff, #fff0f7);
+  box-shadow: 0 6px 0 #ffd6ea;
+}
+
+/* papan ajakan di depan panggung */
+.panggung.kawaii .papan-ajak {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  z-index: 4;
+  margin: 0;
+  translate: -50% 0;
+  padding: 3px 16px;
+  border: 3px solid #ff8fc4;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 0 #ffc6e0;
+  color: #d9468f;
+  font-family: var(--font-judul);
+  font-size: 1.2rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: papan-ayun 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes papan-ayun {
+  from {
+    rotate: -2deg;
+  }
+  to {
+    rotate: 2deg;
+  }
+}
+
+/* petunjuk klik pindah ke atas panggung agar tidak menumpuk dengan papan ajakan */
+.panggung.kawaii .petunjuk-klik {
+  top: 4px;
+  bottom: auto;
+}
+
+/* (lama) pelangi gradasi di latar header, kini diganti .pelangi-awan */
 .kawaii-pelangi {
   position: absolute;
   left: 50%;
@@ -6743,12 +6878,12 @@ main > * {
 .panggung.kawaii .teman-kawaii {
   position: absolute;
   left: 50%;
-  bottom: 26px;
-  z-index: 1;
+  bottom: 74px;
+  z-index: 2;
   display: flex;
   align-items: flex-end;
   gap: 0;
-  width: 430px;
+  width: 400px;
   transform: translateX(-50%);
 }
 
@@ -6944,14 +7079,55 @@ main > * {
 
 @media (max-width: 980px) {
   .panggung.kawaii .teman-kawaii {
-    width: 360px;
+    width: 330px;
+  }
+
+  .panggung.kawaii .panggung-awan {
+    width: 350px;
+  }
+
+  .panggung.kawaii .pelangi-awan {
+    width: min(560px, 74%);
   }
 }
 
 @media (max-width: 640px) {
+  .hero.kawaii {
+    padding-top: 40px;
+  }
+
+  .kawaii-bendera {
+    height: 38px;
+  }
+
+  /* panggung lebih tinggi agar balon kata Siku tidak menutupi para sahabat */
+  .panggung.kawaii .panggung-isi {
+    height: 356px;
+  }
+
+  /* HP: panggung awan melayang di atas pelangi agar para sahabat tidak tertutup Raka & Nisa */
   .panggung.kawaii .teman-kawaii {
-    width: 190px;
-    bottom: 30px;
+    width: 200px;
+    bottom: 166px;
+  }
+
+  .panggung.kawaii .panggung-awan {
+    width: 214px;
+    height: 30px;
+    bottom: 146px;
+    border-radius: 30px;
+    animation: awan-angguk 3s ease-in-out infinite alternate;
+  }
+
+  .panggung.kawaii .pelangi-awan {
+    width: 96%;
+    bottom: 34px;
+  }
+
+  .panggung.kawaii .papan-ajak {
+    font-size: 0.92rem;
+    padding: 2px 10px;
+    bottom: 6px;
   }
 
   .teman-nama {
@@ -7015,6 +7191,16 @@ main > * {
   :root:not([data-theme='light']) .kawaii-awan-arak {
     background: #b7b0e6;
     opacity: 0.5;
+  }
+
+  :root:not([data-theme='light']) .awan-isi {
+    fill: #efeaff;
+  }
+
+  :root:not([data-theme='light']) .panggung.kawaii .panggung-awan {
+    border-color: #b7a8ee;
+    background: linear-gradient(#a596dc, #7d6fbf);
+    box-shadow: 0 6px 0 #5d4f94;
   }
 
   :root:not([data-theme='light']) .panggung.kawaii .lantai-awan {

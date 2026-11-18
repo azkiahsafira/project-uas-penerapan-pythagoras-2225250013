@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Konfeti, Pelangi } from './Hiasan.jsx'
-import { LantaiAwan, TemanKawaii } from './Kawaii.jsx'
+import { LantaiAwan, PanggungAwan, PelangiAwan, TemanKawaii } from './Kawaii.jsx'
 import { SAPA, SAPAAN, SORAK, salamWaktu } from './kalimat.js'
 import Maskot from './Maskot.jsx'
 import Prisma3D from './Prisma3D.jsx'
@@ -18,7 +18,8 @@ const GANTI_SAPAAN = 7000 // ms sebelum balon kata berganti ke kalimat berikutny
 // - Siku, Raka, dan Nisa bisa diklik, dan bola mata mereka mengikuti kursor/jari.
 // - Bila halaman lama tidak disentuh, Siku tertidur (Zzz) sampai ada gerakan.
 // - Saat `diam` (tes berlangsung) semua animasi berhenti dan karakter tidak bisa diklik.
-// - `sekolah`: karakter berdiri di lantai awan bersama empat sahabat kawaii (a², b², c², √) yang bisa diklik,
+// - `sekolah`: adegan panggung pesta: pelangi berujung awan berwajah, empat sahabat kawaii (a², b², c², √) yang
+//   bisa diklik berdiri di panggung awan, Siku/Raka/Nisa di depan, dan papan "Ayo belajar bareng!";
 //   selaras dengan latar 3D sahabat kawaii. Tanpa `sekolah` (saat tes) hanya pelangi & prisma.
 export default function Panggung({ halaman, diam, sekolah = false }) {
   const [pesan, setPesan] = useState(null) // { teks, siapa, n }
@@ -135,7 +136,9 @@ export default function Panggung({ halaman, diam, sekolah = false }) {
         <Prisma3D />
         {sekolah && (
           <>
+            <PelangiAwan />
             <LantaiAwan />
+            <PanggungAwan />
             <TemanKawaii diam={diam} />
           </>
         )}

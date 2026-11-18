@@ -8,7 +8,7 @@
 // - Permintaan ke Supabase (database) TIDAK di-cache. Bila offline, hasil tes
 //   tetap tersimpan di perangkat dan dikirim ulang otomatis oleh aplikasi.
 
-const VERSI = 'pythagoras-v6'
+const VERSI = 'pythagoras-v7'
 const INTI = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './favicon.svg']
 
 self.addEventListener('install', (event) => {
