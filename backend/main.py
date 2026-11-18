@@ -26,12 +26,12 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 
 try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
-    from .asisten import AsistenGagal, tanya_siku
+    from .asisten import AsistenGagal, daftar_penyedia, tanya_siku
     from .basisdata import buat_penyimpanan
     from .penilaian import nilai_leppink, nilai_tes
     from .sesi import buat_token, periksa_token
 except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
-    from asisten import AsistenGagal, tanya_siku
+    from asisten import AsistenGagal, daftar_penyedia, tanya_siku
     from basisdata import buat_penyimpanan
     from penilaian import nilai_leppink, nilai_tes
     from sesi import buat_token, periksa_token
@@ -134,7 +134,7 @@ def sehat():
     """Cek server hidup; dipanggil aplikasi saat dibuka untuk membangunkan server gratis."""
     # `asisten`: apakah chatbot Tanya Siku siap (API key DeepSeek terpasang); nilai kuncinya tidak pernah dikirim
     return {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "asisten": bool(os.environ.get("DEEPSEEK_API_KEY", "").strip())}
+            "asisten": bool(daftar_penyedia())}
 
 
 class Masuk(BaseModel):
@@ -251,28 +251,37 @@ def asisten(data: TanyaAsisten, siswa=Depends(siswa_masuk)):
     """Siku membimbing langkah demi langkah tanpa memberi jawaban akhir. API key hanya ada di server."""
     if data.halaman == "tes":
         raise Galat(403, "sedang_tes", "Saat tes, Siku istirahat dulu ya. Kerjakan sendiri, kamu pasti bisa! 💪")
-    kunci = os.environ.get("DEEPSEEK_API_KEY", "").strip()
-    if not kunci:
+    penyedia = daftar_penyedia()
+    if not penyedia:
         raise Galat(503, "asisten_belum_aktif", "Tanya Siku belum diaktifkan oleh peneliti. Coba lagi nanti ya.")
     batasi_tanya(siswa["kode"])
     pertanyaan = data.pertanyaan.strip()
-    try:
-        hasil = tanya_siku(pertanyaan, [g.model_dump() for g in data.riwayat], data.halaman, data.tingkat, data.tahap, kunci)
-    except AsistenGagal as e:
-        # kode alasan ditampilkan singkat agar peneliti tahu penyebabnya (mis. saldo_habis, kunci_salah)
-        raise Galat(502, "asisten_gagal", f"Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya. (kode: {e.alasan})") from None
+    # DeepSeek dulu; bila gagal (mis. saldo habis) dan model cadangan terpasang, cadangan yang menjawab
+    gagal = []
+    for nama, kunci in penyedia:
+        try:
+            hasil = tanya_siku(pertanyaan, [g.model_dump() for g in data.riwayat], data.halaman, data.tingkat, data.tahap,
+                               kunci, penyedia=nama)
+            break
+        except AsistenGagal as e:
+            gagal.append(f"{nama}:{e.alasan}")
+    else:
+        # kode alasan ditampilkan singkat agar peneliti tahu penyebabnya (mis. deepseek:saldo_habis)
+        raise Galat(502, "asisten_gagal", f"Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya. (kode: {', '.join(gagal)})")
 
     # catat untuk analisis penelitian (tahap RMT & tingkat bantuan); kegagalan mencatat tidak mengganggu siswa
     sekarang = datetime.now(timezone.utc).isoformat(timespec="seconds")
     baris = {**identitas_baris(siswa), "id": f"asisten-{siswa['kode']}-{time.time_ns()}", "jenis": "asisten", "sesi": 0,
              "langkah": None, "judul": "Tanya Siku", "mulai": sekarang, "selesai": sekarang, "durasi_detik": 0, "salah": 0,
              "hasil": hasil["tahap"], "dibacakan": 0, "petunjuk": data.tingkat,
-             "catatan": f"{data.halaman} | disaring={'ya' if hasil['disaring'] else 'tidak'} | tanya: {pertanyaan[:300]}"}
+             "catatan": f"{data.halaman} | model={nama}:{hasil['model']} | disaring={'ya' if hasil['disaring'] else 'tidak'}"
+                        f" | tanya: {pertanyaan[:250]}"}
     try:
         db.tambah("aktivitas", [baris])
     except Exception:  # noqa: BLE001 - mis. tabel belum diperbarui (jenis 'asisten'); balasan tetap dikirim
         pass
-    return {"balasan": hasil["balasan"], "tahap": hasil["tahap"], "tingkat": data.tingkat}
+    # `penyedia` & `model`: siapa yang SEBENARNYA menjawab, ditampilkan apa adanya di aplikasi
+    return {"balasan": hasil["balasan"], "tahap": hasil["tahap"], "tingkat": data.tingkat, "penyedia": nama, "model": hasil["model"]}
 
 
 # Soal latihan berjenjang (konten.md §6); tripel agar hasil bilangan bulat

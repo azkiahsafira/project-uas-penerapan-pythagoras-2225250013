@@ -7489,6 +7489,7 @@ main {
 
 .ts-tingkat {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   margin: 6px 12px 0;
@@ -7509,6 +7510,13 @@ main {
 
 .ts-tingkat i.isi {
   background: var(--accent-teks);
+}
+
+.ts-model {
+  margin-left: auto;
+  padding-left: 8px;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .ts-tulis {

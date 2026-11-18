@@ -29,6 +29,7 @@ export default function TanyaSiku({ halaman }) {
   const [pesan, setPesan] = useState([]) // [{ peran: 'user' | 'assistant', isi }]
   const [isian, setIsian] = useState('')
   const [tahap, setTahap] = useState('pahami')
+  const [penjawab, setPenjawab] = useState('') // model yang SEBENARNYA menjawab (DeepSeek / cadangan gratis), ditampilkan jujur
   const [tingkat, setTingkat] = useState(1)
   const [memuat, setMemuat] = useState(false)
   const [galat, setGalat] = useState('')
@@ -73,6 +74,7 @@ export default function TanyaSiku({ halaman }) {
       const h = await tanyaAsisten({ pertanyaan: teks, riwayat, halaman, tingkat: tingkatKirim, tahap })
       setPesan((p) => [...p, { peran: 'assistant', isi: h.balasan }])
       setTahap(h.tahap)
+      if (h.model) setPenjawab(h.penyedia === 'cadangan' ? `model cadangan gratis (${h.model})` : `DeepSeek (${h.model})`)
     } catch (e) {
       if (e.status === 401) setSudahMasuk(false)
       setGalat(e.message)
@@ -195,6 +197,7 @@ export default function TanyaSiku({ halaman }) {
             {[1, 2, 3, 4].map((n) => (
               <i key={n} className={n <= tingkat ? 'isi' : ''} />
             ))}
+            {penjawab && <span className="ts-model">Dijawab oleh: {penjawab}</span>}
           </p>
 
           <form

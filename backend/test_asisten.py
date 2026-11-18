@@ -23,6 +23,7 @@ def bersihkan(monkeypatch):
     main._percobaan.clear()
     main._tanya.clear()
     monkeypatch.setenv("DEEPSEEK_API_KEY", "kunci-uji-palsu")
+    monkeypatch.delenv("CADANGAN_API_KEY", raising=False)
 
 
 def masuk(kode="8A-01"):
@@ -93,7 +94,8 @@ def test_asisten_membalas_dan_mencatat_aktivitas(monkeypatch):
     r = klien.post("/api/asisten", headers=masuk(),
                    json={"pertanyaan": "Tangga 6 m dan dinding 8 m, aku bingung", "halaman": "latihan", "tingkat": 2})
     assert r.status_code == 200, r.text
-    assert r.json() == {"balasan": "Apa saja yang diketahui di soal itu?", "tahap": "pahami", "tingkat": 2}
+    assert r.json() == {"balasan": "Apa saja yang diketahui di soal itu?", "tahap": "pahami", "tingkat": 2,
+                        "penyedia": "deepseek", "model": "deepseek-flash"}
     sistem = tiruan.terkirim[0][0]
     assert sistem["role"] == "system" and "2 dari 4" in sistem["content"]
     (catat,) = main.db.semua("aktivitas")
@@ -173,7 +175,7 @@ def test_panggil_deepseek_format_permintaan_dan_ulang_tanpa_mode_json(monkeypatc
         return _Jawaban(200, {"choices": [{"message": {"content": "Apa yang diketahui?"}}]})
 
     monkeypatch.setattr(asisten.httpx, "post", post)
-    assert asisten.panggil_deepseek([{"role": "user", "content": "halo"}], "kunci-x") == "Apa yang diketahui?"
+    assert asisten.panggil_deepseek([{"role": "user", "content": "halo"}], "kunci-x") == ("Apa yang diketahui?", "deepseek-flash")
     url, otorisasi, isi = terkirim[0]
     assert url == "https://api.deepseek.com/chat/completions" and otorisasi == "Bearer kunci-x"
     assert isi["model"] == "deepseek-flash" and isi["response_format"] == {"type": "json_object"}
@@ -184,4 +186,40 @@ def test_saldo_habis_terbaca_sebagai_kode_alasan(monkeypatch):
     """DeepSeek membalas 402 (saldo habis): siswa melihat pesan ramah + kode alasan untuk peneliti."""
     monkeypatch.setattr(asisten.httpx, "post", lambda url, headers, json, timeout: _Jawaban(402, {"error": {"message": "Insufficient Balance"}}))
     r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "halo"})
-    assert r.status_code == 502 and "kode: saldo_habis" in r.json()["pesan"]
+    assert r.status_code == 502 and "kode: deepseek:saldo_habis" in r.json()["pesan"]
+
+
+# --- model cadangan gratis (OpenRouter) ----------------------------------------------------
+def test_cadangan_menjawab_bila_deepseek_saldo_habis_dan_modelnya_dilaporkan_jujur(monkeypatch):
+    monkeypatch.setenv("CADANGAN_API_KEY", "kunci-cadangan-palsu")
+    terkirim = []
+
+    def post(url, headers, json, timeout):
+        terkirim.append((url, headers["Authorization"], json["model"]))
+        if "deepseek.com" in url:
+            return _Jawaban(402, {"error": {"message": "Insufficient Balance"}})
+        isi = '```json\n{"tahap": "pahami", "balasan": "Apa yang ditanyakan soal itu?"}\n```'
+        return _Jawaban(200, {"model": "google/gemma-4-31b-it:free", "choices": [{"message": {"content": isi}}]})
+
+    monkeypatch.setattr(asisten.httpx, "post", post)
+    r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "bingung"})
+    assert r.status_code == 200, r.text
+    assert r.json()["balasan"] == "Apa yang ditanyakan soal itu?"
+    assert r.json()["penyedia"] == "cadangan" and r.json()["model"] == "google/gemma-4-31b-it:free"
+    assert terkirim[0][0] == "https://api.deepseek.com/chat/completions"
+    assert terkirim[1] == ("https://openrouter.ai/api/v1/chat/completions", "Bearer kunci-cadangan-palsu", "openrouter/free")
+    (catat,) = main.db.semua("aktivitas")
+    assert "model=cadangan:google/gemma-4-31b-it:free" in catat["catatan"]
+
+
+def test_semua_penyedia_gagal_kode_keduanya(monkeypatch):
+    monkeypatch.setenv("CADANGAN_API_KEY", "kunci-cadangan-palsu")
+    monkeypatch.setattr(asisten.httpx, "post", lambda url, headers, json, timeout: _Jawaban(402 if "deepseek" in url else 429))
+    r = klien.post("/api/asisten", headers=masuk(), json={"pertanyaan": "halo"})
+    assert r.status_code == 502 and "deepseek:saldo_habis, cadangan:sibuk" in r.json()["pesan"]
+
+
+def test_hanya_cadangan_tetap_aktif(monkeypatch):
+    monkeypatch.delenv("DEEPSEEK_API_KEY")
+    monkeypatch.setenv("CADANGAN_API_KEY", "kunci-cadangan-palsu")
+    assert klien.get("/api/sehat").json()["asisten"] is True

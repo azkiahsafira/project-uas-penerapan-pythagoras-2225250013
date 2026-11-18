@@ -5,6 +5,8 @@
 - Siku membimbing langkah demi langkah (tahap RMT: pahami → rencana → kerjakan → periksa) dengan petunjuk
   bertingkat, dan TIDAK memberi jawaban akhir. Selain lewat prompt, server memeriksa balasan: bila balasan
   memuat hasil akhir Pythagoras dari angka yang ditulis siswa, balasan diminta ulang / diganti petunjuk aman.
+- Model cadangan (opsional, `CADANGAN_API_KEY`): bila DeepSeek gagal (mis. saldo habis), pertanyaan dijawab model
+  gratis lewat OpenRouter. Nama model yang SEBENARNYA menjawab selalu dikirim ke aplikasi & dicatat (transparan).
 """
 import itertools
 import json
@@ -18,6 +20,18 @@ URL_DEEPSEEK = os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com").r
 # deepseek-flash (DeepSeek V4.1 Flash): model DeepSeek terbaru yang paling hemat; nama lama "deepseek-chat" sudah dipensiunkan.
 # Bisa diganti lewat DEEPSEEK_MODEL (mis. deepseek-v4-pro) tanpa mengubah kode.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
+
+# Model cadangan gratis (OpenRouter, format kompatibel OpenAI). "openrouter/free" memilih otomatis model gratis yang tersedia;
+# batas gratis OpenRouter ±50 permintaan/hari per akun. Bisa diganti model gratis tertentu lewat CADANGAN_MODEL.
+URL_CADANGAN = os.environ.get("CADANGAN_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/") + "/chat/completions"
+MODEL_CADANGAN = os.environ.get("CADANGAN_MODEL", "openrouter/free")
+
+
+def daftar_penyedia() -> list[tuple[str, str]]:
+    """Penyedia yang kuncinya terpasang, urut prioritas: DeepSeek dulu, lalu cadangan gratis."""
+    daftar = [("deepseek", os.environ.get("DEEPSEEK_API_KEY", "").strip()),
+              ("cadangan", os.environ.get("CADANGAN_API_KEY", "").strip())]
+    return [(nama, kunci) for nama, kunci in daftar if kunci]
 
 TAHAP = ("pahami", "rencana", "kerjakan", "periksa")
 
@@ -145,16 +159,16 @@ class AsistenGagal(Exception):
 ALASAN_STATUS = {401: "kunci_salah", 402: "saldo_habis", 429: "sibuk", 400: "permintaan", 422: "permintaan", 404: "model"}
 
 
-def panggil_deepseek(pesan: list[dict], kunci: str) -> str:
-    """Panggil DeepSeek Chat Completions (format kompatibel OpenAI). Mengembalikan isi teks balasan."""
-    isi = {"model": MODEL, "messages": pesan, "temperature": 0.4, "max_tokens": 350, "response_format": {"type": "json_object"}}
-    kepala = {"Authorization": f"Bearer {kunci}", "Content-Type": "application/json"}
+def _panggil(url: str, model: str, kunci: str, pesan: list[dict], nama: str) -> tuple[str, str]:
+    """Panggil layanan Chat Completions berformat OpenAI. Mengembalikan (teks balasan, nama model yang menjawab)."""
+    isi = {"model": model, "messages": pesan, "temperature": 0.4, "max_tokens": 350, "response_format": {"type": "json_object"}}
+    kepala = {"Authorization": f"Bearer {kunci}", "Content-Type": "application/json", "X-Title": "Tanya Siku"}
     try:
-        r = httpx.post(URL_DEEPSEEK, headers=kepala, json=isi, timeout=25)
+        r = httpx.post(url, headers=kepala, json=isi, timeout=25)
         if r.status_code == 400:
             # model/layanan yang tidak mendukung mode JSON: ulangi tanpa response_format (baca_balasan tetap bisa membaca teks biasa)
             isi.pop("response_format")
-            r = httpx.post(URL_DEEPSEEK, headers=kepala, json=isi, timeout=25)
+            r = httpx.post(url, headers=kepala, json=isi, timeout=25)
     except httpx.TimeoutException as e:
         raise AsistenGagal("waktu_habis", str(e)) from e
     except httpx.HTTPError as e:
@@ -164,19 +178,32 @@ def panggil_deepseek(pesan: list[dict], kunci: str) -> str:
             rincian = str(r.json().get("error", {}).get("message", ""))[:200]
         except (ValueError, AttributeError):
             rincian = ""
-        alasan = ALASAN_STATUS.get(r.status_code, "server_deepseek")
-        print(f"[asisten] DeepSeek gagal: status={r.status_code} alasan={alasan} pesan={rincian}")  # muncul di log Vercel
+        alasan = ALASAN_STATUS.get(r.status_code, "server_layanan")
+        print(f"[asisten] {nama} gagal: status={r.status_code} alasan={alasan} pesan={rincian}")  # muncul di log Vercel
         raise AsistenGagal(alasan, rincian)
     try:
-        return r.json()["choices"][0]["message"]["content"] or ""
-    except (KeyError, IndexError, ValueError) as e:
+        data = r.json()
+        return data["choices"][0]["message"]["content"] or "", str(data.get("model") or model)
+    except (KeyError, IndexError, ValueError, TypeError) as e:
         raise AsistenGagal("format_balasan") from e
+
+
+def panggil_deepseek(pesan: list[dict], kunci: str) -> tuple[str, str]:
+    """DeepSeek resmi (api.deepseek.com)."""
+    return _panggil(URL_DEEPSEEK, MODEL, kunci, pesan, "DeepSeek")
+
+
+def panggil_cadangan(pesan: list[dict], kunci: str) -> tuple[str, str]:
+    """Model cadangan gratis lewat OpenRouter."""
+    return _panggil(URL_CADANGAN, MODEL_CADANGAN, kunci, pesan, "Cadangan")
 
 
 def baca_balasan(mentah: str, tahap_lalu: str) -> tuple[str, str]:
     """Ambil {tahap, balasan} dari JSON model; bila model tidak patuh format, pakai teksnya apa adanya."""
     try:
-        isi = json.loads(mentah)
+        # model gratis kadang membungkus JSON dengan teks/```json: ambil objek {...} pertamanya
+        cocok = re.search(r"\{.*\}", mentah or "", re.S)
+        isi = json.loads(cocok.group(0) if cocok else mentah)
         balasan = str(isi.get("balasan", "")).strip()
         tahap = isi.get("tahap") if isi.get("tahap") in TAHAP else tahap_lalu
     except (ValueError, AttributeError):
@@ -186,27 +213,36 @@ def baca_balasan(mentah: str, tahap_lalu: str) -> tuple[str, str]:
     return tahap, balasan[:900]
 
 
+def _jalankan(panggil, pesan, kunci, model_bawaan):
+    """Panggil layanan; terima balasan berupa teks saja atau (teks, model)."""
+    hasil = panggil(pesan, kunci)
+    return hasil if isinstance(hasil, tuple) else (hasil, model_bawaan)
+
+
 def tanya_siku(pertanyaan: str, riwayat: list[dict], halaman: str, tingkat: int, tahap_lalu: str, kunci: str,
-               panggil=None) -> dict:
-    """Satu giliran percakapan. Mengembalikan {balasan, tahap, disaring}."""
-    panggil = panggil or panggil_deepseek
+               panggil=None, penyedia: str = "deepseek") -> dict:
+    """Satu giliran percakapan. Mengembalikan {balasan, tahap, disaring, model}."""
+    model_bawaan = MODEL if penyedia == "deepseek" else MODEL_CADANGAN
+    panggil = panggil or (panggil_deepseek if penyedia == "deepseek" else panggil_cadangan)
     pesan = [{"role": "system", "content": prompt_sistem(halaman, tingkat)}]
     pesan += [{"role": r["peran"], "content": r["isi"]} for r in riwayat]
     pesan.append({"role": "user", "content": pertanyaan})
     teks_siswa = " ".join([r["isi"] for r in riwayat if r["peran"] == "user"] + [pertanyaan])
 
-    tahap, balasan = baca_balasan(panggil(pesan, kunci), tahap_lalu)
+    mentah, model = _jalankan(panggil, pesan, kunci, model_bawaan)
+    tahap, balasan = baca_balasan(mentah, tahap_lalu)
     if not bocorkan_jawaban(balasan, teks_siswa):
-        return {"balasan": balasan, "tahap": tahap, "disaring": False}
+        return {"balasan": balasan, "tahap": tahap, "disaring": False, "model": model}
 
     # balasan memuat jawaban akhir: minta ulang sekali dengan teguran tegas
     pesan += [{"role": "assistant", "content": json.dumps({"tahap": tahap, "balasan": balasan}, ensure_ascii=False)},
               {"role": "system", "content": "Balasanmu barusan menyebutkan hasil akhir. Tulis ulang sebagai petunjuk "
                                             "TANPA angka hasil akhir, akhiri dengan satu pertanyaan untuk siswa. Format JSON yang sama."}]
     try:
-        tahap, balasan = baca_balasan(panggil(pesan, kunci), tahap)
+        mentah, model = _jalankan(panggil, pesan, kunci, model)
+        tahap, balasan = baca_balasan(mentah, tahap)
     except AsistenGagal:  # permintaan ulang gagal: tetap beri petunjuk aman di bawah
         balasan = ""
     if balasan and not bocorkan_jawaban(balasan, teks_siswa):
-        return {"balasan": balasan, "tahap": tahap, "disaring": True}
-    return {"balasan": PETUNJUK_AMAN[tahap], "tahap": tahap, "disaring": True}
+        return {"balasan": balasan, "tahap": tahap, "disaring": True, "model": model}
+    return {"balasan": PETUNJUK_AMAN[tahap], "tahap": tahap, "disaring": True, "model": model}

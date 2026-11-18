@@ -66,6 +66,24 @@ Balasan + tahap RMT ke siswa; giliran dicatat ke tabel `aktivitas` (jenis 'asist
   muncul setelah kunci terpasang.
 - Hanya siswa yang masuk dengan kode terdaftar yang bisa bertanya; dibatasi 12 pertanyaan per 5 menit per siswa.
 
+## 5a. Model cadangan gratis (transparan)
+
+Integrasi utama adalah **API resmi DeepSeek** (`DEEPSEEK_API_KEY`). API DeepSeek berbayar (tanpa paket gratis), dan pada
+uji coba saldo akun peneliti masih kosong (DeepSeek membalas *402 Insufficient Balance*, tampil di aplikasi sebagai
+`kode: deepseek:saldo_habis`). Agar chatbot tetap bisa diuji tanpa biaya, ditambahkan **model cadangan gratis**:
+
+| | |
+| --- | --- |
+| Kapan dipakai | Hanya bila panggilan DeepSeek gagal (saldo habis, kunci salah, sibuk, dsb.) **dan** `CADANGAN_API_KEY` terpasang |
+| Layanan | OpenRouter (`https://openrouter.ai/api/v1`), model bawaan `openrouter/free` (memilih otomatis model gratis yang tersedia; bisa diganti lewat `CADANGAN_MODEL`) |
+| Batas | Paket gratis OpenRouter ±50 pertanyaan per hari per akun (untuk demo/uji coba, belum cukup untuk satu kelas) |
+| Transparansi | Server mengirim `penyedia` dan `model` yang **sebenarnya** menjawab; panel menampilkan *"Dijawab oleh: DeepSeek (…)"* atau *"Dijawab oleh: model cadangan gratis (…)"*; log aktivitas mencatat `model=…` |
+| Privasi | Pertanyaan dikirim ke penyedia model gratis yang dapat menyimpan isi permintaan. Yang terkirim hanya teks pertanyaan & prompt (tanpa nama/kode siswa), tetapi siswa tetap diminta tidak menulis data pribadi. |
+| Kembali ke DeepSeek | Begitu saldo DeepSeek diisi, DeepSeek otomatis dipakai lagi tanpa mengubah kode |
+
+Rancangan pedagogis (prompt RMT, petunjuk bertingkat, penjaga jawaban akhir, pembatas, pencatatan) **sama persis** untuk
+kedua penyedia.
+
 ## 6. Data untuk penelitian
 
 Setiap giliran dicatat di tabel `aktivitas` (Supabase) dengan `jenis = 'asisten'`:
@@ -83,9 +101,14 @@ Jalankan bagian **Versi 3** di [`supabase/schema.sql`](../supabase/schema.sql) s
 4. Supabase → SQL Editor → jalankan bagian **Versi 3** dari `supabase/schema.sql`.
 5. Buka aplikasi, masuk dengan kode siswa → tombol **Tanya Siku** muncul di kanan bawah.
 
+### Mengaktifkan model cadangan gratis
+1. Daftar gratis di https://openrouter.ai (bisa dengan akun Google/GitHub), lalu menu **Keys → Create Key**.
+2. Vercel → proyek **pythagoras-api** → Settings → Environment Variables → `CADANGAN_API_KEY` = kunci OpenRouter → Save.
+3. Redeploy backend. Uji di aplikasi: bila saldo DeepSeek kosong, panel menampilkan "Dijawab oleh: model cadangan gratis (…)".
+
 ## 8. Pengujian
 
-`python -m pytest backend -q` menjalankan 17 uji Tanya Siku. Uji otomatis **sengaja tidak memanggil DeepSeek asli**
+`python -m pytest backend -q` menjalankan 21 uji Tanya Siku. Uji otomatis **sengaja tidak memanggil DeepSeek asli**
 (fungsi pemanggilnya diganti sementara) agar bisa dijalankan siapa saja tanpa API key dan tanpa memakai saldo; aplikasi
 yang dipasang tetap memanggil API DeepSeek asli. Yang diuji: format permintaan ke api.deepseek.com, penjaga jawaban akhir,
 format angka Indonesia, prompt RMT & tingkat bantuan, wajib masuk, mati saat tes, pembatas pertanyaan, balasan yang

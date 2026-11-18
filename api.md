@@ -28,7 +28,7 @@
 ```json
 { "status": "ok", "waktu": "2026-11-10T01:00:00Z", "asisten": true }
 ```
-`asisten` = API key DeepSeek sudah terpasang di server (nilai kuncinya tidak pernah dikirim).
+`asisten` = API key DeepSeek atau model cadangan sudah terpasang di server (nilai kuncinya tidak pernah dikirim).
 
 ### `POST /masuk`
 Permintaan:
