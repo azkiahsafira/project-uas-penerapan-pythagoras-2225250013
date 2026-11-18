@@ -1,11 +1,11 @@
 # deploy.md — Pemasangan, Pemeliharaan, dan Pencadangan
 
 ## 1. Frontend (aplikasi) — Vercel
-- Alamat aplikasi: **https://azkiah-safira-pythagoras.vercel.app** (proyek Vercel `penerapan-pythagoras`, preset Vite, Root Directory `./`).
+- Alamat aplikasi: **https://pelita-azkiah-safira-pythagoras.vercel.app** (proyek Vercel `penerapan-pythagoras`, preset Vite, Root Directory `./`).
 - Setiap `git push` ke branch `main` otomatis di-build Vercel (`npm run build` → `dist/`). Workflow
   [.github/workflows/periksa.yml](.github/workflows/periksa.yml) hanya memeriksa lint & build di GitHub.
-- Bukti percakapan AI: https://azkiah-safira-pythagoras.vercel.app/bukti-ai/
-- Domain diatur di Vercel → proyek `penerapan-pythagoras` → Settings → Domains (`azkiah-safira-pythagoras.vercel.app`, Production).
+- Bukti percakapan AI: https://pelita-azkiah-safira-pythagoras.vercel.app/bukti-ai/
+- Domain diatur di Vercel → proyek `penerapan-pythagoras` → Settings → Domains (`pelita-azkiah-safira-pythagoras.vercel.app` = link utama; `azkiah-safira-pythagoras.vercel.app` tetap aktif agar link lama & aplikasi yang sudah ter-install tidak putus; semua Production).
 - **Link lama yang sudah dimatikan** (semua halaman membalas **404**):
   - `azkiahsafira.github.io/project-uas-penerapan-pythagoras-2225250013/` — branch `gh-pages` hanya berisi `404.html` dan
     `sw.js` "pemati";
@@ -40,7 +40,7 @@
    bila saldo DeepSeek habis; model yang menjawab selalu ditampilkan). Rincian: [docs/chatbot-tanya-siku.md](docs/chatbot-tanya-siku.md).
 5. Deploy → alamat backend: **https://pythagoras-api.vercel.app** (proyek Vercel `pythagoras-api`); cek https://pythagoras-api.vercel.app/api/sehat.
 6. Isi `VITE_API_URL` di `.env` dengan alamat itu lalu push, agar aplikasi memakai backend. Alamat aplikasi harus ada di daftar
-   CORS backend (`ASAL` di `backend/main.py`, saat ini `https://azkiah-safira-pythagoras.vercel.app`).
+   CORS backend (`ASAL` di `backend/main.py`, saat ini `https://pelita-azkiah-safira-pythagoras.vercel.app`).
 7. Setiap push ke `main` otomatis memperbarui backend di Vercel.
 
 Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap tersedia).

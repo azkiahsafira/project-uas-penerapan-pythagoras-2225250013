@@ -2,6 +2,13 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.21] · 18 November 2026 — Link PELITA & rubrik khusus uji coba
+- Link utama aplikasi menjadi **https://pelita-azkiah-safira-pythagoras.vercel.app**. Link lama
+  `azkiah-safira-pythagoras.vercel.app` tetap aktif agar aplikasi yang sudah ter-install tidak putus; backend (CORS)
+  menerima keduanya. README, panduan, deploy, workflow pemantau, dan lembar validasi memakai link baru.
+- Rubrik penskoran Mathematical Literacy kini khusus **uji coba instrumen** (siswa kelas IX): lembar rekap berisi
+  No., kode siswa, skor S1–S4, total, dan nilai, tanpa kolom pre-test/post-test.
+
 ## [2.20] · 18 November 2026 — Adegan "panggung pesta" & PDF bertema PELITA
 - Header: untaian bendera warna-warni yang berkibar, pelangi pastel yang kedua ujungnya awan berwajah lucu, keempat
   sahabat (Kuadra, Lila, Hipo, Akar) berdiri di panggung awan, dan papan "Ayo belajar bareng! 💖".

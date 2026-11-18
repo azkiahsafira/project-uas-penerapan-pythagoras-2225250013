@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Aplikasi bisa dibuka
         run: |
-          kode=$(curl -sS -o /dev/null -w "%{http_code}" https://azkiah-safira-pythagoras.vercel.app/)
+          kode=$(curl -sS -o /dev/null -w "%{http_code}" https://pelita-azkiah-safira-pythagoras.vercel.app/)
           echo "Aplikasi: HTTP $kode"
           [ "$kode" = "200" ] || { echo "::error::Aplikasi tidak bisa dibuka (HTTP $kode)."; exit 1; }
 

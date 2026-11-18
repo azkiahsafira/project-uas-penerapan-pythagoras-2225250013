@@ -201,7 +201,7 @@ def lembar_tes(uji_coba=False):
 
 def rubrik():
     isi = [f'<div class="kepala">{MEREK}<span class="ucap">Untuk peneliti 📝</span>{MASKOT_KEPALA}<h1>Rubrik Penilaian Tes Mathematical Literacy</h1>'
-           '<p class="sub">Untuk peneliti — jangan dibagikan ke siswa · skor maksimum 6 per soal, total 24</p>'
+           '<p class="sub">Uji coba instrumen · siswa SMP kelas IX · untuk peneliti, jangan dibagikan ke siswa · skor maksimum 6 per soal, total 24</p>'
            f'<p class="penyusun">{PENYUSUN_HTML}</p></div>']
     for i, k in enumerate(KISI, 1):
         baris = "".join(f'<tr><td>Tahap {n}<br><span class="kecil">{escape(t["label"])}</span></td><td>{escape(t["isi"])}</td><td class="c">{t["skor"]}</td></tr>'
@@ -216,14 +216,14 @@ def rubrik():
                '<li>Instrumen mengukur <b>proses</b> mathematical literacy, bukan hanya ketepatan jawaban akhir.</li></ul>')
     kolom = "".join(f'<th class="c">S{i}<br>(0–6)</th>' for i in range(1, 5))
     kosong = "".join('<td></td>' for _ in range(4))
-    isi.append('<h2 class="halaman-baru">Lembar rekap skor</h2>'
-               '<p class="kecil">Setelah dinilai, ketik baris ini ke <code>analisis/skor_literasi.csv</code> '
-               '(format sama dengan <code>templat_skor_literasi.csv</code>) lalu jalankan '
-               '<code>python analisis/analisis_literasi.py analisis/skor_literasi.csv</code>.</p>'
-               f'<table><tr><th>Kode siswa</th><th>Kelompok</th><th>Tes</th>{kolom}<th class="c">Total<br>(0–24)</th></tr>'
-               + "".join(f'<tr><td style="height:26px"></td><td></td><td>{t}</td>{kosong}<td></td></tr>'
-                         for t in ["Uji coba"] * 6 + ["Pre-test", "Post-test", "Pre-test", "Post-test"])
-               + "</table>")
+    # rekap khusus UJI COBA instrumen (siswa kelas 9): tanpa pre-test/post-test karena aplikasi belum dipakai siswa
+    isi.append('<h2 class="halaman-baru">Lembar rekap skor uji coba instrumen</h2>'
+               '<p class="kecil">Diisi peneliti setelah menilai lembar uji coba siswa kelas 9. '
+               'Nilai = total skor ÷ 24 × 100.</p>'
+               f'<table><tr><th class="c" style="width:7%">No.</th><th>Kode siswa</th>{kolom}<th class="c">Total<br>(0–24)</th>'
+               '<th class="c">Nilai<br>(0–100)</th></tr>'
+               + "".join(f'<tr><td class="c" style="height:26px">{n}</td><td></td>{kosong}<td></td><td></td></tr>' for n in range(1, 13))
+               + f'<tr><th colspan="2">Rata-rata</th>{kosong}<td></td><td></td></tr></table>')
     return halaman("Rubrik Penilaian Tes Mathematical Literacy", "".join(isi))
 
 
