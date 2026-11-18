@@ -139,7 +139,7 @@ export default function Panggung({ halaman, diam, sekolah = false }) {
             <PelangiAwan />
             <LantaiAwan />
             <PanggungAwan />
-            <TemanKawaii diam={diam} />
+            <TemanKawaii diam={diam} senyap={hitungan.total} />
           </>
         )}
         <button

@@ -7029,6 +7029,20 @@ main > * {
   animation: teman-ucap 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
 }
 
+/* sahabat yang sedang bicara naik ke lapisan teratas agar balonnya tidak tertutup Siku, Raka, Nisa, atau balon mereka */
+.panggung.kawaii .teman-kawaii:has(.teman-ucap) {
+  z-index: 6;
+}
+
+/* ...dan balon Siku/Raka/Nisa disembunyikan sementara sahabat bicara, agar tidak saling menutupi */
+.panggung.kawaii .gelembung {
+  transition: opacity 0.2s;
+}
+
+.panggung.kawaii:has(.teman-ucap) .gelembung {
+  opacity: 0;
+}
+
 @keyframes teman-ucap {
   from {
     opacity: 0;
@@ -7142,6 +7156,22 @@ main > * {
 
   .teman-ucap {
     font-size: 0.74rem;
+    /* HP: balon dibungkus 2 baris & digeser ke dalam agar tidak terpotong di tepi panggung */
+    width: max-content;
+    max-width: 150px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .teman-tombol.t0 .teman-ucap {
+    left: 0;
+    translate: -12% 0;
+  }
+
+  .teman-tombol.t3 .teman-ucap {
+    left: auto;
+    right: 0;
+    translate: 12% 0;
   }
 }
 

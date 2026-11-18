@@ -2,6 +2,13 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.23] · 19 November 2026 — Balon kata sahabat tidak tertutup lagi
+- Perbaikan: balon kata Kuadra, Lila, Hipo, dan Akar dulu tidak pernah hilang (kunci React kembar dengan gambarnya),
+  menumpuk, dan tertutup Siku/Raka/Nisa. Kini balon hilang sendiri setelah 2,4 detik dan tampil di lapisan teratas.
+- Balon bergantian: saat sahabat bicara, balon Siku/Raka/Nisa disembunyikan sementara; saat Siku/Raka/Nisa diklik,
+  balon sahabat ditutup. Di HP balon sahabat dibungkus 2 baris dan tidak terpotong di tepi.
+- Versi cache PWA dinaikkan (`pythagoras-v8`).
+
 ## [2.22] · 19 November 2026 — Link lama dimatikan
 - `azkiah-safira-pythagoras.vercel.app` kini menampilkan 404 (sama seperti `penerapan-pythagoras.vercel.app`); salinan
   aplikasi yang ter-install dari link lama ikut dihapus otomatis saat dibuka dengan internet (`sw-mati.js`).

@@ -275,7 +275,8 @@ const TEMAN = [
   },
 ]
 
-export function TemanKawaii({ diam = false }) {
+// senyap: jumlah klik Siku/Raka/Nisa (hanya bertambah); begitu berganti (mereka diklik), balon sahabat ditutup agar tidak bertumpuk
+export function TemanKawaii({ diam = false, senyap = 0 }) {
   const [bicara, setBicara] = useState(null) // { id, teks, n }
   const [hitung, setHitung] = useState({})
 
@@ -291,21 +292,22 @@ export function TemanKawaii({ diam = false }) {
         <button
           key={t.id}
           type="button"
-          className={`teman-tombol t${i} ${bicara?.id === t.id ? 'girang' : ''}`}
+          className={`teman-tombol t${i} ${bicara?.id === t.id && bicara.senyap === senyap ? 'girang' : ''}`}
           disabled={diam}
           aria-label={`${t.nama}, sahabat Pythagoras`}
           onClick={() => {
             const n = hitung[t.id] ?? 0
-            setBicara({ id: t.id, teks: t.kata[n % t.kata.length], n: Date.now() })
+            setBicara({ id: t.id, teks: t.kata[n % t.kata.length], n: Date.now(), senyap })
             setHitung({ ...hitung, [t.id]: n + 1 })
           }}
         >
-          {bicara?.id === t.id && (
-            <span className="teman-ucap" key={bicara.n} role="status">
+          {bicara?.id === t.id && bicara.senyap === senyap && (
+            // kunci berbeda dari kunci gambar di bawahnya: kunci kembar membuat balon lama tertinggal & menumpuk
+            <span className="teman-ucap" key={`ucap-${bicara.n}`} role="status">
               {bicara.teks}
             </span>
           )}
-          <svg viewBox="16 0 92 128" key={bicara?.id === t.id ? bicara.n : t.id} aria-hidden="true">
+          <svg viewBox="16 0 92 128" key={bicara?.id === t.id ? `gambar-${bicara.n}` : t.id} aria-hidden="true">
             {t.gambar}
           </svg>
           <span className="teman-nama">{t.nama}</span>
