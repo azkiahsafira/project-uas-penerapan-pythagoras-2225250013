@@ -1,7 +1,7 @@
 # Bukti Pengerjaan dengan AI (Vibe Coding)
 
-Aplikasi **Penerapan Teorema Pythagoras** dibuat dengan bantuan AI **Claude** (lewat Claude Code).
-Seluruh percakapan, mulai dari perencanaan, pembuatan, revisi tampilan, sampai deploy, didokumentasikan di sini.
+Aplikasi **PELITA · Penerapan Teorema Pythagoras** dibuat dengan bantuan AI **Claude** (lewat Claude Code).
+Seluruh percakapan, mulai dari perencanaan, pembuatan, revisi tampilan, sampai deploy, didokumentasikan di sini (diperbarui 19 November 2026: 305 pesan mahasiswa, 868 jawaban AI).
 
 ## 👉 [Buka percakapan lengkap di browser](https://pelita-azkiah-safira-pythagoras.vercel.app/bukti-ai/)
 

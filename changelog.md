@@ -2,6 +2,10 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [2.23.2] · 19 November 2026 — Bukti percakapan AI diperbarui
+- Bukti vibe coding (HTML, halaman `/bukti-ai/`, dan PDF) mencakup percakapan sampai sesi ini: 305 pesan mahasiswa,
+  868 jawaban AI (tema PELITA, karakter, PDF tes cute, link baru, pengosongan Supabase). Email tetap disamarkan.
+
 ## [2.23.1] · 19 November 2026 — Pertanyaan Tanya Siku tercatat
 - Supabase: bagian **Versi 3** `supabase/schema.sql` dijalankan; tabel `aktivitas` kini menerima jenis `asisten`, sehingga
   setiap pertanyaan siswa ke Tanya Siku (tahap RMT, tingkat petunjuk, menu) tersimpan untuk data penelitian.
