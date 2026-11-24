@@ -42,8 +42,9 @@ Sebelum menyelesaikan pekerjaan: **`npm run lint` dan `npm run build` harus lolo
 - Menghapus data di Supabase hanya atas permintaan eksplisit pemilik proyek.
 
 ## 6. Struktur penting
-- `src/data/soal-literasi.json` — soal tes Mathematical Literacy (pre/post-test aktif); `src/tes.js` — butir Leppink (dan tes 10 soal cadangan).
+- `src/data/soal-literasi.json` — soal tes Mathematical Literacy (pre/post-test aktif); `src/tes.js` — Kuesioner Harian Cognitive Load (10 butir, skala 1–9, akhir Pertemuan 1 & 2; jenis `beban1`/`beban2`) dan tes 10 soal cadangan.
 - `src/materi.js` — isi 3 sesi materi + fase & langkah RMT tiap langkah (sumber LKPD & modul ajar).
+- `src/alur.js` — urutan 2 pertemuan (P1: pre-test, Sesi 1–2, kuesioner 1; P2: Sesi 3, latihan ≥5, kuesioner 2, post-test).
 - `src/penyimpanan.js` — antrean offline & pengiriman data.
 - `analisis/analisis.py` — kunci jawaban harus **sama** dengan `src/tes.js` (dan nanti `backend/penilaian.py`).
 - `public/sw.js` — service worker; naikkan `VERSI` bila strategi cache berubah.

@@ -3,7 +3,7 @@
 
 create table if not exists public.hasil (
   id            text primary key,              -- dibuat oleh aplikasi
-  jenis         text not null check (jenis in ('pretest', 'posttest', 'leppink')),
+  jenis         text not null check (jenis in ('pretest', 'posttest', 'leppink', 'beban1', 'beban2')),  -- lihat Versi 4
   nama          text not null,
   kelas         text not null,
   sekolah       text not null,
@@ -73,7 +73,7 @@ grant insert on public.aktivitas to anon;
 -- Kolom tambahan: berapa kali siswa menekan tombol "Bacakan" di sebuah langkah
 alter table public.aktivitas add column if not exists dibacakan integer not null default 0;
 
--- Pertemuan 4 (implementasi): setiap soal di menu Latihan dicatat sebagai jenis 'latihan'
+-- Pertemuan 2 (Latihan Soal setelah Sesi 3): setiap soal di menu Latihan dicatat sebagai jenis 'latihan'
 -- (sesi = 4, langkah = nomor soal, judul = teks soal, hasil = 'benar' | 'salah' | 'menyerah')
 alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
 alter table public.aktivitas add constraint aktivitas_jenis_check
@@ -112,3 +112,14 @@ alter table public.siswa enable row level security;
 alter table public.aktivitas drop constraint if exists aktivitas_jenis_check;
 alter table public.aktivitas add constraint aktivitas_jenis_check
   check (jenis in ('langkah', 'sesi', 'latihan', 'prasyarat', 'refleksi', 'asisten'));
+
+
+-- =====================================================================
+-- Versi 4 (2 pertemuan): Kuesioner Harian Cognitive Load (lembar dosen)
+-- diisi di akhir Pertemuan 1 (jenis 'beban1') dan akhir Pertemuan 2 ('beban2'),
+-- skala 1-9. Kolom el/il/gl = rata-rata butir 1-3 / 4-6 / 7-10.
+-- 'leppink' tetap diizinkan hanya agar data lama (bila ada) tidak ditolak.
+-- =====================================================================
+alter table public.hasil drop constraint if exists hasil_jenis_check;
+alter table public.hasil add constraint hasil_jenis_check
+  check (jenis in ('pretest', 'posttest', 'leppink', 'beban1', 'beban2'));

@@ -8,7 +8,7 @@ Pengujian dilakukan berlapis: dari kode (otomatis), fitur, perangkat Android, sa
 | Uji | Perintah | Lulus bila |
 | --- | --- | --- |
 | Lint JavaScript | `npm run lint` | tanpa error/peringatan |
-| Uji JavaScript | `npm test` (`node --test tests/`) | 16 uji lulus: rumus, bantuan (prasyarat, Diketahui/Ditanya, petunjuk, kewajaran, refleksi), kunci tes, Leppink, materi, latihan tidak membocorkan tes, tes literasi |
+| Uji JavaScript | `npm test` (`node --test tests/`) | 16 uji lulus: rumus, bantuan (prasyarat, Diketahui/Ditanya, petunjuk, kewajaran, refleksi), kunci tes, Kuesioner Harian Cognitive Load, materi, latihan tidak membocorkan tes, tes literasi |
 | Build produksi | `npm run build` | berhasil, ukuran bundel utama < 600 KB |
 | Analisis Python | `python analisis/analisis.py analisis/contoh_data.csv --aktivitas analisis/contoh_aktivitas.csv --kertas analisis/templat_kertas.csv` | laporan & grafik terbentuk tanpa peringatan kunci |
 | Kunci jawaban sinkron | bandingkan `src/tes.js`, `analisis/analisis.py`, `backend/penilaian.py` | kunci ketiganya sama |
@@ -19,7 +19,7 @@ Pengujian dilakukan berlapis: dari kode (otomatis), fitur, perangkat Android, sa
 Uji unit yang direncanakan:
 - `src/pythagoras.js`: sisi miring, sisi siku-siku, input tidak valid (c ≤ a), tripel Pythagoras, koma desimal.
 - Penilaian tes: jawaban angka (toleransi 0,01), jawaban pilihan, jawaban huruf A–D dari lembar kertas.
-- Skor Leppink: rata-rata IL (butir 1–3), EL (4–6), GL (7–10).
+- Skor Kuesioner Harian (skala 1–9): rata-rata EL (butir 1–3), IL (4–6), GL (7–10), per pertemuan (`beban1`, `beban2`).
 
 ## 2. Uji fungsional (checklist)
 
@@ -30,7 +30,7 @@ Uji unit yang direncanakan:
 | 3 | Salah 1× lalu 2× pada cek pemahaman | petunjuk muncul, lalu jawaban dibuka; pesan semangat tampil |
 | 4 | Benar pada cek pemahaman | layar perayaan ±2 detik, lalu kembali ke penjelasan |
 | 5 | Latihan 10 soal | progres "10 dari 10", setiap soal tercatat |
-| 6 | Pre-test → post-test → kuesioner | menu lain & hiasan & musik hilang saat tes; hasil tersimpan |
+| 6 | Pre-test → Kuesioner P1 → Kuesioner P2 → post-test | menu lain & hiasan & musik hilang saat tes; hasil tersimpan |
 | 7 | Mode pesawat (offline) lalu online | aplikasi tetap jalan; data terkirim otomatis saat online |
 | 8 | Tombol Bacakan | teks dibaca, bagian yang dibaca disorot, musik mengecil |
 | 9 | Tombol Animasi mati / Musik mati | animasi berhenti / musik berhenti, pilihan diingat |
@@ -41,7 +41,7 @@ Uji unit yang direncanakan:
 | 14 | Jawab sisi miring lebih pendek dari sisi lain | peringatan cek kewajaran, belum dinilai salah |
 | 15 | 3 soal benar tanpa bantuan | langkah 1–2 disembunyikan, petunjuk tinggal 3 tahap; salah sekali → bantuan muncul lagi |
 | 16 | Soal ke-3, 6, 9 | pertanyaan refleksi; "Soal berikutnya" terkunci sampai dijawab |
-| 17 | Kode baru, belum pre-test | Belajar & Latihan terkunci ("Kerjakan pre-test dulu"); post-test & kuesioner "Belum dibuka" |
+| 17 | Kode baru, belum pre-test | Belajar & Latihan terkunci ("Kerjakan pre-test dulu"); kedua kuesioner & post-test "Belum dibuka" |
 | 18 | Pre-test dikumpulkan | pre-test "✓ Sudah dikerjakan"; Belajar terbuka; Latihan masih terkunci sampai Sesi 3 selesai |
 | 19 | Sesi 3 selesai, latihan < 10 soal | post-test "Dibuka setelah Latihan Soal minimal 10 soal (baru n)" |
 | 20 | Kirim pre-test kedua (kode sama) ke backend | ditolak 409 `sudah_dikerjakan` |

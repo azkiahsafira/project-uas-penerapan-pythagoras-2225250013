@@ -14,8 +14,8 @@ Alamat aplikasi: **https://pelita-azkiah-safira-pythagoras.vercel.app/**
 | --- | --- | --- |
 | **Belajar** | Sesi 1 → 2 → 3, berurutan | Jawab pertanyaan kecil di tiap langkah; tekan 🔊 **Bacakan** bila ingin mendengar |
 | **Kalkulator** | Hitung sisi miring/alas/tinggi + langkahnya | Untuk memeriksa hitunganmu |
-| **Latihan Soal** | Pertemuan 4, minimal 10 soal | Baca pembahasan setelah menjawab |
-| **Tes** | Pre-test, post-test, kuesioner | Kerjakan sendiri; menu lain terkunci selama tes |
+| **Latihan Soal** | Pertemuan 2 (setelah Sesi 3), minimal 5 soal | Baca pembahasan setelah menjawab |
+| **Tes** | Pre-test, Kuesioner Pertemuan 1 & 2, post-test | Kerjakan sendiri; menu lain terkunci selama tes |
 
 - Tombol **✨ Animasi** dan **🎵 Musik** ada di bawah/pojok layar; bisa dimatikan kapan saja.
 - Ketuk **Siku, Raka, Nisa**, atau sahabat kawaii (Kuadra, Lila, Hipo, Akar) untuk mendengar sapaan mereka.
@@ -23,14 +23,11 @@ Alamat aplikasi: **https://pelita-azkiah-safira-pythagoras.vercel.app/**
 
 ## B. Untuk peneliti / guru
 
-### 1. Alur 5 pertemuan
+### 1. Alur 2 pertemuan
 | Pertemuan | Kelompok aplikasi | Kelompok diajar langsung |
 | --- | --- | --- |
-| 1 | Tes → Pre-test, lalu Belajar → Sesi 1 | Lembar pre-test cetak, lalu pembelajaran langsung |
-| 2 | Belajar → Sesi 2 | pembelajaran langsung |
-| 3 | Belajar → Sesi 3 | pembelajaran langsung |
-| 4 | Latihan Soal (implementasi) | latihan langsung |
-| 5 | Tes → Post-test, lalu Kuesioner | lembar post-test & kuesioner cetak |
+| 1 | Tes → Pre-test, Belajar → cek prasyarat, Sesi 1, Sesi 2, lalu Tes → Kuesioner Pertemuan 1 | lembar pre-test, LKPD Sesi 1 & 2, Kuesioner Cognitive Load Pertemuan 1 (cetak) |
+| 2 | Belajar → Sesi 3, Latihan Soal (min. 5 soal), Tes → Kuesioner Pertemuan 2, lalu Post-test | LKPD Sesi 3, lembar latihan, Kuesioner Cognitive Load Pertemuan 2, lembar post-test |
 
 ### 2. Sebelum mulai
 Ikuti checklist di [deploy.md](deploy.md) bagian 4 (hapus data uji, siapkan kode siswa, cetak lembar).

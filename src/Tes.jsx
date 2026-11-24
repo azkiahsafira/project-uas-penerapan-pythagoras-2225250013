@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { LEPPINK, NAMA_DIMENSI, POSTTEST, PRETEST, nilaiLeppink, nilaiTes } from './tes.js'
+import { BAGIAN_KUESIONER, KUESIONER_HARIAN, NAMA_DIMENSI, POSTTEST, PRETEST, SKALA_PAAS, nilaiHarian, nilaiTes } from './tes.js'
 import FormKode from './Masuk.jsx'
 import { daftarHasil, hapusHasil, identitasTerakhir, kirimTertunda, serverAktif, simpanHasil, unduhCsv } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
@@ -14,25 +14,38 @@ const URAIAN = SOAL_LITERASI.map((s) => ({ ...s, tipe: 'uraian' }))
 const KET_LITERASI =
   '4 soal cerita. Tuliskan langkah penyelesaianmu selengkap mungkin: apa yang diketahui, rumus, perhitungan, dan kesimpulan. Kerjakan sendiri.'
 
+// Urutan = urutan pengerjaan dalam 2 pertemuan (alur.js)
+const KET_KUESIONER =
+  '10 pertanyaan tentang seberapa besar usaha berpikirmu hari ini. Pilih angka 1 sampai 9. Tidak ada jawaban benar atau salah, dan tidak memengaruhi nilai.'
 const INSTRUMEN = {
   pretest: {
     judul: 'Pre-test',
+    waktu: 'Awal Pertemuan 1',
     ket: TES_LITERASI
       ? `${KET_LITERASI} Tidak apa-apa jika belum bisa, kerjakan semampunya.`
       : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain. Tidak apa-apa jika belum bisa, kerjakan semampunya.',
     soal: TES_LITERASI ? URAIAN : PRETEST,
   },
+  beban1: {
+    judul: 'Kuesioner Pertemuan 1',
+    waktu: 'Akhir Pertemuan 1 (setelah Sesi 1 & 2)',
+    ket: KET_KUESIONER,
+    kuesioner: true,
+  },
+  beban2: {
+    judul: 'Kuesioner Pertemuan 2',
+    waktu: 'Akhir Pertemuan 2 (setelah Sesi 3 & Latihan Soal)',
+    ket: KET_KUESIONER,
+    kuesioner: true,
+  },
   posttest: {
     judul: 'Post-test',
+    waktu: 'Akhir Pertemuan 2 (setelah Kuesioner Pertemuan 2)',
     ket: TES_LITERASI ? KET_LITERASI : '10 soal tentang teorema Pythagoras. Kerjakan sendiri tanpa kalkulator atau bantuan orang lain.',
     soal: TES_LITERASI ? URAIAN : POSTTEST,
   },
-  leppink: {
-    judul: 'Kuesioner Beban Kognitif',
-    waktu: 'Setelah post-test',
-    ket: '10 pernyataan tentang pengalaman belajarmu. Tidak ada jawaban benar atau salah, jawab sejujurnya.',
-  },
 }
+const judulInstrumen = (jenis) => INSTRUMEN[jenis]?.judul ?? jenis
 
 // Sebelum tes: pakai kode siswa yang sudah tersimpan, atau masuk dengan kode siswa
 function FormIdentitas({ jenis, onMulai, onBatal }) {
@@ -166,44 +179,62 @@ function PengerjaanTes({ jenis, onKumpul }) {
   )
 }
 
-function KuesionerLeppink({ onKumpul }) {
+// Kuesioner Harian Cognitive Load: 10 butir dikelompokkan seperti lembar dosen, skala usaha mental Paas 1–9
+function KuesionerHarian({ jenis, onKumpul }) {
   const [jawaban, setJawaban] = useState({})
-  const kosong = LEPPINK.filter((b) => jawaban[b.id] === undefined).length
+  const kosong = KUESIONER_HARIAN.filter((b) => jawaban[b.id] === undefined).length
 
   return (
     <section className="kartu sempit">
-      <h2>{INSTRUMEN.leppink.judul}</h2>
+      <p className="ket">{INSTRUMEN[jenis].waktu}</p>
+      <h2>{INSTRUMEN[jenis].judul}</h2>
       <p>
-        Pikirkan kegiatan belajar teorema Pythagoras yang sudah kamu ikuti. Untuk setiap pernyataan, pilih angka
-        <strong> 0 (sama sekali tidak setuju)</strong> sampai <strong>10 (sangat setuju)</strong>.
+        Setiap pertanyaan menanyakan seberapa besar <strong>usaha berpikir</strong> yang kamu keluarkan selama pelajaran tadi.
+        Pilih angka <strong>1 (sangat rendah)</strong>, <strong>5 (sedang)</strong>, sampai <strong>9 (amat sangat tinggi)</strong>.
+        Tidak ada jawaban benar atau salah, dan jawabanmu tidak memengaruhi nilai.
       </p>
-      <ol className="butir">
-        {LEPPINK.map((b) => (
-          <li key={b.id}>
-            <p>{b.teks}</p>
-            <div className="skala" role="radiogroup" aria-label={b.teks}>
-              {Array.from({ length: 11 }, (_, n) => (
-                <button
-                  key={n}
-                  type="button"
-                  role="radio"
-                  aria-checked={jawaban[b.id] === n}
-                  className={jawaban[b.id] === n ? 'aktif' : ''}
-                  onClick={() => setJawaban((j) => ({ ...j, [b.id]: n }))}
-                >
-                  {n}
-                </button>
-              ))}
-            </div>
-            <div className="ujung-skala ket">
-              <span>Tidak setuju</span>
-              <span>Sangat setuju</span>
-            </div>
+      <ol className="skala-paas" aria-label="Keterangan skala usaha berpikir">
+        {SKALA_PAAS.map((t, i) => (
+          <li key={t}>
+            <b>{i + 1}</b> {t}
           </li>
         ))}
       </ol>
+      {['EL', 'IL', 'GL'].map((dim, nomorBagian) => (
+        <div key={dim}>
+          <h3 className="bagian-kuesioner">
+            {nomorBagian + 1}. {BAGIAN_KUESIONER[dim]}
+          </h3>
+          <ol className="butir" start={KUESIONER_HARIAN.findIndex((b) => b.dimensi === dim) + 1}>
+            {KUESIONER_HARIAN.filter((b) => b.dimensi === dim).map((b) => (
+              <li key={b.id}>
+                <p>{b.teks}</p>
+                <div className="skala" role="radiogroup" aria-label={b.teks}>
+                  {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      role="radio"
+                      aria-checked={jawaban[b.id] === n}
+                      aria-label={`${n}: ${SKALA_PAAS[n - 1]}`}
+                      className={jawaban[b.id] === n ? 'aktif' : ''}
+                      onClick={() => setJawaban((j) => ({ ...j, [b.id]: n }))}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+                <div className="ujung-skala ket">
+                  <span>Sangat rendah</span>
+                  <span>Amat sangat tinggi</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
       <button type="button" className="hitung lebar" disabled={kosong > 0} onClick={() => onKumpul(jawaban)}>
-        {kosong > 0 ? `Jawab ${kosong} pernyataan lagi` : 'Kumpulkan'}
+        {kosong > 0 ? `Jawab ${kosong} pertanyaan lagi` : 'Kumpulkan'}
       </button>
     </section>
   )
@@ -213,9 +244,9 @@ function Hasil({ hasil, tersimpan, statusKirim, onKembali }) {
   return (
     <section className="kartu sempit">
       <h2>Terima kasih, {hasil.nama}!</h2>
-      {hasil.jenis === 'leppink' ? (
+      {INSTRUMEN[hasil.jenis]?.kuesioner ? (
         <>
-          <p>Jawaban kuesioner sudah dicatat. Rata-rata tiap jenis beban (skala 0–10):</p>
+          <p>Jawaban kuesioner sudah dicatat. Rata-rata usaha berpikir tiap komponen (skala 1–9):</p>
           <ul>
             {Object.entries(hasil.beban).map(([k, v]) => (
               <li key={k}>{NAMA_DIMENSI[k]}: <strong>{v}</strong></li>
@@ -226,7 +257,7 @@ function Hasil({ hasil, tersimpan, statusKirim, onKembali }) {
         <p className="jawaban">{INSTRUMEN[hasil.jenis].judul} selesai. Jawabanmu sudah dikumpulkan dan akan dinilai oleh guru.</p>
       ) : (
         <p className="jawaban">
-          {INSTRUMEN[hasil.jenis].judul} selesai. Benar {hasil.benar} dari {hasil.total} soal, nilai <strong>{hasil.skor}</strong>.
+          {judulInstrumen(hasil.jenis)} selesai. Benar {hasil.benar} dari {hasil.total} soal, nilai <strong>{hasil.skor}</strong>.
         </p>
       )}
       {!tersimpan && <p className="error">Hasil tidak bisa disimpan di perangkat ini. Catat atau foto layar ini.</p>}
@@ -268,10 +299,10 @@ function RiwayatHasil() {
                 <td>{new Date(h.selesai).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })}</td>
                 <td>{h.nama} (kls {h.kelas})</td>
                 <td>{h.kelompok}</td>
-                <td>{INSTRUMEN[h.jenis].judul}</td>
+                <td>{judulInstrumen(h.jenis)}</td>
                 <td>
-                  {h.jenis === 'leppink'
-                    ? `IL ${h.beban.IL} · EL ${h.beban.EL} · GL ${h.beban.GL}`
+                  {h.beban
+                    ? `EL ${h.beban.EL} · IL ${h.beban.IL} · GL ${h.beban.GL}`
                     : h.skor === null || h.skor === undefined
                       ? 'uraian (dinilai manual)'
                       : `${h.skor} (${h.benar}/${h.total})`}
@@ -283,7 +314,7 @@ function RiwayatHasil() {
                     type="button"
                     className="kecil"
                     onClick={() => {
-                      if (window.confirm(`Hapus hasil ${INSTRUMEN[h.jenis].judul} milik ${h.nama}?`)) {
+                      if (window.confirm(`Hapus hasil ${judulInstrumen(h.jenis)} milik ${h.nama}?`)) {
                         hapusHasil(h.id)
                         setHasil(daftarHasil())
                       }
@@ -343,11 +374,12 @@ export default function Tes({ onFokus }) {
 
   const kumpul = (jawaban) => {
     const selesai = new Date()
-    const uraian = TES_LITERASI && jenis !== 'leppink'
+    const kuesioner = INSTRUMEN[jenis].kuesioner === true
+    const uraian = TES_LITERASI && !kuesioner
     // soal uraian Mathematical Literacy dinilai manual dengan rubrik, jadi skor dikosongkan
     const nilai =
-      jenis === 'leppink'
-        ? { beban: nilaiLeppink(jawaban) }
+      kuesioner
+        ? { beban: nilaiHarian(jawaban) }
         : uraian
           ? { benar: null, total: null, skor: null }
           : nilaiTes(INSTRUMEN[jenis].soal, jawaban)
@@ -395,7 +427,11 @@ export default function Tes({ onFokus }) {
     )
   }
   if (tahap === 'kerja') {
-    return jenis === 'leppink' ? <KuesionerLeppink onKumpul={kumpul} /> : <PengerjaanTes jenis={jenis} onKumpul={kumpul} />
+    return INSTRUMEN[jenis].kuesioner ? (
+      <KuesionerHarian jenis={jenis} onKumpul={kumpul} />
+    ) : (
+      <PengerjaanTes jenis={jenis} onKumpul={kumpul} />
+    )
   }
   if (tahap === 'hasil') {
     return <Hasil hasil={hasil} tersimpan={tersimpan} statusKirim={statusKirim} onKembali={() => keTahap(null)} />
@@ -404,7 +440,10 @@ export default function Tes({ onFokus }) {
   return (
     <section>
       <h2>Tes dan Kuesioner Penelitian</h2>
-      <p className="ket">Dikerjakan oleh siswa yang belajar dengan aplikasi ini. Setiap tes hanya dikerjakan satu kali: pre-test, post-test, lalu kuesioner.</p>
+      <p className="ket">
+        Dikerjakan oleh siswa yang belajar dengan aplikasi ini, dalam 2 pertemuan: pre-test di awal Pertemuan 1, kuesioner di akhir
+        Pertemuan 1, kuesioner di akhir Pertemuan 2, lalu post-test. Setiap instrumen hanya dikerjakan satu kali.
+      </p>
       {pesanKunci && (
         <p className="info-terkunci" role="alert">
           🔒 {pesanKunci}

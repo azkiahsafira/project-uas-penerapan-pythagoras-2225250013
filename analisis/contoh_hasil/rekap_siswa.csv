@@ -1,4 +1,4 @@
-﻿nama,kelas,kelompok,pretest,posttest,selisih,n_gain,kategori_n_gain,pretest_menit,posttest_menit,IL,EL,GL
-Siswa C,8,Diajar langsung,50,90,40,0.8,tinggi,20.0,18.0,4.666666666666667,2.6666666666666665,7.25
-Siswa A,8,Belajar dengan aplikasi,20,90,70,0.875,tinggi,18.0,15.0,4.0,2.0,8.0
-Siswa B,8,Belajar dengan aplikasi,30,70,40,0.571,sedang,20.0,17.0,5.0,3.0,7.0
+﻿nama,kelas,kelompok,pretest,posttest,selisih,n_gain,kategori_n_gain,pretest_menit,posttest_menit,EL_P1,IL_P1,GL_P1,EL_P2,IL_P2,GL_P2,EL_rata,IL_rata,GL_rata
+Siswa C,8,Diajar langsung,50,90,40,0.8,tinggi,20.0,18.0,4.67,5.33,5.75,4.0,4.33,6.75,4.33,4.83,6.25
+Siswa A,8,Belajar dengan aplikasi,20,90,70,0.875,tinggi,18.0,15.0,3.0,5.0,7.0,2.0,4.0,8.0,2.5,4.5,7.5
+Siswa B,8,Belajar dengan aplikasi,30,70,40,0.571,sedang,20.0,17.0,4.0,6.0,6.0,3.0,5.0,7.0,3.5,5.5,6.5

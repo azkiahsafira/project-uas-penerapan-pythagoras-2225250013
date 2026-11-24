@@ -745,8 +745,34 @@ label.pilihan.dipilih {
 
 .skala {
   display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  /* skala usaha mental Paas 1–9 (Kuesioner Harian Cognitive Load) */
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 4px;
+}
+
+.skala-paas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 10px;
+  margin: 8px 0 14px;
+  padding: 8px 12px;
+  border: 2px dashed #bfe3ff;
+  border-radius: 14px;
+  background: #f4faff;
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+.skala-paas b {
+  display: inline-block;
+  min-width: 1.4em;
+  color: #2f6fb3;
+}
+
+.bagian-kuesioner {
+  margin: 16px 0 6px;
+  color: #c2477f;
+  font-size: 1.05rem;
 }
 
 .skala button {
@@ -768,10 +794,14 @@ label.pilihan.dipilih {
   margin-top: 4px;
 }
 
-/* HP kecil: tombol skala 0–10 dibuat dua baris agar mudah disentuh */
+/* HP kecil: tombol skala 1–9 dibuat dua baris (5 + 4) agar mudah disentuh */
 @media (max-width: 420px) {
+  .skala-paas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .skala {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
   }
 
@@ -4099,7 +4129,7 @@ tbody tr:last-child td {
 }
 
 /* =========================================================================
-   Latihan = Pertemuan 4 (implementasi)
+   Latihan Soal = Pertemuan 2 (setelah Sesi 3)
    ========================================================================= */
 .warna-4 {
   --warna: var(--sesi-1);

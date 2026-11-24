@@ -17,8 +17,8 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 | Kode | Tujuan | Ukuran keberhasilan |
 | --- | --- | --- |
 | T1 | Meningkatkan literasi matematis pada materi Pythagoras | N-gain pre-test → post-test ≥ 0,3 (sedang) |
-| T2 | Menekan beban yang tidak perlu (extraneous load) | Skor EL Leppink ≤ 4 (skala 0–10) |
-| T3 | Mendorong pemahaman (germane load) | Skor GL Leppink ≥ 6 |
+| T2 | Menekan beban yang tidak perlu (extraneous load) | Skor EL Kuesioner Harian ≤ 4 (skala 1–9) |
+| T3 | Mendorong pemahaman (germane load) | Skor GL Kuesioner Harian ≥ 6 (skala 1–9) |
 | T4 | Siswa makin mandiri | Jumlah petunjuk yang dipakai menurun dari soal awal ke soal lanjutan |
 | T5 | Siswa tepat menentukan sisi miring pada berbagai posisi segitiga | ≥ 80% benar pada tugas identifikasi sisi miring (segitiga diputar) |
 
@@ -58,7 +58,7 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 | IL4 | Kesulitan naik saat soal cerita & gambar tidak langsung | Konteks menambah unsur | **F9** Latihan berjenjang: angka → gambar → cerita | Waktu & benar per jenjang |
 | EL1 | Kalimat soal panjang, bingung mana tinggi & mana sisi miring | Instruksi tidak terstruktur | **F5** Tandai "Diketahui" & "Ditanya" pada soal cerita | Siswa memilih data relevan dengan benar |
 | EL2 | Bolak-balik antara teks & gambar | Split-attention | **D1** Teks soal, gambar, dan label sisi **dalam satu layar berdekatan** | Siswa mencocokkan angka teks dengan sisi gambar |
-| EL3 | Terlalu banyak warna/animasi/hiasan mengganggu | Distraksi | **Keputusan pengembang: animasi dipertahankan.** Pengendalian: semua hiasan & musik disembunyikan saat tes, tombol "Animasi: mati", `prefers-reduced-motion`, warna pada segitiga hanya untuk sisi diketahui vs dicari | Skor EL Leppink dibandingkan kelompok diajar langsung |
+| EL3 | Terlalu banyak warna/animasi/hiasan mengganggu | Distraksi | **Keputusan pengembang: animasi dipertahankan.** Pengendalian: semua hiasan & musik disembunyikan saat tes, tombol "Animasi: mati", `prefers-reduced-motion`, warna pada segitiga hanya untuk sisi diketahui vs dicari | Skor EL Kuesioner Harian (P1 & P2) dibandingkan kelompok diajar langsung |
 | EL4 | Penjelasan terlalu cepat saat memasukkan angka ke rumus | Pacing | **F3** Materi per langkah, tombol ulangi/kembali, **Bacakan** | Jumlah ulangi per langkah |
 | GL1 | Paham setelah menggambar & memberi nama sisi | Elaborasi | **F4** Siswa menandai sendiri sisi a, b, c | Ketepatan penandaan |
 | GL2 | Memeriksa: sisi miring harus terpanjang | Penalaran | **F8** Cek kewajaran jawaban | Siswa bisa menjelaskan kewajaran |
@@ -77,8 +77,8 @@ siswa meningkat: merumuskan situasi nyata ke model matematika, menerapkan konsep
 - **F6 Petunjuk bertingkat** — 5 tingkat: (1) cari segitiga siku-siku, (2) tentukan sisi miring, (3) pilih rumus, (4) hitung, (5) cek jawaban; makin jarang ditawarkan bila siswa makin benar.
 - **F7 Refleksi singkat** — satu pertanyaan "Mengapa…?" setelah soal kunci.
 - **F8 Cek kewajaran** — peringatan bila sisi miring tidak terpanjang.
-- **F9 Latihan berjenjang** (pertemuan 4).
-- **F10 Pre-test, post-test, kuesioner Leppink** (pertemuan 1 & 5), menu lain dikunci saat tes.
+- **F9 Latihan berjenjang** (Pertemuan 2, minimal 5 soal).
+- **F10 Pre-test, post-test, Kuesioner Harian Cognitive Load** (pre-test awal P1, kuesioner akhir P1 & P2, post-test akhir P2), menu lain dikunci saat tes.
 - **F11 Pencatatan aktivitas** — waktu, salah, petunjuk dipakai, per langkah/soal → Supabase lewat backend.
 
 ### Lanjutan (bila waktu cukup)

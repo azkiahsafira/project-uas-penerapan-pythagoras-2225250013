@@ -1,4 +1,4 @@
-// Instrumen penelitian: pre-test, post-test, dan kuesioner beban kognitif Leppink.
+// Instrumen penelitian: pre-test, post-test (tes 10 soal cadangan), dan Kuesioner Harian Cognitive Load.
 //
 // Pre-test dan post-test adalah soal PARALEL: indikator dan tingkat kesulitan
 // tiap nomor sama, hanya angka/konteksnya berbeda, supaya siswa tidak sekadar
@@ -90,20 +90,39 @@ export const POSTTEST = [
   { tanya: 'Layar sebuah televisi lebarnya 36 cm dan tingginya 27 cm. Berapa cm panjang diagonal layar televisi tersebut?', tipe: 'angka', jawab: 45 },
 ]
 
-// Kuesioner beban kognitif, diadaptasi dari Leppink dkk. (2013):
-// 3 butir intrinsic load (IL), 3 butir extraneous load (EL), 4 butir germane load (GL).
-// Skala 0 (sama sekali tidak setuju) sampai 10 (sangat setuju).
-export const LEPPINK = [
-  { id: 'IL1', dimensi: 'IL', teks: 'Materi yang dipelajari dalam kegiatan ini sangat rumit.' },
-  { id: 'IL2', dimensi: 'IL', teks: 'Rumus-rumus dalam kegiatan ini terasa sangat rumit bagi saya.' },
-  { id: 'IL3', dimensi: 'IL', teks: 'Konsep dan istilah dalam kegiatan ini terasa sangat rumit bagi saya.' },
-  { id: 'EL1', dimensi: 'EL', teks: 'Petunjuk dan penjelasan selama kegiatan ini sangat tidak jelas.' },
-  { id: 'EL2', dimensi: 'EL', teks: 'Petunjuk dan penjelasan dalam kegiatan ini sangat tidak membantu saya belajar.' },
-  { id: 'EL3', dimensi: 'EL', teks: 'Petunjuk dan penjelasan dalam kegiatan ini penuh dengan kata-kata yang membingungkan.' },
-  { id: 'GL1', dimensi: 'GL', teks: 'Kegiatan ini benar-benar meningkatkan pemahaman saya tentang materi yang dipelajari.' },
-  { id: 'GL2', dimensi: 'GL', teks: 'Kegiatan ini benar-benar meningkatkan pengetahuan dan pemahaman saya tentang teorema Pythagoras.' },
-  { id: 'GL3', dimensi: 'GL', teks: 'Kegiatan ini benar-benar meningkatkan pemahaman saya tentang rumus-rumus yang dipelajari.' },
-  { id: 'GL4', dimensi: 'GL', teks: 'Kegiatan ini benar-benar meningkatkan pemahaman saya tentang konsep dan istilah yang dipelajari.' },
+// Kuesioner Harian Cognitive Load (instrumen dari dosen pembimbing; rujukan Paas 1992, Paas dkk. 2003, Sweller dkk. 1998,
+// Leppink dkk. 2013, Klepsch dkk. 2017): 10 butir usaha mental skala 1–9 (Paas), diisi di AKHIR Pertemuan 1 dan AKHIR
+// Pertemuan 2. Butir 1–3 extraneous load (EL), 4–6 intrinsic load (IL), 7–10 germane load (GL). Teks butir SAMA PERSIS
+// dengan lembar dosen agar kelompok aplikasi dan kelompok tanpa aplikasi mengisi instrumen yang sama.
+export const SKALA_PAAS = [
+  'Sangat rendah',
+  'Sangat rendah hingga rendah',
+  'Rendah',
+  'Agak rendah',
+  'Sedang',
+  'Agak tinggi',
+  'Tinggi',
+  'Sangat tinggi',
+  'Amat sangat tinggi',
+]
+
+export const BAGIAN_KUESIONER = {
+  EL: 'Extraneous Load (usaha berpikir karena cara penyajian pembelajaran)',
+  IL: 'Intrinsic Load (usaha berpikir karena tingkat kesulitan materi)',
+  GL: 'Germane Load (usaha berpikir untuk membangun pemahaman)',
+}
+
+export const KUESIONER_HARIAN = [
+  { id: 'b1', dimensi: 'EL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk memahami maksud penjelasan dan petunjuk dari guru hari ini?' },
+  { id: 'b2', dimensi: 'EL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk memahami tampilan media atau lembar kerja yang digunakan hari ini?' },
+  { id: 'b3', dimensi: 'EL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk mencari dan mencocokkan informasi dari penjelasan guru, papan tulis, dan lembar kerja hari ini?' },
+  { id: 'b4', dimensi: 'IL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk memahami materi matematika yang dipelajari hari ini?' },
+  { id: 'b5', dimensi: 'IL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk menyelesaikan soal-soal matematika hari ini?' },
+  { id: 'b6', dimensi: 'IL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk memahami hubungan antara konsep, rumus, dan langkah penyelesaian yang dipelajari hari ini?' },
+  { id: 'b7', dimensi: 'GL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk benar-benar memahami materi hari ini, bukan sekadar menghafal?' },
+  { id: 'b8', dimensi: 'GL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk meningkatkan pemahamanmu tentang topik yang dibahas hari ini?' },
+  { id: 'b9', dimensi: 'GL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk meningkatkan pengetahuan dan pemahamanmu tentang matematika melalui kegiatan hari ini?' },
+  { id: 'b10', dimensi: 'GL', teks: 'Seberapa besar usaha berpikir yang kamu keluarkan untuk meningkatkan pemahamanmu tentang rumus yang dipelajari hari ini?' },
 ]
 
 export const NAMA_DIMENSI = {
@@ -123,10 +142,11 @@ export function nilaiTes(soal, jawaban) {
   return { benar, total: soal.length, skor: Math.round((benar / soal.length) * 100) }
 }
 
-export function nilaiLeppink(jawaban) {
+// Skor tiap komponen = rata-rata butirnya (rentang 1–9), sesuai pedoman penskoran dosen
+export function nilaiHarian(jawaban) {
   const rata = (dim) => {
-    const nilai = LEPPINK.filter((b) => b.dimensi === dim).map((b) => jawaban[b.id])
+    const nilai = KUESIONER_HARIAN.filter((b) => b.dimensi === dim).map((b) => jawaban[b.id])
     return Math.round((nilai.reduce((t, n) => t + n, 0) / nilai.length) * 100) / 100
   }
-  return { IL: rata('IL'), EL: rata('EL'), GL: rata('GL') }
+  return { EL: rata('EL'), IL: rata('IL'), GL: rata('GL') }
 }

@@ -1,4 +1,4 @@
-"""Lembar latihan soal Pertemuan 4 (implementasi) untuk siswa yang diajar langsung (tanpa aplikasi).
+"""Lembar Latihan Soal Pertemuan 2 (setelah Sesi 3) untuk siswa yang diajar langsung (tanpa aplikasi).
 
 Setara dengan menu Latihan Soal di aplikasi: berjenjang seperti "Latihan Berjenjang" di materi PDF
 (tingkat 1 angka langsung -> tingkat 2 dengan gambar yang diputar -> tingkat 3 soal cerita), memakai
@@ -6,8 +6,8 @@ Strategi 5 Langkah, dan target minimal 10 soal. Semua angka BARU: tidak sama den
 materi PDF dan tidak memakai tripel butir pre-test/post-test (konten.md §5).
 
 Pemakaian:  python scripts/buat_lembar_latihan.py
-Hasil:      docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-4.html  (untuk siswa)
-            docs/latihan-cetak/2-Kunci-Latihan-Pertemuan-4.html   (untuk guru/peneliti)
+Hasil:      docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-2.html  (untuk siswa)
+            docs/latihan-cetak/2-Kunci-Latihan-Pertemuan-2.html   (untuk guru/peneliti)
 """
 import os
 
@@ -118,15 +118,15 @@ th { background: #eef6ff; }
 
 
 def kepala(judul, sub, identitas=True):
-    isi = ('<div class="identitas"><div>Nama: </div><div>Kelas: 8</div><div>Tanggal: </div>'
+    isi = ('<div class="identitas"><div>Kode siswa: </div><div>Kelas: 8</div><div>Tanggal: </div>'
            '<div>Jumlah soal dikerjakan: ……… / 12</div></div>') if identitas else ""
     return f'<div class="kepala"><h1>{judul}</h1><p class="sub">{sub}</p>{isi}</div>'
 
 
 def lembar_siswa():
-    bagian = [kepala("Latihan Soal · Pertemuan 4", "Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah · Matematika SMP Kelas VIII"),
+    bagian = [kepala("Latihan Soal · Pertemuan 2", "Penerapan Teorema Pythagoras dalam Menyelesaikan Masalah · Matematika SMP Kelas VIII"),
               """<div class="petunjuk"><strong>Petunjuk</strong><ol>
-              <li>Kerjakan berurutan dari tingkat 1. Targetmu <b>minimal 10 soal</b>; kalau bisa, selesaikan ke-12 soal.</li>
+              <li>Kerjakan berurutan dari tingkat 1. Targetmu <b>minimal 5 soal</b>; kalau masih ada waktu, lanjutkan sebanyak mungkin.</li>
               <li>Tuliskan cara mengerjakannya, jangan hanya jawaban akhir. Boleh memakai tabel kuadrat di materi.</li>
               <li>Soal cerita: pakai <b>Strategi 5 Langkah</b> — tandai angka, tulis Diketahui–Ditanya, gambar segitiga siku-siku,
               pilih rumus &amp; hitung, lalu cek kewajaran (sisi miring harus paling panjang).</li>
@@ -149,7 +149,7 @@ def lembar_siswa():
                           f'<div class="cara tinggi">gambar segitiga siku-siku &amp; cara:</div>'
                           f'<div class="baris"><span>Jawaban:</span><span>Cek kewajaran:</span></div></div>')
     bagian.append('<p class="kecil">Angka pada lembar ini berbeda dari soal pre-test dan post-test.</p>')
-    return halaman("Lembar Latihan Soal Pertemuan 4", "".join(bagian))
+    return halaman("Lembar Latihan Soal Pertemuan 2", "".join(bagian))
 
 
 def lembar_kunci():
@@ -163,11 +163,11 @@ def lembar_kunci():
             peran = "sisi miring" if s["cari"] == "c" else f"sisi siku-siku (sisi miringnya {s['sisi'][2]} {s['satuan']})"
             tambahan = f"Yang ditanya = {peran}. "
         baris.append(f"<tr><td>{i}</td><td>{NAMA_TINGKAT[s['tingkat']].split(' · ')[0]}</td><td>{tambahan}{hitung}</td><td>{cek}</td></tr>")
-    isi = (kepala("Kunci Latihan Soal · Pertemuan 4", "Untuk guru/peneliti — jangan dibagikan ke siswa", identitas=False)
+    isi = (kepala("Kunci Latihan Soal · Pertemuan 2", "Untuk guru/peneliti — jangan dibagikan ke siswa", identitas=False)
            + "<table><tr><th>No</th><th>Tingkat</th><th>Pembahasan</th><th>Cek kewajaran</th></tr>" + "".join(baris) + "</table>"
            + '<p class="kecil">Penilaian sederhana: catat jumlah soal yang dikerjakan dan yang benar (seperti skor di menu Latihan Soal '
-             'aplikasi). Target pertemuan 4: minimal 10 soal.</p>')
-    return halaman("Kunci Latihan Soal Pertemuan 4", isi)
+             'aplikasi). Target Pertemuan 2: minimal 5 soal (sama dengan aplikasi).</p>')
+    return halaman("Kunci Latihan Soal Pertemuan 2", isi)
 
 
 def halaman(judul, isi):
@@ -177,7 +177,7 @@ def halaman(judul, isi):
 if __name__ == "__main__":
     periksa()
     os.makedirs(KELUAR, exist_ok=True)
-    for nama, isi in [("1-Lembar-Latihan-Pertemuan-4.html", lembar_siswa()), ("2-Kunci-Latihan-Pertemuan-4.html", lembar_kunci())]:
+    for nama, isi in [("1-Lembar-Latihan-Pertemuan-2.html", lembar_siswa()), ("2-Kunci-Latihan-Pertemuan-2.html", lembar_kunci())]:
         with open(os.path.join(KELUAR, nama), "w", encoding="utf-8") as f:
             f.write(isi)
         print("tersimpan:", os.path.join("docs", "latihan-cetak", nama))

@@ -190,9 +190,9 @@ ADEGAN = [
                 "memeriksa langkahmu: pilih sisi yang dicari, isi dua sisi lainnya, lalu lihat langkah hitung dan gambar "
                 "segitiganya."),
     dict(fase="Memakai aplikasi", judul="Latihan Soal & Tes", isi=layar_app("07-laptop-latihan-soal.png"),
-         narasi="Di pertemuan empat, kerjakan menu Latihan Soal minimal sepuluh soal. Setiap soal dikerjakan bertahap: "
-                "diketahui dan ditanya, tunjuk sisi miring, lalu hitung. Menu Tes berisi pre-test, post-test, dan kuesioner "
-                "untuk penelitian."),
+         narasi="Di pertemuan kedua, setelah sesi tiga, kerjakan menu Latihan Soal minimal lima soal. Setiap soal dikerjakan "
+                "bertahap: diketahui dan ditanya, tunjuk sisi miring, lalu hitung. Menu Tes berisi pre-test, kuesioner di akhir "
+                "pertemuan satu dan pertemuan dua, lalu post-test."),
     dict(fase="Memakai aplikasi", judul="Tanya Siku", isi=layar_app("09-laptop-tanya-siku-mandiri.png"),
          narasi="Kalau bingung, tekan tombol Tanya Siku. Siku membimbing langkah demi langkah: amati, hubungkan, pakai alat, "
                 "lalu jelaskan. Siku memberi petunjuk, bukan jawaban akhir, dan tetap bisa menjawab walaupun internet AI "

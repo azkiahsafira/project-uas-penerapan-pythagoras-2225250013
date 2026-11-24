@@ -64,7 +64,7 @@ Balasan 200: `{ "diterima": 1, "duplikat": 0 }` — `id` dari aplikasi membuat p
 { "id": "1794-def", "jenis": "posttest", "mulai": "...", "selesai": "...",
   "jawaban": { "0": "B", "1": "64", "2": "14" } }
 ```
-Untuk `leppink`: `"jawaban": { "IL1": 4, "IL2": 3, "...": 0, "GL4": 8 }`.
+Untuk Kuesioner Harian (`jenis` = `beban1` akhir Pertemuan 1, `beban2` akhir Pertemuan 2): `"jawaban": { "b1": 3, "b2": 4, "...": 5, "b10": 7 }` (angka 1–9). Server menghitung EL = rata-rata b1–b3, IL = b4–b6, GL = b7–b10.
 Balasan 200 (tes): `{ "tersimpan": true, "baru": true }` — **skor tidak dikirim balik** saat tes agar tidak menjadi umpan balik; skor dihitung & disimpan di server.
 **Tiap instrumen hanya sekali per kode siswa:** kiriman dengan `id` yang sama aman diulang (`"baru": false`), tetapi `id` lain untuk
 jenis yang sama ditolak `409 sudah_dikerjakan`.

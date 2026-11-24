@@ -1,4 +1,4 @@
-"""Penilaian pre-test, post-test, dan kuesioner Leppink DI SERVER.
+"""Penilaian pre-test, post-test, dan Kuesioner Harian Cognitive Load DI SERVER.
 
 Kunci jawaban HARUS sama dengan src/tes.js (aplikasi) dan analisis/analisis.py.
 Jawaban bisa berupa teks pilihan (dari aplikasi), huruf A-D (dari lembar kertas), atau angka.
@@ -21,10 +21,11 @@ KUNCI_HURUF = {
     "posttest": ["C", None, None, "B", None, None, "B", None, "A", None],
 }
 
-BUTIR_LEPPINK = {
-    "IL": ["IL1", "IL2", "IL3"],
-    "EL": ["EL1", "EL2", "EL3"],
-    "GL": ["GL1", "GL2", "GL3", "GL4"],
+# Kuesioner Harian Cognitive Load (lembar dosen): butir 1–3 extraneous, 4–6 intrinsic, 7–10 germane; skala Paas 1–9
+BUTIR_HARIAN = {
+    "EL": ["b1", "b2", "b3"],
+    "IL": ["b4", "b5", "b6"],
+    "GL": ["b7", "b8", "b9", "b10"],
 }
 
 
@@ -65,12 +66,12 @@ def nilai_tes(jenis, jawaban):
     return {"benar": benar, "total": total, "skor": round(benar / total * 100)}
 
 
-def nilai_leppink(jawaban):
-    """Rata-rata IL, EL, GL (skala 0-10). Butir yang kosong/tidak valid membuat dimensinya None."""
+def nilai_harian(jawaban):
+    """Rata-rata EL, IL, GL (skala 1-9) Kuesioner Harian. Butir kosong/di luar 1-9 membuat komponennya None."""
     hasil = {}
-    for dimensi, butir in BUTIR_LEPPINK.items():
+    for dimensi, butir in BUTIR_HARIAN.items():
         nilai = [ke_angka(jawaban.get(b)) for b in butir]
-        if any(n is None or n < 0 or n > 10 for n in nilai):
+        if any(n is None or n < 1 or n > 9 for n in nilai):
             hasil[dimensi] = None
         else:
             hasil[dimensi] = round(sum(nilai) / len(nilai), 2)

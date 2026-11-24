@@ -24,17 +24,18 @@ import { catatAktivitas, daftarAktivitas, identitasTerakhir, kirimTertunda } fro
 import Terkunci from './Terkunci.jsx'
 import { TARGET_LATIHAN, kunciLatihan } from './alur.js'
 
-// Pertemuan 4 (implementasi): siswa menerapkan Pythagoras pada soal sehari-hari.
-// Setiap soal yang dijawab dicatat ke tabel `aktivitas` (jenis 'latihan', sesi 4).
+// Pertemuan 2 (latihan, setelah Sesi 3): siswa menerapkan Pythagoras pada soal sehari-hari.
+// Setiap soal yang dijawab dicatat ke tabel `aktivitas` (jenis 'latihan', kode sesi 4 agar tidak tertukar dengan Sesi 1–3).
 // Alur tiap soal (temuan wawancara, prd.md §5): 1) Diketahui & Ditanya (EL1), 2) tunjuk sisi miring
 // pada segitiga yang diputar (IL1), 3) hitung dengan petunjuk bertingkat (GL3) dan cek kewajaran (GL2).
 // Langkah 1-2 dipudarkan setelah siswa lancar; refleksi "Mengapa…?" (GL4) setiap soal ke-3.
-export const PERTEMUAN_LATIHAN = 4
+export const PERTEMUAN_LATIHAN = 2 // label di layar
+const KODE_SESI_LATIHAN = 4 // kolom `sesi` tabel aktivitas (sama dengan data sebelumnya)
 export const TARGET_SOAL = TARGET_LATIHAN
 
 // Tripel Pythagoras (a, b, c) agar jawaban selalu bilangan bulat. Diambil dari materi PDF dan kelipatannya;
 // sengaja TIDAK memakai tripel butir pre-test/post-test (5-12-13, 6-8-10, 7-24-25, 8-15-17, 9-12-15,
-// 12-16-20, 27-36-45, 30-40-50) agar latihan pertemuan 4 tidak membocorkan soal tes (konten.md §5).
+// 12-16-20, 27-36-45, 30-40-50) agar latihan tidak membocorkan soal tes (konten.md §5).
 const TRIPEL = [
   [3, 4, 5],
   [15, 20, 25],
@@ -279,7 +280,7 @@ export default function Latihan() {
   const [soal, setSoal] = useState(() => buatSoal(null, skorTersimpan().total + 1))
   const [jawaban, setJawaban] = useState('')
   const [status, setStatus] = useState(null) // null | 'benar' | 'salah' | 'menyerah'
-  // skor dilanjutkan dari catatan di perangkat agar progres pertemuan 4 tidak hilang saat aplikasi ditutup
+  // skor dilanjutkan dari catatan di perangkat agar progres latihan tidak hilang saat aplikasi ditutup
   const [skor, setSkor] = useState(skorTersimpan)
   const [beruntun, setBeruntun] = useState(0) // jumlah benar berturut-turut
   // F6 fading: jumlah soal benar berturut-turut TANPA bantuan apa pun
@@ -302,7 +303,7 @@ export default function Latihan() {
     catatAktivitas({
       jenis: 'latihan',
       ...identitasTerakhir(),
-      sesi: PERTEMUAN_LATIHAN,
+      sesi: KODE_SESI_LATIHAN,
       langkah: skor.total + 1, // nomor soal
       judul: soal.cerita,
       mulai: mulai.toISOString(),
@@ -364,7 +365,7 @@ export default function Latihan() {
     catatAktivitas({
       jenis: 'refleksi',
       ...identitasTerakhir(),
-      sesi: PERTEMUAN_LATIHAN,
+      sesi: KODE_SESI_LATIHAN,
       langkah: skor.total, // nomor soal kunci
       judul: refleksi.tanya,
       mulai: sekarang,
@@ -402,7 +403,7 @@ export default function Latihan() {
     )
   }
 
-  // Pertemuan 4: dibuka setelah pre-test dan Sesi 1–3 (alur.js)
+  // Pertemuan 2: dibuka setelah pre-test dan Sesi 3 (alur.js)
   const terkunci = kunciLatihan()
   if (terkunci) return <Terkunci judul="Latihan Soal belum dibuka" pesan={terkunci} />
 
@@ -414,7 +415,7 @@ export default function Latihan() {
       <section className="kartu ada-hewan">
         <HewanHidup jenis="katak" className="hinggap kanan" />
         <div className="kepala-latihan">
-          <span className="nomor-sesi warna-4">Pertemuan {PERTEMUAN_LATIHAN} · Implementasi</span>
+          <span className="nomor-sesi warna-4">Pertemuan {PERTEMUAN_LATIHAN} · Latihan</span>
           <span className="skor" aria-live="polite">
             Skor: {skor.benar} / {skor.total}
           </span>
@@ -431,7 +432,7 @@ export default function Latihan() {
         <div
           className="progres"
           role="progressbar"
-          aria-label="Target soal pertemuan 4"
+          aria-label="Target soal latihan"
           aria-valuemin={0}
           aria-valuemax={TARGET_SOAL}
           aria-valuenow={Math.min(skor.total, TARGET_SOAL)}

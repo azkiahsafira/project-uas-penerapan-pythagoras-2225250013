@@ -68,8 +68,9 @@ Alternatif bila memiliki kartu: Render (berkas [render.yaml](render.yaml) tetap 
 - [ ] Hapus semua data uji di tabel `hasil` dan `aktivitas`; pastikan **0 baris**
 - [ ] Di HP/laptop yang dipakai mencoba: klik "Ganti nama" / keluar dari kode uji
 - [ ] Coba buka aplikasi di 1 HP siswa: bisa di-install, materi terbuka, tidak ada geser ke samping
-- [ ] Cetak tes Mathematical Literacy (`docs/instrumen-cetak-literasi/`), kuesioner (`docs/instrumen-cetak/`), LKPD & modul ajar RMT (`docs/pembelajaran-tanpa-aplikasi/`), materi PDF (`docs/materi/`), dan lembar latihan
-  pertemuan 4 (`docs/latihan-cetak/`, kunci dicetak terpisah untuk guru)
+- [ ] Cetak tes Mathematical Literacy (`docs/instrumen-cetak-literasi/`), Kuesioner Cognitive Load Pertemuan 1 & 2 (`docs/instrumen-cetak/`), LKPD & modul ajar RMT (`docs/pembelajaran-tanpa-aplikasi/`), materi PDF (`docs/materi/`), dan lembar latihan
+  Pertemuan 2 (`docs/latihan-cetak/`, kunci dicetak terpisah untuk guru)
+- [ ] Supabase: jalankan bagian **Versi 4** di `supabase/schema.sql` (mengizinkan jenis `beban1` & `beban2`) sebelum Pertemuan 1
 
 ## 5. Pencadangan data
 - Setelah **setiap pertemuan**: Supabase → Table Editor → `hasil` & `aktivitas` → **Export to CSV**.

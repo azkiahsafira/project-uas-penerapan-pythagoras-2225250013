@@ -6,11 +6,13 @@ langkah, fase & langkah RMT, fungsi kognitif, mediasi MLE (tujuan, makna, transe
 Pemakaian:  python scripts/buat_modul_rmt.py   (butuh Node.js untuk membaca src/materi.js)
 Hasil (HTML, cetak ke PDF dengan browser):
   docs/pembelajaran-tanpa-aplikasi/0-Modul-Ajar-RMT-Teorema-Pythagoras.html   (untuk guru)
-  docs/pembelajaran-tanpa-aplikasi/1-LKPD-Pertemuan-1.html                    (lembar kerja siswa)
-  docs/pembelajaran-tanpa-aplikasi/2-LKPD-Pertemuan-2.html
-  docs/pembelajaran-tanpa-aplikasi/3-LKPD-Pertemuan-3.html
+  docs/pembelajaran-tanpa-aplikasi/1-LKPD-Sesi-1-Pertemuan-1.html             (lembar kerja siswa)
+  docs/pembelajaran-tanpa-aplikasi/2-LKPD-Sesi-2-Pertemuan-1.html
+  docs/pembelajaran-tanpa-aplikasi/3-LKPD-Sesi-3-Pertemuan-2.html
   docs/pembelajaran-tanpa-aplikasi/4-Kunci-Jawaban-LKPD.html                 (untuk guru)
-Pertemuan 4 memakai docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-4.pdf (latihan berjenjang, Fase III).
+Penelitian berlangsung 2 pertemuan (sama dengan kelompok aplikasi):
+  Pertemuan 1 = pre-test, Sesi 1 & Sesi 2, Kuesioner Cognitive Load Pertemuan 1
+  Pertemuan 2 = Sesi 3, Latihan Soal (docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-2.pdf), Kuesioner Pertemuan 2, post-test
 """
 import json
 import os
@@ -140,9 +142,15 @@ def kotak_cek(cek):
     return f'<div class="tanya"><b>Pertanyaan:</b> {escape(cek["tanya"])}<div class="jawab"></div></div>'
 
 
+def pertemuan(sesi):
+    """Sesi 1 & 2 di Pertemuan 1, Sesi 3 di Pertemuan 2 (sama dengan alur aplikasi, src/alur.js)."""
+    return 1 if sesi["id"] <= 2 else 2
+
+
 def lkpd(sesi):
-    isi = [kepala(f"LKPD Pertemuan {sesi['id']}: {sesi['judul'].split(': ', 1)[1]}",
-                  "Lembar Kerja Peserta Didik · Matematika SMP Kelas VIII · model Rigorous Mathematical Thinking (RMT)"),
+    isi = [kepala(f"LKPD Sesi {sesi['id']}: {sesi['judul'].split(': ', 1)[1]}",
+                  f"Pertemuan {pertemuan(sesi)} · Lembar Kerja Peserta Didik · Matematika SMP Kelas VIII · "
+                  "model Rigorous Mathematical Thinking (RMT)"),
            '<div class="mediasi">'
            f'<p><b>🎯 Tujuan:</b> {escape(sesi["tujuan"])}</p>'
            f'<p><b>💡 Mengapa penting:</b> {escape(sesi["makna"])}</p>'
@@ -167,11 +175,11 @@ def lkpd(sesi):
                '<li>Menemukan pola dan hubungan</li><li>Memakai alat matematika (tabel, gambar, rumus)</li></ul>'
                '<p>Bagian mana yang paling sulit, dan bagaimana kamu mengatasinya?</p><div class="jawab"></div>'
                f'<p><b>🌏 Dipakai di mana lagi?</b> {escape(sesi["transendensi"])}</p><div class="jawab kecil"></div></div>')
-    return halaman(f"LKPD Pertemuan {sesi['id']}", "".join(isi))
+    return halaman(f"LKPD Sesi {sesi['id']} (Pertemuan {pertemuan(sesi)})", "".join(isi))
 
 
 def kunci():
-    isi = [kepala("Kunci Jawaban LKPD Pertemuan 1–3", "Untuk guru · jangan dibagikan ke siswa", identitas=False)]
+    isi = [kepala("Kunci Jawaban LKPD Sesi 1–3", "Untuk guru · jangan dibagikan ke siswa", identitas=False)]
     for sesi in SESI:
         baris = ""
         for no, l in enumerate(sesi["langkah"], 1):
@@ -180,7 +188,7 @@ def kunci():
                 continue
             baris += (f'<tr><td>{no}. {escape(l["judul"])}</td><td>{escape(c["tanya"])}</td><td><b>{escape(str(c["jawab"]))}</b></td>'
                       f'<td>{escape(c["penjelasan"])}</td></tr>')
-        isi.append(f'<h2>Pertemuan {sesi["id"]} · {escape(sesi["judul"].split(": ", 1)[1])}</h2><table><tr><th style="width:22%">Langkah</th>'
+        isi.append(f'<h2>Sesi {sesi["id"]} (Pertemuan {pertemuan(sesi)}) · {escape(sesi["judul"].split(": ", 1)[1])}</h2><table><tr><th style="width:22%">Langkah</th>'
                    f'<th>Pertanyaan</th><th style="width:14%">Jawaban</th><th>Penjelasan</th></tr>{baris}</table>')
     return halaman("Kunci Jawaban LKPD", "".join(isi))
 
@@ -198,7 +206,7 @@ def modul():
             (6, "Siswa berlatih memakai alat untuk memecahkan masalah, lalu merefleksikan cara berpikirnya (metakognisi)."),
         ])
     isi = [kepala("Modul Ajar: Teorema Pythagoras dengan Model RMT",
-                  "Untuk guru · Matematika SMP Kelas VIII · Rigorous Mathematical Thinking (Kinard & Kozulin, 2008) · 4 pertemuan × 2 JP",
+                  "Untuk guru · Matematika SMP Kelas VIII · Rigorous Mathematical Thinking (Kinard & Kozulin, 2008) · 2 pertemuan × 3 JP (3 × 40 menit)",
                   identitas=False),
            '<h2>A. Model pembelajaran: Rigorous Mathematical Thinking (RMT)</h2>'
            '<p>RMT memandang kesulitan matematika sering berasal dari fungsi kognitif yang belum berkembang, bukan dari '
@@ -206,7 +214,7 @@ def modul():
            'memakai alat berpikir (psychological tools) untuk membangun konsep. Prosesnya tiga fase dan enam langkah, tidak '
            'kaku tetapi semuanya harus muncul:</p>'
            f'<table><tr><th style="width:20%">Fase</th><th style="width:26%">Langkah</th><th>Yang dilakukan siswa (dimediasi guru)</th></tr>{tabel_rmt}</table>'
-           '<h3>Tiga kriteria mediasi (MLE) yang dipakai guru di setiap pertemuan</h3>'
+           '<h3>Tiga kriteria mediasi (MLE) yang dipakai guru di setiap sesi</h3>'
            '<table><tr><th style="width:24%">Kriteria</th><th>Contoh ucapan guru</th></tr>'
            '<tr><td>Intensionalitas & timbal balik</td><td>"Hari ini kita akan … Coba perhatikan pojok gambar ini. Apa yang kamu lihat?"</td></tr>'
            '<tr><td>Makna</td><td>"Kenapa kita perlu tahu sisi miring? Karena rumusnya bergantung pada sisi itu."</td></tr>'
@@ -215,6 +223,19 @@ def modul():
            '<p class="kecil">Fungsi kognitif yang dilatih: mengamati secara sistematis, membandingkan, memberi label, membentuk '
            'hubungan, mempertahankan keajegan (segitiga diputar tetap sama), mendefinisikan masalah, merencanakan, dan '
            'refleksi metakognitif.</p>']
+    isi.append(
+        '<h2>B. Alur dua pertemuan (sama dengan kelompok yang memakai aplikasi)</h2>'
+        '<table><tr><th style="width:16%">Pertemuan</th><th>Kegiatan berurutan</th><th style="width:14%">Waktu</th></tr>'
+        '<tr><td><b>Pertemuan 1</b><br><span class="kecil">3 JP</span></td><td>1) Pre-test Mathematical Literacy · '
+        '2) Cek prasyarat singkat (kuadrat & akar) · 3) <b>Sesi 1</b> dengan LKPD Sesi 1 · 4) <b>Sesi 2</b> dengan LKPD Sesi 2 · '
+        '5) <b>Kuesioner Cognitive Load Pertemuan 1</b> (docs/instrumen-cetak/3-Kuesioner-Cognitive-Load-Pertemuan-1.pdf)</td>'
+        '<td>30 + 5 + 35 + 35 + 10 menit</td></tr>'
+        '<tr><td><b>Pertemuan 2</b><br><span class="kecil">3 JP</span></td><td>1) <b>Sesi 3</b> dengan LKPD Sesi 3 · '
+        '2) <b>Latihan Soal</b> (Fase III, minimal 5 soal) · 3) <b>Kuesioner Cognitive Load Pertemuan 2</b> '
+        '(docs/instrumen-cetak/4-Kuesioner-Cognitive-Load-Pertemuan-2.pdf) · 4) Post-test Mathematical Literacy</td>'
+        '<td>40 + 35 + 10 + 30 menit</td></tr></table>'
+        '<p class="kecil">Kuesioner diisi di akhir kegiatan belajar setiap pertemuan, sebelum post-test, agar yang dinilai siswa '
+        'adalah usaha berpikir saat belajar hari itu. Identitas di semua lembar memakai <b>kode siswa</b> (mis. 8A-01), bukan nama.</p>')
     for sesi in SESI:
         baris = ""
         for no, l in enumerate(sesi["langkah"], 1):
@@ -222,32 +243,47 @@ def modul():
             ada_cek = f' Cek: {escape(l["cek"]["tanya"])}' if l.get("cek") else ""
             baris += (f'<tr><td>Fase {ROMAWI[info["fase"]]} · L{l["rmt"]["langkah"]}</td><td>{no}. {escape(l["judul"])}</td>'
                       f'<td>{escape(l["rmt"]["fungsi"])}</td><td>{escape(l["isi"][0])}{ada_cek}</td></tr>')
-        isi.append(f'<h2 class="halaman-baru">Pertemuan {sesi["id"]} · {escape(sesi["judul"].split(": ", 1)[1])}</h2>'
+        ke = pertemuan(sesi)
+        if sesi["id"] == 1:
+            buka = ('Salam dan doa. Siswa mengerjakan <b>pre-test</b> (30 menit), lalu cek prasyarat singkat. '
+                    '<b>Intensionalitas:</b> sampaikan tujuan. <b>Makna:</b> ')
+            tutup_akhir = ''
+        elif sesi["id"] == 2:
+            buka = 'Lanjutan Pertemuan 1. <b>Intensionalitas:</b> sampaikan tujuan Sesi 2. <b>Makna:</b> '
+            tutup_akhir = (' Lalu siswa mengisi <b>Kuesioner Cognitive Load Pertemuan 1</b> (10 menit). '
+                           'Pertemuan 1 selesai.')
+        else:
+            buka = ('Salam dan doa, ulas singkat Sesi 1–2. <b>Intensionalitas:</b> sampaikan tujuan. <b>Makna:</b> ')
+            tutup_akhir = ' Lanjut ke Latihan Soal.'
+        isi.append(f'<h2 class="halaman-baru">Pertemuan {ke} · Sesi {sesi["id"]}: {escape(sesi["judul"].split(": ", 1)[1])}</h2>'
                    f'<p><b>Tujuan pembelajaran:</b> {escape(sesi["tujuan"])}</p>'
                    '<table><tr><th style="width:18%">Kegiatan</th><th>Langkah guru & siswa</th><th style="width:12%">Waktu</th></tr>'
-                   '<tr><td>Pendahuluan</td><td>Salam dan doa. <b>Intensionalitas:</b> sampaikan tujuan. <b>Makna:</b> '
-                   f'{escape(sesi["makna"])} Bagikan LKPD Pertemuan {sesi["id"]}.</td><td>10 menit</td></tr>'
+                   f'<tr><td>Pendahuluan</td><td>{buka}'
+                   f'{escape(sesi["makna"])} Bagikan LKPD Sesi {sesi["id"]}.</td><td>5 menit</td></tr>'
                    '<tr><td>Inti (Fase I–III)</td><td>Ikuti urutan langkah pada tabel di bawah. Guru memediasi dengan pertanyaan, '
                    'bukan memberi jawaban: minta siswa menjelaskan alasannya, beri petunjuk bertingkat bila siswa macet. '
-                   'Diskusikan jawaban cek pemahaman tiap langkah.</td><td>55 menit</td></tr>'
+                   f'Diskusikan jawaban cek pemahaman tiap langkah.</td><td>{30 if sesi["id"] == 3 else 25} menit</td></tr>'
                    '<tr><td>Penutup</td><td><b>Refleksi metakognitif:</b> siswa mengisi bagian Refleksi LKPD (fungsi berpikir apa '
-                   f'yang dipakai). <b>Transendensi:</b> {escape(sesi["transendensi"])}</td><td>15 menit</td></tr></table>'
+                   f'yang dipakai). <b>Transendensi:</b> {escape(sesi["transendensi"])}{tutup_akhir}</td><td>5 menit</td></tr></table>'
                    '<table><tr><th style="width:15%">Fase · langkah RMT</th><th style="width:22%">Kegiatan (sama dengan aplikasi)</th>'
                    f'<th style="width:20%">Fungsi kognitif</th><th>Isi singkat & cek pemahaman</th></tr>{baris}</table>')
-    isi.append('<h2 class="halaman-baru">Pertemuan 4 · Latihan Soal (Fase III)</h2>'
-               '<p>Siswa mengerjakan <b>Lembar Latihan Pertemuan 4</b> (docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-4.pdf): '
-               'soal berjenjang dari angka langsung, gambar yang diputar, sampai soal cerita, memakai Strategi 5 Langkah. '
-               'Guru memediasi dengan petunjuk bertingkat: (1) pertanyaan umum, (2) arahkan ke label sisi/sketsa, '
+    isi.append('<h2 class="halaman-baru">Pertemuan 2 · Latihan Soal (Fase III), Kuesioner, dan Post-test</h2>'
+               '<p>Setelah Sesi 3, siswa mengerjakan <b>Lembar Latihan Soal Pertemuan 2</b> (docs/latihan-cetak/1-Lembar-Latihan-Pertemuan-2.pdf, '
+               '35 menit, minimal 5 soal): soal berjenjang dari angka langsung, gambar yang diputar, sampai soal cerita, memakai '
+               'Strategi 5 Langkah. Guru memediasi dengan petunjuk bertingkat: (1) pertanyaan umum, (2) arahkan ke label sisi/sketsa, '
                '(3) sebutkan rumus yang tepat, (4) tunjukkan langkah tanpa hasil akhir.</p>'
+               '<p>Sesudah latihan, siswa mengisi <b>Kuesioner Cognitive Load Pertemuan 2</b> (10 menit), lalu mengerjakan '
+               '<b>post-test</b> Mathematical Literacy (30 menit).</p>'
                '<h2>Asesmen</h2><table><tr><th style="width:22%">Jenis (RMT)</th><th>Bentuk</th></tr>'
                '<tr><td>Formatif</td><td>Cek pemahaman di tiap langkah LKPD, pengamatan guru terhadap fungsi kognitif dan bahasa '
                'matematika siswa, isian refleksi.</td></tr>'
                '<tr><td>Sumatif</td><td>Tes Mathematical Literacy (4 soal uraian, rubrik per tahap, skor maks. 24).</td></tr>'
                '<tr><td>Evaluatif</td><td>Nilai = total skor ÷ 24 × 100, dibandingkan sebelum dan sesudah pembelajaran.</td></tr></table>'
                '<h2>Daftar bahan cetak</h2><ul>'
-               '<li>LKPD Pertemuan 1, 2, 3 dan Kunci Jawaban LKPD (folder ini)</li>'
+               '<li>LKPD Sesi 1 & 2 (Pertemuan 1), LKPD Sesi 3 (Pertemuan 2), dan Kunci Jawaban LKPD (folder ini)</li>'
                '<li>Materi ringkas: docs/materi/Materi-Teorema-Pythagoras.pdf</li>'
-               '<li>Latihan Pertemuan 4 dan kuncinya: docs/latihan-cetak/</li>'
+               '<li>Latihan Soal Pertemuan 2 dan kuncinya: docs/latihan-cetak/</li>'
+               '<li>Kuesioner Cognitive Load Pertemuan 1 & 2: docs/instrumen-cetak/</li>'
                '<li>Tes & rubrik Mathematical Literacy: docs/instrumen-cetak-literasi/</li></ul>')
     return halaman("Modul Ajar RMT Teorema Pythagoras", "".join(isi))
 
@@ -255,7 +291,7 @@ def modul():
 if __name__ == "__main__":
     os.makedirs(KELUAR, exist_ok=True)
     berkas = [("0-Modul-Ajar-RMT-Teorema-Pythagoras.html", modul())]
-    berkas += [(f"{s['id']}-LKPD-Pertemuan-{s['id']}.html", lkpd(s)) for s in SESI]
+    berkas += [(f"{s['id']}-LKPD-Sesi-{s['id']}-Pertemuan-{pertemuan(s)}.html", lkpd(s)) for s in SESI]
     berkas += [("4-Kunci-Jawaban-LKPD.html", kunci())]
     for nama, isi in berkas:
         with open(os.path.join(KELUAR, nama), "w", encoding="utf-8") as f:

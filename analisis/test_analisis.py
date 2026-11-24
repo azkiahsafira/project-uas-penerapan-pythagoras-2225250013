@@ -65,6 +65,33 @@ def test_rekap_memakai_percobaan_pertama():
     assert rekap[0]["pretest"] == 0 and "lebih dari sekali" in peringatan[0]
 
 
+# --- Kuesioner Harian Cognitive Load (Pertemuan 1 & 2, skala 1-9) -----------
+def test_kuesioner_harian_kertas_per_pertemuan_dan_rata_rata(tmp_path):
+    kepala = ["jenis", "nama", "kelompok", "tanggal"] + [f"b{i}" for i in range(1, 11)]
+    p = tulis(tmp_path, "kertas.csv", [kepala,
+                                       ["beban1", "8A-01", "Diajar langsung", "2026-11-17", 3, 3, 3, 5, 5, 5, 7, 7, 7, 7],
+                                       ["beban2", "8A-01", "Diajar langsung", "2026-11-24", 1, 2, 3, 4, 4, 4, 9, 9, 8, 8],
+                                       ["leppink", "8A-01", "Diajar langsung", "2026-11-24", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+    data = A.baca_kertas(p)
+    assert [d["jenis"] for d in data] == ["beban1", "beban2"]  # jenis lama (Leppink 0-10) diabaikan
+    assert (data[0]["EL"], data[0]["IL"], data[0]["GL"]) == (3, 5, 7)  # b1-3 EL, b4-6 IL, b7-10 GL
+    rekap, _ = A.rekap_per_siswa(data)
+    r = rekap[0]
+    assert (r["EL1"], r["EL2"], r["IL2"], r["GL2"]) == (3, 2, 4, 8.5)
+    assert (r["EL"], r["IL"], r["GL"]) == (2.5, 4.5, 7.75)
+
+
+def test_kuesioner_harian_butir_di_luar_skala_dianggap_kosong(tmp_path):
+    kepala = ["jenis", "nama"] + [f"b{i}" for i in range(1, 11)]
+    p = tulis(tmp_path, "kertas.csv", [kepala, ["beban1", "8A-02", 0, 5, 5, 5, 5, 5, 10, 5, 5, 5]])
+    d = A.baca_kertas(p)[0]
+    assert (d["EL"], d["IL"], d["GL"]) == (None, 5, None)
+
+
+def test_kategori_beban_skala_paas():
+    assert [A.kategori_beban(n) for n in (1, 3.5, 5, 6.33, 6.5, 9, None)] ==         ["rendah", "rendah", "sedang", "sedang", "tinggi", "tinggi", "-"]
+
+
 # --- tes Mathematical Literacy (uraian) ------------------------------------
 def tulis(tmp_path, nama, baris):
     p = tmp_path / nama

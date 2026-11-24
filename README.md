@@ -90,8 +90,8 @@ Dari rumus tersebut diperoleh tiga bentuk:
   - Tanya Siku memandu fungsi kognitif **Amati → Hubungkan → Pakai alat → Jelaskan** dan **selalu berfungsi**: beberapa AI gratis
     berurutan, lalu **Siku Mandiri** (tanpa AI) bila kuota habis atau server AI mati ([rincian](docs/chatbot-tanya-siku.md)).
 - **Pembelajaran tanpa aplikasi** ([docs/pembelajaran-tanpa-aplikasi](docs/pembelajaran-tanpa-aplikasi)): Modul Ajar RMT untuk guru,
-  LKPD Pertemuan 1–3 (isi sama dengan menu Belajar), dan kunci jawaban; Pertemuan 4 memakai
-  [lembar latihan cetak](docs/latihan-cetak).
+  LKPD Sesi 1 & 2 (Pertemuan 1) dan Sesi 3 (Pertemuan 2) yang isinya sama dengan menu Belajar, kunci jawaban, serta
+  [lembar latihan cetak](docs/latihan-cetak) untuk Pertemuan 2.
 - **Video pembelajaran** (± 9,5 menit, 24 adegan: seluruh langkah Sesi 1–3 + cara memakai fitur aplikasi, narasi suara Indonesia & subtitle) dibuat dengan [`scripts/video/buat_video.py`](scripts/video/buat_video.py).
 - **Belajar 3 sesi**: materi bertahap yang harus diikuti berurutan.
   - Urutan & contoh sama dengan [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf).
@@ -108,9 +108,9 @@ Dari rumus tersebut diperoleh tiga bentuk:
   - **Cek kewajaran**: jawaban yang mustahil (mis. sisi miring lebih pendek) tidak langsung dinilai; siswa diajak memeriksa dulu (GL2).
   - **Refleksi "Mengapa…?"** setiap soal ke-3, dengan alasan tertulis opsional (GL4).
 - **Tes penelitian** (menu Tes):
-  - **Pre-test** (pertemuan 1, sebelum Sesi 1) dan **post-test** (pertemuan 5): masing-masing 10 soal paralel, satu soal per layar, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
-  - **Kuesioner beban kognitif Leppink** (pertemuan 5, setelah post-test): 10 pernyataan skala 0–10 untuk intrinsic, extraneous, dan germane load.
-  - Identitas siswa (nama, kelas, sekolah, kelompok: belajar dengan aplikasi), durasi pengerjaan, dan nilai dicatat. Menu lain disembunyikan selama tes.
+  - **Pre-test** (awal Pertemuan 1) dan **post-test** (akhir Pertemuan 2): tes Mathematical Literacy 4 soal uraian, tanpa umpan balik benar/salah agar tes tidak ikut mengajari.
+  - **Kuesioner Harian Cognitive Load** (lembar dari dosen; rujukan Paas 1992, Paas dkk. 2003, Sweller dkk. 1998, Leppink dkk. 2013, Klepsch dkk. 2017): 10 butir usaha mental skala **1–9** (1 = sangat rendah, 5 = sedang, 9 = amat sangat tinggi), diisi di **akhir Pertemuan 1 dan akhir Pertemuan 2**. Butir 1–3 extraneous, 4–6 intrinsic, 7–10 germane load; tampil sebagai tombol angka 1–9 per butir.
+  - Identitas memakai **kode siswa** (mis. 8A-01), bukan nama. Durasi pengerjaan dan nilai dicatat. Menu lain disembunyikan selama tes.
   - Hasil disimpan di perangkat lalu dikirim ke database **Supabase**. Jika internet putus, hasil tetap aman di perangkat dan dikirim ulang otomatis. Hasil juga bisa diunduh sebagai CSV.
 - **Kalkulator tiga mode**: mencari sisi miring, alas, atau tinggi.
 - **Langkah penyelesaian**: perhitungan ditampilkan baris per baris, dari rumus sampai hasil akhir.
@@ -118,7 +118,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Deteksi tripel Pythagoras**: memberi tahu jika ketiga sisi bilangan bulat, misalnya (3, 4, 5).
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari** (Kalkulator, sama dengan Contoh 1–3 materi PDF): panjang tangga, tinggi layang-layang, jarak terpendek, dan diagonal layar.
-- **Latihan soal = Pertemuan 4 (implementasi)**: berjenjang seperti Latihan Berjenjang materi PDF: soal 1–3 angka langsung, soal 4–6 dengan gambar yang diputar, soal 7 dst. soal cerita (tangga, layang-layang, jarak berjalan, perahu, diagonal layar, kawat tiang bendera, diagonal taman); angka dibuat acak dari tripel Pythagoras yang tidak dipakai di pre/post-test, jawaban diperiksa otomatis, ada skor, target minimal 10 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
+- **Latihan Soal = Pertemuan 2 (setelah Sesi 3)**: berjenjang seperti Latihan Berjenjang materi PDF: soal 1–3 angka langsung, soal 4–6 dengan gambar yang diputar, soal 7 dst. soal cerita (tangga, layang-layang, jarak berjalan, perahu, diagonal layar, kawat tiang bendera, diagonal taman); angka dibuat acak dari tripel Pythagoras yang tidak dipakai di pre/post-test, jawaban diperiksa otomatis, ada skor, target minimal 5 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
 - **Header "PELITA" (panggung pesta)**: judul PELITA (PEnerapan · Learning · pItagoras · Teorema · Azkiah Safira) beserta
   artinya, bendera warna-warni, pelangi pastel yang ujungnya awan berwajah, empat sahabat kawaii orisinal di panggung awan
   (**Kuadra** si penguin a², **Lila** si domba b², **Hipo** si beruang c², **Akar** si kucing √), maskot **Siku**,
@@ -150,21 +150,22 @@ Materi di [src/materi.js](src/materi.js) dirancang mengikuti *Cognitive Load The
 
 ## Alur Penelitian
 
-| Pertemuan | Kegiatan | Menu di aplikasi |
-| --------- | -------- | ---------------- |
-| 1 | Pre-test, lalu Sesi 1 | Tes → Pre-test, lalu Belajar → Sesi 1 |
-| 2 | Sesi 2 | Belajar → Sesi 2 |
-| 3 | Sesi 3 | Belajar → Sesi 3 |
-| 4 | Implementasi (difasilitasi mahasiswa) | Latihan Soal (label "Pertemuan 4 · Implementasi", minimal 10 soal), Kalkulator untuk memeriksa |
-| 5 | Post-test dan skala beban kognitif | Tes → Post-test, lalu Tes → Kuesioner Beban Kognitif |
+Penelitian berlangsung **2 pertemuan** (sesuai instrumen Kuesioner Harian Cognitive Load dari dosen yang diisi di akhir
+setiap pertemuan), untuk kelompok yang memakai aplikasi maupun yang diajar tanpa aplikasi:
 
-**Urutan ini dikunci di aplikasi** ([src/alur.js](src/alur.js)) agar data valid: Belajar (cek prasyarat & Sesi 1–3) baru terbuka
-setelah pre-test dikumpulkan; Latihan Soal setelah Sesi 3 selesai; post-test setelah Latihan minimal 10 soal; kuesioner setelah
-post-test. Pre-test, post-test, dan kuesioner **hanya sekali** per kode siswa (backend juga menolak percobaan kedua). Kode kelompok
+| Pertemuan | Urutan kegiatan | Menu di aplikasi |
+| --------- | --------------- | ---------------- |
+| 1 | Pre-test → cek prasyarat → Sesi 1 → Sesi 2 → **Kuesioner Pertemuan 1** | Tes → Pre-test, Belajar → cek prasyarat, Sesi 1, Sesi 2, lalu Tes → Kuesioner Pertemuan 1 |
+| 2 | Sesi 3 → Latihan Soal (min. 5 soal) → **Kuesioner Pertemuan 2** → post-test | Belajar → Sesi 3, Latihan Soal (label "Pertemuan 2 · Latihan"), Tes → Kuesioner Pertemuan 2, Tes → Post-test |
+
+**Urutan ini dikunci di aplikasi** ([src/alur.js](src/alur.js)) agar data valid: Belajar baru terbuka setelah pre-test; sesi
+harus berurutan; Kuesioner Pertemuan 1 terbuka setelah Sesi 1 & 2; **Sesi 3 baru terbuka setelah Kuesioner Pertemuan 1**
+(penanda Pertemuan 2); Latihan Soal setelah Sesi 3; Kuesioner Pertemuan 2 setelah Latihan minimal 5 soal; post-test setelah
+Kuesioner Pertemuan 2. Pre-test, kedua kuesioner, dan post-test **hanya sekali** per kode siswa (backend juga menolak percobaan kedua). Kode kelompok
 `Uji coba peneliti` (mis. `8Z-99`, untuk demo ke dosen) tidak dikunci dan tidak ikut dianalisis.
 
-Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis: tes Mathematical Literacy & rubrik ([docs/instrumen-cetak-literasi](docs/instrumen-cetak-literasi)) dan kuesioner beban kognitif ([docs/instrumen-cetak](docs/instrumen-cetak), `node scripts/buat-lembar-tes.mjs`).
-Untuk mengajar siswa tersebut dipakai [Modul Ajar & LKPD model RMT](docs/pembelajaran-tanpa-aplikasi) yang isinya sama dengan menu Belajar, [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf), dan di pertemuan 4 ia mengerjakan
+Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis: tes Mathematical Literacy & rubrik ([docs/instrumen-cetak-literasi](docs/instrumen-cetak-literasi)) dan Kuesioner Cognitive Load Pertemuan 1 & 2 ([docs/instrumen-cetak](docs/instrumen-cetak), `node scripts/buat-lembar-tes.mjs`).
+Untuk mengajar siswa tersebut dipakai [Modul Ajar & LKPD model RMT](docs/pembelajaran-tanpa-aplikasi) yang isinya sama dengan menu Belajar, [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf), dan di Pertemuan 2 ia mengerjakan
 [lembar latihan soal](docs/latihan-cetak) (12 soal berjenjang setara menu Latihan Soal, kunci terpisah; `python scripts/buat_lembar_latihan.py`).
 
 Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai **lembar validasi ahli materi dan ahli media**
@@ -196,12 +197,13 @@ Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai
   [docs/instrumen-cetak-literasi](docs/instrumen-cetak-literasi) (`python scripts/buat_tes_literasi.py`); analisis:
   `python analisis/analisis_literasi.py skor_literasi.csv`.
 
-- **Kuesioner beban kognitif**: diadaptasi dari Leppink dkk. (2013), 10 butir skala 0 (sama sekali tidak setuju) sampai 10 (sangat setuju). Skor tiap jenis beban adalah rata-rata butirnya:
+- **Kuesioner Harian Cognitive Load** (lembar dari dosen; rujukan Paas 1992, Paas dkk. 2003, Sweller dkk. 1998, Leppink dkk. 2013, Klepsch dkk. 2017): 10 butir usaha mental skala **1–9** (1 = sangat rendah, 5 = sedang, 9 = amat sangat tinggi), diisi di **akhir Pertemuan 1 dan akhir Pertemuan 2**. Setiap butir berbentuk "Seberapa besar usaha berpikir yang kamu keluarkan untuk … hari ini?".
+  Skor tiap komponen per pertemuan adalah rata-rata butirnya, lalu dibandingkan Pertemuan 1 vs 2 dan dirata-rata:
 
-  | Jenis beban | Butir | Harapan |
-  | ----------- | ----- | ------- |
-  | Intrinsic load (IL) | 1–3 | dikelola |
-  | Extraneous load (EL) | 4–6 | serendah mungkin |
+  | Komponen | Butir | Harapan |
+  | -------- | ----- | ------- |
+  | Extraneous load (EL) | 1–3 | serendah mungkin |
+  | Intrinsic load (IL) | 4–6 | dikelola |
   | Germane load (GL) | 7–10 | setinggi mungkin |
 
 ## Algoritma
@@ -295,8 +297,8 @@ Ada dua tabel. Skema dan aturan keamanannya ada di [supabase/schema.sql](supabas
 
 | Tabel | Isi |
 | ----- | --- |
-| `hasil` | pre-test, post-test, dan kuesioner Leppink (nilai, jawaban, durasi, IL/EL/GL) |
-| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka, berapa kali tombol Bacakan dipakai) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah); serta tiap soal **latihan** pertemuan 4 (`sesi` = 4, `langkah` = nomor soal, hasil benar / salah / menyerah) |
+| `hasil` | pre-test, post-test, dan Kuesioner Harian (`beban1` = Pertemuan 1, `beban2` = Pertemuan 2; jawaban, durasi, IL/EL/GL) |
+| `aktivitas` | proses belajar di menu Belajar: tiap **langkah** (lama waktu, berapa kali salah, hasil pertanyaan: benar / jawaban dibuka, berapa kali tombol Bacakan dipakai) dan tiap **sesi** (total waktu, total salah, selesai / keluar di tengah); serta tiap soal **latihan** Pertemuan 2 (`sesi` = 4 sebagai kode latihan, `langkah` = nomor soal, hasil benar / salah / menyerah) |
 
 Sebelum mulai Sesi 1, siswa mengisi nama sekali ("Kenalan dulu, yuk!"); nama yang sama dipakai juga di menu Tes.
 
@@ -329,7 +331,7 @@ Perintah lainnya:
 | `npm run build` | membuat versi siap pakai di folder `dist` |
 | `npm run preview` | menjalankan hasil build |
 | `npm run lint` | memeriksa kode |
-| `npm test` | 16 pengujian otomatis JavaScript (`tests/`): rumus Pythagoras, fitur bantuan, kunci tes, Leppink, materi, tes literasi |
+| `npm test` | 16 pengujian otomatis JavaScript (`tests/`): rumus Pythagoras, fitur bantuan, kunci tes, Kuesioner Harian Cognitive Load, materi, tes literasi |
 
 Setiap push ke branch `main` otomatis di-build dan dipasang di **Vercel** (https://pelita-azkiah-safira-pythagoras.vercel.app). GitHub Actions ([.github/workflows/periksa.yml](.github/workflows/periksa.yml)) memeriksa lint & build.
 
@@ -348,7 +350,7 @@ Untuk menyambungkan aplikasi ke backend, isi `VITE_API_URL` di `.env` (mis. `htt
 
 ## Analisis Data (Python)
 
-Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, **literasi matematis per proses (merumuskan, menerapkan, menafsirkan)**, skor beban kognitif Leppink, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, langkah yang paling lama/paling banyak salah (indikasi intrinsic load), serta rekap latihan pertemuan 4 per siswa (jumlah soal, persentase benar, rata-rata waktu per soal). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
+Script [analisis/analisis.py](analisis/analisis.py) mengolah CSV ekspor tabel `hasil` dari Supabase: nilai pre/post-test, N-gain, ketercapaian indikator, **literasi matematis per proses (merumuskan, menerapkan, menafsirkan)**, skor cognitive load (EL, IL, GL) Pertemuan 1, Pertemuan 2 & rata-ratanya, perbandingan kelompok, serta grafik SVG. Dengan opsi `--aktivitas`, script juga menganalisis tabel `aktivitas`: rata-rata waktu dan jumlah salah tiap langkah materi, waktu tiap sesi, langkah yang paling lama/paling banyak salah (indikasi intrinsic load), serta rekap Latihan Soal Pertemuan 2 per siswa (jumlah soal, persentase benar, rata-rata waktu per soal). Hanya memakai library bawaan Python. Petunjuk lengkap ada di [analisis/README.md](analisis/README.md).
 
 ```bash
 cd analisis
@@ -397,12 +399,12 @@ aplikasi-pythagoras/
     ├── Hewan.jsx     anak ayam, bebek, panda, katak, anjing + HewanHidup (hewan yang bisa ditaruh di mana saja)
     ├── kalimat.js    semua kalimat sapaan karakter & suara hewan (mudah diubah)
     ├── Ikon.jsx      ikon menu
-    ├── Tes.jsx       pre-test, post-test, kuesioner Leppink
+    ├── Tes.jsx       pre-test, post-test, Kuesioner Harian Pertemuan 1 & 2
     ├── tes.js        soal tes dan butir kuesioner
     ├── penyimpanan.js penyimpanan hasil, kirim ke Supabase, ekspor CSV
     ├── supabase.js   koneksi ke Supabase
     ├── materi.js     isi materi 3 sesi + fase & langkah RMT tiap langkah
-    ├── Latihan.jsx   latihan soal pertemuan 4 (Diketahui/Ditanya, sisi miring, petunjuk, refleksi)
+    ├── Latihan.jsx   latihan soal Pertemuan 2 (Diketahui/Ditanya, sisi miring, petunjuk, refleksi)
     ├── Prasyarat.jsx cek prasyarat kuadrat & akar
     ├── SegitigaPutar.jsx segitiga yang diputar untuk menunjuk sisi miring
     ├── bantuan.js    petunjuk bertingkat, cek kewajaran, refleksi, soal prasyarat

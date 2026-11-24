@@ -15,7 +15,7 @@ flowchart LR
   GP["Vercel<br/>file statis aplikasi"]
   API["FastAPI (Python)<br/>Vercel (serverless, gratis)"]
   DB[("Supabase<br/>PostgreSQL")]
-  PY["Python analisis.py<br/>N-gain, Leppink, rekap"]
+  PY["Python analisis.py<br/>N-gain, cognitive load P1 & P2, rekap"]
 
   GP -- unduh aplikasi --> UI
   UI --- TJS
@@ -32,7 +32,7 @@ flowchart LR
 | Ilustrasi 3D | **three.js** | Adegan tangga–dinding yang bisa diputar; dimuat hanya saat dibuka |
 | Backend | **FastAPI** (Python) di **Vercel** (gratis, tanpa kartu) | Masuk dengan kode siswa, menilai tes di server, menyimpan hasil & aktivitas |
 | Basis data | **Supabase** (PostgreSQL) | Tabel `siswa`, `hasil`, `aktivitas` |
-| Analisis | **Python** (pustaka bawaan) | Rekap pre/post, N-gain, Leppink, jejak belajar |
+| Analisis | **Python** (pustaka bawaan) | Rekap pre/post, N-gain, Kuesioner Harian Cognitive Load (P1 & P2), jejak belajar |
 | Hosting aplikasi | **Vercel** (https://pelita-azkiah-safira-pythagoras.vercel.app) | File statis hasil `npm run build` |
 
 ## 2. Alur utama

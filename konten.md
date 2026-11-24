@@ -30,17 +30,17 @@
 | Teorema Pythagoras (pola luas 9 + 16 = 25) | Sesi 2 | Bagian 3 | IL2, GL1 |
 | Mencari sisi miring & sisi siku-siku | Sesi 2, Kalkulator | Bagian 3 | IL2 |
 | Strategi 5 langkah soal cerita | Sesi 3 | Bagian 4 | EL1, EL5, GL3 |
-| Penerapan sehari-hari | Sesi 3, Latihan (pertemuan 4) | Bagian 5, Latihan | IL4, GL5 |
+| Penerapan sehari-hari | Sesi 3, Latihan (Pertemuan 2) | Bagian 5, Latihan | IL4, GL5 |
 
 ## 4. Konteks masalah yang dipakai
 Sama dengan materi PDF (Bagian 5 "Pola yang sama, cerita berbeda"): tangga–dinding, benang layang-layang, jarak berjalan,
 perahu berlayar, diagonal layar (laptop, TV, monitor), kawat penopang tiang bendera, dan diagonal taman.
 
-Latihan pertemuan 4 berjenjang seperti "Latihan Berjenjang" di PDF: soal 1–3 **angka langsung**, soal 4–6 **dengan gambar**
+Latihan Soal Pertemuan 2 berjenjang seperti "Latihan Berjenjang" di PDF: soal 1–3 **angka langsung**, soal 4–6 **dengan gambar**
 (segitiga diputar), soal 7 dst. **soal cerita**. Contoh soal di Kalkulator = Contoh 1–3 PDF (panjang tangga 3–4–5,
 tinggi layang-layang 20–21–29, jarak terpendek 15–20–25) + diagonal layar.
 
-Siswa yang diajar langsung mengerjakan [lembar latihan pertemuan 4](docs/latihan-cetak) dengan jenjang & konteks yang sama
+Siswa yang diajar langsung mengerjakan [lembar latihan Pertemuan 2](docs/latihan-cetak) dengan jenjang & konteks yang sama
 (4 angka langsung, 4 dengan gambar diputar, 4 soal cerita), angka baru yang tidak ada di materi PDF maupun pre/post-test.
 
 ## 5. Aturan menulis soal
@@ -61,7 +61,7 @@ Target: ≥ 10 soal per tingkat. Soal tingkat 3 di aplikasi dibuat acak dari tri
 
 ## 7. Instrumen penelitian
 - **Pre-test & post-test**: 10 butir paralel per indikator ([src/tes.js](src/tes.js)); versi cetak di [docs/instrumen-cetak](docs/instrumen-cetak).
-- **Kuesioner Leppink dkk. (2013)**: 10 butir, skala 0–10 (IL 3, EL 3, GL 4).
+- **Kuesioner Harian Cognitive Load** (lembar dosen): 10 butir usaha mental skala Paas 1–9 (EL 3, IL 3, GL 4), diisi di akhir Pertemuan 1 dan Pertemuan 2.
 - Kunci jawaban harus sama di `src/tes.js`, `analisis/analisis.py`, dan lembar kunci cetak.
 
 ## 8. Sumber

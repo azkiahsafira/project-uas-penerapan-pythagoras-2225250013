@@ -11,7 +11,7 @@ import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 from backend import main  # noqa: E402
-from backend.penilaian import nilai_leppink, nilai_tes  # noqa: E402
+from backend.penilaian import nilai_harian, nilai_tes  # noqa: E402
 from backend.sesi import buat_token, periksa_token  # noqa: E402
 
 klien = TestClient(main.app)
@@ -36,9 +36,11 @@ def test_nilai_tes_teks_angka_dan_huruf():
     assert nilai_tes("pretest", jawaban) == {"benar": 7, "total": 10, "skor": 70}
 
 
-def test_nilai_leppink_rata_rata():
-    jawaban = {"IL1": 4, "IL2": 5, "IL3": 6, "EL1": 1, "EL2": 2, "EL3": 3, "GL1": 8, "GL2": 8, "GL3": 7, "GL4": 9}
-    assert nilai_leppink(jawaban) == {"IL": 5.0, "EL": 2.0, "GL": 8.0}
+def test_nilai_harian_rata_rata():
+    jawaban = {"b1": 2, "b2": 2, "b3": 2, "b4": 5, "b5": 5, "b6": 5, "b7": 8, "b8": 8, "b9": 8, "b10": 8}
+    assert nilai_harian(jawaban) == {"EL": 2.0, "IL": 5.0, "GL": 8.0}
+    # skala Paas 1-9: angka 0 atau 10 tidak sah
+    assert nilai_harian({**jawaban, "b1": 0})["EL"] is None and nilai_harian({**jawaban, "b10": 10})["GL"] is None
 
 
 def test_token_sah_palsu_kedaluwarsa():
@@ -159,3 +161,20 @@ def test_rekap_peneliti_dan_ngain():
     assert klien.get("/api/peneliti/rekap").status_code == 403
     data = klien.get("/api/peneliti/rekap", headers={"X-Kunci-Peneliti": main.KUNCI_PENELITI}).json()["siswa"][0]
     assert (data["pretest"], data["posttest"], data["n_gain"]) == (20, 50, 0.38)
+
+
+def test_kuesioner_harian_tersimpan_dan_hanya_sekali_per_pertemuan():
+    """Kuesioner Pertemuan 1 & 2 (beban1, beban2) dinilai di server: rata-rata EL, IL, GL skala 1-9; tiap pertemuan sekali."""
+    kepala = {"Authorization": "Bearer " + klien.post("/api/masuk", json={"kode": "8A-02"}).json()["token"]}
+    jawaban = {"b1": 3, "b2": 3, "b3": 3, "b4": 6, "b5": 6, "b6": 6, "b7": 7, "b8": 7, "b9": 7, "b10": 7}
+    for jenis in ("beban1", "beban2"):
+        r = klien.post("/api/hasil", headers=kepala, json={"id": f"k-{jenis}", "jenis": jenis, "mulai": "2026-11-25T01:00:00Z",
+                                                          "selesai": "2026-11-25T01:05:00Z", "jawaban": jawaban})
+        assert r.status_code == 200, r.text
+    baris = {b["jenis"]: b for b in main.db.semua("hasil") if b["nama"] == "8A-02"}
+    assert (baris["beban1"]["el"], baris["beban1"]["il"], baris["beban1"]["gl"]) == (3.0, 6.0, 7.0)
+    ulang = klien.post("/api/hasil", headers=kepala, json={"id": "k-lagi", "jenis": "beban1", "mulai": "2026-11-25T02:00:00Z",
+                                                          "selesai": "2026-11-25T02:05:00Z", "jawaban": jawaban})
+    assert ulang.status_code == 409
+    assert klien.post("/api/hasil", headers=kepala, json={"id": "k-x", "jenis": "leppink", "mulai": "2026-11-25T02:00:00Z",
+                                                          "selesai": "2026-11-25T02:05:00Z", "jawaban": jawaban}).status_code == 422

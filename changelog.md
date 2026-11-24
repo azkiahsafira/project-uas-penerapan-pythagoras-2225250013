@@ -2,6 +2,21 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [3.2] · 25 November 2026 — Instrumen dosen: Kuesioner Harian Cognitive Load, penelitian 2 pertemuan
+- **Kuesioner Harian Cognitive Load** sesuai lembar blanko dosen menggantikan kuesioner Leppink 0–10: 10 butir usaha mental
+  ("Seberapa besar usaha berpikir yang kamu keluarkan untuk … hari ini?"), skala Paas **1–9**, butir 1–3 extraneous,
+  4–6 intrinsic, 7–10 germane load. Diisi di **akhir Pertemuan 1** (`beban1`) dan **akhir Pertemuan 2** (`beban2`).
+- **Alur penelitian menjadi 2 pertemuan** (dikunci di `src/alur.js`): Pertemuan 1 = pre-test → cek prasyarat → Sesi 1 → Sesi 2 →
+  Kuesioner Pertemuan 1; Pertemuan 2 = Sesi 3 → Latihan Soal (minimal 5 soal) → Kuesioner Pertemuan 2 → post-test. Sesi 3
+  baru terbuka setelah Kuesioner Pertemuan 1.
+- Backend menerima jenis `beban1`/`beban2` (nilai 1–9 divalidasi, EL/IL/GL dihitung di server, satu kali per pertemuan);
+  `supabase/schema.sql` bagian Versi 4 mengizinkan kedua jenis itu.
+- Analisis: EL, IL, GL per pertemuan, perubahan P1 → P2, dan rata-ratanya (kategori skala 1–9); lembar kertas memakai
+  kolom `b1`–`b10` dengan jenis `beban1`/`beban2`.
+- Bahan cetak: Kuesioner Cognitive Load Pertemuan 1 & 2 (kode siswa, bukan nama); Modul Ajar RMT disusun ulang menjadi
+  2 pertemuan × 3 JP; LKPD diberi nama per sesi (Sesi 1 & 2 = Pertemuan 1, Sesi 3 = Pertemuan 2); lembar latihan menjadi
+  Latihan Soal Pertemuan 2 (target 5 soal). Narasi video, screenshot, dan semua dokumen disesuaikan. Versi cache PWA `pythagoras-v16`.
+
 ## [3.1] · 24 November 2026 — Versi final: audit menyeluruh
 - Label fase RMT juga di menu **Kalkulator** (Fase II · Langkah 5: memakai alat matematika) dan **Latihan Soal** (Fase III ·
   Langkah 6: berlatih & merefleksi), sehingga seluruh aplikasi konsisten memakai model RMT.

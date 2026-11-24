@@ -1,10 +1,10 @@
-// Pengujian instrumen penelitian & isi materi: kunci tes, Leppink, kesesuaian materi, tes Mathematical Literacy,
+// Pengujian instrumen penelitian & isi materi: kunci tes, Kuesioner Harian Cognitive Load, kesesuaian materi, tes Mathematical Literacy,
 // dan aturan "soal latihan tidak boleh membocorkan butir tes" (konten.md §5).
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import { SESI } from '../src/materi.js'
-import { LEPPINK, POSTTEST, PRETEST, nilaiLeppink, nilaiTes } from '../src/tes.js'
+import { KUESIONER_HARIAN, POSTTEST, PRETEST, SKALA_PAAS, nilaiHarian, nilaiTes } from '../src/tes.js'
 
 const baca = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8')
 const jawabanBenar = (soal) => Object.fromEntries(soal.map((s, i) => [i, String(s.jawab)]))
@@ -22,13 +22,16 @@ test('pre-test & post-test paralel: 10 butir, tipe sama per nomor, nilai 100 bil
   assert.equal(nilaiTes(PRETEST, { 4: '15,0' }).benar, 1) // koma desimal diterima
 })
 
-test('kuesioner Leppink: 3 IL, 3 EL, 4 GL, skor = rata-rata per dimensi', () => {
+test('Kuesioner Harian Cognitive Load: 10 butir (3 EL, 3 IL, 4 GL) urut seperti lembar dosen, skala Paas 1–9', () => {
+  assert.equal(KUESIONER_HARIAN.length, 10)
   assert.deepEqual(
-    ['IL', 'EL', 'GL'].map((d) => LEPPINK.filter((b) => b.dimensi === d).length),
-    [3, 3, 4],
+    KUESIONER_HARIAN.map((b) => b.dimensi),
+    ['EL', 'EL', 'EL', 'IL', 'IL', 'IL', 'GL', 'GL', 'GL', 'GL'],
   )
-  const jawaban = Object.fromEntries(LEPPINK.map((b) => [b.id, b.dimensi === 'GL' ? 8 : 2]))
-  assert.deepEqual(nilaiLeppink(jawaban), { IL: 2, EL: 2, GL: 8 })
+  assert.equal(SKALA_PAAS.length, 9)
+  for (const b of KUESIONER_HARIAN) assert.match(b.teks, /^Seberapa besar usaha berpikir yang kamu keluarkan untuk .+\?$/)
+  const jawaban = Object.fromEntries(KUESIONER_HARIAN.map((b) => [b.id, b.dimensi === 'GL' ? 8 : b.dimensi === 'IL' ? 5 : 2]))
+  assert.deepEqual(nilaiHarian(jawaban), { EL: 2, IL: 5, GL: 8 })
 })
 
 test('materi: 3 sesi, kunci setiap cek pilihan ada di opsinya, tanpa kata "geometri"', () => {
@@ -41,7 +44,7 @@ test('materi: 3 sesi, kunci setiap cek pilihan ada di opsinya, tanpa kata "geome
   assert.doesNotMatch(JSON.stringify(SESI).toLowerCase(), /geometri/)
 })
 
-test('angka latihan pertemuan 4 tidak sama dengan tripel butir pre/post-test', () => {
+test('angka latihan tidak sama dengan tripel butir pre/post-test', () => {
   const latihan = baca('src/Latihan.jsx')
   const awal = latihan.indexOf('const TRIPEL = [')
   const blok = latihan.slice(awal, latihan.indexOf(']\n', awal))

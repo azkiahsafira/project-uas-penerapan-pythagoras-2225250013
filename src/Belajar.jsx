@@ -5,7 +5,7 @@ import { IlustrasiSesi, Konfeti, Pelangi } from './Hiasan.jsx'
 import Maskot from './Maskot.jsx'
 import FormKode from './Masuk.jsx'
 import CekPrasyarat from './Prasyarat.jsx'
-import { kunciBelajar } from './alur.js'
+import { kunciBelajar, kunciSesi } from './alur.js'
 import Segitiga from './Segitiga.jsx'
 import SegitigaPutar from './SegitigaPutar.jsx'
 import { BATAS_SIAP, JUMLAH_PRASYARAT, bacaPrasyarat } from './bantuan.js'
@@ -500,9 +500,11 @@ export default function Belajar() {
             </div>
             <h2 id="judul-selamat">Hebat, sesi {selamat.id} selesai! 🎉</h2>
             <p>
-              {selamat.id < SESI.length
-                ? `Sesi ${selamat.id + 1} sekarang sudah terbuka. Istirahat sebentar, lalu lanjut ya!`
-                : 'Kamu sudah menyelesaikan semua sesi. Di pertemuan 4, terapkan ilmumu di menu Latihan Soal ya!'}
+              {selamat.id === 1
+                ? 'Sesi 2 sekarang sudah terbuka. Istirahat sebentar, lalu lanjut ya!'
+                : selamat.id === 2
+                  ? 'Pertemuan 1 selesai! Sekarang isi Kuesioner Pertemuan 1 di menu Tes. Sesi 3 dibuka di Pertemuan 2.'
+                  : 'Kamu sudah menyelesaikan semua sesi. Lanjut terapkan ilmumu di menu Latihan Soal ya!'}
             </p>
             <button type="button" className="hitung" autoFocus onClick={() => setSelamat(null)}>
               Oke, siap!
@@ -535,7 +537,7 @@ export default function Belajar() {
           </button>
         </p>
       )}
-      {/* Pertemuan 1: Belajar baru dibuka setelah pre-test dikumpulkan (alur.js) */}
+      {/* Pertemuan 1: Belajar baru dibuka setelah pre-test dikumpulkan; Sesi 3 di Pertemuan 2 (alur.js) */}
       {kunciUmum && (
         <p className="info-terkunci" role="status">
           🔒 {kunciUmum}
@@ -564,7 +566,8 @@ export default function Belajar() {
         <HewanHidup jenis="kucing" className="hinggap kanan" />
         {SESI.map((s, i) => {
           const sudah = selesai.includes(s.id)
-          const terkunci = i > 0 && !selesai.includes(SESI[i - 1].id)
+          const kunci = kunciSesi(s.id)
+          const terkunci = Boolean(kunci)
           // sesi pertama yang belum selesai & tidak terkunci diberi tanda berdenyut
           const berikutnya = prasyarat && !sudah && !terkunci && SESI.findIndex((x) => !selesai.includes(x.id)) === i
           return (
@@ -575,7 +578,7 @@ export default function Belajar() {
               <p>{s.tujuan}</p>
               <p className="ket">
                 {s.langkah.length} langkah{sudah ? ' · ✓ Selesai' : ''}
-                {terkunci ? ' · Selesaikan sesi sebelumnya dulu' : ''}
+                {terkunci ? ` · ${kunci}` : ''}
               </p>
               <button type="button" className="hitung" disabled={terkunci || !!kunciUmum} onClick={() => mulai(s)}>
                 {sudah ? 'Ulangi sesi' : 'Mulai sesi'}

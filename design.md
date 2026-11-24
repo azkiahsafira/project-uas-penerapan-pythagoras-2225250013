@@ -18,7 +18,7 @@
 > ⚠️ **Keputusan pengembang (wawancara AI → Azkiah):** animasi & hiasan yang sudah ada (halaman sekolah, latar 3D Langit Pythagoras — sebelumnya bawah laut, diganti atas permintaan pengembang 16 November 2026 —, konfeti, layar perayaan)
 > **dipertahankan apa adanya**, walaupun informan S01 menyebut animasi berlebihan dapat mengganggu (EL03). Pengendalian yang tetap berlaku:
 > semua hiasan & musik **disembunyikan saat tes**, ada tombol **"Animasi: mati"**, `prefers-reduced-motion` dihormati, dan warna pada segitiga
-> tetap hanya untuk membedakan sisi diketahui vs dicari. Dampaknya diukur lewat skor **EL Leppink** dan dibahas di laporan.
+> tetap hanya untuk membedakan sisi diketahui vs dicari. Dampaknya diukur lewat skor **EL** Kuesioner Harian Cognitive Load (Pertemuan 1 & 2) dan dibahas di laporan.
 
 ## 2. Token visual
 
@@ -44,7 +44,7 @@
 6. **Soal cerita (latihan)** — (a) kalimat soal yang bisa diketuk, (b) tabel Diketahui–Ditanya, (c) segitiga 2D berlabel, (d) kolom jawaban, (e) tombol 💡 Petunjuk.
 7. **Hasil soal** — benar/salah, pembahasan baris per baris, pertanyaan refleksi singkat.
 8. **Tes** — tampilan polos, satu soal per layar, tanpa umpan balik.
-9. **Kuesioner Leppink** — skala 0–10 berupa tombol besar.
+9. **Kuesioner Harian Cognitive Load** — 10 butir, skala Paas 1–9 berupa tombol angka besar, keterangan skala di atas.
 
 ## 4. Segitiga interaktif
 - Tanda **sudut siku-siku** (kotak kecil) selalu terlihat.

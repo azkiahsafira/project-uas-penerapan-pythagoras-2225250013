@@ -1,5 +1,5 @@
 // Penyimpanan data penelitian:
-// - hasil     : pre-test, post-test, kuesioner Leppink  -> tabel `hasil`
+// - hasil     : pre-test, post-test, Kuesioner Harian (beban1, beban2)  -> tabel `hasil`
 // - aktivitas : proses belajar di menu Belajar & Latihan -> tabel `aktivitas`
 //
 // Semua data SELALU disimpan dulu di perangkat (localStorage), lalu dikirim

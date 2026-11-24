@@ -28,12 +28,12 @@ from pydantic import BaseModel, Field
 try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
     from .asisten import AsistenGagal, cek_cadangan, daftar_penyedia, siku_mandiri, tanya_siku
     from .basisdata import buat_penyimpanan
-    from .penilaian import nilai_leppink, nilai_tes
+    from .penilaian import nilai_harian, nilai_tes
     from .sesi import buat_token, periksa_token
 except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
     from asisten import AsistenGagal, cek_cadangan, daftar_penyedia, siku_mandiri, tanya_siku
     from basisdata import buat_penyimpanan
-    from penilaian import nilai_leppink, nilai_tes
+    from penilaian import nilai_harian, nilai_tes
     from sesi import buat_token, periksa_token
 
 # Cukup SATU rahasia di server (SUPABASE_SERVICE_KEY). Kunci tanda tangan token diturunkan darinya
@@ -194,7 +194,7 @@ def kirim_aktivitas(data: KirimAktivitas, siswa=Depends(siswa_masuk)):
 
 class Hasil(BaseModel):
     id: str
-    jenis: str = Field(pattern="^(pretest|posttest|leppink)$")
+    jenis: str = Field(pattern="^(pretest|posttest|beban1|beban2)$")
     mulai: str
     selesai: str
     jawaban: dict
@@ -210,8 +210,8 @@ def kirim_hasil(data: Hasil, siswa=Depends(siswa_masuk)):
     baris = {**identitas_baris(siswa), "id": data.id, "jenis": data.jenis, "mulai": data.mulai, "selesai": data.selesai,
              "durasi_detik": durasi(data.mulai, data.selesai), "jawaban": data.jawaban,
              "benar": None, "total": None, "skor": None, "il": None, "el": None, "gl": None}
-    if data.jenis == "leppink":
-        beban = nilai_leppink(data.jawaban)
+    if data.jenis in ("beban1", "beban2"):  # Kuesioner Harian Cognitive Load akhir Pertemuan 1 / 2
+        beban = nilai_harian(data.jawaban)
         baris.update(il=beban["IL"], el=beban["EL"], gl=beban["GL"])
     elif data.jawaban.get("_instrumen") == "literasi":
         pass  # tes Mathematical Literacy (uraian): dinilai manual dengan rubrik, skor dibiarkan kosong

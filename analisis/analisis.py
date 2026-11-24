@@ -5,18 +5,19 @@ Membaca file CSV hasil tes (ekspor dari Supabase atau dari menu Tes di
 aplikasi), lalu menghitung:
   1. Nilai pre-test, post-test, selisih, dan N-gain tiap siswa
   2. Ketercapaian tiap indikator soal (pre vs post)
-  3. Skor beban kognitif Leppink (IL, EL, GL) dan interpretasinya
+  3. Kuesioner Harian Cognitive Load (EL, IL, GL; skala Paas 1-9) di akhir Pertemuan 1 dan Pertemuan 2,
+     beserta rata-rata kedua pertemuan dan interpretasinya
   4. Perbandingan antarkelompok (hanya bila data berisi lebih dari satu kelompok)
   4b. Literasi matematis per proses (merumuskan, menerapkan, menafsirkan): skor pre, post, N-gain
   5. (opsional, --aktivitas) Waktu & jumlah salah per langkah materi, total
-     waktu tiap sesi, serta hasil latihan pertemuan 4 (implementasi), dari
+     waktu tiap sesi, serta hasil Latihan Soal Pertemuan 2, dari
      tabel `aktivitas`
 
 Keluaran:
   - laporan di terminal
   - rekap_siswa.csv          (bisa dibuka di Excel)
   - grafik_nilai.svg         (pre vs post per siswa)
-  - grafik_beban.svg         (IL, EL, GL per siswa)
+  - grafik_beban.svg         (EL, IL, GL per siswa, rata-rata Pertemuan 1 & 2)
   - grafik_indikator.svg     (jumlah siswa benar per indikator)
   - rekap_literasi.csv       (skor tiap proses literasi matematis per siswa)
   - grafik_literasi.svg      (rata-rata skor proses literasi per kelompok, pre vs post)
@@ -137,6 +138,17 @@ def ambil(baris, *nama_kolom):
     return None
 
 
+JENIS_KUESIONER = ("beban1", "beban2")  # Kuesioner Harian Cognitive Load, akhir Pertemuan 1 & 2
+JENIS_DATA = ("pretest", "posttest", *JENIS_KUESIONER)
+BUTIR_DIMENSI = {"EL": (0, 3), "IL": (3, 6), "GL": (6, 10)}  # b1-b3, b4-b6, b7-b10
+DIMENSI = ("EL", "IL", "GL")
+
+
+def rata_bagian(xs):
+    """Rata-rata butir satu dimensi; None bila ada butir kosong."""
+    return round(sum(xs) / len(xs), 2) if xs and None not in xs else None
+
+
 def baca_csv(path):
     # utf-8-sig agar BOM dari file ekspor aplikasi ikut terbaca dengan benar
     with open(path, encoding="utf-8-sig", newline="") as f:
@@ -145,7 +157,7 @@ def baca_csv(path):
     data = []
     for b in baris_baris:
         jenis = ambil(b, "jenis")
-        if jenis not in ("pretest", "posttest", "leppink"):
+        if jenis not in JENIS_DATA:
             continue
         try:
             jawaban = json.loads(ambil(b, "jawaban") or "{}")
@@ -171,13 +183,15 @@ def baca_csv(path):
 def baca_kertas(path):
     """Baca jawaban dari lembar kertas (templat_kertas.csv) untuk siswa yang diajar langsung.
     Kolom: jenis, nama, kelas, sekolah, kelompok, tanggal, durasi_menit,
-    s1..s10 (huruf A-D atau angka) untuk pretest/posttest, b1..b10 (0-10) untuk leppink."""
+    s1..s10 (huruf A-D atau angka) untuk pretest/posttest; b1..b10 (angka 1-9 yang dicentang) untuk
+    kuesioner harian: jenis beban1 (akhir Pertemuan 1) dan beban2 (akhir Pertemuan 2).
+    Butir 1-3 = EL, 4-6 = IL, 7-10 = GL (urutan lembar dosen)."""
     with open(path, encoding="utf-8-sig", newline="") as f:
         baris_baris = list(csv.DictReader(f))
     data = []
     for b in baris_baris:
         jenis = (ambil(b, "jenis") or "").strip().lower().replace("-", "")
-        if jenis not in ("pretest", "posttest", "leppink"):
+        if jenis not in JENIS_DATA:
             continue
         menit = ke_angka(ambil(b, "durasi_menit"))
         d = {
@@ -192,10 +206,11 @@ def baca_kertas(path):
             "IL": None, "EL": None, "GL": None,
             "jawaban": {},
         }
-        if jenis == "leppink":
+        if jenis in JENIS_KUESIONER:
             skor = [ke_angka(ambil(b, f"b{i}")) for i in range(1, 11)]
-            rata_bagian = lambda xs: (sum(xs) / len(xs)) if xs and None not in xs else None
-            d["IL"], d["EL"], d["GL"] = rata_bagian(skor[0:3]), rata_bagian(skor[3:6]), rata_bagian(skor[6:10])
+            skor = [n if n is not None and 1 <= n <= 9 else None for n in skor]  # di luar 1-9 dianggap kosong
+            for dim, (awal, akhir) in BUTIR_DIMENSI.items():
+                d[dim] = rata_bagian(skor[awal:akhir])
         else:
             d["jawaban"] = {str(i): (ambil(b, f"s{i + 1}") or "").strip() for i in range(10)}
         data.append(d)
@@ -242,12 +257,12 @@ def kategori_n_gain(g):
 
 
 def kategori_beban(nilai):
-    """Skala 0-10 dibagi tiga sama besar."""
+    """Skala usaha mental Paas 1-9 dibagi tiga sama lebar: 1-3,66 rendah, 3,67-6,33 sedang (5 = sedang), 6,34-9 tinggi."""
     if nilai is None:
         return "-"
-    if nilai < 3.34:
+    if nilai < 3.67:
         return "rendah"
-    if nilai < 6.67:
+    if nilai < 6.34:
         return "sedang"
     return "tinggi"
 
@@ -261,7 +276,7 @@ KELOMPOK_UJI = "Uji coba peneliti"  # kode demo/uji coba (alur.js); datanya tida
 
 
 def rekap_per_siswa(data):
-    """Gabungkan pre, post, dan leppink per siswa. Bila satu tes dikerjakan lebih dari sekali, yang dipakai
+    """Gabungkan pre, post, dan kuesioner Pertemuan 1 & 2 per siswa. Bila satu tes dikerjakan lebih dari sekali, yang dipakai
     adalah percobaan PERTAMA (pre-test ulang sesudah belajar akan membuat N-gain bias)."""
     siswa = {}
     peringatan = []
@@ -299,9 +314,13 @@ def rekap_per_siswa(data):
         r["n_gain"] = n_gain(r["pretest"], r["posttest"])
         r["literasi_pre"] = skor_proses(r["pretest_benar"])
         r["literasi_post"] = skor_proses(r["posttest_benar"])
-        lp = s.get("leppink")
-        for k in ("IL", "EL", "GL"):
-            r[k] = lp[k] if lp else None
+        for no, jenis in enumerate(JENIS_KUESIONER, start=1):
+            k = s.get(jenis)
+            for dim in DIMENSI:
+                r[f"{dim}{no}"] = k[dim] if k else None
+        for dim in DIMENSI:  # rata-rata pertemuan yang sudah diisi
+            ada = [r[f"{dim}{no}"] for no in (1, 2) if r[f"{dim}{no}"] is not None]
+            r[dim] = round(sum(ada) / len(ada), 2) if ada else None
         rekap.append(r)
     return rekap, peringatan
 
@@ -360,35 +379,35 @@ def laporan(rekap, peringatan):
     laporan_literasi(rekap)
 
     cetak_tabel(
-        "4. BEBAN KOGNITIF LEPPINK (skala 0-10)",
-        ["Nama", "Kelompok", "IL", "EL", "GL"],
+        "4. KUESIONER HARIAN COGNITIVE LOAD (skala Paas 1-9; P1 = akhir Pertemuan 1, P2 = akhir Pertemuan 2)",
+        ["Nama", "Kelompok", "EL P1", "EL P2", "IL P1", "IL P2", "GL P1", "GL P2", "EL rata", "IL rata", "GL rata"],
         [
             [r["nama"], r["kelompok"],
-             f"{fmt(r['IL'], 2)} ({kategori_beban(r['IL'])})",
-             f"{fmt(r['EL'], 2)} ({kategori_beban(r['EL'])})",
-             f"{fmt(r['GL'], 2)} ({kategori_beban(r['GL'])})"]
+             *(fmt(r[f"{dim}{no}"], 2) for dim in DIMENSI for no in (1, 2)),
+             *(f"{fmt(r[dim], 2)} ({kategori_beban(r[dim])})" for dim in DIMENSI)]
             for r in rekap
         ],
     )
-    print("   Harapan (Activation/Balance Model): IL dikelola, EL serendah mungkin, GL setinggi mungkin.")
+    print("   Harapan (Activation/Balance Model): EL serendah mungkin, IL dikelola, GL setinggi mungkin.")
 
     kelompok = sorted({r["kelompok"] for r in rekap if r["kelompok"]})
     if len(kelompok) > 1:
         cetak_tabel(
             "5. PERBANDINGAN KELOMPOK (rata-rata)",
-            ["Kelompok", "Siswa", "Pre", "Post", "N-gain", "IL", "EL", "GL"],
+            ["Kelompok", "Siswa", "Pre", "Post", "N-gain", "EL P1", "EL P2", "IL P1", "IL P2", "GL P1", "GL P2"],
             [
                 [k, len(rs := [r for r in rekap if r["kelompok"] == k]),
                  fmt(rata(r["pretest"] for r in rs)), fmt(rata(r["posttest"] for r in rs)),
-                 fmt(rata(r["n_gain"] for r in rs), 2), fmt(rata(r["IL"] for r in rs), 2),
-                 fmt(rata(r["EL"] for r in rs), 2), fmt(rata(r["GL"] for r in rs), 2)]
+                 fmt(rata(r["n_gain"] for r in rs), 2),
+                 *(fmt(rata(r[f"{dim}{no}"] for r in rs), 2) for dim in DIMENSI for no in (1, 2))]
                 for k in kelompok
             ],
         )
 
-    belum = [r["nama"] for r in rekap if r["pretest"] is None or r["posttest"] is None or r["IL"] is None]
+    belum = [r["nama"] for r in rekap
+             if r["pretest"] is None or r["posttest"] is None or r["EL1"] is None or r["EL2"] is None]
     if belum:
-        print("\nCatatan: data belum lengkap (pre/post/kuesioner) untuk: " + ", ".join(belum))
+        print("\nCatatan: data belum lengkap (pre/post/kuesioner Pertemuan 1 & 2) untuk: " + ", ".join(belum))
     for p in peringatan:
         print("PERINGATAN: " + p)
 
@@ -442,14 +461,16 @@ def simpan_literasi_csv(rekap, path):
 
 def simpan_rekap_csv(rekap, path):
     kolom = ["nama", "kelas", "kelompok", "pretest", "posttest", "selisih", "n_gain", "kategori_n_gain",
-             "pretest_menit", "posttest_menit", "IL", "EL", "GL"]
+             "pretest_menit", "posttest_menit", "EL_P1", "IL_P1", "GL_P1", "EL_P2", "IL_P2", "GL_P2",
+             "EL_rata", "IL_rata", "GL_rata"]
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(kolom)
         for r in rekap:
             w.writerow([r["nama"], r["kelas"], r["kelompok"], r["pretest"], r["posttest"], r["selisih"],
                         None if r["n_gain"] is None else round(r["n_gain"], 3), kategori_n_gain(r["n_gain"]),
-                        r["pretest_menit"], r["posttest_menit"], r["IL"], r["EL"], r["GL"]])
+                        r["pretest_menit"], r["posttest_menit"],
+                        *(r[f"{dim}{no}"] for no in (1, 2) for dim in DIMENSI), r["EL"], r["IL"], r["GL"]])
 
 
 def svg_batang(judul, label_grup, seri, nilai_maks, path, satuan=""):
@@ -512,11 +533,11 @@ def simpan_grafik(rekap, folder):
         100, os.path.join(folder, "grafik_nilai.svg"),
     )
     svg_batang(
-        "Beban Kognitif Leppink (skala 0-10)", nama,
-        [("Intrinsic (IL)", "#e0a33a", [r["IL"] for r in rekap]),
-         ("Extraneous (EL)", "#c4302b", [r["EL"] for r in rekap]),
+        "Cognitive Load, rata-rata Pertemuan 1 & 2 (skala 1-9)", nama,
+        [("Extraneous (EL)", "#c4302b", [r["EL"] for r in rekap]),
+         ("Intrinsic (IL)", "#e0a33a", [r["IL"] for r in rekap]),
          ("Germane (GL)", "#1e7a3c", [r["GL"] for r in rekap])],
-        10, os.path.join(folder, "grafik_beban.svg"),
+        9, os.path.join(folder, "grafik_beban.svg"),
     )
     pre = [sum(r["pretest_benar"][i] for r in rekap if r["pretest_benar"]) for i in range(len(INDIKATOR))]
     post = [sum(r["posttest_benar"][i] for r in rekap if r["posttest_benar"]) for i in range(len(INDIKATOR))]
@@ -639,7 +660,7 @@ def laporan_aktivitas(aktivitas, langkah):
 
 
 def rekap_latihan(aktivitas):
-    """Rekap pertemuan 4 (implementasi) per siswa dari baris jenis 'latihan', ditambah
+    """Rekap Latihan Soal Pertemuan 2 per siswa dari baris jenis 'latihan', ditambah
     jumlah petunjuk (GL3), refleksi (GL4), dan skor cek prasyarat (IL3)."""
     per_siswa = {}
     baru = lambda: {"soal": 0, "benar": 0, "salah": 0, "menyerah": 0, "durasi": [], "dibacakan": 0, "petunjuk": 0,
@@ -685,10 +706,10 @@ def rekap_latihan(aktivitas):
 
 def laporan_latihan(latihan):
     if not latihan:
-        print("\n8. LATIHAN PERTEMUAN 4 (IMPLEMENTASI): belum ada data.")
+        print("\n8. LATIHAN SOAL PERTEMUAN 2: belum ada data.")
         return
     cetak_tabel(
-        "8. LATIHAN PERTEMUAN 4 (IMPLEMENTASI, menu Latihan Soal)",
+        "8. LATIHAN SOAL PERTEMUAN 2 (menu Latihan Soal)",
         ["Nama", "Soal", "Benar", "Salah", "Lihat jawaban", "% benar", "Rata-rata waktu/soal", "Dibacakan",
          "Petunjuk", "Petunjuk/soal 1-5", "Petunjuk/soal 6+", "Refleksi benar", "Prasyarat"],
         [
@@ -697,7 +718,7 @@ def laporan_latihan(latihan):
             for l in latihan
         ],
     )
-    print("   Lihat jawaban = siswa menekan \"Lihat jawaban\" tanpa menjawab. Target pertemuan 4: minimal 10 soal.")
+    print("   Lihat jawaban = siswa menekan \"Lihat jawaban\" tanpa menjawab. Target Pertemuan 2: minimal 5 soal.")
     print("   Petunjuk/soal yang menurun dari soal 1-5 ke soal 6+ menandakan bantuan berhasil dipudarkan (GL3).")
 
 

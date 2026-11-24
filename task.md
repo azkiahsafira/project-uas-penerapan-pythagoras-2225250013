@@ -23,10 +23,10 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 - [x] React + Vite PWA, bisa di-install di Android
 - [x] Materi 3 sesi + cek pemahaman + Bacakan
 - [x] Kalkulator dengan langkah penyelesaian
-- [x] Latihan pertemuan 4 + pencatatan aktivitas
-- [x] Pre-test, post-test, kuesioner Leppink + lembar cetak
+- [x] Latihan Soal Pertemuan 2 + pencatatan aktivitas
+- [x] Pre-test, post-test, Kuesioner Harian Cognitive Load (P1 & P2) + lembar cetak
 - [x] Supabase (tabel `hasil`, `aktivitas`) + keep-alive
-- [x] Analisis Python (N-gain, Leppink, jejak belajar, data kertas)
+- [x] Analisis Python (N-gain, cognitive load P1 & P2, jejak belajar, data kertas)
 
 ### Revisi (versi 2)
 - [x] Login **kode siswa** (ganti nama + sekolah) — `src/Masuk.jsx`
@@ -49,12 +49,11 @@ Tanda: `[x]` selesai · `[ ]` belum · 🔁 = perlu disesuaikan dengan revisi do
 
 ## D. Implementation
 - [ ] Uji coba di 2–3 HP Android (murah & menengah)
-- [ ] Bagikan kode siswa, pre-test (pertemuan 1)
-- [ ] Sesi 1–3 (pertemuan 1–3), implementasi (pertemuan 4)
-- [ ] Post-test + kuesioner Leppink (pertemuan 5)
+- [ ] Pertemuan 1: bagikan kode siswa, pre-test, Sesi 1 & 2, Kuesioner Pertemuan 1
+- [ ] Pertemuan 2: Sesi 3, Latihan Soal (min. 5 soal), Kuesioner Pertemuan 2, post-test
 
 ## E. Evaluation
-- [ ] Analisis N-gain, Leppink, **literasi matematis per proses** (script siap: `analisis.py` bagian 3b–3c), jumlah petunjuk, identifikasi sisi miring
+- [ ] Analisis N-gain, cognitive load P1 & P2, **literasi matematis per proses** (script siap: `analisis.py` bagian 3b–3c), jumlah petunjuk, identifikasi sisi miring
 - [ ] Bandingkan kelompok aplikasi vs diajar langsung
 - [ ] Revisi aplikasi berdasarkan temuan; laporan ADDIE
 
