@@ -16,6 +16,7 @@ Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat comm
 - Bahan cetak: Kuesioner Cognitive Load Pertemuan 1 & 2 (kode siswa, bukan nama); Modul Ajar RMT disusun ulang menjadi
   2 pertemuan × 3 JP; LKPD diberi nama per sesi (Sesi 1 & 2 = Pertemuan 1, Sesi 3 = Pertemuan 2); lembar latihan menjadi
   Latihan Soal Pertemuan 2 (target 5 soal). Narasi video, screenshot, dan semua dokumen disesuaikan. Versi cache PWA `pythagoras-v16`.
+- Bukti percakapan AI diperbarui sampai revisi kuesioner ini (332 pesan mahasiswa, 975 jawaban AI; email tetap disamarkan).
 
 ## [3.1] · 24 November 2026 — Versi final: audit menyeluruh
 - Label fase RMT juga di menu **Kalkulator** (Fase II · Langkah 5: memakai alat matematika) dan **Latihan Soal** (Fase III ·
