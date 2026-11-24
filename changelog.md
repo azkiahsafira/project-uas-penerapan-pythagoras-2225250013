@@ -2,6 +2,21 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [3.0] · 24 November 2026 — Revisi dosen: model RMT, AI selalu aktif, bahan tanpa aplikasi, video
+- **Model RMT** (Rigorous Mathematical Thinking, Kinard & Kozulin 2008) di menu Belajar: tiap langkah ditandai fase & langkah RMT
+  (Fase I Pengembangan Kognitif, Fase II Konten sebagai Proses, Fase III Latihan Konstruksi Konseptual) dan fungsi kognitif;
+  jalur tiga fase di atas tiap langkah; kartu penjelasan model RMT di daftar sesi. Tiap sesi diawali tugas kognitif Fase I
+  (Sesi 1 "apa yang sama?", Sesi 2 "kotak di dalam persegi", Sesi 3 "soal kapten kapal") dan dimediasi kriteria MLE
+  (tujuan, mengapa penting, dipakai di mana lagi).
+- **Tanya Siku selalu berfungsi**: rantai penyedia DeepSeek → Google Gemini → Groq → OpenRouter (kunci opsional), lalu
+  **Siku Mandiri** tanpa AI (pertanyaan mediasi RMT per tahap × tingkat) bila tidak ada kunci, kuota habis, atau semua gagal;
+  bila server tidak terjangkau, aplikasi memberi pertanyaan mediasi lokal. Tahap chat memakai fungsi kognitif RMT:
+  Amati → Hubungkan → Pakai alat → Jelaskan. `/api/sehat` kini melaporkan `asisten: true` dan daftar `ai` yang terpasang.
+- **Pembelajaran tanpa aplikasi** (`docs/pembelajaran-tanpa-aplikasi/`): Modul Ajar RMT untuk guru, LKPD Pertemuan 1–3, dan
+  kunci jawaban, dibuat langsung dari `src/materi.js` (`scripts/buat_modul_rmt.py`).
+- **Video pembelajaran** ± 4,5 menit (narasi suara Indonesia & subtitle, alur fase RMT): `scripts/video/buat_video.py`.
+- Versi cache PWA dinaikkan (`pythagoras-v14`).
+
 ## [2.27.1] · 19 November 2026 — Balon sahabat tidak tertutup judul (HP)
 - HP: panggung sedikit lebih tinggi (324 px) & panggung awan sahabat diturunkan, balon kata sahabat lebih lebar (2 baris)
   dan tidak terpotong saat sahabat memantul, sehingga tidak lagi menyentuh/tertutup judul PELITA.

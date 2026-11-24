@@ -8460,3 +8460,182 @@ main > .halaman {
     bottom: 92px;
   }
 }
+
+/* =========================================================================
+   Model pembelajaran RMT (Rigorous Mathematical Thinking): jalur tiga fase, label langkah & fungsi kognitif,
+   kotak mediasi MLE (tujuan, makna, transendensi), dan kartu penjelasan model di daftar sesi.
+   Warna fase: I biru muda, II pink muda, III ungu muda.
+   ========================================================================= */
+.jalur-rmt {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.jalur-rmt li {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px;
+  border: 2px solid #e6e0f5;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  color: #8a80a8;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  opacity: 0.75;
+}
+
+.jalur-rmt li b {
+  font-family: var(--font-judul);
+  font-weight: 400;
+  font-size: 0.95rem;
+}
+
+.jalur-rmt li.lewat {
+  opacity: 0.95;
+}
+
+.jalur-rmt li.aktif {
+  opacity: 1;
+  color: #3f3566;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 rgba(107, 90, 142, 0.18);
+}
+
+.jalur-rmt li.fase-1.aktif,
+.jalur-rmt li.fase-1.lewat {
+  border-color: #8fcaff;
+  background: #e8f4ff;
+}
+
+.jalur-rmt li.fase-2.aktif,
+.jalur-rmt li.fase-2.lewat {
+  border-color: #ff9fcb;
+  background: #fff0f7;
+}
+
+.jalur-rmt li.fase-3.aktif,
+.jalur-rmt li.fase-3.lewat {
+  border-color: #c4b5fd;
+  background: #f4efff;
+}
+
+.label-rmt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 4px;
+  font-size: 0.82rem;
+  text-shadow: none;
+}
+
+.label-rmt span {
+  padding: 2px 10px;
+  border-radius: 99px;
+}
+
+.label-rmt-langkah {
+  color: #fff;
+  font-family: var(--font-judul);
+  font-size: 0.92rem;
+}
+
+.label-rmt.fase-1 .label-rmt-langkah {
+  background: #5fb4ff;
+}
+
+.label-rmt.fase-2 .label-rmt-langkah {
+  background: #f472b6;
+}
+
+.label-rmt.fase-3 .label-rmt-langkah {
+  background: #9b6cf0;
+}
+
+.label-rmt-fungsi {
+  border: 1.5px dashed #c4b5fd;
+  background: #fbf9ff;
+  color: #5a4f7d;
+}
+
+.mediasi-rmt {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 2px dashed #ffc6e0;
+  border-radius: 16px;
+  background: #fff7fb;
+  text-shadow: none;
+}
+
+.mediasi-rmt p {
+  margin: 2px 0;
+}
+
+.mediasi-rmt.transendensi {
+  margin: 10px 0 0;
+  border-color: #bfe3ff;
+  background: #f2f9ff;
+}
+
+.kartu-rmt h3 {
+  margin: 0 0 6px;
+}
+
+.rmt-ringkas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.rmt-ringkas li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  text-shadow: none;
+}
+
+.rmt-ringkas li b {
+  font-family: var(--font-judul);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.rmt-ringkas .fase-1 {
+  background: #e8f4ff;
+  border: 2px solid #8fcaff;
+}
+
+.rmt-ringkas .fase-2 {
+  background: #fff0f7;
+  border: 2px solid #ff9fcb;
+}
+
+.rmt-ringkas .fase-3 {
+  background: #f4efff;
+  border: 2px solid #c4b5fd;
+}
+
+@media (max-width: 640px) {
+  .jalur-rmt li span {
+    display: none;
+  }
+
+  .jalur-rmt li {
+    align-items: center;
+    padding: 5px 4px;
+  }
+
+  .rmt-ringkas {
+    grid-template-columns: 1fr;
+  }
+}

@@ -20,7 +20,9 @@ Siswa (panel Tanya Siku)
 Backend FastAPI  POST /api/asisten   (token kode siswa wajib; maks. 12 pertanyaan / 5 menit / siswa)
    │  prompt sistem RMT + DEEPSEEK_API_KEY (environment variable server)
    ▼
-API resmi DeepSeek https://api.deepseek.com (model deepseek-flash = DeepSeek V4.1 Flash, balasan JSON {tahap, balasan})
+Rantai AI (dicoba berurutan bila kuncinya terpasang): DeepSeek → Google Gemini (gratis) → Groq (gratis) → OpenRouter (gratis)
+   │  bila tidak ada kunci / kuota habis / semua gagal ──► SIKU MANDIRI (tanpa AI): pertanyaan mediasi RMT siap pakai
+   │  bila server pun tidak terjangkau ──► aplikasi memberi pertanyaan mediasi yang sama secara lokal
    │
    ▼
 Penjaga jawaban akhir → bila bocor: minta ulang 1x → bila masih bocor: petunjuk aman bawaan
@@ -33,7 +35,7 @@ Balasan + tahap RMT ke siswa; giliran dicatat ke tabel `aktivitas` (jenis 'asist
 
 | Unsur RMT | Wujud di Tanya Siku |
 | --- | --- |
-| **Tahap kegiatan belajar** (orientasi → perencanaan → pelaksanaan → refleksi/evaluasi diri) | Model wajib memandu urut **Pahami → Rencanakan → Kerjakan → Periksa** dan melaporkan tahapnya; panel menampilkan jalur 4 tahap dengan tahap aktif. Bila siswa langsung minta jawaban, Siku kembali ke tahap Pahami. |
+| **Fase III RMT: latihan konstruksi konseptual** dengan fungsi kognitif input → elaborasi → output | Model wajib memandu urut **Amati** (input: amati soal, pisahkan diketahui/ditanya, beri label) → **Hubungkan** (elaborasi: bandingkan sisi, pilih alat/rumus) → **Pakai alat** (hitung dengan rumus/tabel kuadrat) → **Jelaskan** (output & refleksi metakognitif) dan melaporkan tahapnya; panel menampilkan jalur 4 tahap. Bila siswa langsung minta jawaban, Siku kembali ke tahap Amati. (Kode tahap di API tetap `pahami/rencana/kerjakan/periksa`.) |
 | **Mediated Learning Experience**: intensionalitas & timbal balik, makna, transendensi, rasa mampu | Tertulis di prompt: fokus pada satu hal & ajak siswa menjawab; jelaskan mengapa langkah perlu; tunjukkan pola umum (sisi miring selalu terpanjang); puji usaha/strategi secara spesifik. |
 | **Fungsi kognitif** (memberi label & visualisasi, membandingkan, pencarian sistematis, presisi, menghubungkan pengetahuan awal, bukti logis) | Prompt meminta siswa memberi label sisi a, b, c dan membuat sketsa; mengecek satuan; mengaitkan kuadrat & akar; menjelaskan alasan. |
 | **Alat psikologis khas matematika** (bahasa & simbol matematika) | Istilah dan simbol sama dengan aplikasi: sisi siku-siku a & b, sisi miring c, c² = a² + b². |
@@ -68,7 +70,21 @@ Balasan + tahap RMT ke siswa; giliran dicatat ke tabel `aktivitas` (jenis 'asist
 
 ## 5a. Model cadangan gratis (transparan)
 
-Integrasi utama adalah **API resmi DeepSeek** (`DEEPSEEK_API_KEY`). API DeepSeek berbayar (tanpa paket gratis), dan pada
+### Tanya Siku selalu berfungsi (revisi dosen, November 2026)
+| Lapisan | Keterangan |
+| --- | --- |
+| 1. DeepSeek (`DEEPSEEK_API_KEY`) | Berbayar; dipakai otomatis bila saldo ada. |
+| 2. Google Gemini (`GEMINI_API_KEY`, opsional) | Gratis lewat Google AI Studio (endpoint kompatibel OpenAI, model bawaan `gemini-flash-latest`, bisa diganti `GEMINI_MODEL`). Kuota gratis dilihat di AI Studio. |
+| 3. Groq (`GROQ_API_KEY`, opsional) | Gratis lewat console.groq.com (model bawaan `llama-3.3-70b-versatile`, bisa diganti `GROQ_MODEL`). |
+| 4. OpenRouter (`CADANGAN_API_KEY`) | Gratis, ±50 pertanyaan/hari per akun. Sudah terpasang. |
+| 5. **Siku Mandiri** (tanpa AI) | Selalu ada, tanpa kunci & tanpa kuota: pertanyaan mediasi RMT per tahap × tingkat bantuan (`MEDIASI_MANDIRI` di `backend/asisten.py`). Dipakai bila tidak ada kunci, kuota habis, atau semua layanan AI gagal. Tidak pernah memberi jawaban akhir. |
+| 6. Cadangan lokal di aplikasi | Bila server tidak terjangkau (jaringan/server mati), panel memberi pertanyaan mediasi yang sama tanpa internet. |
+
+Dengan lapisan 5–6, siswa **tidak pernah** melihat galat "Siku tidak bisa dihubungi". Saran: tambahkan `GEMINI_API_KEY`
+(gratis, kuota lebih besar dari OpenRouter) agar balasan tetap dari AI saat dipakai satu kelas. Penyedia yang menjawab selalu
+ditampilkan jujur ("Dijawab oleh: …") dan dicatat di log aktivitas (`model=…`, serta `gagal=…` bila ada penyedia yang gagal).
+
+Integrasi awal adalah **API resmi DeepSeek** (`DEEPSEEK_API_KEY`). API DeepSeek berbayar (tanpa paket gratis), dan pada
 uji coba saldo akun peneliti masih kosong (DeepSeek membalas *402 Insufficient Balance*, tampil di aplikasi sebagai
 `kode: deepseek:saldo_habis`). Agar chatbot tetap bisa diuji tanpa biaya, ditambahkan **model cadangan gratis**:
 

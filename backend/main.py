@@ -26,12 +26,12 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel, Field
 
 try:  # dijalankan sebagai paket: uvicorn backend.main:app, pytest
-    from .asisten import AsistenGagal, cek_cadangan, daftar_penyedia, tanya_siku
+    from .asisten import AsistenGagal, cek_cadangan, daftar_penyedia, siku_mandiri, tanya_siku
     from .basisdata import buat_penyimpanan
     from .penilaian import nilai_leppink, nilai_tes
     from .sesi import buat_token, periksa_token
 except ImportError:  # dijalankan dari dalam folder backend (Vercel, Root Directory = backend)
-    from asisten import AsistenGagal, cek_cadangan, daftar_penyedia, tanya_siku
+    from asisten import AsistenGagal, cek_cadangan, daftar_penyedia, siku_mandiri, tanya_siku
     from basisdata import buat_penyimpanan
     from penilaian import nilai_leppink, nilai_tes
     from sesi import buat_token, periksa_token
@@ -134,8 +134,9 @@ def sehat(lengkap: bool = False):
     """Cek server hidup; dipanggil aplikasi saat dibuka untuk membangunkan server gratis.
     `?lengkap=1` (dipakai pemeriksaan harian GitHub Actions) juga memeriksa key AI gratis OpenRouter masih sah."""
     # `asisten`: apakah chatbot Tanya Siku siap (API key terpasang); nilai kuncinya tidak pernah dikirim
+    # Tanya Siku selalu siap (Siku Mandiri menjawab bila AI tidak tersedia); `ai` = penyedia AI yang kuncinya terpasang
     isi = {"status": "ok", "waktu": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-           "asisten": bool(daftar_penyedia())}
+           "asisten": True, "ai": [nama for nama, _ in daftar_penyedia()]}
     if lengkap:
         isi["cadangan"] = cek_cadangan()
     return isi
@@ -255,23 +256,21 @@ def asisten(data: TanyaAsisten, siswa=Depends(siswa_masuk)):
     """Siku membimbing langkah demi langkah tanpa memberi jawaban akhir. API key hanya ada di server."""
     if data.halaman == "tes":
         raise Galat(403, "sedang_tes", "Saat tes, Siku istirahat dulu ya. Kerjakan sendiri, kamu pasti bisa! 💪")
-    penyedia = daftar_penyedia()
-    if not penyedia:
-        raise Galat(503, "asisten_belum_aktif", "Tanya Siku belum diaktifkan oleh peneliti. Coba lagi nanti ya.")
     batasi_tanya(siswa["kode"])
     pertanyaan = data.pertanyaan.strip()
-    # DeepSeek dulu; bila gagal (mis. saldo habis) dan model cadangan terpasang, cadangan yang menjawab
+    riwayat = [g.model_dump() for g in data.riwayat]
+    # penyedia AI dicoba berurutan (DeepSeek → Gemini → Groq → OpenRouter); bila tidak ada kunci atau semuanya gagal
+    # (kuota habis, saldo habis, gangguan), Siku Mandiri tanpa AI yang menjawab: Tanya Siku tidak pernah mati
     gagal = []
-    for nama, kunci in penyedia:
+    for nama, kunci in daftar_penyedia():
         try:
-            hasil = tanya_siku(pertanyaan, [g.model_dump() for g in data.riwayat], data.halaman, data.tingkat, data.tahap,
-                               kunci, penyedia=nama)
+            hasil = tanya_siku(pertanyaan, riwayat, data.halaman, data.tingkat, data.tahap, kunci, penyedia=nama)
             break
         except AsistenGagal as e:
             gagal.append(f"{nama}:{e.alasan}")
     else:
-        # kode alasan ditampilkan singkat agar peneliti tahu penyebabnya (mis. deepseek:saldo_habis)
-        raise Galat(502, "asisten_gagal", f"Siku sedang tidak bisa dihubungi. Coba lagi sebentar lagi ya. (kode: {', '.join(gagal)})")
+        nama = "mandiri"
+        hasil = siku_mandiri(pertanyaan, riwayat, data.tahap, data.tingkat)
 
     # catat untuk analisis penelitian (tahap RMT & tingkat bantuan); kegagalan mencatat tidak mengganggu siswa
     sekarang = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -279,7 +278,7 @@ def asisten(data: TanyaAsisten, siswa=Depends(siswa_masuk)):
              "langkah": None, "judul": "Tanya Siku", "mulai": sekarang, "selesai": sekarang, "durasi_detik": 0, "salah": 0,
              "hasil": hasil["tahap"], "dibacakan": 0, "petunjuk": data.tingkat,
              "catatan": f"{data.halaman} | model={nama}:{hasil['model']} | disaring={'ya' if hasil['disaring'] else 'tidak'}"
-                        f" | tanya: {pertanyaan[:250]}"}
+                        + (f" | gagal={','.join(gagal)}" if gagal else "") + f" | tanya: {pertanyaan[:250]}"}
     try:
         db.tambah("aktivitas", [baris])
     except Exception:  # noqa: BLE001 - mis. tabel belum diperbarui (jenis 'asisten'); balasan tetap dikirim

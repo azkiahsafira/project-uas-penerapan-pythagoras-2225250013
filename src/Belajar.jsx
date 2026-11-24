@@ -10,7 +10,7 @@ import Segitiga from './Segitiga.jsx'
 import SegitigaPutar from './SegitigaPutar.jsx'
 import { BATAS_SIAP, JUMLAH_PRASYARAT, bacaPrasyarat } from './bantuan.js'
 import { rayakan, semangati } from './perayaan.js'
-import { SESI } from './materi.js'
+import { FASE_RMT, LANGKAH_RMT, SESI } from './materi.js'
 import { catatAktivitas, identitasTerakhir, kirimTertunda } from './penyimpanan.js'
 import { keAngka } from './pythagoras.js'
 
@@ -181,6 +181,35 @@ function Cek({ cek, onSelesai, onSalah, disorot = false }) {
 // setiap kali siswa meninggalkan sebuah langkah, dicatat lama waktunya,
 // berapa kali salah, dan hasil pertanyaannya; saat sesi selesai/keluar,
 // dicatat total waktu sesi.
+// Jalur tiga fase RMT (Rigorous Mathematical Thinking): fase yang sedang dijalani menyala
+function JalurRmt({ nomor }) {
+  const fase = LANGKAH_RMT[nomor]?.fase
+  return (
+    <ol className="jalur-rmt" aria-label="Fase model RMT">
+      {[1, 2, 3].map((f) => (
+        <li key={f} className={`fase-${f} ${f === fase ? 'aktif' : f < fase ? 'lewat' : ''}`} aria-current={f === fase ? 'step' : undefined}>
+          <b>Fase {['I', 'II', 'III'][f - 1]}</b>
+          <span>{FASE_RMT[f].nama}</span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+// Label RMT di atas judul langkah: langkah RMT & fungsi kognitif yang sedang dilatih
+function LabelRmt({ rmt }) {
+  if (!rmt) return null
+  const info = LANGKAH_RMT[rmt.langkah]
+  return (
+    <p className={`label-rmt fase-${info.fase}`}>
+      <span className="label-rmt-langkah">
+        Langkah RMT {rmt.langkah} · {info.nama}
+      </span>
+      <span className="label-rmt-fungsi">🧠 Fungsi kognitif: {rmt.fungsi}</span>
+    </p>
+  )
+}
+
 function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
   const [idx, setIdx] = useState(0)
   const [beres, setBeres] = useState([]) // indeks langkah yang ceknya sudah dijawab
@@ -297,6 +326,7 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
           <Maskot ukuran={34} />
         </span>
       </div>
+      <JalurRmt nomor={langkah.rmt?.langkah} />
 
       <div className={langkah.visual ? 'grid' : ''}>
         <section className="kartu">
@@ -312,6 +342,18 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
               }}
             />
           </div>
+          {/* mediasi MLE (RMT): intensionalitas & makna di awal sesi */}
+          {idx === 0 && (
+            <div className="mediasi-rmt">
+              <p>
+                <b>🎯 Tujuan:</b> {sesi.tujuan}
+              </p>
+              <p>
+                <b>💡 Mengapa penting:</b> {sesi.makna}
+              </p>
+            </div>
+          )}
+          <LabelRmt rmt={langkah.rmt} />
           <h2 className={dibaca === 0 ? 'dibaca' : ''}>{langkah.judul}</h2>
           {langkah.isi.map((p, i) => (
             <p key={p} className={`paragraf ${dibaca === i + 1 ? 'dibaca' : ''}`}>
@@ -356,6 +398,14 @@ function PemutarSesi({ sesi, identitas, onKeluar, onTamat }) {
               </button>
             )}
           </div>
+          {/* mediasi MLE (RMT): transendensi di akhir sesi, menghubungkan konsep ke konteks lain */}
+          {terakhir && (
+            <div className="mediasi-rmt transendensi">
+              <p>
+                <b>🌏 Dipakai di mana lagi?</b> {sesi.transendensi}
+              </p>
+            </div>
+          )}
           {!bolehLanjut && <p className="ket">Jawab pertanyaan di atas untuk melanjutkan.</p>}
         </section>
 
@@ -462,6 +512,21 @@ export default function Belajar() {
       )}
       <h2>Belajar Teorema Pythagoras</h2>
       <p className="ket">Ikuti sesi secara berurutan. Setiap sesi berisi penjelasan singkat, contoh, dan pertanyaan.</p>
+      {/* model pembelajaran yang dipakai: Rigorous Mathematical Thinking (Kinard & Kozulin), tiga fase */}
+      <article className="kartu kartu-rmt">
+        <h3>🧠 Belajar dengan model RMT (Rigorous Mathematical Thinking)</h3>
+        <ol className="rmt-ringkas">
+          {[1, 2, 3].map((f) => (
+            <li key={f} className={`fase-${f}`}>
+              <b>
+                Fase {['I', 'II', 'III'][f - 1]} · {FASE_RMT[f].nama}
+              </b>
+              <span>{FASE_RMT[f].ket}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="ket">Setiap sesi dimulai dengan tugas berpikir (Fase I), lalu membangun konsep (Fase II), dan berlatih (Fase III).</p>
+      </article>
       {identitas && (
         <p className="belajar-sebagai">
           Masuk sebagai <strong>{identitas.kode}</strong> (kelas {identitas.kelas})

@@ -4,7 +4,10 @@ import Maskot from './Maskot.jsx'
 import FormKode from './Masuk.jsx'
 
 // Chatbot pedagogis "Tanya Siku" (DeepSeek lewat backend, lihat backend/asisten.py).
-// - RMT: alur pahami → rencanakan → kerjakan → periksa ditampilkan sebagai jalur tahap, mengikuti tahap dari server.
+// - RMT (Kinard & Kozulin), fase III latihan konstruksi konseptual: fungsi kognitif Amati (input) → Hubungkan (elaborasi)
+//   → Pakai alat → Jelaskan (output & refleksi) ditampilkan sebagai jalur tahap, mengikuti tahap dari server.
+// - Selalu berfungsi: server mencoba beberapa AI gratis lalu "Siku Mandiri" (tanpa AI); bila server pun tidak terjangkau,
+//   aplikasi memberi pertanyaan mediasi yang sama secara lokal sehingga siswa tidak pernah melihat galat.
 // - Petunjuk bertingkat (1–4): siswa menaikkan sendiri lewat "Petunjuk lebih jelas" (graduated prompts),
 //   sehingga bantuan sesedikit mungkin dan siswa tetap yang menghitung. Jawaban akhir tidak pernah diberikan.
 // - Beban kognitif: satu balasan pendek per giliran, tombol cepat untuk siswa yang belum tahu cara bertanya.
@@ -12,11 +15,27 @@ import FormKode from './Masuk.jsx'
 // - Tombol baru muncul bila server melaporkan API key DeepSeek sudah dipasang (GET /api/sehat → asisten).
 
 const TAHAP = [
-  ['pahami', 'Pahami'],
-  ['rencana', 'Rencanakan'],
-  ['kerjakan', 'Kerjakan'],
-  ['periksa', 'Periksa'],
+  ['pahami', 'Amati'],
+  ['rencana', 'Hubungkan'],
+  ['kerjakan', 'Pakai alat'],
+  ['periksa', 'Jelaskan'],
 ]
+
+// nama yang SEBENARNYA menjawab, ditampilkan jujur
+const NAMA_PENYEDIA = {
+  deepseek: 'DeepSeek',
+  gemini: 'Google Gemini (gratis)',
+  groq: 'Groq (gratis)',
+  cadangan: 'OpenRouter (gratis)',
+}
+
+// cadangan lokal bila server tidak terjangkau: pertanyaan mediasi RMT singkat per tahap (tanpa angka jawaban)
+const MEDIASI_LOKAL = {
+  pahami: 'Yuk kita AMATI soalnya dulu. Tuliskan apa saja yang diketahui dan apa yang ditanyakan, lalu gambar segitiganya ya. 🔍',
+  rencana: 'Sekarang HUBUNGKAN: yang dicari sisi miring c atau sisi siku-siku? Pilih rumus yang cocok: c² = a² + b² atau a² = c² − b².',
+  kerjakan: 'Ayo PAKAI ALATNYA: kuadratkan tiap sisi, jumlahkan atau kurangkan, lalu cari akarnya. Berapa hasilmu?',
+  periksa: 'Saatnya JELASKAN: apakah sisi miring hasilmu paling panjang? Satuannya benar? Ceritakan langkahmu dengan kata-katamu.',
+}
 
 const SAPA =
   'Halo, aku Siku! Tulis soal atau bagian yang membuatmu bingung. Kita kerjakan bersama, satu langkah demi satu langkah. Aku memberi petunjuk, bukan jawaban akhir ya 😊'
@@ -74,10 +93,18 @@ export default function TanyaSiku({ halaman }) {
       const h = await tanyaAsisten({ pertanyaan: teks, riwayat, halaman, tingkat: tingkatKirim, tahap })
       setPesan((p) => [...p, { peran: 'assistant', isi: h.balasan }])
       setTahap(h.tahap)
-      if (h.model) setPenjawab(h.penyedia === 'cadangan' ? `model cadangan gratis (${h.model})` : `DeepSeek (${h.model})`)
+      if (h.model) setPenjawab(h.penyedia === 'mandiri' ? h.model : `${NAMA_PENYEDIA[h.penyedia] ?? h.penyedia} · ${h.model}`)
     } catch (e) {
-      if (e.status === 401) setSudahMasuk(false)
-      setGalat(e.message)
+      if (e.status === 401) {
+        setSudahMasuk(false)
+        setGalat(e.message)
+      } else if (e.status === 429 || e.status === 403) {
+        setGalat(e.message)
+      } else {
+        // server/jaringan bermasalah: Siku tetap membimbing dengan pertanyaan mediasi lokal
+        setPesan((p) => [...p, { peran: 'assistant', isi: MEDIASI_LOKAL[tahap] ?? MEDIASI_LOKAL.pahami }])
+        setPenjawab('Siku Mandiri (tanpa internet)')
+      }
     } finally {
       sedangKirim.current = false
       setMemuat(false)

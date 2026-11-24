@@ -8,6 +8,14 @@
 // - Germane load DIOPTIMALKAN: contoh lengkap (worked example) diikuti contoh
 //   setengah jadi (faded example), cek pemahaman di tiap langkah, dan refleksi.
 //
+// Model pembelajaran: RIGOROUS MATHEMATICAL THINKING (RMT; Kinard & Kozulin, 2008), proses tiga fase–enam langkah:
+//   Fase I  Pengembangan Kognitif         L1 mengenal alat berpikir (model/gambar)  L2 memakai alat untuk tugas kognitif
+//   Fase II Konten sebagai Proses         L3 membangun konsep dari pengalaman & bahasa sehari-hari
+//                                          L4 menemukan pola & hubungan             L5 memakai alat khas matematika
+//   Fase III Latihan Konstruksi Konseptual L6 berlatih memakai alat untuk memahami konsep (+ refleksi metakognitif)
+// Setiap sesi dimediasi dengan kriteria MLE: intensionalitas (tujuan), makna (mengapa penting), transendensi (dipakai di mana lagi).
+// Setiap langkah mencatat `rmt: { langkah, fungsi }` = langkah RMT & fungsi kognitif yang dilatih.
+//
 // Struktur tiap langkah:
 //   judul   : judul layar
 //   isi     : paragraf penjelasan (array string)
@@ -22,14 +30,48 @@
 //   Sesi 2 = Bagian 3 (teorema Pythagoras & memilih rumus)
 //   Sesi 3 = Bagian 4 (Strategi 5 Langkah, contoh tangga & layang-layang) + Bagian 5 (jarak terpendek, tripel, refleksi)
 
+export const FASE_RMT = {
+  1: { nama: 'Pengembangan Kognitif', ket: 'Melatih cara berpikir: mengamati, membandingkan, memberi label.' },
+  2: { nama: 'Konten sebagai Proses', ket: 'Membangun konsep dari pengalaman sehari-hari, menemukan pola, memakai alat matematika.' },
+  3: { nama: 'Latihan Konstruksi Konseptual', ket: 'Berlatih memakai alat matematika untuk memecahkan masalah, lalu merefleksikan cara berpikir.' },
+}
+
+export const LANGKAH_RMT = {
+  1: { fase: 1, nama: 'Mengenal alat berpikir' },
+  2: { fase: 1, nama: 'Memakai alat berpikir' },
+  3: { fase: 2, nama: 'Membangun konsep dari pengalaman' },
+  4: { fase: 2, nama: 'Menemukan pola & hubungan' },
+  5: { fase: 2, nama: 'Memakai alat matematika' },
+  6: { fase: 3, nama: 'Berlatih & merefleksi' },
+}
+
 export const SESI = [
   {
     id: 1,
     judul: 'Sesi 1: Kuadrat, Akar, dan Segitiga Siku-siku',
     tujuan: 'Menghitung kuadrat dan akar kuadrat, lalu menunjukkan sisi miring segitiga siku-siku walaupun gambarnya diputar.',
+    makna: 'Kuadrat, akar, dan nama sisi adalah "alat" yang dipakai di setiap soal Pythagoras. Tanpa alat ini, rumusnya tidak bisa dipakai.',
+    transendensi: 'Sudut siku-siku ada di mana-mana: pojok buku, layar HP, tangga yang bersandar, lapangan. Coba temukan tiga di sekitarmu!',
     langkah: [
       {
+        judul: 'Ayo amati: apa yang sama?',
+        rmt: { langkah: 1, fungsi: 'mengamati & membandingkan' },
+        isi: [
+          'Amati tiga benda ini: tangga yang bersandar di dinding, pojok sebuah buku, dan layar HP.',
+          'Bandingkan ketiganya. Cari ciri yang SAMA, bukan yang berbeda. Ciri yang sama itulah yang akan kita pelajari hari ini.',
+        ],
+        cek: {
+          tanya: 'Apa ciri yang sama dari ketiga benda itu?',
+          tipe: 'pilihan',
+          opsi: ['Warnanya sama', 'Ada sudut siku-siku (90°)', 'Ukurannya sama'],
+          jawab: 'Ada sudut siku-siku (90°)',
+          petunjuk: 'Lihat pojok-pojoknya. Bentuk pojok apa yang ada di tangga-dinding-lantai, buku, dan layar HP?',
+          penjelasan: 'Ketiganya punya sudut siku-siku (90°). Kemampuan membandingkan dan mencari ciri yang sama ini akan kita pakai terus.',
+        },
+      },
+      {
         judul: 'Kuadrat sebuah bilangan',
+        rmt: { langkah: 3, fungsi: 'memberi label (kuadrat = luas persegi)' },
         isi: [
           'Kuadrat artinya bilangan dikalikan dengan dirinya sendiri. Ditulis dengan angka 2 kecil di atas.',
           'Kuadrat juga sama dengan luas persegi: persegi bersisi 5 luasnya 5 × 5 = 25.',
@@ -45,6 +87,7 @@ export const SESI = [
       },
       {
         judul: 'Akar kuadrat',
+        rmt: { langkah: 3, fungsi: 'membentuk hubungan (kebalikan kuadrat)' },
         isi: [
           'Akar kuadrat (√) adalah kebalikan dari kuadrat. Pertanyaannya: bilangan berapa yang jika dikuadratkan menghasilkan angka ini?',
           'Karena 5 × 5 = 25, maka √25 = 5.',
@@ -60,6 +103,7 @@ export const SESI = [
       },
       {
         judul: 'Tabel kuadrat 11–20',
+        rmt: { langkah: 5, fungsi: 'mencari secara sistematis dengan tabel' },
         isi: [
           'Tabel ini menjadi pegangan selama belajar. Teorema Pythagoras selalu memakai kuadrat di awal dan akar di akhir.',
           'Cara memakai tabel untuk akar: √196 = ? → cari 196 di tabel → 14² = 196, jadi √196 = 14.',
@@ -79,6 +123,7 @@ export const SESI = [
       },
       {
         judul: 'Apa itu segitiga siku-siku?',
+        rmt: { langkah: 3, fungsi: 'mengenali ciri dari benda sehari-hari' },
         isi: [
           'Segitiga siku-siku punya satu sudut siku-siku (90°). Tanda kotak kecil di pojok gambar menunjukkan sudut siku-siku.',
           'Contohnya ada di sekitar kita: tangga yang bersandar di dinding, atau penggaris segitiga.',
@@ -87,6 +132,7 @@ export const SESI = [
       },
       {
         judul: 'Nama sisi-sisinya',
+        rmt: { langkah: 5, fungsi: 'memberi label dengan bahasa matematika' },
         isi: [
           'Dua sisi yang mengapit sudut siku-siku disebut sisi siku-siku. Kita beri nama a dan b.',
           'Sisi yang berhadapan (di depan) sudut siku-siku disebut sisi miring atau hipotenusa, kita beri nama c. Sisi miring selalu sisi yang paling panjang.',
@@ -103,6 +149,7 @@ export const SESI = [
       },
       {
         judul: 'Awas keliru: segitiga yang diputar',
+        rmt: { langkah: 2, fungsi: 'mempertahankan keajegan (konstansi)' },
         isi: [
           'Sisi miring BUKAN selalu sisi paling bawah atau sisi yang tampak "miring". Segitiga bisa diputar atau dibalik.',
           'Caranya: temukan dulu kotak sudut siku-siku, lalu lihat sisi di depannya. Sisi miring juga selalu sisi terpanjang.',
@@ -124,6 +171,7 @@ export const SESI = [
       },
       {
         judul: 'Ringkasan Sesi 1',
+        rmt: { langkah: 6, fungsi: 'merangkum & refleksi' },
         isi: [
           'Kuadrat: bilangan dikali dirinya sendiri (4² = 16). Akar kuadrat adalah kebalikannya (√16 = 4).',
           'Segitiga siku-siku punya satu sudut 90°. Sisi siku-siku: a dan b. Sisi miring: c, di depan sudut siku-siku dan paling panjang.',
@@ -143,9 +191,28 @@ export const SESI = [
     id: 2,
     judul: 'Sesi 2: Teorema Pythagoras',
     tujuan: 'Memahami rumus c² = a² + b² dan memilih rumus yang tepat untuk mencari sisi segitiga siku-siku.',
+    makna: 'Dengan rumus ini kamu bisa menghitung panjang yang sulit diukur langsung, cukup dari dua sisi yang lain.',
+    transendensi: 'Tukang bangunan memakai pola 3-4-5 untuk memastikan pojok bangunan benar-benar siku. Polanya sama dengan yang kamu temukan hari ini.',
     langkah: [
       {
+        judul: 'Ayo amati: kotak di dalam persegi',
+        rmt: { langkah: 2, fungsi: 'membandingkan & membentuk hubungan' },
+        isi: [
+          'Persegi bersisi 3 kotak berisi 9 kotak kecil. Persegi bersisi 4 kotak berisi 16 kotak kecil.',
+          'Bandingkan panjang sisi dengan banyak kotaknya. Hubungan apa yang kamu lihat? Pakai hubungan itu untuk menebak persegi berikutnya.',
+        ],
+        visual: { jenis: 'persegi' },
+        cek: {
+          tanya: 'Persegi bersisi 6 kotak berisi berapa kotak kecil?',
+          tipe: 'angka',
+          jawab: 36,
+          petunjuk: 'Sisi 3 → 3 × 3 = 9, sisi 4 → 4 × 4 = 16. Jadi sisi 6 → ?',
+          penjelasan: '6 × 6 = 36. Banyak kotak = sisi × sisi = kuadrat sisinya. Hubungan ini dipakai untuk menemukan pola Pythagoras.',
+        },
+      },
+      {
         judul: 'Menemukan pola',
+        rmt: { langkah: 4, fungsi: 'menemukan pola & hubungan' },
         isi: [
           'Di setiap sisi segitiga siku-siku dengan sisi 3, 4, dan 5, kita gambar persegi. Angka di dalam persegi adalah luasnya.',
           'Perhatikan: luas dua persegi kecil jika dijumlahkan sama dengan luas persegi besar. 9 + 16 = 25.',
@@ -161,6 +228,7 @@ export const SESI = [
       },
       {
         judul: 'Teorema Pythagoras',
+        rmt: { langkah: 5, fungsi: 'merumuskan dalam bahasa matematika' },
         isi: [
           'Pola tadi berlaku untuk SEMUA segitiga siku-siku. Inilah teorema Pythagoras:',
           'Kuadrat sisi miring sama dengan jumlah kuadrat kedua sisi siku-siku.',
@@ -170,6 +238,7 @@ export const SESI = [
       },
       {
         judul: 'Pilih rumus sesuai yang dicari',
+        rmt: { langkah: 5, fungsi: 'membandingkan & memilih alat' },
         isi: [
           'Mencari sisi miring c (sisi terpanjang) → TAMBAH: c² = a² + b², lalu c = √(a² + b²).',
           'Mencari sisi siku-siku a atau b (sisi yang lebih pendek) → KURANG: a² = c² − b² atau b² = c² − a².',
@@ -187,12 +256,14 @@ export const SESI = [
       },
       {
         judul: 'Contoh: mencari sisi miring',
+        rmt: { langkah: 6, fungsi: 'mengikuti langkah dengan presisi' },
         isi: ['Diketahui a = 6 dan b = 8. Kita cari c dengan langkah berikut:'],
         rumus: ['c² = a² + b²', 'c² = 6² + 8²', 'c² = 36 + 64', 'c² = 100', 'c = √100 = 10'],
         visual: { jenis: 'segitiga', sisi: { a: 6, b: 8, c: 10 }, cari: 'c' },
       },
       {
         judul: 'Giliran kamu (dibantu)',
+        rmt: { langkah: 6, fungsi: 'memakai alat dengan bantuan' },
         isi: [
           'Segitiga siku-siku dengan sisi siku-siku 15 cm dan 20 cm. Langkah awal sudah dikerjakan. Lanjutkan langkah terakhirnya.',
         ],
@@ -208,6 +279,7 @@ export const SESI = [
       },
       {
         judul: 'Mencari sisi siku-siku',
+        rmt: { langkah: 6, fungsi: 'membalik hubungan (berpikir mundur)' },
         isi: [
           'Jika yang dicari sisi siku-siku (a atau b), kuadrat sisi miring DIKURANGI kuadrat sisi yang diketahui.',
           'Contoh: c = 10 dan a = 6. Cari b.',
@@ -217,6 +289,7 @@ export const SESI = [
       },
       {
         judul: 'Coba sendiri',
+        rmt: { langkah: 6, fungsi: 'memakai alat secara mandiri' },
         isi: ['Diketahui sisi miring c = 13 dan b = 5. Berapa panjang a?'],
         visual: { jenis: 'segitiga', sisi: { a: 12, b: 5, c: 13 }, cari: 'a', sembunyikan: true },
         cek: {
@@ -229,6 +302,7 @@ export const SESI = [
       },
       {
         judul: 'Ringkasan Sesi 2',
+        rmt: { langkah: 6, fungsi: 'merangkum & refleksi' },
         isi: [
           'Mencari sisi miring: jumlahkan kuadrat, lalu akarkan.',
           'Mencari sisi siku-siku: kurangkan kuadrat (kuadrat sisi miring dikurangi kuadrat sisi yang diketahui), lalu akarkan.',
@@ -249,9 +323,28 @@ export const SESI = [
     id: 3,
     judul: 'Sesi 3: Pythagoras dalam Kehidupan Sehari-hari',
     tujuan: 'Menyelesaikan soal cerita dengan Strategi 5 Langkah (literasi matematis: merumuskan, menerapkan, menafsirkan).',
+    makna: 'Soal sehari-hari tidak langsung memberi tahu rumusnya. Kamu harus memilah informasi dulu, baru memakai alat yang tepat.',
+    transendensi: 'Cara memilah "yang diketahui" dan "yang ditanya" juga dipakai di IPA, IPS, bahkan saat merencanakan perjalanan.',
     langkah: [
       {
+        judul: 'Ayo amati: soal kapten kapal',
+        rmt: { langkah: 1, fungsi: 'mendefinisikan masalah & memilah informasi' },
+        isi: [
+          'Baca soal ini dengan teliti: "Di sebuah kapal ada 26 domba dan 10 kambing. Berapa umur kaptennya?"',
+          'Banyak siswa langsung menjumlahkan angkanya. Padahal, sebelum menghitung kita harus mengamati: apa yang ditanya, dan apakah informasinya cukup?',
+        ],
+        cek: {
+          tanya: 'Apa jawaban yang paling tepat?',
+          tipe: 'pilihan',
+          opsi: ['36 tahun', '16 tahun', 'Tidak bisa ditentukan dari informasi ini'],
+          jawab: 'Tidak bisa ditentukan dari informasi ini',
+          petunjuk: 'Apakah jumlah domba dan kambing ada hubungannya dengan umur kapten?',
+          penjelasan: 'Informasinya tidak berhubungan dengan pertanyaan, jadi tidak bisa ditentukan. Selalu pahami dulu soalnya sebelum menghitung!',
+        },
+      },
+      {
         judul: 'Strategi 5 Langkah soal cerita',
+        rmt: { langkah: 5, fungsi: 'merencanakan secara sistematis' },
         isi: [
           'Soal cerita sering panjang. Jangan langsung menghitung. Ikuti lima langkah ini satu per satu:',
           '1. Baca & tandai: garis bawahi angka penting dan kalimat pertanyaannya.',
@@ -263,6 +356,7 @@ export const SESI = [
       },
       {
         judul: 'Contoh 1: panjang tangga',
+        rmt: { langkah: 6, fungsi: 'memodelkan cerita menjadi gambar' },
         isi: [
           'Sebuah tangga disandarkan pada dinding. Jarak kaki tangga ke dinding 3 m, dan ujung atas tangga menyentuh dinding pada ketinggian 4 m. Berapa panjang tangga?',
           'Diketahui: kaki tangga ke dinding = 3 m, tinggi dinding = 4 m. Ditanya: panjang tangga. Tangga berada di depan sudut siku-siku, jadi tangga adalah sisi miring.',
@@ -275,6 +369,7 @@ export const SESI = [
       },
       {
         judul: 'Mengenali sisi miring dalam cerita',
+        rmt: { langkah: 4, fungsi: 'menghubungkan cerita dengan gambar' },
         isi: [
           'Benang layang-layang yang terulur panjangnya 29 m. Jarak mendatar dari Dimas ke titik tepat di bawah layang-layang 20 m. Berapa tinggi layang-layang?',
         ],
@@ -291,6 +386,7 @@ export const SESI = [
       },
       {
         judul: 'Contoh 2: tinggi layang-layang',
+        rmt: { langkah: 6, fungsi: 'memodelkan & memilih rumus' },
         isi: [
           'Diketahui: benang = 29 m (sisi miring), jarak mendatar = 20 m. Ditanya: tinggi layang-layang (sisi siku-siku).',
           'Karena yang dicari sisi siku-siku, kuadratnya dikurang: b² = 29² − 20² = 841 − 400.',
@@ -306,6 +402,7 @@ export const SESI = [
       },
       {
         judul: 'Contoh 3: jarak terpendek',
+        rmt: { langkah: 6, fungsi: 'memodelkan & memilih rumus' },
         isi: [
           'Andi berjalan 15 m ke timur, lalu 20 m ke utara. Berapa jarak terpendek Andi dari titik awal?',
           'Arah timur dan utara membentuk sudut siku-siku. Jarak terpendek adalah garis lurus dari titik awal ke titik akhir, yaitu sisi miring.',
@@ -322,6 +419,7 @@ export const SESI = [
       },
       {
         judul: 'Soal cerita: diagonal layar',
+        rmt: { langkah: 6, fungsi: 'memakai alat secara mandiri' },
         isi: [
           'Ukuran layar disebut dari panjang diagonalnya. Sebuah layar laptop lebarnya 28 cm dan tingginya 21 cm.',
           'Berapa cm panjang diagonal layar tersebut?',
@@ -337,6 +435,7 @@ export const SESI = [
       },
       {
         judul: 'Tripel Pythagoras',
+        rmt: { langkah: 4, fungsi: 'menemukan pola & menguji' },
         isi: [
           'Tiga bilangan bulat yang memenuhi c² = a² + b² disebut tripel Pythagoras. Contoh: 3, 4, 5 · 6, 8, 10 · 20, 21, 29 · 9, 40, 41.',
           'Kelipatannya juga tripel, misalnya 3, 4, 5 dikali 5 menjadi 15, 20, 25.',
@@ -354,6 +453,7 @@ export const SESI = [
       },
       {
         judul: 'Refleksi',
+        rmt: { langkah: 6, fungsi: 'refleksi metakognitif' },
         isi: [
           'Selamat, kamu sudah menyelesaikan semua sesi!',
           'Pola yang sama, cerita berbeda: tangga–dinding, benang layang-layang, diagonal layar, jarak berjalan, kawat penopang tiang, dan diagonal taman semuanya segitiga siku-siku. Cari dulu sudut sikunya, tentukan sisi miring, lalu gunakan rumus yang sama.',

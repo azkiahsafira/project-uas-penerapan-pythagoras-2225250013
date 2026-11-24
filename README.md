@@ -82,6 +82,17 @@ Dari rumus tersebut diperoleh tiga bentuk:
 
 ## Fitur
 
+- **Model pembelajaran RMT (Rigorous Mathematical Thinking, Kinard & Kozulin 2008)** sesuai arahan dosen:
+  - Setiap langkah Belajar ditandai **Fase I Pengembangan Kognitif → Fase II Konten sebagai Proses → Fase III Latihan Konstruksi
+    Konseptual** (enam langkah RMT) beserta **fungsi kognitif** yang dilatih; jalur tiga fase tampil di atas setiap langkah.
+  - Setiap sesi dibuka dengan **tugas kognitif Fase I** (mengamati & membandingkan; soal "kapten kapal" untuk mendefinisikan masalah)
+    dan dimediasi kriteria MLE: **tujuan** (intensionalitas), **mengapa penting** (makna), **dipakai di mana lagi** (transendensi).
+  - Tanya Siku memandu fungsi kognitif **Amati → Hubungkan → Pakai alat → Jelaskan** dan **selalu berfungsi**: beberapa AI gratis
+    berurutan, lalu **Siku Mandiri** (tanpa AI) bila kuota habis atau server AI mati ([rincian](docs/chatbot-tanya-siku.md)).
+- **Pembelajaran tanpa aplikasi** ([docs/pembelajaran-tanpa-aplikasi](docs/pembelajaran-tanpa-aplikasi)): Modul Ajar RMT untuk guru,
+  LKPD Pertemuan 1–3 (isi sama dengan menu Belajar), dan kunci jawaban; Pertemuan 4 memakai
+  [lembar latihan cetak](docs/latihan-cetak).
+- **Video pembelajaran** (± 4,5 menit, narasi suara Indonesia & subtitle) dibuat dengan [`scripts/video/buat_video.py`](scripts/video/buat_video.py).
 - **Belajar 3 sesi**: materi bertahap yang harus diikuti berurutan.
   - Urutan & contoh sama dengan [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf).
   - Sesi 1 (PDF Bagian 1–2): kuadrat, akar kuadrat, tabel kuadrat, segitiga siku-siku, dan sisi miring pada segitiga yang diputar.
