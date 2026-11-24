@@ -15,6 +15,7 @@ Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat comm
 - **Pembelajaran tanpa aplikasi** (`docs/pembelajaran-tanpa-aplikasi/`): Modul Ajar RMT untuk guru, LKPD Pertemuan 1–3, dan
   kunci jawaban, dibuat langsung dari `src/materi.js` (`scripts/buat_modul_rmt.py`).
 - **Video pembelajaran** ± 4,5 menit (narasi suara Indonesia & subtitle, alur fase RMT): `scripts/video/buat_video.py`.
+- Supabase dikosongkan (24 Nov 2026): tabel `hasil` & `aktivitas` = 0 baris; 216 kode siswa 8A-01 s.d. 8F-36 tetap tersimpan.
 - Versi cache PWA dinaikkan (`pythagoras-v14`).
 
 ## [2.27.1] · 19 November 2026 — Balon sahabat tidak tertutup judul (HP)
