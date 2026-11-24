@@ -37,7 +37,7 @@
 ## 3. Daftar layar (Android, satu kolom)
 
 1. **Masuk** — kolom kode siswa (huruf besar otomatis), tombol "Masuk". Pesan jelas bila kode salah.
-2. **Beranda** — halaman sekolah dengan Siku, Raka, Nisa; menu Belajar · Kalkulator · Latihan · Tes; latar 3D Langit Pythagoras (biru soft + pink soft).
+2. **Beranda** — header PELITA (panggung pesta) dengan Siku, Raka, Nisa, dan sahabat kawaii; menu Belajar · Kalkulator · Latihan · Tes; latar 3D Dunia Sahabat Kawaii (biru muda + pink muda).
 3. **Cek prasyarat** — 4 soal kuadrat/akar, satu per layar.
 4. **Materi (Sesi 1–3)** — judul, ≤ 3 kalimat, gambar terintegrasi, satu pertanyaan cek; Bacakan; progres langkah.
 5. **Ilustrasi 3D** — kartu three.js **tangga–dinding** yang bisa diputar dengan jari; tombol "Lihat segitiganya" menampilkan garis segitiga siku-siku di atas benda.

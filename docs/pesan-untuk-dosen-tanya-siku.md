@@ -6,7 +6,7 @@ Assalamu'alaikum Pak Aan, izin melaporkan progres Tahap 2.
 
 Chatbot pedagogis **Tanya Siku** sudah terintegrasi dengan **API resmi DeepSeek** di backend (API key disimpan sebagai
 environment variable `DEEPSEEK_API_KEY` di server Vercel, tidak ada di kode frontend maupun GitHub). Chatbot menerapkan
-tahap RMT (pahami → rencanakan → kerjakan → periksa), petunjuk bertingkat 1–4, pengelolaan IL/EL/GL, dan tidak memberi
+tahap fungsi kognitif RMT (amati → hubungkan → pakai alat → jelaskan), petunjuk bertingkat 1–4, pengelolaan IL/EL/GL, dan tidak memberi
 jawaban akhir (dicek juga di server). Penjelasan lengkap ada di `docs/chatbot-tanya-siku.md` pada repository.
 
 Kendala: API DeepSeek ternyata berbayar dan saldo akun saya masih kosong (DeepSeek membalas *Insufficient Balance*).

@@ -15,7 +15,7 @@ konsisten dengan rancangan penelitian, teori beban kognitif, dan aturan privasi.
 | Backend | FastAPI (Python 3.11+) | `python -m venv backend/.venv`, `pip install -r backend/requirements.txt`, `python -m pytest backend -q`, `uvicorn backend.main:app --reload` |
 | Analisis | Python (pustaka bawaan) | `python analisis/analisis.py analisis/contoh_data.csv`, `python analisis/analisis_literasi.py`, `python -m pytest analisis -q` |
 | Uji JavaScript | Node (`node:test`, tanpa library tambahan) | `npm test` |
-| Lembar tes cetak | Node | `node scripts/buat-lembar-tes.mjs` |
+| Bahan cetak | Node & Python | `node scripts/buat-lembar-tes.mjs` (kuesioner), `python scripts/buat_tes_literasi.py` (tes ML), `python scripts/buat_modul_rmt.py` (modul & LKPD RMT) |
 
 Sebelum menyelesaikan pekerjaan: **`npm run lint` dan `npm run build` harus lolos**, dan perubahan tampilan dicek di ukuran HP (375×812) dan laptop.
 
@@ -42,8 +42,8 @@ Sebelum menyelesaikan pekerjaan: **`npm run lint` dan `npm run build` harus lolo
 - Menghapus data di Supabase hanya atas permintaan eksplisit pemilik proyek.
 
 ## 6. Struktur penting
-- `src/tes.js` — butir pre/post-test & Leppink (sumber tunggal; lembar cetak dibuat dari sini).
-- `src/materi.js` — isi 3 sesi materi.
+- `src/data/soal-literasi.json` — soal tes Mathematical Literacy (pre/post-test aktif); `src/tes.js` — butir Leppink (dan tes 10 soal cadangan).
+- `src/materi.js` — isi 3 sesi materi + fase & langkah RMT tiap langkah (sumber LKPD & modul ajar).
 - `src/penyimpanan.js` — antrean offline & pengiriman data.
 - `analisis/analisis.py` — kunci jawaban harus **sama** dengan `src/tes.js` (dan nanti `backend/penilaian.py`).
 - `public/sw.js` — service worker; naikkan `VERSI` bila strategi cache berubah.

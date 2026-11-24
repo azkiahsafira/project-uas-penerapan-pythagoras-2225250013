@@ -92,7 +92,7 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Pembelajaran tanpa aplikasi** ([docs/pembelajaran-tanpa-aplikasi](docs/pembelajaran-tanpa-aplikasi)): Modul Ajar RMT untuk guru,
   LKPD Pertemuan 1–3 (isi sama dengan menu Belajar), dan kunci jawaban; Pertemuan 4 memakai
   [lembar latihan cetak](docs/latihan-cetak).
-- **Video pembelajaran** (± 4,5 menit, narasi suara Indonesia & subtitle) dibuat dengan [`scripts/video/buat_video.py`](scripts/video/buat_video.py).
+- **Video pembelajaran** (± 9,5 menit, 24 adegan: seluruh langkah Sesi 1–3 + cara memakai fitur aplikasi, narasi suara Indonesia & subtitle) dibuat dengan [`scripts/video/buat_video.py`](scripts/video/buat_video.py).
 - **Belajar 3 sesi**: materi bertahap yang harus diikuti berurutan.
   - Urutan & contoh sama dengan [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf).
   - Sesi 1 (PDF Bagian 1–2): kuadrat, akar kuadrat, tabel kuadrat, segitiga siku-siku, dan sisi miring pada segitiga yang diputar.
@@ -119,20 +119,24 @@ Dari rumus tersebut diperoleh tiga bentuk:
 - **Validasi input**: menolak angka kosong, nol, negatif, atau sisi miring yang tidak lebih panjang dari sisi lain.
 - **Contoh soal sehari-hari** (Kalkulator, sama dengan Contoh 1–3 materi PDF): panjang tangga, tinggi layang-layang, jarak terpendek, dan diagonal layar.
 - **Latihan soal = Pertemuan 4 (implementasi)**: berjenjang seperti Latihan Berjenjang materi PDF: soal 1–3 angka langsung, soal 4–6 dengan gambar yang diputar, soal 7 dst. soal cerita (tangga, layang-layang, jarak berjalan, perahu, diagonal layar, kawat tiang bendera, diagonal taman); angka dibuat acak dari tripel Pythagoras yang tidak dipakai di pre/post-test, jawaban diperiksa otomatis, ada skor, target minimal 10 soal dengan progress bar, dan pembahasan langkah demi langkah ditampilkan setelah menjawab. Setiap soal yang dijawab dicatat ke database (benar/salah/lihat jawaban, lama waktu, pemakaian Bacakan).
-- **Header beranimasi**: prisma segitiga 3-4-5 yang berputar dalam 3D (CSS 3D transform), dua siswa SMP bergaya chibi (Raka dan Nisa yang berjilbab) yang melambai dan sesekali melompat, pelangi pastel, simbol matematika yang melayang, serta awan berwajah.
-- **Karakter interaktif**: klik Siku untuk mendengar sorakan penyemangat (dengan konfeti), klik Raka atau Nisa untuk disapa, dan elus 8 hewan yang tersebar di halaman: anak ayam & kelinci hinggap di kartu sesi, anjing di kartu kalkulator, kucing di samping judul contoh soal, katak di kartu latihan, panda & beruang mengintip dari pinggir layar (layar lebar), dan bebek yang sesekali berjalan melintas di bawah layar. Setiap karakter dan hewan punya beberapa kalimat yang bergantian, dan balon kata di header berganti sendiri sesuai menu (diawali salam sesuai jam). Ada juga burung yang terbang melintas di header dan ilustrasi beranimasi di tiap kartu sesi.
-- **Halaman sekolah di header**: Raka, Nisa, dan Siku berdiri di rumput halaman sekolah (tidak melayang), di depan gedung SMP dengan bendera merah putih yang berkibar, jam menara yang berputar, siswa yang muncul dan melambai dari jendela, pohon yang bergoyang, serta bus sekolah yang lewat di jalan. Latar halaman juga dihiasi kupu-kupu yang terbang, balon tersenyum yang naik, pesawat kertas, dan awan tersenyum. Semuanya disembunyikan saat tes dan berhenti bila animasi dimatikan.
-- **Latar 3D “Langit Pythagoras” di semua menu** (three.js, warna biru soft + pink soft): objeknya contoh dari materi — **Siku** si segitiga siku-siku berwajah (tanda kotak sudut siku-siku, sisi miring biru), **menara kotak 3² + 4² = 5²** (9 kubus biru + 16 pink = 25 putih), **layang-layang berwajah** dengan benang pink (benang = sisi miring), dan **tangga bersandar** dengan kelinci yang naik-turun (kaki 3, tinggi 4, tangga 5), ditambah awan, hati, dan bintang yang melayang. Objek bisa diklik untuk bereaksi dan berbicara tentang materi. Kotak di bawah header tembus pandang agar latar terlihat. Hemat: three.js diunduh setelah halaman tampil, ±30 fps, berhenti saat tab tidak dilihat, saat **Animasi: mati**, dan saat tes.
-- **Musik latar ceria** (tombol 🎵 di pojok kanan bawah): lagu ciptaan sendiri yang dimainkan langsung dengan Web Audio (tanpa file, bebas hak cipta), bernada marimba dengan bass lembut. Bawaannya mati; pilihan disimpan. Musik otomatis mengecil saat fitur Bacakan berbicara, berhenti saat tes, dan berhenti saat aplikasi tidak sedang dibuka.
-- **Pesan semangat saat jawaban salah**: Siku muncul kecil di bawah layar sambil melambai dengan kalimat penyemangat (misalnya “Hampir! Coba lagi ya 💪” atau “Tidak apa-apa! Baca pembahasannya ya 📖”), tanpa suara dan tanpa menutupi soal, agar siswa tidak patah semangat.
-- **Hewan laut bisa diklik**: paus menyemburkan air, gurita melambaikan tentakel, ikan segitiga bersalto, gerombolan ikan berpencar, bintang laut berputar, kerang memunculkan mutiara; masing-masing dengan balon kata lucu. Klik di area kosong diteruskan ke latar, sedangkan kotak, tombol, dan isian tetap bisa dipakai seperti biasa.
+- **Header "PELITA" (panggung pesta)**: judul PELITA (PEnerapan · Learning · pItagoras · Teorema · Azkiah Safira) beserta
+  artinya, bendera warna-warni, pelangi pastel yang ujungnya awan berwajah, empat sahabat kawaii orisinal di panggung awan
+  (**Kuadra** si penguin a², **Lila** si domba b², **Hipo** si beruang c², **Akar** si kucing √), maskot **Siku**,
+  **Raka** berhoodie dino dan **Nisa** berhoodie kucing berkerudung, serta papan "Ayo belajar bareng!". Di HP header dibuat
+  ringkas dan menu menjadi bilah bawah seperti aplikasi HP.
+- **Karakter interaktif**: klik Siku, Raka, Nisa, atau keempat sahabat untuk mendengar kalimat tentang materi; balon kata
+  bergantian dan tidak saling menutupi. Hewan kecil (anak ayam, kucing, anjing, katak, panda, beruang, bebek) bisa dielus.
+- **Latar 3D "Dunia Sahabat Kawaii" di semua menu** (three.js, biru muda + pink muda): sahabat kawaii, balon yang bisa
+  dipecahkan, awan berwajah, matahari tersenyum, pelangi, hati dan bintang; ikut bergerak saat pindah menu. Kartu isi dibuat
+  bening seperti kaca agar latar terlihat, sedangkan area kerja (langkah hitung, gambar segitiga, soal) lebih padat agar mudah
+  dibaca. Hemat: three.js diunduh setelah halaman tampil, berhenti saat tab tidak dilihat, saat **Animasi: mati**, dan saat tes.
 - **Layar perayaan penuh saat jawaban benar** (menu Belajar dan Latihan): tulisan besar acak seperti “HEBAT!” atau “LUAR BIASA!”, hujan konfeti satu layar, tangan bertepuk 👏, Siku menari, dan suara “ta-da” + tepuk tangan yang dibuat langsung dengan Web Audio (tanpa file suara). Tampil ±2 detik lalu hilang sendiri (atau klik untuk langsung lanjut) agar siswa cepat kembali ke penjelasan. Suara bisa dimatikan lewat tombol “👏 Suara tepuk tangan” di bagian bawah halaman. Tidak pernah muncul di menu Tes.
 - **Animasi penyemangat**: konfeti saat jawaban benar, layar perayaan saat satu sesi selesai (pelangi dan Siku bertopi wisuda yang menari), Siku mini yang berjalan di progress bar, umpan balik salah yang bergoyang pelan, combo 🔥 saat benar berturut-turut di Latihan Soal, segitiga kalkulator yang tergambar garis demi garis, dan transisi halaman.
 - **Tombol "Animasi: nyala/mati"** di bagian bawah halaman, misalnya untuk siswa yang mudah terganggu. Semua animasi juga berhenti selama tes.
 - **Maskot "Siku"**: karakter segitiga siku-siku beranimasi (melayang, berkedip, melambai) dengan balon kata di header, serta bereaksi senang/berpikir saat siswa menjawab. Animasi berhenti saat tes dan mengikuti pengaturan *kurangi gerakan* perangkat.
 - **Latar halaman beranimasi**: gumpalan warna biru–pink yang bergerak lembut, gelembung sabun yang melayang lalu pecah, bentuk kecil (segitiga, hati, bintang, lingkaran, plus) yang melayang naik, dan bintang berkelip di area kosong halaman.
 - **Efek lucu lainnya**: hati & bintang meletup di setiap klik/sentuhan, jejak kilau di belakang kursor (laptop), mata Siku dan Raka yang melirik mengikuti kursor, Siku yang tertidur (Zzz) bila halaman lama tidak disentuh, dan tombol sesi berikutnya yang berdenyut.
-- Tema biru muda (baby blue) + pink pastel, responsif (laptop dan HP), serta mendukung mode terang/gelap.
+- Tema biru muda + pink muda dengan font Bubblegum Sans & Itim, responsif (laptop dan HP), dan selalu tampil terang.
 
 ## Rancangan Berdasarkan Teori Beban Kognitif
 
@@ -159,8 +163,8 @@ setelah pre-test dikumpulkan; Latihan Soal setelah Sesi 3 selesai; post-test set
 post-test. Pre-test, post-test, dan kuesioner **hanya sekali** per kode siswa (backend juga menolak percobaan kedua). Kode kelompok
 `Uji coba peneliti` (mis. `8Z-99`, untuk demo ke dosen) tidak dikunci dan tidak ikut dianalisis.
 
-Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis ([docs/instrumen-cetak](docs/instrumen-cetak): pre-test, post-test, kuesioner, dan kunci jawaban, dibuat otomatis dari `src/tes.js` dengan `node scripts/buat-lembar-tes.mjs`); jawabannya dimasukkan ke analisis lewat `analisis/templat_kertas.csv`.
-Untuk mengajar siswa tersebut dipakai [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf) yang sama, dan di pertemuan 4 ia mengerjakan
+Siswa yang belajar dengan aplikasi mengerjakan pre-test, post-test, dan kuesioner di menu Tes (tercatat sebagai kelompok "Belajar dengan aplikasi"). Siswa yang diajar langsung mengerjakan **lembar cetak** yang soalnya sama persis: tes Mathematical Literacy & rubrik ([docs/instrumen-cetak-literasi](docs/instrumen-cetak-literasi)) dan kuesioner beban kognitif ([docs/instrumen-cetak](docs/instrumen-cetak), `node scripts/buat-lembar-tes.mjs`).
+Untuk mengajar siswa tersebut dipakai [Modul Ajar & LKPD model RMT](docs/pembelajaran-tanpa-aplikasi) yang isinya sama dengan menu Belajar, [materi PDF](docs/materi/Materi-Teorema-Pythagoras.pdf), dan di pertemuan 4 ia mengerjakan
 [lembar latihan soal](docs/latihan-cetak) (12 soal berjenjang setara menu Latihan Soal, kunci terpisah; `python scripts/buat_lembar_latihan.py`).
 
 Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai **lembar validasi ahli materi dan ahli media**
@@ -168,7 +172,7 @@ Sebelum uji ke siswa (tahap Development ADDIE), aplikasi divalidasi ahli memakai
 
 ### Instrumen
 
-- **Pre-test dan post-test** ([src/tes.js](src/tes.js)): 10 soal paralel. Setiap nomor mengukur indikator yang sama dengan angka/konteks berbeda:
+- **Tes 10 soal pilihan/isian (versi awal, tidak dipakai lagi)** ([src/tes.js](src/tes.js)): disimpan di kode hanya sebagai cadangan bila `VITE_TES_LITERASI` dikosongkan. Indikatornya:
 
   | No | Indikator |
   | -- | --------- |
@@ -361,7 +365,7 @@ Aplikasi ini dibuat dengan bantuan AI (Claude, lewat Claude Code). Seluruh perca
 - [Bukti-Vibe-Coding-Percakapan-AI.pdf](docs/bukti-ai/Bukti-Vibe-Coding-Percakapan-AI.pdf): versi cetak (A4)
 - [Percakapan-dengan-AI.html](docs/bukti-ai/Percakapan-dengan-AI.html): versi untuk dibuka di browser
 
-Screenshot tampilan aplikasi ada di [docs/screenshot](docs/screenshot) (termasuk fitur cek prasyarat, Diketahui/Ditanya, tunjuk sisi miring, petunjuk bertingkat, cek kewajaran, dan refleksi).
+Screenshot tampilan aplikasi versi akhir ada di [docs/screenshot](docs/screenshot): beranda, model RMT, tugas Fase I tiap sesi, kalkulator, latihan soal, menu tes, Tanya Siku (laptop & HP).
 
 ## Struktur Folder
 
@@ -370,18 +374,22 @@ aplikasi-pythagoras/
 ├── index.html        halaman utama
 ├── public/           ikon, manifest.webmanifest & sw.js (PWA)
 ├── analisis/         script Python untuk mengolah data penelitian
-├── docs/             screenshot tampilan aplikasi & bukti percakapan dengan AI
+├── docs/             screenshot, bahan cetak (tes, LKPD & modul ajar RMT, latihan, materi), bukti percakapan AI
+├── scripts/          pembuat bahan cetak & video pembelajaran
 ├── supabase/         skema database (SQL)
 └── src/
     ├── main.jsx      titik awal aplikasi
     ├── App.jsx       halaman utama: menu, kalkulator, contoh soal
-    ├── Panggung.jsx  header: balon kata, prisma 3D, Raka, Siku (bisa diklik)
+    ├── Panggung.jsx  header: balon kata, panggung pesta, Siku, Raka, Nisa (bisa diklik)
+    ├── Kawaii.jsx    sahabat kawaii (Kuadra, Lila, Hipo, Akar), bendera, pelangi berawan, panggung awan
+    ├── Latar3D.jsx   latar 3D "Dunia Sahabat Kawaii" (three.js)
+    ├── TanyaSiku.jsx chatbot Tanya Siku (RMT, selalu berfungsi)
     ├── Belajar.jsx   pemutar materi belajar per sesi
     ├── Maskot.jsx    karakter maskot "Siku" (SVG beranimasi)
-    ├── Siswa.jsx     karakter siswa SMP Raka (SVG beranimasi)
-    ├── Siswi.jsx     karakter siswi SMP berjilbab Nisa (SVG beranimasi)
+    ├── Siswa.jsx     Raka berhoodie dino (SVG beranimasi)
+    ├── Siswi.jsx     Nisa berhoodie kucing berkerudung (SVG beranimasi)
     ├── Prisma3D.jsx  prisma segitiga 3D berputar
-    ├── Hiasan.jsx    simbol melayang, awan, burung, kucing, kelinci, beruang, pelangi, gelembung, konfeti, ilustrasi sesi
+    ├── Hiasan.jsx    simbol melayang, awan, pelangi, konfeti, ilustrasi sesi
     ├── Efek.jsx      hati & bintang saat klik, jejak kursor
     ├── Install.jsx   tombol install aplikasi & pemberitahuan offline
     ├── Bacakan.jsx   tombol 🔊 Bacakan
@@ -393,7 +401,7 @@ aplikasi-pythagoras/
     ├── tes.js        soal tes dan butir kuesioner
     ├── penyimpanan.js penyimpanan hasil, kirim ke Supabase, ekspor CSV
     ├── supabase.js   koneksi ke Supabase
-    ├── materi.js     isi materi 3 sesi
+    ├── materi.js     isi materi 3 sesi + fase & langkah RMT tiap langkah
     ├── Latihan.jsx   latihan soal pertemuan 4 (Diketahui/Ditanya, sisi miring, petunjuk, refleksi)
     ├── Prasyarat.jsx cek prasyarat kuadrat & akar
     ├── SegitigaPutar.jsx segitiga yang diputar untuk menunjuk sisi miring

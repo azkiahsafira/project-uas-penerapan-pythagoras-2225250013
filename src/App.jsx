@@ -311,6 +311,11 @@ function App() {
             <section className="kartu ada-hewan">
               <HewanHidup jenis="anjing" className="hinggap kanan" />
               <h2>Kalkulator</h2>
+              {/* RMT: kalkulator adalah alat khas matematika (Fase II, langkah 5) untuk memeriksa langkah, bukan pengganti berpikir */}
+              <p className="label-rmt fase-2">
+                <span className="label-rmt-langkah">Fase II · Langkah RMT 5: Memakai alat matematika</span>
+                <span className="label-rmt-fungsi">🧠 Fungsi kognitif: memilih alat & memeriksa langkah</span>
+              </p>
               <div className="tab" role="tablist">
                 {Object.keys(MODE).map((m) => (
                   <button

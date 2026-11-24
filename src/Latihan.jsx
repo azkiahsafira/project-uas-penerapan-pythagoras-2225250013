@@ -420,6 +420,11 @@ export default function Latihan() {
           </span>
         </div>
         <h2>Latihan Soal Sehari-hari</h2>
+        {/* RMT: latihan berjenjang = Fase III (latihan konstruksi konseptual) */}
+        <p className="label-rmt fase-3">
+          <span className="label-rmt-langkah">Fase III · Langkah RMT 6: Berlatih & merefleksi</span>
+          <span className="label-rmt-fungsi">🧠 Fungsi kognitif: mendefinisikan masalah, memodelkan, memeriksa kewajaran</span>
+        </p>
         <p className="ket">
           Terapkan teorema Pythagoras pada masalah sehari-hari. Kerjakan minimal {TARGET_SOAL} soal, ya {identitas.nama}!
         </p>

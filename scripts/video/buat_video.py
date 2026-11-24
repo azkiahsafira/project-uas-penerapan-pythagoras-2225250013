@@ -2,7 +2,8 @@
 
 Setiap adegan = slide 1280×720 (HTML → PNG lewat Edge headless) + narasi suara Indonesia (Windows "Microsoft Andika",
 tts.ps1) + subtitle. Adegan disusun mengikuti fase RMT: tujuan & makna (MLE) → Fase I mengamati/membandingkan →
-Fase II membangun konsep & menemukan pola → Fase III berlatih soal cerita → refleksi & transendensi.
+Fase II membangun konsep & menemukan pola → Fase III berlatih soal cerita → refleksi & transendensi. Isinya mencakup SELURUH
+langkah menu Belajar Sesi 1–3 dan cara memakai fitur aplikasi (Cek Prasyarat, Kalkulator, Latihan Soal, Tes, Tanya Siku).
 
 Pemakaian (Windows):  python scripts/video/buat_video.py <folder-kerja> <ffmpeg.exe> <berkas-keluaran.mp4>
 """
@@ -53,78 +54,155 @@ def rumus(*baris):
     return '<div class="rumus">' + "".join(f"<div>{b}</div>" for b in baris) + "</div>"
 
 
+def layar_app(nama):
+    """Tangkapan layar aplikasi asli (docs/screenshot) untuk adegan fitur."""
+    jalur = os.path.join(AKAR, "docs", "screenshot", nama).replace(os.sep, "/")
+    return f'<img class="tangkapan" src="file:///{jalur}">'
+
+
+# Isi video = SELURUH materi menu Belajar (Sesi 1–3, setiap langkah) + cara memakai fitur aplikasi.
 ADEGAN = [
-    dict(fase="", judul="PELITA · Belajar Teorema Pythagoras", isi=f'<img class="tangkapan" src="file:///{os.path.join(AKAR, "docs", "tampilan-laptop.png").replace(os.sep, "/")}">',
-         narasi="Halo, teman-teman! Aku Siku, si segitiga siku-siku. Di video ini kita belajar teorema Pythagoras dengan model "
-                "Rigorous Mathematical Thinking, atau R M T. Kita berpikir dalam tiga fase: mengamati dan membandingkan, "
-                "membangun konsep, lalu berlatih memecahkan masalah."),
-    dict(fase="Mediasi", judul="🎯 Tujuan & 💡 Mengapa penting",
-         isi='<ul class="besar"><li><b>Tujuan:</b> memahami rumus c² = a² + b² dan memakainya untuk soal sehari-hari.</li>'
-             '<li><b>Mengapa penting:</b> kita bisa menghitung panjang yang sulit diukur langsung, cukup dari dua sisi yang lain.</li></ul>',
-         narasi="Tujuan kita hari ini: memahami rumus c kuadrat sama dengan a kuadrat ditambah b kuadrat, lalu memakainya untuk "
-                "soal sehari-hari. Kenapa penting? Karena dengan rumus ini, kita bisa menghitung panjang yang sulit diukur "
-                "langsung, cukup dari dua sisi yang lain."),
-    dict(fase="Fase I · Pengembangan Kognitif", judul="Ayo amati: apa yang sama?",
+    dict(fase="", judul="PELITA · Belajar Teorema Pythagoras", isi=layar_app("01-laptop-beranda.png"),
+         narasi="Halo, teman-teman! Aku Siku, si segitiga siku-siku. Di video ini kita belajar teorema Pythagoras bersama "
+                "aplikasi PELITA, dari kuadrat dan akar, teorema Pythagoras, sampai soal cerita sehari-hari."),
+    dict(fase="Model pembelajaran", judul="Belajar dengan model RMT", isi=layar_app("02-laptop-belajar-model-rmt.png"),
+         narasi="Kita belajar dengan model Rigorous Mathematical Thinking, atau R M T. Fase satu, pengembangan kognitif: melatih "
+                "cara berpikir seperti mengamati dan membandingkan. Fase dua, konten sebagai proses: membangun konsep dan "
+                "menemukan pola. Fase tiga, latihan konstruksi konseptual: berlatih memakai alat matematika lalu merefleksikan "
+                "cara berpikir kita."),
+    # ------------------------------- SESI 1 -------------------------------
+    dict(fase="Sesi 1 · Mediasi", judul="🎯 Tujuan Sesi 1",
+         isi='<ul class="besar"><li><b>Tujuan:</b> menghitung kuadrat & akar kuadrat, lalu menunjukkan sisi miring '
+             'walaupun segitiganya diputar.</li><li><b>Mengapa penting:</b> kuadrat, akar, dan nama sisi adalah "alat" '
+             'di setiap soal Pythagoras.</li></ul>',
+         narasi="Sesi satu. Tujuannya: menghitung kuadrat dan akar kuadrat, lalu menunjukkan sisi miring segitiga siku-siku "
+                "walaupun gambarnya diputar. Ini penting, karena kuadrat, akar, dan nama sisi adalah alat yang dipakai di "
+                "setiap soal Pythagoras."),
+    dict(fase="Sesi 1 · Fase I", judul="Ayo amati: apa yang sama?",
          isi='<div class="deret">' + "".join(f'<div class="benda">{BENDA[k]}<p>{n}</p></div>' for k, n in
                                              [("tangga", "tangga & dinding"), ("buku", "pojok buku"), ("hp", "layar HP")]) +
              '</div><p class="sorot">Ciri yang sama: ada <b>sudut siku-siku (90°)</b></p>',
-         narasi="Fase satu, pengembangan kognitif. Ayo amati tiga benda ini: tangga yang bersandar di dinding, pojok buku, dan "
-                "layar HP. Bandingkan ketiganya. Apa ciri yang sama? Ya, semuanya punya sudut siku-siku, yaitu sudut sembilan "
-                "puluh derajat."),
-    dict(fase="Fase I · Pengembangan Kognitif", judul="Diputar pun tetap sama",
+         narasi="Ayo amati tiga benda ini: tangga yang bersandar di dinding, pojok buku, dan layar HP. Bandingkan ketiganya. "
+                "Apa ciri yang sama? Semuanya punya sudut siku-siku, yaitu sudut sembilan puluh derajat."),
+    dict(fase="Sesi 1 · Fase II", judul="Kuadrat = luas persegi",
+         isi='<div class="deret">' + kotak_persegi(3, "#8fcaff") + kotak_persegi(4, "#ff9fcb") +
+             rumus("5² = 5 × 5 = 25", "10² = 10 × 10 = 100", "7² = 7 × 7 = 49", "(bukan 7 × 2!)") + '</div>',
+         narasi="Kuadrat artinya bilangan dikalikan dengan dirinya sendiri, dan sama dengan luas persegi. Persegi bersisi tiga "
+                "berisi sembilan kotak. Persegi bersisi empat berisi enam belas kotak. Tujuh kuadrat sama dengan tujuh kali "
+                "tujuh, yaitu empat puluh sembilan, bukan tujuh kali dua."),
+    dict(fase="Sesi 1 · Fase II", judul="Akar kuadrat & tabel kuadrat",
+         isi='<div class="deret">' + rumus("√9 = 3, karena 3² = 9", "√25 = 5, karena 5² = 25", "√64 = 8, karena 8² = 64") +
+             rumus("11² = 121 · 12² = 144", "13² = 169 · 14² = 196", "15² = 225 · 16² = 256", "17² = 289 · 18² = 324",
+                   "19² = 361 · 20² = 400") + '</div>',
+         narasi="Akar kuadrat adalah kebalikan dari kuadrat. Akar enam puluh empat sama dengan delapan, karena delapan kali "
+                "delapan sama dengan enam puluh empat. Tabel kuadrat sebelas sampai dua puluh menjadi pegangan. Untuk mencari "
+                "akar dua ratus delapan puluh sembilan, cari angka itu di tabel: tujuh belas kuadrat sama dengan dua ratus "
+                "delapan puluh sembilan, jadi akarnya tujuh belas."),
+    dict(fase="Sesi 1 · Fase II", judul="Segitiga siku-siku & nama sisinya",
+         isi='<div class="deret">' + segitiga(4, 3, "a (sisi siku-siku)", "b (sisi siku-siku)", "c (sisi miring)",
+                                              warna=("k", "k", "d"), lebar=420, tinggi_kotak=300) + '</div>',
+         narasi="Segitiga siku-siku punya satu sudut siku-siku, ditandai kotak kecil di pojoknya. Dua sisi yang mengapit sudut "
+                "siku-siku disebut sisi siku-siku, kita beri nama a dan b. Sisi di depan sudut siku-siku disebut sisi miring "
+                "atau hipotenusa, kita beri nama c. Sisi miring selalu paling panjang."),
+    dict(fase="Sesi 1 · Fase I", judul="Awas keliru: segitiga yang diputar",
          isi='<div class="deret">' + segitiga(4, 3, "a", "b", "c", warna=("k", "k", "d")) +
              segitiga(4, 3, "p", "q", "r", warna=("k", "k", "d"), putar=200, cermin=True) + '</div>'
-             '<p class="sorot">Sisi miring = sisi di <b>depan kotak sudut siku-siku</b>, selalu <b>paling panjang</b></p>',
-         narasi="Segitiga siku-siku bisa diputar atau dibalik, tetapi tetap segitiga yang sama. Caranya, cari dulu kotak kecil "
-                "sudut siku-sikunya. Sisi di depan kotak itu adalah sisi miring, dan sisi miring selalu paling panjang."),
-    dict(fase="Fase II · Konten sebagai Proses", judul="Kuadrat = luas persegi",
-         isi='<div class="deret">' + kotak_persegi(3, "#8fcaff") + kotak_persegi(4, "#ff9fcb") + '</div>'
-             + rumus("Akar kuadrat adalah kebalikannya:  √25 = 5, karena 5² = 25"),
-         narasi="Fase dua, konten sebagai proses. Kuadrat sebuah bilangan sama dengan luas persegi. Persegi bersisi tiga berisi "
-                "sembilan kotak, jadi tiga kuadrat sama dengan sembilan. Persegi bersisi empat berisi enam belas kotak. Akar "
-                "kuadrat adalah kebalikannya: akar dua puluh lima adalah lima."),
-    dict(fase="Fase II · Konten sebagai Proses", judul="Memberi label sisi",
-         isi='<div class="deret">' + segitiga(4, 3, "a (sisi siku-siku)", "b (sisi siku-siku)", "c (sisi miring)", warna=("k", "k", "d"),
-                                              lebar=420, tinggi_kotak=300) + '</div>',
-         narasi="Kita beri nama sisi-sisinya. Dua sisi yang mengapit sudut siku-siku disebut sisi siku-siku, kita beri nama a "
-                "dan b. Sisi di depan sudut siku-siku disebut sisi miring, kita beri nama c."),
-    dict(fase="Fase II · Konten sebagai Proses", judul="Menemukan pola",
+             '<p class="sorot">Sisi miring = sisi di <b>depan kotak sudut siku-siku</b> → di gambar kanan: <b>r</b></p>',
+         narasi="Hati-hati, sisi miring bukan selalu sisi paling bawah. Segitiga bisa diputar atau dibalik, tetapi tetap "
+                "segitiga yang sama. Cari dulu kotak sudut siku-sikunya, lalu lihat sisi di depannya. Pada gambar kanan, sisi "
+                "miringnya adalah r."),
+    # ------------------------------- SESI 2 -------------------------------
+    dict(fase="Sesi 2 · Fase I", judul="Ayo amati: kotak di dalam persegi",
+         isi='<div class="deret">' + kotak_persegi(3, "#8fcaff") + kotak_persegi(4, "#ff9fcb") + kotak_persegi(6, "#c4b5fd") + '</div>',
+         narasi="Sesi dua. Tujuannya memahami rumus Pythagoras dan memilih rumus yang tepat. Kita mulai dengan mengamati. "
+                "Persegi bersisi tiga berisi sembilan kotak, bersisi empat berisi enam belas kotak. Hubungannya: banyak kotak "
+                "sama dengan sisi kali sisi. Jadi persegi bersisi enam berisi tiga puluh enam kotak."),
+    dict(fase="Sesi 2 · Fase II", judul="Menemukan pola → Teorema Pythagoras",
          isi='<div class="deret">' + bukti_luas() + rumus("9 + 16 = 25", "a² + b² = c²") + '</div>',
-         narasi="Sekarang kita temukan polanya. Gambar persegi di setiap sisi segitiga tiga, empat, lima. Luasnya sembilan, "
-                "enam belas, dan dua puluh lima. Perhatikan: sembilan ditambah enam belas sama dengan dua puluh lima! Inilah "
-                "teorema Pythagoras: c kuadrat sama dengan a kuadrat ditambah b kuadrat."),
-    dict(fase="Fase II · Konten sebagai Proses", judul="Pilih alat yang tepat",
+         narasi="Sekarang gambar persegi di setiap sisi segitiga tiga, empat, lima. Luasnya sembilan, enam belas, dan dua puluh "
+                "lima. Sembilan ditambah enam belas sama dengan dua puluh lima! Inilah teorema Pythagoras: c kuadrat sama "
+                "dengan a kuadrat ditambah b kuadrat."),
+    dict(fase="Sesi 2 · Fase II", judul="Pilih rumus sesuai yang dicari",
          isi='<div class="dua"><div class="pilih biru"><b>Mencari sisi miring c</b>' + rumus("c² = a² + b²") + '<p>kuadratnya <b>dijumlah</b></p></div>'
-             '<div class="pilih pink"><b>Mencari sisi siku-siku</b>' + rumus("a² = c² − b²") + '<p>kuadratnya <b>dikurang</b></p></div></div>',
-         narasi="Pilih alat yang tepat. Kalau yang dicari sisi miring, kuadrat kedua sisi dijumlah. Kalau yang dicari sisi "
-                "siku-siku, kuadratnya dikurang: a kuadrat sama dengan c kuadrat dikurangi b kuadrat."),
-    dict(fase="Fase II · Konten sebagai Proses", judul="Contoh: mencari sisi miring",
+             '<div class="pilih pink"><b>Mencari sisi siku-siku</b>' + rumus("a² = c² − b²", "b² = c² − a²") + '<p>kuadratnya <b>dikurang</b></p></div></div>',
+         narasi="Pilih rumus sesuai yang dicari. Kalau yang dicari sisi miring, kuadrat kedua sisi dijumlah. Kalau yang dicari "
+                "sisi siku-siku, kuadratnya dikurang: a kuadrat sama dengan c kuadrat dikurangi b kuadrat."),
+    dict(fase="Sesi 2 · Fase III", judul="Mencari sisi miring",
          isi='<div class="deret">' + segitiga(6, 8, "a = 6", "b = 8", "c = ?", warna=("k", "k", "d")) +
-             rumus("c² = a² + b²", "c² = 6² + 8²", "c² = 36 + 64 = 100", "c = √100 = 10") + '</div>',
-         narasi="Contoh. Diketahui a sama dengan enam dan b sama dengan delapan. Kita cari c. c kuadrat sama dengan enam kuadrat "
-                "ditambah delapan kuadrat, yaitu tiga puluh enam ditambah enam puluh empat, sama dengan seratus. Jadi c sama "
-                "dengan akar seratus, yaitu sepuluh."),
-    dict(fase="Fase III · Latihan Konstruksi Konseptual", judul="Soal cerita: panjang tangga",
-         isi='<div class="deret">' + tangga_dinding("3 m", "4 m", "?", "panjang") +
-             '<ol class="lima"><li>Baca & tandai</li><li>Tulis diketahui – ditanya</li><li>Gambar & beri label</li>'
-             '<li>Hitung: c² = 9 + 16 = 25, c = 5</li><li>Periksa</li></ol></div>',
-         narasi="Fase tiga, berlatih. Sebuah tangga bersandar di dinding. Kaki tangga tiga meter dari dinding, dan ujungnya "
-                "menyentuh dinding setinggi empat meter. Berapa panjang tangga? Pakai strategi lima langkah: baca dan tandai, "
-                "tulis yang diketahui dan ditanya, gambar dan beri label, hitung, lalu periksa. Tangga adalah sisi miring. "
-                "c kuadrat sama dengan sembilan ditambah enam belas, yaitu dua puluh lima. Jadi panjang tangga lima meter."),
-    dict(fase="Fase III · Refleksi", judul="Periksa & refleksi",
-         isi='<ul class="besar"><li>Sisi miring paling panjang? 5 m &gt; 4 m &gt; 3 m ✓</li><li>Satuan benar? meter ✓</li>'
-             '<li>🪞 Fungsi berpikir apa yang kamu pakai: mengamati, membandingkan, memberi label, atau memakai rumus?</li></ul>',
-         narasi="Periksa dulu: apakah sisi miring paling panjang? Lima lebih panjang dari empat dan tiga. Satuannya meter. Masuk "
-                "akal! Sekarang refleksikan: fungsi berpikir apa yang tadi kamu pakai? Mengamati, membandingkan, memberi label, "
-                "atau memakai rumus?"),
+             rumus("c² = 6² + 8²", "c² = 36 + 64 = 100", "c = √100 = 10", "Coba: a = 20, b = 15", "c² = 400 + 225 = 625 → c = 25") + '</div>',
+         narasi="Contoh: a sama dengan enam dan b sama dengan delapan. c kuadrat sama dengan tiga puluh enam ditambah enam puluh "
+                "empat, yaitu seratus. Jadi c sama dengan akar seratus, yaitu sepuluh. Giliranmu: sisi dua puluh dan lima "
+                "belas. c kuadrat sama dengan empat ratus ditambah dua ratus dua puluh lima, yaitu enam ratus dua puluh lima. "
+                "Jadi c sama dengan dua puluh lima sentimeter."),
+    dict(fase="Sesi 2 · Fase III", judul="Mencari sisi siku-siku",
+         isi='<div class="deret">' + segitiga(6, 8, "a = 6", "b = ?", "c = 10", warna=("k", "d", "k")) +
+             rumus("b² = c² − a²", "b² = 100 − 36 = 64", "b = √64 = 8", "Coba: c = 13, b = 5", "a² = 169 − 25 = 144 → a = 12") + '</div>',
+         narasi="Kalau yang dicari sisi siku-siku, kita kurangkan. Sisi miring sepuluh dan a enam: b kuadrat sama dengan seratus "
+                "dikurangi tiga puluh enam, yaitu enam puluh empat. Jadi b sama dengan delapan. Coba sendiri: sisi miring tiga "
+                "belas dan b lima. a kuadrat sama dengan seratus enam puluh sembilan dikurangi dua puluh lima, yaitu seratus "
+                "empat puluh empat. Jadi a sama dengan dua belas."),
+    # ------------------------------- SESI 3 -------------------------------
+    dict(fase="Sesi 3 · Fase I", judul="Ayo amati: soal kapten kapal", isi=layar_app("05-laptop-sesi3-fase1-kapten-kapal.png"),
+         narasi="Sesi tiga: Pythagoras dalam kehidupan sehari-hari. Baca soal ini: di sebuah kapal ada dua puluh enam domba dan "
+                "sepuluh kambing. Berapa umur kaptennya? Jawabannya: tidak bisa ditentukan, karena informasinya tidak "
+                "berhubungan dengan pertanyaan. Pelajarannya: pahami dulu soal sebelum menghitung."),
+    dict(fase="Sesi 3 · Fase II", judul="Strategi 5 Langkah soal cerita",
+         isi='<ol class="lima"><li>Baca & tandai angka penting dan pertanyaannya</li><li>Tulis Diketahui – Ditanya (dengan satuan)</li>'
+             '<li>Gambar segitiga siku-siku, beri label, warnai sisi yang dicari</li><li>Pilih rumus & hitung (miring → tambah, siku-siku → kurang)</li>'
+             '<li>Cek kewajaran: sisi miring harus paling panjang</li></ol>',
+         narasi="Untuk soal cerita, pakai strategi lima langkah. Satu, baca dan tandai. Dua, tulis yang diketahui dan ditanya, "
+                "lengkap dengan satuannya. Tiga, gambar segitiga siku-siku dan beri label. Empat, pilih rumus dan hitung. Lima, "
+                "cek kewajaran: sisi miring harus paling panjang."),
+    dict(fase="Sesi 3 · Fase III", judul="Contoh 1: panjang tangga",
+         isi='<div class="deret">' + tangga_dinding("3 m", "4 m", "?", "panjang") + rumus("tangga = sisi miring", "c² = 3² + 4²", "c² = 9 + 16 = 25", "c = 5 m") + '</div>',
+         narasi="Contoh satu. Kaki tangga tiga meter dari dinding, ujungnya menyentuh dinding setinggi empat meter. Tangga "
+                "berada di depan sudut siku-siku, jadi tangga adalah sisi miring. c kuadrat sama dengan sembilan ditambah "
+                "enam belas, yaitu dua puluh lima. Panjang tangga lima meter."),
+    dict(fase="Sesi 3 · Fase III", judul="Contoh 2: tinggi layang-layang",
+         isi='<div class="deret">' + segitiga(20, 21, "a = 20 m", "b = ?", "c = 29 m", warna=("k", "d", "k"),
+                                              lebar=420, tinggi_kotak=300) + rumus("benang = sisi miring c = 29 m", "jarak mendatar a = 20 m",
+                                                                                   "tinggi = b", "b² = 29² − 20²", "b² = 841 − 400 = 441", "b = 21 m") + '</div>',
+         narasi="Contoh dua. Benang layang-layang dua puluh sembilan meter, jarak mendatar dua puluh meter. Benang adalah sisi "
+                "miring, dan yang dicari tinggi, yaitu sisi siku-siku, jadi kita kurangkan. b kuadrat sama dengan delapan ratus "
+                "empat puluh satu dikurangi empat ratus, yaitu empat ratus empat puluh satu. Tinggi layang-layang dua puluh satu meter."),
+    dict(fase="Sesi 3 · Fase III", judul="Contoh 3 & 4: jarak terpendek, diagonal layar",
+         isi='<div class="dua"><div class="pilih biru"><b>Andi: 15 m ke timur, 20 m ke utara</b>' + rumus("c² = 225 + 400 = 625", "c = 25 m") + '</div>'
+             '<div class="pilih pink"><b>Layar 28 cm × 21 cm</b>' + rumus("c² = 784 + 441 = 1225", "c = 35 cm") + '</div></div>',
+         narasi="Contoh tiga. Andi berjalan lima belas meter ke timur lalu dua puluh meter ke utara. Jarak terpendek adalah sisi "
+                "miring: c kuadrat sama dengan dua ratus dua puluh lima ditambah empat ratus, yaitu enam ratus dua puluh lima, "
+                "jadi dua puluh lima meter. Contoh empat. Ukuran layar dihitung dari diagonalnya. Layar dua puluh delapan kali "
+                "dua puluh satu sentimeter punya diagonal tiga puluh lima sentimeter."),
+    dict(fase="Sesi 3 · Fase II", judul="Tripel Pythagoras",
+         isi='<div class="deret">' + rumus("3, 4, 5 · 6, 8, 10", "20, 21, 29 · 9, 40, 41", "15² + 20² = 625 = 25² ✓", "4, 5, 6 → 16 + 25 = 41 ≠ 36 ✗") + '</div>',
+         narasi="Tiga bilangan bulat yang memenuhi rumus Pythagoras disebut tripel Pythagoras, misalnya tiga, empat, lima dan "
+                "enam, delapan, sepuluh. Cara memeriksanya: kuadratkan dua bilangan terkecil, jumlahkan, lalu bandingkan dengan "
+                "kuadrat bilangan terbesar. Empat, lima, enam bukan tripel, karena enam belas ditambah dua puluh lima tidak sama "
+                "dengan tiga puluh enam."),
+    dict(fase="Fase III · Refleksi", judul="Refleksi",
+         isi='<ul class="besar"><li>Mengapa mencari sisi siku-siku memakai <b>pengurangan</b>?</li>'
+             '<li>Bagaimana tahu jawabanmu masuk akal tanpa menghitung ulang?</li>'
+             '<li>🪞 Fungsi berpikir apa yang kamu pakai: mengamati, membandingkan, memberi label, memakai rumus?</li></ul>',
+         narasi="Sekarang refleksikan. Mengapa saat mencari sisi siku-siku kita memakai pengurangan? Bagaimana kamu tahu "
+                "jawabanmu masuk akal tanpa menghitung ulang? Dan fungsi berpikir apa yang paling membantumu hari ini?"),
+    # --------------------------- FITUR APLIKASI ---------------------------
+    dict(fase="Memakai aplikasi", judul="Kalkulator & Cek Prasyarat", isi=layar_app("06-laptop-kalkulator.png"),
+         narasi="Di aplikasi PELITA, mulai dari cek prasyarat kuadrat dan akar di menu Belajar. Menu Kalkulator membantu "
+                "memeriksa langkahmu: pilih sisi yang dicari, isi dua sisi lainnya, lalu lihat langkah hitung dan gambar "
+                "segitiganya."),
+    dict(fase="Memakai aplikasi", judul="Latihan Soal & Tes", isi=layar_app("07-laptop-latihan-soal.png"),
+         narasi="Di pertemuan empat, kerjakan menu Latihan Soal minimal sepuluh soal. Setiap soal dikerjakan bertahap: "
+                "diketahui dan ditanya, tunjuk sisi miring, lalu hitung. Menu Tes berisi pre-test, post-test, dan kuesioner "
+                "untuk penelitian."),
+    dict(fase="Memakai aplikasi", judul="Tanya Siku", isi=layar_app("09-laptop-tanya-siku-mandiri.png"),
+         narasi="Kalau bingung, tekan tombol Tanya Siku. Siku membimbing langkah demi langkah: amati, hubungkan, pakai alat, "
+                "lalu jelaskan. Siku memberi petunjuk, bukan jawaban akhir, dan tetap bisa menjawab walaupun internet AI "
+                "sedang gangguan."),
     dict(fase="Transendensi", judul="🌏 Pythagoras ada di mana-mana",
          isi='<ul class="besar"><li>Tukang bangunan memakai pola 3-4-5 agar pojok bangunan siku.</li>'
-             '<li>Ukuran layar TV & HP dihitung dari diagonalnya.</li><li>Jarak terpendek saat berjalan ke timur lalu ke utara.</li></ul>'
-             '<p class="sorot">Lanjut belajar di <b>pelita-azkiah-safira-pythagoras.vercel.app</b></p>',
-         narasi="Pythagoras ada di mana-mana. Tukang bangunan memakai pola tiga, empat, lima agar pojok bangunan siku. Ukuran "
-                "layar TV dan HP dihitung dari diagonalnya. Ayo lanjut belajar di aplikasi PELITA dan kerjakan lembar kerjanya. "
-                "Sampai jumpa!"),
+             '<li>Ukuran layar TV & HP dihitung dari diagonalnya.</li><li>Kawat penopang tiang, diagonal taman, jarak berjalan.</li></ul>'
+             '<p class="sorot">Belajar di <b>pelita-azkiah-safira-pythagoras.vercel.app</b></p>',
+         narasi="Pythagoras ada di mana-mana: tukang bangunan memakai pola tiga, empat, lima, ukuran layar dihitung dari "
+                "diagonalnya, juga kawat penopang tiang dan diagonal taman. Ayo lanjut belajar di aplikasi PELITA. Sampai jumpa!"),
 ]
 
 GAYA = """
@@ -190,13 +268,18 @@ for i, a in enumerate(ADEGAN, 1):
                     "-Keluar", dasar + ".wav"], check=True, capture_output=True)
     # ---- slide: subtitle dibagi dua bila narasi panjang (bagian 1 & 2 bergantian di tengah durasi) ----
     kalimat = [k.strip() for k in a["narasi"].replace("! ", "!|").replace(". ", ".|").replace("? ", "?|").split("|") if k.strip()]
-    tengah = max(1, len(kalimat) // 2)
-    bagian = [" ".join(kalimat[:tengah]), " ".join(kalimat[tengah:])] if len(a["narasi"]) > 210 else [a["narasi"]]
+    # subtitle dibagi menjadi beberapa layar berisi ≤ 200 huruf, lama tiap layar sebanding panjang teksnya
+    bagian = []
+    for k in kalimat:
+        if bagian and len(bagian[-1]) + len(k) < 200:
+            bagian[-1] += " " + k
+        else:
+            bagian.append(k)
     gambar = []
     for j, sub in enumerate(bagian):
         fase = f'<div class="label-fase">{escape(a["fase"])}</div>' if a["fase"] else ""
         html = (f'<!doctype html><html lang="id"><head><meta charset="utf-8"><style>{GAYA}</style></head><body>{BENDERA}{fase}'
-                f'<h1>{escape(a["judul"])}</h1><div class="panggung">{a["isi"]}</div>{SIKU}<div class="sub">{escape(ringkas(sub, 240))}</div></body></html>')
+                f'<h1>{escape(a["judul"])}</h1><div class="panggung">{a["isi"]}</div>{SIKU}<div class="sub">{escape(sub)}</div></body></html>')
         halaman = f"{dasar}-{j}.html"
         png = f"{dasar}-{j}.png"
         with open(halaman, "w", encoding="utf-8") as f:
@@ -209,8 +292,9 @@ for i, a in enumerate(ADEGAN, 1):
     total = durasi(dasar + ".wav") + 0.9
     mp4 = dasar + ".mp4"
     masukan, filter_ = [], []
+    panjang = sum(len(x) for x in bagian)
     for j, png in enumerate(gambar):
-        masukan += ["-loop", "1", "-t", f"{total / len(gambar):.3f}", "-i", png]
+        masukan += ["-loop", "1", "-t", f"{total * len(bagian[j]) / panjang:.3f}", "-i", png]
         filter_.append(f"[{j}:v]scale=1280:720,setsar=1,fps=30[v{j}]")
     gabung = "".join(f"[v{j}]" for j in range(len(gambar))) + f"concat=n={len(gambar)}:v=1:a=0,fade=t=in:st=0:d=0.4," \
              f"fade=t=out:st={total - 0.4:.3f}:d=0.4,format=yuv420p[v]"

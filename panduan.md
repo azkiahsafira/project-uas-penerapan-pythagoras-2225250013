@@ -18,7 +18,7 @@ Alamat aplikasi: **https://pelita-azkiah-safira-pythagoras.vercel.app/**
 | **Tes** | Pre-test, post-test, kuesioner | Kerjakan sendiri; menu lain terkunci selama tes |
 
 - Tombol **✨ Animasi** dan **🎵 Musik** ada di bawah/pojok layar; bisa dimatikan kapan saja.
-- Ketuk **Siku, Raka, Nisa**, atau hewan laut untuk mendengar sapaan mereka.
+- Ketuk **Siku, Raka, Nisa**, atau sahabat kawaii (Kuadra, Lila, Hipo, Akar) untuk mendengar sapaan mereka.
 - Kalau salah, tidak apa-apa: baca petunjuknya, lalu coba lagi.
 
 ## B. Untuk peneliti / guru

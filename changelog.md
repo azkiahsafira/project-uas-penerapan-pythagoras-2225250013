@@ -2,6 +2,19 @@
 
 Format: tanggal · versi · perubahan utama. Rincian lengkap ada di riwayat commit GitHub.
 
+## [3.1] · 24 November 2026 — Versi final: audit menyeluruh
+- Label fase RMT juga di menu **Kalkulator** (Fase II · Langkah 5: memakai alat matematika) dan **Latihan Soal** (Fase III ·
+  Langkah 6: berlatih & merefleksi), sehingga seluruh aplikasi konsisten memakai model RMT.
+- **Video pembelajaran dilengkapi** menjadi ± 9,5 menit (24 adegan): SELURUH langkah menu Belajar Sesi 1–3 (kuadrat, akar,
+  tabel kuadrat, nama sisi, segitiga diputar, pola 9 + 16 = 25, memilih rumus, mencari sisi miring & sisi siku-siku, kapten
+  kapal, Strategi 5 Langkah, tangga, layang-layang, jarak terpendek, diagonal layar, tripel, refleksi) + cara memakai Cek
+  Prasyarat, Kalkulator, Latihan Soal, Tes, dan Tanya Siku.
+- **Dibersihkan dari GitHub** karena tidak sesuai aplikasi versi akhir: 24 screenshot lama (tema laut/sekolah) diganti 12
+  screenshot baru; lembar cetak tes 10 soal lama (pre-test, post-test, kunci) dihapus karena pre/post-test memakai tes
+  Mathematical Literacy (kuesioner beban kognitif tetap). README, panduan, design, deploy, dan pesan untuk dosen disesuaikan
+  dengan tema PELITA dan tahap RMT.
+- Bukti percakapan AI diperbarui (327 pesan mahasiswa, 940 jawaban AI). Versi cache PWA `pythagoras-v15`.
+
 ## [3.0] · 24 November 2026 — Revisi dosen: model RMT, AI selalu aktif, bahan tanpa aplikasi, video
 - **Model RMT** (Rigorous Mathematical Thinking, Kinard & Kozulin 2008) di menu Belajar: tiap langkah ditandai fase & langkah RMT
   (Fase I Pengembangan Kognitif, Fase II Konten sebagai Proses, Fase III Latihan Konstruksi Konseptual) dan fungsi kognitif;
